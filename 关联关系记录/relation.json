@@ -1,0 +1,2142 @@
+{
+  "pattern.c": {
+    "parserInternals.c": [
+      "xmlStringCurrentChar"
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "globals.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xinclude.c": {
+    "parserInternals.c": [
+      "xmlFreeInputStream",
+      "xmlFreeParserCtxt",
+      "xmlNewParserCtxt",
+      "xmlStringCurrentChar"
+    ],
+    "parser.c": [
+      "inputPush",
+      "xmlCtxtUseOptions",
+      "xmlInitParser",
+      "xmlParseDocument"
+    ],
+    "xpath.c": [
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testAutomata.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testModule.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmllint.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlFreeParserCtxt",
+      "xmlKeepBlanksDefault",
+      "xmlLineNumbersDefault",
+      "xmlNewIOInputStream",
+      "xmlNewParserCtxt",
+      "xmlPedanticParserDefault",
+      "xmlSubstituteEntitiesDefault"
+    ],
+    "parser.c": [
+      "inputPush",
+      "xmlCleanupParser",
+      "xmlCreatePushParserCtxt",
+      "xmlCtxtReadFile",
+      "xmlCtxtReadIO",
+      "xmlCtxtReadMemory",
+      "xmlCtxtUseOptions",
+      "xmlHasFeature",
+      "xmlParseChunk",
+      "xmlParseDocument",
+      "xmlParseDTD",
+      "xmlParseFile",
+      "xmlReadFd",
+      "xmlReadFile",
+      "xmlReadIO",
+      "xmlReadMemory"
+    ],
+    "xpath.c": [
+      "xmlXPathEval",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathIsInf",
+      "xmlXPathIsNaN",
+      "xmlXPathNewContext",
+      "xmlXPathOrderDocElems"
+    ],
+    "HTMLparser.c": [
+      "htmlCreatePushParserCtxt",
+      "htmlFreeParserCtxt",
+      "htmlParseChunk",
+      "htmlReadFile",
+      "htmlReadMemory"
+    ]
+  },
+  "xmlcatalog.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "schematron.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlReadFile",
+      "xmlReadMemory"
+    ],
+    "xpath.c": [
+      "xmlXPathCompiledEval",
+      "xmlXPathCtxtCompile",
+      "xmlXPathEval",
+      "xmlXPathFreeCompExpr",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathIsNaN",
+      "xmlXPathNewContext",
+      "xmlXPathRegisterNs"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testXPath.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlReadDoc",
+      "xmlReadFile"
+    ],
+    "xpath.c": [
+      "xmlXPathCompile",
+      "xmlXPathCompiledEval",
+      "xmlXPathDebugDumpCompExpr",
+      "xmlXPathDebugDumpObject",
+      "xmlXPathEvalExpression",
+      "xmlXPathFreeCompExpr",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathNewContext"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "SAX2.c": {
+    "parserInternals.c": [
+      "xmlErrMemory",
+      "xmlFreeInputStream",
+      "xmlParserAddNodeInfo",
+      "xmlSwitchEncoding"
+    ],
+    "parser.c": [
+      "nodePop",
+      "nodePush",
+      "xmlParseCtxtExternalEntity",
+      "xmlParseExternalSubset",
+      "xmlPopInput",
+      "xmlPushInput",
+      "xmlSplitQName",
+      "xmlStringDecodeEntities",
+      "xmlStringLenDecodeEntities"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      "htmlNewDocNoDtD"
+    ]
+  },
+  "testC14N.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlSubstituteEntitiesDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlInitParser",
+      "xmlReadFile"
+    ],
+    "xpath.c": [
+      "xmlXPathEvalExpression",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathNewContext",
+      "xmlXPathRegisterNs"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlmemory.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testHTML.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      "htmlCreatePushParserCtxt",
+      "htmlEncodeEntities",
+      "htmlFreeParserCtxt",
+      "htmlParseChunk",
+      "htmlReadFile",
+      "htmlSAXParseFile"
+    ]
+  },
+  "encoding.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      "UTF8ToHtml"
+    ]
+  },
+  "catalog.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlNewInputStream",
+      "xmlNewParserCtxt"
+    ],
+    "parser.c": [
+      "inputPush",
+      "xmlParseDocument"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "runtest.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlPedanticParserDefault",
+      "xmlSubstituteEntitiesDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCreateFileParserCtxt",
+      "xmlCreatePushParserCtxt",
+      "xmlCtxtUseOptions",
+      "xmlInitParser",
+      "xmlParseChunk",
+      "xmlParseDocument",
+      "xmlParseFile",
+      "xmlReadFile",
+      "xmlReadMemory"
+    ],
+    "xpath.c": [
+      "xmlXPathCompile",
+      "xmlXPathCompiledEval",
+      "xmlXPathDebugDumpObject",
+      "xmlXPathEvalExpression",
+      "xmlXPathFreeCompExpr",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathNewContext",
+      "xmlXPathRegisterNs"
+    ],
+    "HTMLparser.c": [
+      "htmlCreatePushParserCtxt",
+      "htmlEncodeEntities",
+      "htmlParseChunk",
+      "htmlReadFile",
+      "htmlSAXParseFile"
+    ]
+  },
+  "list.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "buf.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "chvalid.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlIO.c": {
+    "parserInternals.c": [
+      "__xmlErrEncoding",
+      "xmlFreeInputStream",
+      "xmlNewInputFromFile",
+      "xmlSwitchInputEncoding"
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "tree.c": {
+    "parserInternals.c": [
+      "xmlCopyCharMultiByte",
+      "xmlStringCurrentChar"
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "hash.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testdict.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "SAX.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "legacy.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testlimits.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlNewParserCtxt",
+      "xmlPedanticParserDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCtxtReadFile",
+      "xmlInitParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "error.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "threads.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "python/.libs/libxml2-py.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlClearParserCtxt",
+      "xmlCopyChar",
+      "xmlCopyCharMultiByte",
+      "xmlInitParserCtxt",
+      "xmlIsLetter",
+      "xmlKeepBlanksDefault",
+      "xmlLineNumbersDefault",
+      "xmlNewParserCtxt",
+      "xmlNextChar",
+      "xmlPedanticParserDefault",
+      "xmlSubstituteEntitiesDefault"
+    ],
+    "parser.c": [
+      "namePop",
+      "namePush",
+      "nodePop",
+      "nodePush",
+      "xmlCheckLanguageID",
+      "xmlCreateDocParserCtxt",
+      "xmlCreateEntityParserCtxt",
+      "xmlCreateFileParserCtxt",
+      "xmlCreateMemoryParserCtxt",
+      "xmlCreateURLParserCtxt",
+      "xmlCtxtReadDoc",
+      "xmlCtxtReadFd",
+      "xmlCtxtReadFile",
+      "xmlCtxtReadMemory",
+      "xmlCtxtReset",
+      "xmlCtxtResetPush",
+      "xmlCtxtUseOptions",
+      "xmlInitParser",
+      "xmlParseAttributeListDecl",
+      "xmlParseAttValue",
+      "xmlParseCDSect",
+      "xmlParseCharData",
+      "xmlParseCharRef",
+      "xmlParseChunk",
+      "xmlParseComment",
+      "xmlParseContent",
+      "xmlParseDoc",
+      "xmlParseDocTypeDecl",
+      "xmlParseDocument",
+      "xmlParseDTD",
+      "xmlParseElement",
+      "xmlParseElementDecl",
+      "xmlParseEncName",
+      "xmlParseEncodingDecl",
+      "xmlParseEndTag",
+      "xmlParseEntity",
+      "xmlParseEntityDecl",
+      "xmlParseEntityRef",
+      "xmlParseExternalSubset",
+      "xmlParseExtParsedEnt",
+      "xmlParseFile",
+      "xmlParseMarkupDecl",
+      "xmlParseMemory",
+      "xmlParseMisc",
+      "xmlParseName",
+      "xmlParseNmtoken",
+      "xmlParseNotationDecl",
+      "xmlParsePEReference",
+      "xmlParsePI",
+      "xmlParsePITarget",
+      "xmlParsePubidLiteral",
+      "xmlParseReference",
+      "xmlParserHandlePEReference",
+      "xmlParseSDDecl",
+      "xmlParseStartTag",
+      "xmlParseSystemLiteral",
+      "xmlParseTextDecl",
+      "xmlParseVersionInfo",
+      "xmlParseVersionNum",
+      "xmlParseXMLDecl",
+      "xmlPopInput",
+      "xmlReadDoc",
+      "xmlReadFd",
+      "xmlReadFile",
+      "xmlReadMemory",
+      "xmlRecoverDoc",
+      "xmlRecoverFile",
+      "xmlRecoverMemory",
+      "xmlSetupParserForBuffer",
+      "xmlSkipBlankChars",
+      "xmlStopParser",
+      "xmlStringDecodeEntities",
+      "xmlStringLenDecodeEntities"
+    ],
+    "xpath.c": [
+      "valuePop",
+      "xmlXPathAddValues",
+      "xmlXPathBooleanFunction",
+      "xmlXPathCastBooleanToNumber",
+      "xmlXPathCastBooleanToString",
+      "xmlXPathCastNodeToNumber",
+      "xmlXPathCastNodeToString",
+      "xmlXPathCastNumberToBoolean",
+      "xmlXPathCastNumberToString",
+      "xmlXPathCastStringToBoolean",
+      "xmlXPathCastStringToNumber",
+      "xmlXPathCeilingFunction",
+      "xmlXPathCmpNodes",
+      "xmlXPathCompareValues",
+      "xmlXPathConcatFunction",
+      "xmlXPathContainsFunction",
+      "xmlXPathContextSetCache",
+      "xmlXPathCountFunction",
+      "xmlXPathDivValues",
+      "xmlXPathEqualValues",
+      "xmlXPathErr",
+      "xmlXPatherror",
+      "xmlXPathEval",
+      "xmlXPathEvalExpr",
+      "xmlXPathEvalExpression",
+      "xmlXPathFalseFunction",
+      "xmlXPathFloorFunction",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeParserContext",
+      "xmlXPathIdFunction",
+      "xmlXPathInit",
+      "xmlXPathIsInf",
+      "xmlXPathIsNaN",
+      "xmlXPathIsNodeType",
+      "xmlXPathLangFunction",
+      "xmlXPathLastFunction",
+      "xmlXPathLocalNameFunction",
+      "xmlXPathModValues",
+      "xmlXPathMultValues",
+      "xmlXPathNamespaceURIFunction",
+      "xmlXPathNewBoolean",
+      "xmlXPathNewContext",
+      "xmlXPathNewCString",
+      "xmlXPathNewFloat",
+      "xmlXPathNewNodeSet",
+      "xmlXPathNewParserContext",
+      "xmlXPathNewString",
+      "xmlXPathNewValueTree",
+      "xmlXPathNextAncestor",
+      "xmlXPathNextAncestorOrSelf",
+      "xmlXPathNextAttribute",
+      "xmlXPathNextChild",
+      "xmlXPathNextDescendant",
+      "xmlXPathNextDescendantOrSelf",
+      "xmlXPathNextFollowing",
+      "xmlXPathNextFollowingSibling",
+      "xmlXPathNextNamespace",
+      "xmlXPathNextParent",
+      "xmlXPathNextPreceding",
+      "xmlXPathNextPrecedingSibling",
+      "xmlXPathNextSelf",
+      "xmlXPathNodeEval",
+      "xmlXPathNodeSetFreeNs",
+      "xmlXPathNormalizeFunction",
+      "xmlXPathNotEqualValues",
+      "xmlXPathNotFunction",
+      "xmlXPathNsLookup",
+      "xmlXPathNumberFunction",
+      "xmlXPathOrderDocElems",
+      "xmlXPathParseName",
+      "xmlXPathParseNCName",
+      "xmlXPathPopBoolean",
+      "xmlXPathPopNumber",
+      "xmlXPathPopString",
+      "xmlXPathPositionFunction",
+      "xmlXPathRegisterAllFunctions",
+      "xmlXPathRegisteredFuncsCleanup",
+      "xmlXPathRegisteredNsCleanup",
+      "xmlXPathRegisteredVariablesCleanup",
+      "xmlXPathRegisterNs",
+      "xmlXPathRoot",
+      "xmlXPathRoundFunction",
+      "xmlXPathStartsWithFunction",
+      "xmlXPathStringEvalNumber",
+      "xmlXPathStringFunction",
+      "xmlXPathStringLengthFunction",
+      "xmlXPathSubstringAfterFunction",
+      "xmlXPathSubstringBeforeFunction",
+      "xmlXPathSubstringFunction",
+      "xmlXPathSubValues",
+      "xmlXPathSumFunction",
+      "xmlXPathTranslateFunction",
+      "xmlXPathTrueFunction",
+      "xmlXPathValueFlipSign",
+      "xmlXPathVariableLookup",
+      "xmlXPathVariableLookupNS"
+    ],
+    "HTMLparser.c": [
+      "htmlAutoCloseTag",
+      "htmlCreateFileParserCtxt",
+      "htmlCreateMemoryParserCtxt",
+      "htmlCtxtReadDoc",
+      "htmlCtxtReadFd",
+      "htmlCtxtReadFile",
+      "htmlCtxtReadMemory",
+      "htmlCtxtReset",
+      "htmlCtxtUseOptions",
+      "htmlFreeParserCtxt",
+      "htmlHandleOmittedElem",
+      "htmlInitAutoClose",
+      "htmlIsAutoClosed",
+      "htmlIsScriptAttribute",
+      "htmlNewDoc",
+      "htmlNewDocNoDtD",
+      "htmlNewParserCtxt",
+      "htmlParseCharRef",
+      "htmlParseChunk",
+      "htmlParseDoc",
+      "htmlParseDocument",
+      "htmlParseElement",
+      "htmlParseFile",
+      "htmlReadDoc",
+      "htmlReadFd",
+      "htmlReadFile",
+      "htmlReadMemory"
+    ]
+  },
+  "python/.libs/libxml.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlNewIOInputStream"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCreatePushParserCtxt",
+      "xmlInitParser",
+      "xmlSAXUserParseFile"
+    ],
+    "xpath.c": [
+      "valuePop",
+      "valuePush",
+      "xmlXPathRegisterFuncLookup",
+      "xmlXPathRegisterVariableNS"
+    ],
+    "HTMLparser.c": [
+      "htmlCreatePushParserCtxt",
+      "htmlSAXParseFile"
+    ]
+  },
+  "python/.libs/types.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      "xmlXPathFreeObject",
+      "xmlXPathNewBoolean",
+      "xmlXPathNewFloat",
+      "xmlXPathNodeSetAdd",
+      "xmlXPathNodeSetCreate",
+      "xmlXPathNodeSetFreeNs",
+      "xmlXPathWrapNodeSet",
+      "xmlXPathWrapString"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "python/libxml2-py.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlClearParserCtxt",
+      "xmlCopyChar",
+      "xmlCopyCharMultiByte",
+      "xmlInitParserCtxt",
+      "xmlIsLetter",
+      "xmlKeepBlanksDefault",
+      "xmlLineNumbersDefault",
+      "xmlNewParserCtxt",
+      "xmlNextChar",
+      "xmlPedanticParserDefault",
+      "xmlSubstituteEntitiesDefault"
+    ],
+    "parser.c": [
+      "namePop",
+      "namePush",
+      "nodePop",
+      "nodePush",
+      "xmlCheckLanguageID",
+      "xmlCreateDocParserCtxt",
+      "xmlCreateEntityParserCtxt",
+      "xmlCreateFileParserCtxt",
+      "xmlCreateMemoryParserCtxt",
+      "xmlCreateURLParserCtxt",
+      "xmlCtxtReadDoc",
+      "xmlCtxtReadFd",
+      "xmlCtxtReadFile",
+      "xmlCtxtReadMemory",
+      "xmlCtxtReset",
+      "xmlCtxtResetPush",
+      "xmlCtxtUseOptions",
+      "xmlInitParser",
+      "xmlParseAttributeListDecl",
+      "xmlParseAttValue",
+      "xmlParseCDSect",
+      "xmlParseCharData",
+      "xmlParseCharRef",
+      "xmlParseChunk",
+      "xmlParseComment",
+      "xmlParseContent",
+      "xmlParseDoc",
+      "xmlParseDocTypeDecl",
+      "xmlParseDocument",
+      "xmlParseDTD",
+      "xmlParseElement",
+      "xmlParseElementDecl",
+      "xmlParseEncName",
+      "xmlParseEncodingDecl",
+      "xmlParseEndTag",
+      "xmlParseEntity",
+      "xmlParseEntityDecl",
+      "xmlParseEntityRef",
+      "xmlParseExternalSubset",
+      "xmlParseExtParsedEnt",
+      "xmlParseFile",
+      "xmlParseMarkupDecl",
+      "xmlParseMemory",
+      "xmlParseMisc",
+      "xmlParseName",
+      "xmlParseNmtoken",
+      "xmlParseNotationDecl",
+      "xmlParsePEReference",
+      "xmlParsePI",
+      "xmlParsePITarget",
+      "xmlParsePubidLiteral",
+      "xmlParseReference",
+      "xmlParserHandlePEReference",
+      "xmlParseSDDecl",
+      "xmlParseStartTag",
+      "xmlParseSystemLiteral",
+      "xmlParseTextDecl",
+      "xmlParseVersionInfo",
+      "xmlParseVersionNum",
+      "xmlParseXMLDecl",
+      "xmlPopInput",
+      "xmlReadDoc",
+      "xmlReadFd",
+      "xmlReadFile",
+      "xmlReadMemory",
+      "xmlRecoverDoc",
+      "xmlRecoverFile",
+      "xmlRecoverMemory",
+      "xmlSetupParserForBuffer",
+      "xmlSkipBlankChars",
+      "xmlStopParser",
+      "xmlStringDecodeEntities",
+      "xmlStringLenDecodeEntities"
+    ],
+    "xpath.c": [
+      "valuePop",
+      "xmlXPathAddValues",
+      "xmlXPathBooleanFunction",
+      "xmlXPathCastBooleanToNumber",
+      "xmlXPathCastBooleanToString",
+      "xmlXPathCastNodeToNumber",
+      "xmlXPathCastNodeToString",
+      "xmlXPathCastNumberToBoolean",
+      "xmlXPathCastNumberToString",
+      "xmlXPathCastStringToBoolean",
+      "xmlXPathCastStringToNumber",
+      "xmlXPathCeilingFunction",
+      "xmlXPathCmpNodes",
+      "xmlXPathCompareValues",
+      "xmlXPathConcatFunction",
+      "xmlXPathContainsFunction",
+      "xmlXPathContextSetCache",
+      "xmlXPathCountFunction",
+      "xmlXPathDivValues",
+      "xmlXPathEqualValues",
+      "xmlXPathErr",
+      "xmlXPatherror",
+      "xmlXPathEval",
+      "xmlXPathEvalExpr",
+      "xmlXPathEvalExpression",
+      "xmlXPathFalseFunction",
+      "xmlXPathFloorFunction",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeParserContext",
+      "xmlXPathIdFunction",
+      "xmlXPathInit",
+      "xmlXPathIsInf",
+      "xmlXPathIsNaN",
+      "xmlXPathIsNodeType",
+      "xmlXPathLangFunction",
+      "xmlXPathLastFunction",
+      "xmlXPathLocalNameFunction",
+      "xmlXPathModValues",
+      "xmlXPathMultValues",
+      "xmlXPathNamespaceURIFunction",
+      "xmlXPathNewBoolean",
+      "xmlXPathNewContext",
+      "xmlXPathNewCString",
+      "xmlXPathNewFloat",
+      "xmlXPathNewNodeSet",
+      "xmlXPathNewParserContext",
+      "xmlXPathNewString",
+      "xmlXPathNewValueTree",
+      "xmlXPathNextAncestor",
+      "xmlXPathNextAncestorOrSelf",
+      "xmlXPathNextAttribute",
+      "xmlXPathNextChild",
+      "xmlXPathNextDescendant",
+      "xmlXPathNextDescendantOrSelf",
+      "xmlXPathNextFollowing",
+      "xmlXPathNextFollowingSibling",
+      "xmlXPathNextNamespace",
+      "xmlXPathNextParent",
+      "xmlXPathNextPreceding",
+      "xmlXPathNextPrecedingSibling",
+      "xmlXPathNextSelf",
+      "xmlXPathNodeEval",
+      "xmlXPathNodeSetFreeNs",
+      "xmlXPathNormalizeFunction",
+      "xmlXPathNotEqualValues",
+      "xmlXPathNotFunction",
+      "xmlXPathNsLookup",
+      "xmlXPathNumberFunction",
+      "xmlXPathOrderDocElems",
+      "xmlXPathParseName",
+      "xmlXPathParseNCName",
+      "xmlXPathPopBoolean",
+      "xmlXPathPopNumber",
+      "xmlXPathPopString",
+      "xmlXPathPositionFunction",
+      "xmlXPathRegisterAllFunctions",
+      "xmlXPathRegisteredFuncsCleanup",
+      "xmlXPathRegisteredNsCleanup",
+      "xmlXPathRegisteredVariablesCleanup",
+      "xmlXPathRegisterNs",
+      "xmlXPathRoot",
+      "xmlXPathRoundFunction",
+      "xmlXPathStartsWithFunction",
+      "xmlXPathStringEvalNumber",
+      "xmlXPathStringFunction",
+      "xmlXPathStringLengthFunction",
+      "xmlXPathSubstringAfterFunction",
+      "xmlXPathSubstringBeforeFunction",
+      "xmlXPathSubstringFunction",
+      "xmlXPathSubValues",
+      "xmlXPathSumFunction",
+      "xmlXPathTranslateFunction",
+      "xmlXPathTrueFunction",
+      "xmlXPathValueFlipSign",
+      "xmlXPathVariableLookup",
+      "xmlXPathVariableLookupNS"
+    ],
+    "HTMLparser.c": [
+      "htmlAutoCloseTag",
+      "htmlCreateFileParserCtxt",
+      "htmlCreateMemoryParserCtxt",
+      "htmlCtxtReadDoc",
+      "htmlCtxtReadFd",
+      "htmlCtxtReadFile",
+      "htmlCtxtReadMemory",
+      "htmlCtxtReset",
+      "htmlCtxtUseOptions",
+      "htmlFreeParserCtxt",
+      "htmlHandleOmittedElem",
+      "htmlInitAutoClose",
+      "htmlIsAutoClosed",
+      "htmlIsScriptAttribute",
+      "htmlNewDoc",
+      "htmlNewDocNoDtD",
+      "htmlNewParserCtxt",
+      "htmlParseCharRef",
+      "htmlParseChunk",
+      "htmlParseDoc",
+      "htmlParseDocument",
+      "htmlParseElement",
+      "htmlParseFile",
+      "htmlReadDoc",
+      "htmlReadFd",
+      "htmlReadFile",
+      "htmlReadMemory"
+    ]
+  },
+  "python/libxml.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlNewIOInputStream"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCreatePushParserCtxt",
+      "xmlInitParser",
+      "xmlSAXUserParseFile"
+    ],
+    "xpath.c": [
+      "valuePop",
+      "valuePush",
+      "xmlXPathRegisterFuncLookup",
+      "xmlXPathRegisterVariableNS"
+    ],
+    "HTMLparser.c": [
+      "htmlCreatePushParserCtxt",
+      "htmlSAXParseFile"
+    ]
+  },
+  "python/types.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      "xmlXPathFreeObject",
+      "xmlXPathNewBoolean",
+      "xmlXPathNewFloat",
+      "xmlXPathNodeSetAdd",
+      "xmlXPathNodeSetCreate",
+      "xmlXPathNodeSetFreeNs",
+      "xmlXPathWrapNodeSet",
+      "xmlXPathWrapString"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testRelax.c": {
+    "parserInternals.c": [
+      "xmlLineNumbersDefault",
+      "xmlSubstituteEntitiesDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlReadFile"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testRegexp.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlreader.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlNewInputStream",
+      "xmlSwitchToEncoding"
+    ],
+    "parser.c": [
+      "inputPush",
+      "xmlCreatePushParserCtxt",
+      "xmlCtxtReset",
+      "xmlCtxtUseOptions",
+      "xmlParseChunk",
+      "xmlStopParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlunicode.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xchecks.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "nanohttp.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "runsuite.c": {
+    "parserInternals.c": [
+      "xmlNewStringInputStream",
+      "xmlPedanticParserDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlInitParser",
+      "xmlReadFile",
+      "xmlReadMemory"
+    ],
+    "xpath.c": [
+      "xmlXPathCompile",
+      "xmlXPathCompiledEval",
+      "xmlXPathContextSetCache",
+      "xmlXPathFreeCompExpr",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathNewContext",
+      "xmlXPathRegisterNs"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "nanoftp.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testchar.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlCurrentChar",
+      "xmlFreeParserCtxt",
+      "xmlNewInputStream",
+      "xmlNewParserCtxt"
+    ],
+    "parser.c": [
+      "inputPush",
+      "xmlCleanupParser",
+      "xmlCtxtReset",
+      "xmlReadMemory"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlmodule.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testThreads.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlInitParser",
+      "xmlParseFile"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "debugXML.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlParseDTD",
+      "xmlParseInNodeContext",
+      "xmlReadFile"
+    ],
+    "xpath.c": [
+      "xmlXPathDebugDumpObject",
+      "xmlXPathEval",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathNewContext",
+      "xmlXPathRegisterNs"
+    ],
+    "HTMLparser.c": [
+      "htmlParseFile"
+    ]
+  },
+  "xzlib.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "example/gjobread.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlKeepBlanksDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlParseFile"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xpointer.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      "valuePop",
+      "valuePush",
+      "xmlXPathCmpNodes",
+      "xmlXPathErr",
+      "xmlXPathEvalExpr",
+      "xmlXPathEvaluatePredicateResult",
+      "xmlXPathFreeObject",
+      "xmlXPathFreeParserContext",
+      "xmlXPathIdFunction",
+      "xmlXPathInit",
+      "xmlXPathNewContext",
+      "xmlXPathNewNodeSet",
+      "xmlXPathNewParserContext",
+      "xmlXPathNewString",
+      "xmlXPathObjectCopy",
+      "xmlXPathParseName",
+      "xmlXPathParseNCName",
+      "xmlXPathRegisterFunc",
+      "xmlXPathRegisterNs",
+      "xmlXPathRoot"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testReader.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlSubstituteEntitiesDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testapi.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlClearNodeInfoSeq",
+      "xmlClearParserCtxt",
+      "xmlCopyChar",
+      "xmlCopyCharMultiByte",
+      "xmlCurrentChar",
+      "xmlErrMemory",
+      "xmlFreeInputStream",
+      "xmlFreeParserCtxt",
+      "xmlInitNodeInfoSeq",
+      "xmlInitParserCtxt",
+      "xmlIsLetter",
+      "xmlKeepBlanksDefault",
+      "xmlLineNumbersDefault",
+      "xmlNewEntityInputStream",
+      "xmlNewInputFromFile",
+      "xmlNewInputStream",
+      "xmlNewIOInputStream",
+      "xmlNewParserCtxt",
+      "xmlNewStringInputStream",
+      "xmlNextChar",
+      "xmlParserAddNodeInfo",
+      "xmlParserFindNodeInfo",
+      "xmlParserFindNodeInfoIndex",
+      "xmlParserInputGrow",
+      "xmlParserInputRead",
+      "xmlParserInputShrink",
+      "xmlPedanticParserDefault",
+      "xmlStringCurrentChar",
+      "xmlSubstituteEntitiesDefault",
+      "xmlSwitchEncoding",
+      "xmlSwitchInputEncoding",
+      "xmlSwitchToEncoding"
+    ],
+    "parser.c": [
+      "inputPop",
+      "inputPush",
+      "namePop",
+      "namePush",
+      "nodePop",
+      "nodePush",
+      "xmlCheckLanguageID",
+      "xmlCleanupParser",
+      "xmlCreateDocParserCtxt",
+      "xmlCreateEntityParserCtxt",
+      "xmlCreateFileParserCtxt",
+      "xmlCreateMemoryParserCtxt",
+      "xmlCreatePushParserCtxt",
+      "xmlCreateURLParserCtxt",
+      "xmlCtxtReadDoc",
+      "xmlCtxtReadFile",
+      "xmlCtxtReadMemory",
+      "xmlCtxtReset",
+      "xmlCtxtResetPush",
+      "xmlCtxtUseOptions",
+      "xmlHasFeature",
+      "xmlInitParser",
+      "xmlIOParseDTD",
+      "xmlParseBalancedChunkMemory",
+      "xmlParseBalancedChunkMemoryRecover",
+      "xmlParseChunk",
+      "xmlParseCtxtExternalEntity",
+      "xmlParseDoc",
+      "xmlParseDocument",
+      "xmlParseDTD",
+      "xmlParseEntity",
+      "xmlParseExternalEntity",
+      "xmlParseExtParsedEnt",
+      "xmlParseFile",
+      "xmlParseInNodeContext",
+      "xmlParseMemory",
+      "xmlPopInput",
+      "xmlPushInput",
+      "xmlReadDoc",
+      "xmlReadFile",
+      "xmlReadMemory",
+      "xmlRecoverDoc",
+      "xmlRecoverFile",
+      "xmlRecoverMemory",
+      "xmlSAXParseDoc",
+      "xmlSAXParseDTD",
+      "xmlSAXParseEntity",
+      "xmlSAXParseFile",
+      "xmlSAXParseFileWithData",
+      "xmlSAXParseMemory",
+      "xmlSAXParseMemoryWithData",
+      "xmlSAXUserParseFile",
+      "xmlSAXUserParseMemory",
+      "xmlSetupParserForBuffer",
+      "xmlSplitQName",
+      "xmlStopParser",
+      "xmlStringDecodeEntities",
+      "xmlStringLenDecodeEntities"
+    ],
+    "xpath.c": [
+      "valuePop",
+      "valuePush",
+      "xmlXPathAddValues",
+      "xmlXPathBooleanFunction",
+      "xmlXPathCastBooleanToNumber",
+      "xmlXPathCastBooleanToString",
+      "xmlXPathCastNodeSetToBoolean",
+      "xmlXPathCastNodeSetToNumber",
+      "xmlXPathCastNodeSetToString",
+      "xmlXPathCastNodeToNumber",
+      "xmlXPathCastNodeToString",
+      "xmlXPathCastNumberToBoolean",
+      "xmlXPathCastNumberToString",
+      "xmlXPathCastStringToBoolean",
+      "xmlXPathCastStringToNumber",
+      "xmlXPathCastToBoolean",
+      "xmlXPathCastToNumber",
+      "xmlXPathCastToString",
+      "xmlXPathCeilingFunction",
+      "xmlXPathCmpNodes",
+      "xmlXPathCompareValues",
+      "xmlXPathCompiledEval",
+      "xmlXPathCompiledEvalToBoolean",
+      "xmlXPathConcatFunction",
+      "xmlXPathContainsFunction",
+      "xmlXPathContextSetCache",
+      "xmlXPathConvertBoolean",
+      "xmlXPathConvertNumber",
+      "xmlXPathConvertString",
+      "xmlXPathCountFunction",
+      "xmlXPathDebugDumpCompExpr",
+      "xmlXPathDebugDumpObject",
+      "xmlXPathDifference",
+      "xmlXPathDistinct",
+      "xmlXPathDistinctSorted",
+      "xmlXPathDivValues",
+      "xmlXPathEqualValues",
+      "xmlXPathErr",
+      "xmlXPatherror",
+      "xmlXPathEval",
+      "xmlXPathEvalExpr",
+      "xmlXPathEvalExpression",
+      "xmlXPathEvalPredicate",
+      "xmlXPathEvaluatePredicateResult",
+      "xmlXPathFalseFunction",
+      "xmlXPathFloorFunction",
+      "xmlXPathFreeNodeSet",
+      "xmlXPathFreeObject",
+      "xmlXPathHasSameNodes",
+      "xmlXPathIdFunction",
+      "xmlXPathInit",
+      "xmlXPathIntersection",
+      "xmlXPathIsInf",
+      "xmlXPathIsNaN",
+      "xmlXPathIsNodeType",
+      "xmlXPathLangFunction",
+      "xmlXPathLastFunction",
+      "xmlXPathLeading",
+      "xmlXPathLeadingSorted",
+      "xmlXPathLocalNameFunction",
+      "xmlXPathModValues",
+      "xmlXPathMultValues",
+      "xmlXPathNamespaceURIFunction",
+      "xmlXPathNewBoolean",
+      "xmlXPathNewCString",
+      "xmlXPathNewFloat",
+      "xmlXPathNewNodeSet",
+      "xmlXPathNewNodeSetList",
+      "xmlXPathNewString",
+      "xmlXPathNextAncestor",
+      "xmlXPathNextAncestorOrSelf",
+      "xmlXPathNextAttribute",
+      "xmlXPathNextChild",
+      "xmlXPathNextDescendant",
+      "xmlXPathNextDescendantOrSelf",
+      "xmlXPathNextFollowing",
+      "xmlXPathNextFollowingSibling",
+      "xmlXPathNextNamespace",
+      "xmlXPathNextParent",
+      "xmlXPathNextPreceding",
+      "xmlXPathNextPrecedingSibling",
+      "xmlXPathNextSelf",
+      "xmlXPathNodeEval",
+      "xmlXPathNodeLeading",
+      "xmlXPathNodeLeadingSorted",
+      "xmlXPathNodeSetAdd",
+      "xmlXPathNodeSetAddNs",
+      "xmlXPathNodeSetAddUnique",
+      "xmlXPathNodeSetContains",
+      "xmlXPathNodeSetCreate",
+      "xmlXPathNodeSetDel",
+      "xmlXPathNodeSetMerge",
+      "xmlXPathNodeSetRemove",
+      "xmlXPathNodeSetSort",
+      "xmlXPathNodeTrailing",
+      "xmlXPathNodeTrailingSorted",
+      "xmlXPathNormalizeFunction",
+      "xmlXPathNotEqualValues",
+      "xmlXPathNotFunction",
+      "xmlXPathNsLookup",
+      "xmlXPathNumberFunction",
+      "xmlXPathObjectCopy",
+      "xmlXPathOrderDocElems",
+      "xmlXPathParseName",
+      "xmlXPathParseNCName",
+      "xmlXPathPopBoolean",
+      "xmlXPathPopExternal",
+      "xmlXPathPopNodeSet",
+      "xmlXPathPopNumber",
+      "xmlXPathPopString",
+      "xmlXPathPositionFunction",
+      "xmlXPathRegisterAllFunctions",
+      "xmlXPathRegisteredFuncsCleanup",
+      "xmlXPathRegisteredNsCleanup",
+      "xmlXPathRegisteredVariablesCleanup",
+      "xmlXPathRegisterNs",
+      "xmlXPathRegisterVariable",
+      "xmlXPathRegisterVariableNS",
+      "xmlXPathRoot",
+      "xmlXPathRoundFunction",
+      "xmlXPathSetContextNode",
+      "xmlXPathStartsWithFunction",
+      "xmlXPathStringEvalNumber",
+      "xmlXPathStringFunction",
+      "xmlXPathStringLengthFunction",
+      "xmlXPathSubstringAfterFunction",
+      "xmlXPathSubstringBeforeFunction",
+      "xmlXPathSubstringFunction",
+      "xmlXPathSubValues",
+      "xmlXPathSumFunction",
+      "xmlXPathTrailing",
+      "xmlXPathTrailingSorted",
+      "xmlXPathTranslateFunction",
+      "xmlXPathTrueFunction",
+      "xmlXPathValueFlipSign",
+      "xmlXPathVariableLookup",
+      "xmlXPathVariableLookupNS",
+      "xmlXPathWrapCString",
+      "xmlXPathWrapExternal",
+      "xmlXPathWrapNodeSet"
+    ],
+    "HTMLparser.c": [
+      "htmlAttrAllowed",
+      "htmlAutoCloseTag",
+      "htmlCreateFileParserCtxt",
+      "htmlCreateMemoryParserCtxt",
+      "htmlCreatePushParserCtxt",
+      "htmlCtxtReadDoc",
+      "htmlCtxtReadFile",
+      "htmlCtxtReadMemory",
+      "htmlCtxtReset",
+      "htmlCtxtUseOptions",
+      "htmlElementAllowedHere",
+      "htmlElementStatusHere",
+      "htmlEncodeEntities",
+      "htmlEntityLookup",
+      "htmlEntityValueLookup",
+      "htmlFreeParserCtxt",
+      "htmlHandleOmittedElem",
+      "htmlInitAutoClose",
+      "htmlIsAutoClosed",
+      "htmlIsScriptAttribute",
+      "htmlNewDoc",
+      "htmlNewDocNoDtD",
+      "htmlNewParserCtxt",
+      "htmlNodeStatus",
+      "htmlParseCharRef",
+      "htmlParseChunk",
+      "htmlParseDoc",
+      "htmlParseDocument",
+      "htmlParseElement",
+      "htmlParseEntityRef",
+      "htmlParseFile",
+      "htmlReadDoc",
+      "htmlReadFile",
+      "htmlReadMemory",
+      "htmlSAXParseDoc",
+      "htmlSAXParseFile",
+      "UTF8ToHtml"
+    ]
+  },
+  "xlink.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlwriter.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt"
+    ],
+    "parser.c": [
+      "xmlCreatePushParserCtxt",
+      "xmlParseChunk"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      "htmlNewDocNoDtD"
+    ]
+  },
+  "testdso.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testURI.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/xpath2.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlInitParser",
+      "xmlParseFile"
+    ],
+    "xpath.c": [
+      "xmlXPathEvalExpression",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathNewContext"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/reader2.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/tree2.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/parse2.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlFreeParserCtxt",
+      "xmlNewParserCtxt"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCtxtReadFile"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/tree1.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlReadFile"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/testWriter.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/xpath1.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlInitParser",
+      "xmlParseFile"
+    ],
+    "xpath.c": [
+      "xmlXPathEvalExpression",
+      "xmlXPathFreeContext",
+      "xmlXPathFreeObject",
+      "xmlXPathNewContext",
+      "xmlXPathRegisterNs"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/reader3.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/reader1.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/parse1.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlReadFile"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/io2.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/parse4.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlFreeParserCtxt"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCreatePushParserCtxt",
+      "xmlParseChunk"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/io1.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlReadMemory"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/reader4.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "doc/examples/parse3.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlReadMemory"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlschemastypes.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlCheckLanguageID"
+    ],
+    "xpath.c": [
+      "xmlXPathIsNaN"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "HTMLtree.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlInitParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      "htmlTagLookup"
+    ]
+  },
+  "entities.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "uri.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testSchemas.c": {
+    "parserInternals.c": [
+      "xmlLineNumbersDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlReadFile"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "relaxng.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlReadFile",
+      "xmlReadMemory"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "c14n.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      "xmlXPathNodeSetContains"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "runxmlconf.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlNewInputFromFile",
+      "xmlNewParserCtxt",
+      "xmlPedanticParserDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCtxtReadFile",
+      "xmlInitParser",
+      "xmlReadFile"
+    ],
+    "xpath.c": [
+      "xmlXPathContextSetCache",
+      "xmlXPathFreeContext",
+      "xmlXPathNewContext"
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlsave.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      "xmlInitParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testSAX.c": {
+    "parserInternals.c": [
+      "xmlCheckVersion",
+      "xmlFreeParserCtxt",
+      "xmlSubstituteEntitiesDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCreatePushParserCtxt",
+      "xmlParseChunk",
+      "xmlSAXUserParseFile"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlstring.c": {
+    "parserInternals.c": [
+      "xmlErrMemory"
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "testrecurse.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlNewParserCtxt",
+      "xmlPedanticParserDefault"
+    ],
+    "parser.c": [
+      "xmlCleanupParser",
+      "xmlCtxtReadFile",
+      "xmlInitParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlschemas.c": {
+    "parserInternals.c": [
+      "xmlFreeParserCtxt",
+      "xmlNewIOInputStream",
+      "xmlNewParserCtxt"
+    ],
+    "parser.c": [
+      "inputPush",
+      "xmlCtxtReadFile",
+      "xmlCtxtReadMemory",
+      "xmlParseDocument",
+      "xmlStopParser"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "dict.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "valid.c": {
+    "parserInternals.c": [
+      "xmlStringCurrentChar"
+    ],
+    "parser.c": [
+      "xmlParseDTD"
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "variadic.c": {
+    "parserInternals.c": [
+      ""
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  },
+  "xmlregexp.c": {
+    "parserInternals.c": [
+      "xmlStringCurrentChar"
+    ],
+    "parser.c": [
+      ""
+    ],
+    "xpath.c": [
+      ""
+    ],
+    "HTMLparser.c": [
+      ""
+    ]
+  }
+}
