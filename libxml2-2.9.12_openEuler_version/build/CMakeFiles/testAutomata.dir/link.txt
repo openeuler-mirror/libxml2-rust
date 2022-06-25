@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/testAutomata.dir/testAutomata.c.o -o testAutomata  -Wl,-rpath,/home/code/libxml2-2.9.12/build libxml2.so.2.9.10 

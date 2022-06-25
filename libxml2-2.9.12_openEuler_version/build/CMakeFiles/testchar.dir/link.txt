@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/testchar.dir/testchar.c.o -o testchar  -Wl,-rpath,/home/code/libxml2-2.9.12/build libxml2.so.2.9.10 

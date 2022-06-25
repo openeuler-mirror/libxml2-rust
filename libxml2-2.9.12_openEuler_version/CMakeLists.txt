@@ -305,112 +305,112 @@ else()
 endif()
 
 set(
-		LIBXML2_HDRS
-		include/libxml/c14n.h
-		include/libxml/catalog.h
-		include/libxml/chvalid.h
-		include/libxml/debugXML.h
-		include/libxml/dict.h
-		include/libxml/DOCBparser.h
-		include/libxml/encoding.h
-		include/libxml/entities.h
-		include/libxml/globals.h
-		include/libxml/hash.h
-		include/libxml/HTMLparser.h
-		include/libxml/HTMLtree.h
-		include/libxml/list.h
-		include/libxml/nanoftp.h
-		include/libxml/nanohttp.h
-		include/libxml/parser.h
-		include/libxml/parserInternals.h
-		include/libxml/pattern.h
-		include/libxml/relaxng.h
-		include/libxml/SAX.h
-		include/libxml/SAX2.h
-		include/libxml/schemasInternals.h
-		include/libxml/schematron.h
-		include/libxml/threads.h
-		include/libxml/tree.h
-		include/libxml/uri.h
-		include/libxml/valid.h
-		include/libxml/xinclude.h
-		include/libxml/xlink.h
-		include/libxml/xmlIO.h
-		include/libxml/xmlautomata.h
-		include/libxml/xmlerror.h
-		include/libxml/xmlexports.h
-		include/libxml/xmlmemory.h
-		include/libxml/xmlmodule.h
-		include/libxml/xmlreader.h
-		include/libxml/xmlregexp.h
-		include/libxml/xmlsave.h
-		include/libxml/xmlschemas.h
-		include/libxml/xmlschemastypes.h
-		include/libxml/xmlstring.h
-		include/libxml/xmlunicode.h
-		include/libxml/xmlwriter.h
-		include/libxml/xpath.h
-		include/libxml/xpathInternals.h
-		include/libxml/xpointer.h
+	LIBXML2_HDRS
+	include/libxml/c14n.h
+	include/libxml/catalog.h
+	include/libxml/chvalid.h
+	include/libxml/debugXML.h
+	include/libxml/dict.h
+	include/libxml/DOCBparser.h
+	include/libxml/encoding.h
+	include/libxml/entities.h
+	include/libxml/globals.h
+	include/libxml/hash.h
+	include/libxml/HTMLparser.h
+	include/libxml/HTMLtree.h
+	include/libxml/list.h
+	include/libxml/nanoftp.h
+	include/libxml/nanohttp.h
+	include/libxml/parser.h
+	include/libxml/parserInternals.h
+	include/libxml/pattern.h
+	include/libxml/relaxng.h
+	include/libxml/SAX.h
+	include/libxml/SAX2.h
+	include/libxml/schemasInternals.h
+	include/libxml/schematron.h
+	include/libxml/threads.h
+	include/libxml/tree.h
+	include/libxml/uri.h
+	include/libxml/valid.h
+	include/libxml/xinclude.h
+	include/libxml/xlink.h
+	include/libxml/xmlIO.h
+	include/libxml/xmlautomata.h
+	include/libxml/xmlerror.h
+	include/libxml/xmlexports.h
+	include/libxml/xmlmemory.h
+	include/libxml/xmlmodule.h
+	include/libxml/xmlreader.h
+	include/libxml/xmlregexp.h
+	include/libxml/xmlsave.h
+	include/libxml/xmlschemas.h
+	include/libxml/xmlschemastypes.h
+	include/libxml/xmlstring.h
+	include/libxml/xmlunicode.h
+	include/libxml/xmlwriter.h
+	include/libxml/xpath.h
+	include/libxml/xpathInternals.h
+	include/libxml/xpointer.h
 )
 
 set(
-		LIBXML2_SRCS
-		buf.c
-		c14n.c
-		catalog.c
-		chvalid.c
-		debugXML.c
-		dict.c
-		encoding.c
-		entities.c
-		error.c
-		globals.c
-		hash.c
-		HTMLparser.c
-		HTMLtree.c
-		legacy.c
-		list.c
-		nanoftp.c
-		nanohttp.c
-		parser.c
-		parserInternals.c
-		pattern.c
-		relaxng.c
-		SAX.c
-		SAX2.c
-		schematron.c
-		threads.c
-		tree.c
-		uri.c
-		valid.c
-		xinclude.c
-		xlink.c
-		xmlIO.c
-		xmlmemory.c
-		xmlmodule.c
-		xmlreader.c
-		xmlregexp.c
-		xmlsave.c
-		xmlschemas.c
-		xmlschemastypes.c
-		xmlstring.c
-		xmlunicode.c
-		xmlwriter.c
-		xpath.c
-		xpointer.c
-		xzlib.c
+	LIBXML2_SRCS
+	buf.c
+	c14n.c
+	catalog.c
+	chvalid.c
+	debugXML.c
+	dict.c
+	encoding.c
+	entities.c
+	error.c
+	globals.c
+	hash.c
+	HTMLparser.c
+	HTMLtree.c
+	legacy.c
+	list.c
+	nanoftp.c
+	nanohttp.c
+	parser.c
+	parserInternals.c
+	pattern.c
+	relaxng.c
+	SAX.c
+	SAX2.c
+	schematron.c
+	threads.c
+	tree.c
+	uri.c
+	valid.c
+	xinclude.c
+	xlink.c
+	xmlIO.c
+	xmlmemory.c
+	xmlmodule.c
+	xmlreader.c
+	xmlregexp.c
+	xmlsave.c
+	xmlschemas.c
+	xmlschemastypes.c
+	xmlstring.c
+	xmlunicode.c
+	xmlwriter.c
+	xpath.c
+	xpointer.c
+	xzlib.c
 )
 
 if(WIN32)
 	list(APPEND LIBXML2_SRCS win32/libxml2.rc)
 	file(
-			WRITE
-			${CMAKE_CURRENT_BINARY_DIR}/rcVersion.h
-			"#define LIBXML_MAJOR_VERSION ${LIBXML_MAJOR_VERSION}\n"
-			"#define LIBXML_MINOR_VERSION ${LIBXML_MINOR_VERSION}\n"
-			"#define LIBXML_MICRO_VERSION ${LIBXML_MICRO_VERSION}\n"
-			"#define LIBXML_DOTTED_VERSION \"${VERSION}\"\n"
+		WRITE
+		${CMAKE_CURRENT_BINARY_DIR}/rcVersion.h
+		"#define LIBXML_MAJOR_VERSION ${LIBXML_MAJOR_VERSION}\n"
+		"#define LIBXML_MINOR_VERSION ${LIBXML_MINOR_VERSION}\n"
+		"#define LIBXML_MICRO_VERSION ${LIBXML_MICRO_VERSION}\n"
+		"#define LIBXML_DOTTED_VERSION \"${VERSION}\"\n"
 	)
 endif()
 
@@ -444,16 +444,16 @@ endif()
 
 if(STEP STREQUAL "link")
 
-	target_link_libraries(LibXml2 PRIVATE rust_project)
+target_link_libraries(LibXml2 PRIVATE rust_project)
 
 endif()
 
 target_include_directories(
-		LibXml2
-		PUBLIC
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-		$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/libxml2>
+	LibXml2
+	PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/libxml2>
 )
 
 if(HAVE_DLOPEN)
@@ -508,30 +508,30 @@ if(LIBXML2_WITH_ZLIB)
 endif()
 
 set_target_properties(
-		LibXml2
-		PROPERTIES
-		IMPORT_PREFIX lib
-		OUTPUT_NAME xml2
-		POSITION_INDEPENDENT_CODE ON
-		PREFIX lib
-		VERSION ${PROJECT_VERSION}
+	LibXml2
+	PROPERTIES
+	IMPORT_PREFIX lib
+	OUTPUT_NAME xml2
+	POSITION_INDEPENDENT_CODE ON
+	PREFIX lib
+	VERSION ${PROJECT_VERSION}
 )
 
 if(MSVC)
 	if(BUILD_SHARED_LIBS)
 		set_target_properties(
-				LibXml2
-				PROPERTIES
-				DEBUG_POSTFIX d
+			LibXml2
+			PROPERTIES
+			DEBUG_POSTFIX d
 		)
 	else()
 		set_target_properties(
-				LibXml2
-				PROPERTIES
-				DEBUG_POSTFIX sd
-				MINSIZEREL_POSTFIX s
-				RELEASE_POSTFIX s
-				RELWITHDEBINFO_POSTFIX s
+			LibXml2
+			PROPERTIES
+			DEBUG_POSTFIX sd
+			MINSIZEREL_POSTFIX s
+			RELEASE_POSTFIX s
+			RELWITHDEBINFO_POSTFIX s
 		)
 	endif()
 endif()
@@ -539,11 +539,11 @@ endif()
 install(FILES ${LIBXML2_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 
 install(
-		TARGETS	LibXml2
-		EXPORT LibXml2
-		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
-		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_COMPONENT development
-		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+	TARGETS	LibXml2
+	EXPORT LibXml2
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_COMPONENT development
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
 )
 
 if(MSVC AND BUILD_SHARED_LIBS)
@@ -552,128 +552,128 @@ endif()
 
 if(STEP STREQUAL "link")
 
-	if(LIBXML2_WITH_PROGRAMS)
-		set(
-				PROGRAMS
-				xmlcatalog
-				xmllint
-		)
-		foreach(PROGRAM ${PROGRAMS})
-			add_executable(${PROGRAM} ${PROGRAM}.c)
-			target_link_libraries(${PROGRAM} LibXml2)
-			if(HAVE_LIBHISTORY)
-				target_link_libraries(${PROGRAM} history)
-			endif()
-			if(HAVE_LIBREADLINE)
-				target_link_libraries(${PROGRAM} readline)
-			endif()
-			install(TARGETS	${PROGRAM} EXPORT LibXml2 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT programs)
-		endforeach()
-	endif()
+if(LIBXML2_WITH_PROGRAMS)
+	set(
+		PROGRAMS
+		xmlcatalog
+		xmllint
+	)
+	foreach(PROGRAM ${PROGRAMS})
+		add_executable(${PROGRAM} ${PROGRAM}.c)
+		target_link_libraries(${PROGRAM} LibXml2)
+		if(HAVE_LIBHISTORY)
+			target_link_libraries(${PROGRAM} history)
+		endif()
+		if(HAVE_LIBREADLINE)
+			target_link_libraries(${PROGRAM} readline)
+		endif()
+		install(TARGETS	${PROGRAM} EXPORT LibXml2 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT programs)
+	endforeach()
+endif()
 
-	if(LIBXML2_WITH_TESTS)
-		enable_testing()
+if(LIBXML2_WITH_TESTS)
+	enable_testing()
+	set(
+		TESTS
+		runxmlconf
+		runsuite
+		testapi
+		testAutomata
+		testC14N
+		testchar
+		testdict
+		testHTML
+		testModule
+		testlimits
+		testReader
+		testrecurse
+		testRegexp
+		testRelax
+		testSAX
+		testSchemas
+		testURI
+		testXPath
+	)
+	foreach(TEST ${TESTS})
+		add_executable(${TEST} ${TEST}.c)
+		target_link_libraries(${TEST} LibXml2)
+	endforeach()
+	if(EXISTS ${LIBXML2_XMLCONF_WORKING_DIR}/xmlconf/xmlconf.xml)
+		add_test(NAME runxmlconf COMMAND runxmlconf WORKING_DIRECTORY ${LIBXML2_XMLCONF_WORKING_DIR})
+	endif()
+	if(NOT WIN32)
+		add_test(NAME testapi COMMAND testapi)
+	endif()
+	add_test(NAME testchar COMMAND testchar)
+	add_test(NAME testdict COMMAND testdict)
+	add_test(NAME testrecurse COMMAND testrecurse WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+	if(Threads_FOUND)
 		set(
-				TESTS
-				runxmlconf
-				runsuite
-				testapi
-				testAutomata
-				testC14N
-				testchar
-				testdict
-				testHTML
-				testModule
-				testlimits
-				testReader
-				testrecurse
-				testRegexp
-				testRelax
-				testSAX
-				testSchemas
-				testURI
-				testXPath
+			TESTS_THREADS
+			runtest
+			testThreads
 		)
-		foreach(TEST ${TESTS})
+		foreach(TEST ${TESTS_THREADS})
 			add_executable(${TEST} ${TEST}.c)
-			target_link_libraries(${TEST} LibXml2)
+			if(WIN32)
+				target_compile_definitions(${TEST} PRIVATE HAVE_WIN32_THREADS)
+			endif()
+			target_link_libraries(${TEST} LibXml2 Threads::Threads)
 		endforeach()
-		if(EXISTS ${LIBXML2_XMLCONF_WORKING_DIR}/xmlconf/xmlconf.xml)
-			add_test(NAME runxmlconf COMMAND runxmlconf WORKING_DIRECTORY ${LIBXML2_XMLCONF_WORKING_DIR})
-		endif()
-		if(NOT WIN32)
-			add_test(NAME testapi COMMAND testapi)
-		endif()
-		add_test(NAME testchar COMMAND testchar)
-		add_test(NAME testdict COMMAND testdict)
-		add_test(NAME testrecurse COMMAND testrecurse WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-		if(Threads_FOUND)
-			set(
-					TESTS_THREADS
-					runtest
-					testThreads
-			)
-			foreach(TEST ${TESTS_THREADS})
-				add_executable(${TEST} ${TEST}.c)
-				if(WIN32)
-					target_compile_definitions(${TEST} PRIVATE HAVE_WIN32_THREADS)
-				endif()
-				target_link_libraries(${TEST} LibXml2 Threads::Threads)
-			endforeach()
-			add_test(NAME runtest COMMAND runtest --out ${CMAKE_CURRENT_BINARY_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-			add_test(NAME testThreads COMMAND testThreads WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-		endif()
+		add_test(NAME runtest COMMAND runtest --out ${CMAKE_CURRENT_BINARY_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+		add_test(NAME testThreads COMMAND testThreads WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 	endif()
+endif()
 
-	if(LIBXML2_WITH_PYTHON)
-		execute_process(
-				COMMAND
-				${Python_EXECUTABLE}
-				${CMAKE_CURRENT_SOURCE_DIR}/python/generator.py
-				${CMAKE_CURRENT_SOURCE_DIR}/doc/libxml2-api.xml
-				${CMAKE_CURRENT_SOURCE_DIR}/python/libxml2-python-api.xml
-				WORKING_DIRECTORY
-				${CMAKE_CURRENT_BINARY_DIR}
-		)
-		file(READ python/libxml.py LIBXML_PY)
-		file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in "${LIBXML_PY}")
-		file(READ ${CMAKE_CURRENT_BINARY_DIR}/libxml2class.py LIBXML2CLASS_PY)
-		file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in "${LIBXML2CLASS_PY}")
-		configure_file(${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in libxml2.py COPYONLY)
-		add_library(
-				LibXml2Mod
-				libxml2-py.c
-				libxml2-py.h
-				python/libxml.c
-				python/libxml_wrap.h
-				python/types.c
-		)
-		target_include_directories(
-				LibXml2Mod
-				PUBLIC
-				$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/python>
-		)
-		target_link_libraries(LibXml2Mod LibXml2 Python::Python)
-		set_target_properties(
-				LibXml2Mod
-				PROPERTIES
-				IMPORT_PREFIX lib
-				OUTPUT_NAME xml2mod
-				PREFIX lib
-				VERSION ${PROJECT_VERSION}
-		)
-		install(
-				TARGETS	LibXml2Mod
-				ARCHIVE DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT development
-				LIBRARY DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime NAMELINK_COMPONENT development
-				RUNTIME DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime
-		)
-		if(MSVC AND BUILD_SHARED_LIBS)
-			install(FILES $<TARGET_PDB_FILE:LibXml2Mod> DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
-		endif()
-		install(FILES python/drv_libxml2.py DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime)
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime)
+if(LIBXML2_WITH_PYTHON)
+	execute_process(
+		COMMAND
+		${Python_EXECUTABLE}
+		${CMAKE_CURRENT_SOURCE_DIR}/python/generator.py
+		${CMAKE_CURRENT_SOURCE_DIR}/doc/libxml2-api.xml
+		${CMAKE_CURRENT_SOURCE_DIR}/python/libxml2-python-api.xml
+		WORKING_DIRECTORY
+		${CMAKE_CURRENT_BINARY_DIR}
+	)
+	file(READ python/libxml.py LIBXML_PY)
+	file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in "${LIBXML_PY}")
+	file(READ ${CMAKE_CURRENT_BINARY_DIR}/libxml2class.py LIBXML2CLASS_PY)
+	file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in "${LIBXML2CLASS_PY}")
+	configure_file(${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in libxml2.py COPYONLY)
+	add_library(
+		LibXml2Mod
+		libxml2-py.c
+		libxml2-py.h
+		python/libxml.c
+		python/libxml_wrap.h
+		python/types.c
+	)
+	target_include_directories(
+		LibXml2Mod
+		PUBLIC
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/python>
+	)
+	target_link_libraries(LibXml2Mod LibXml2 Python::Python)
+	set_target_properties(
+		LibXml2Mod
+		PROPERTIES
+		IMPORT_PREFIX lib
+		OUTPUT_NAME xml2mod
+		PREFIX lib
+		VERSION ${PROJECT_VERSION}
+	)
+	install(
+		TARGETS	LibXml2Mod
+		ARCHIVE DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT development
+		LIBRARY DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime NAMELINK_COMPONENT development
+		RUNTIME DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime
+	)
+	if(MSVC AND BUILD_SHARED_LIBS)
+		install(FILES $<TARGET_PDB_FILE:LibXml2Mod> DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
 	endif()
+	install(FILES python/drv_libxml2.py DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime)
+endif()
 
 endif()
 
@@ -683,34 +683,34 @@ install(FILES doc/xmllint.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 COMPONENT d
 install(DIRECTORY doc/ DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/libxml2 COMPONENT documentation PATTERN Makefile.* EXCLUDE)
 
 configure_package_config_file(
-		libxml2-config.cmake.cmake.in libxml2-config.cmake
-		INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
+	libxml2-config.cmake.cmake.in libxml2-config.cmake
+	INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
 )
 
 install(
-		FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml2-config.cmake
-		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
-		COMPONENT development
+	FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml2-config.cmake
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
+	COMPONENT development
 )
 
 write_basic_package_version_file(
-		${CMAKE_CURRENT_BINARY_DIR}/libxml2-config-version.cmake
-		VERSION ${PROJECT_VERSION}
-		COMPATIBILITY ExactVersion
+	${CMAKE_CURRENT_BINARY_DIR}/libxml2-config-version.cmake
+	VERSION ${PROJECT_VERSION}
+	COMPATIBILITY ExactVersion
 )
 
 install(
-		FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml2-config-version.cmake
-		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
-		COMPONENT development
+	FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml2-config-version.cmake
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
+	COMPONENT development
 )
 
 install(
-		EXPORT LibXml2
-		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
-		NAMESPACE LibXml2::
-		FILE libxml2-export.cmake
-		COMPONENT development
+	EXPORT LibXml2
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
+	NAMESPACE LibXml2::
+	FILE libxml2-export.cmake
+	COMPONENT development
 )
 
 configure_file(include/libxml/xmlversion.h.in libxml/xmlversion.h)

@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/testReader.dir/testReader.c.o -o testReader  -Wl,-rpath,/home/code/libxml2-2.9.12/build libxml2.so.2.9.10 

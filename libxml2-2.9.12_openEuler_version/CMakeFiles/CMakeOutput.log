@@ -1,0 +1,1458 @@
+The system is: Linux - 5.10.0-60.18.0.50.oe2203.x86_64 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/cc 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/3.22.0/CompilerIdC/a.out"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfa8/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfa8.dir/build.make CMakeFiles/cmTC_dbfa8.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc   -v -o CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+Using built-in specs.
+COLLECT_GCC=/usr/bin/cc
+Target: x86_64-linux-gnu
+Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,fortran,lto --enable-plugin --enable-initfini-array --disable-libgcj --without-isl --without-cloog --enable-gnu-indirect-function --build=x86_64-linux-gnu --with-stage1-ldflags=' -Wl,-z,relro,-z,now' --with-boot-ldflags=' -Wl,-z,relro,-z,now' --disable-bootstrap --with-tune=generic --with-arch_32=x86-64 --disable-multilib
+Thread model: posix
+Supported LTO compression algorithms: zlib
+gcc version 10.3.1 (GCC) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ /usr/libexec/gcc/x86_64-linux-gnu/10.3.1/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o -version -o /tmp/ccx3yli5.s
+GNU C17 (GCC) version 10.3.1 (x86_64-linux-gnu)
+	compiled by GNU C version 10.3.1, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.0, isl version none
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/10.3.1/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../x86_64-linux-gnu/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/lib/gcc/x86_64-linux-gnu/10.3.1/include
+ /usr/local/include
+ /usr/include
+End of search list.
+GNU C17 (GCC) version 10.3.1 (x86_64-linux-gnu)
+	compiled by GNU C version 10.3.1, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.0, isl version none
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: 1f29c3f625fd6ced11540f5fc5da4b13
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ as -v --64 -o CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o /tmp/ccx3yli5.s
+GNU assembler version 2.37 (x86_64-openEuler-linux) using BFD version (GNU Binutils) 2.37
+COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/:/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/:/usr/lib/gcc/x86_64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/10.3.1/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+Linking C executable cmTC_dbfa8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfa8.dir/link.txt --verbose=1
+/usr/bin/cc  -v CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o -o cmTC_dbfa8 
+Using built-in specs.
+COLLECT_GCC=/usr/bin/cc
+COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/lto-wrapper
+Target: x86_64-linux-gnu
+Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,fortran,lto --enable-plugin --enable-initfini-array --disable-libgcj --without-isl --without-cloog --enable-gnu-indirect-function --build=x86_64-linux-gnu --with-stage1-ldflags=' -Wl,-z,relro,-z,now' --with-boot-ldflags=' -Wl,-z,relro,-z,now' --disable-bootstrap --with-tune=generic --with-arch_32=x86-64 --disable-multilib
+Thread model: posix
+Supported LTO compression algorithms: zlib
+gcc version 10.3.1 (GCC) 
+COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/:/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/:/usr/lib/gcc/x86_64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/10.3.1/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_dbfa8' '-mtune=generic' '-march=x86-64'
+ /usr/libexec/gcc/x86_64-linux-gnu/10.3.1/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/10.3.1/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccCmaVHX.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_dbfa8 /usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crti.o /usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/10.3.1 -L/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../.. CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtend.o /usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_dbfa8' '-mtune=generic' '-march=x86-64'
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/include]
+    add: [/usr/local/include]
+    add: [/usr/include]
+  end of search list found
+  collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/include]
+  collapse include dir [/usr/local/include] ==> [/usr/local/include]
+  collapse include dir [/usr/include] ==> [/usr/include]
+  implicit include dirs: [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/include;/usr/local/include;/usr/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfa8/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfa8.dir/build.make CMakeFiles/cmTC_dbfa8.dir/build]
+  ignore line: [gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/cc]
+  ignore line: [Target: x86_64-linux-gnu]
+  ignore line: [Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,fortran,lto --enable-plugin --enable-initfini-array --disable-libgcj --without-isl --without-cloog --enable-gnu-indirect-function --build=x86_64-linux-gnu --with-stage1-ldflags=' -Wl,-z,relro,-z,now' --with-boot-ldflags=' -Wl,-z,relro,-z,now' --disable-bootstrap --with-tune=generic --with-arch_32=x86-64 --disable-multilib]
+  ignore line: [Thread model: posix]
+  ignore line: [Supported LTO compression algorithms: zlib]
+  ignore line: [gcc version 10.3.1 (GCC) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /usr/libexec/gcc/x86_64-linux-gnu/10.3.1/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o -version -o /tmp/ccx3yli5.s]
+  ignore line: [GNU C17 (GCC) version 10.3.1 (x86_64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 10.3.1  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.0  isl version none]
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/10.3.1/include-fixed"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../x86_64-linux-gnu/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/10.3.1/include]
+  ignore line: [ /usr/local/include]
+  ignore line: [ /usr/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C17 (GCC) version 10.3.1 (x86_64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 10.3.1  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.0  isl version none]
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: 1f29c3f625fd6ced11540f5fc5da4b13]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o /tmp/ccx3yli5.s]
+  ignore line: [GNU assembler version 2.37 (x86_64-openEuler-linux) using BFD version (GNU Binutils) 2.37]
+  ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/:/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/:/usr/lib/gcc/x86_64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/10.3.1/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [Linking C executable cmTC_dbfa8]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfa8.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc  -v CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o -o cmTC_dbfa8 ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/cc]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/lto-wrapper]
+  ignore line: [Target: x86_64-linux-gnu]
+  ignore line: [Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,fortran,lto --enable-plugin --enable-initfini-array --disable-libgcj --without-isl --without-cloog --enable-gnu-indirect-function --build=x86_64-linux-gnu --with-stage1-ldflags=' -Wl,-z,relro,-z,now' --with-boot-ldflags=' -Wl,-z,relro,-z,now' --disable-bootstrap --with-tune=generic --with-arch_32=x86-64 --disable-multilib]
+  ignore line: [Thread model: posix]
+  ignore line: [Supported LTO compression algorithms: zlib]
+  ignore line: [gcc version 10.3.1 (GCC) ]
+  ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/:/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/:/usr/lib/gcc/x86_64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/10.3.1/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_dbfa8' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/libexec/gcc/x86_64-linux-gnu/10.3.1/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/10.3.1/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccCmaVHX.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_dbfa8 /usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crti.o /usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/10.3.1 -L/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../.. CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtend.o /usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crtn.o]
+    arg [/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/10.3.1/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccCmaVHX.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_dbfa8] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crt1.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crti.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtbegin.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtbegin.o]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/10.3.1] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/10.3.1]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../..]
+    arg [CMakeFiles/cmTC_dbfa8.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--push-state] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--pop-state] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--push-state] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--pop-state] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtend.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtend.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crtn.o]
+  collapse obj [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crt1.o] ==> [/usr/lib64/crt1.o]
+  collapse obj [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crti.o] ==> [/usr/lib64/crti.o]
+  collapse obj [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64/crtn.o] ==> [/usr/lib64/crtn.o]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/10.3.1] ==> [/usr/lib/gcc/x86_64-linux-gnu/10.3.1]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../../../lib64] ==> [/usr/lib64]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/10.3.1/../../..] ==> [/usr/lib]
+  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+  implicit objs: [/usr/lib64/crt1.o;/usr/lib64/crti.o;/usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtbegin.o;/usr/lib/gcc/x86_64-linux-gnu/10.3.1/crtend.o;/usr/lib64/crtn.o]
+  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/10.3.1;/usr/lib64;/lib64;/usr/lib]
+  implicit fwks: []
+
+
+Performing C SOURCE FILE Test Iconv_IS_BUILT_IN succeeded with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfab/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfab.dir/build.make CMakeFiles/cmTC_dbfab.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfab.dir/src.c.o
+/usr/bin/cc -DIconv_IS_BUILT_IN   -o CMakeFiles/cmTC_dbfab.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbfab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfab.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfab.dir/src.c.o -o cmTC_dbfab 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+      #include <stddef.h>
+      #include <iconv.h>
+      int main() {
+        char *a, *b;
+        size_t i, j;
+        iconv_t ic;
+        ic = iconv_open("to", "from");
+        iconv(ic, &a, &i, &b, &j);
+        iconv_close(ic);
+      }
+      
+Determining if the function lzma_auto_decoder exists in the /usr/lib64/liblzma.so passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfab/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfab.dir/build.make CMakeFiles/cmTC_dbfab.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder -o CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfab.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o -o cmTC_dbfab  /usr/lib64/liblzma.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function lzma_easy_encoder exists in the /usr/lib64/liblzma.so passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfab/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfab.dir/build.make CMakeFiles/cmTC_dbfab.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder -o CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfab.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o -o cmTC_dbfab  /usr/lib64/liblzma.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function lzma_lzma_preset exists in the /usr/lib64/liblzma.so passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfab/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfab.dir/build.make CMakeFiles/cmTC_dbfab.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset -o CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfab.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset CMakeFiles/cmTC_dbfab.dir/CheckFunctionExists.c.o -o cmTC_dbfab  /usr/lib64/liblzma.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files unistd.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfab/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfab.dir/build.make CMakeFiles/cmTC_dbfab.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfab.dir/HAVE_UNISTD_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfab.dir/HAVE_UNISTD_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_UNISTD_H.c
+Linking C executable cmTC_dbfab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfab.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfab.dir/HAVE_UNISTD_H.c.o -o cmTC_dbfab 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the F_GETFL exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfab/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfab.dir/build.make CMakeFiles/cmTC_dbfab.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfab.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfab.dir/CheckSymbolExists.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_dbfab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfab.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfab.dir/CheckSymbolExists.c.o -o cmTC_dbfab 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+File /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef F_GETFL
+  return ((int*)(&F_GETFL))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfab/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfab.dir/build.make CMakeFiles/cmTC_dbfab.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfab.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfab.dir/CheckIncludeFile.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_dbfab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfab.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfab.dir/CheckIncludeFile.c.o -o cmTC_dbfab 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD succeeded with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfab/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfab.dir/build.make CMakeFiles/cmTC_dbfab.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfab.dir/src.c.o
+/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_dbfab.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbfab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfab.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfab.dir/src.c.o -o cmTC_dbfab 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Performing C SOURCE FILE Test ATTRIBUTE_DESTRUCTOR succeeded with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/src.c.o
+/usr/bin/cc -DATTRIBUTE_DESTRUCTOR   -o CMakeFiles/cmTC_dbfaa.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/src.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		void __attribute__((destructor))
+		f(void) {}
+		int main(void) { return 0; }
+	
+Performing C SOURCE FILE Test GETHOSTBYNAME_ARG_CAST_CONST succeeded with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/src.c.o
+/usr/bin/cc -DGETHOSTBYNAME_ARG_CAST_CONST   -o CMakeFiles/cmTC_dbfaa.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/src.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		#include <netdb.h>
+		int main() { (void) gethostbyname((const char*) ""); return 0; }
+	
+Determining if files arpa/inet.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/HAVE_ARPA_INET_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaa.dir/HAVE_ARPA_INET_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_ARPA_INET_H.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/HAVE_ARPA_INET_H.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files arpa/nameser.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/HAVE_ARPA_NAMESER_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaa.dir/HAVE_ARPA_NAMESER_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_ARPA_NAMESER_H.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/HAVE_ARPA_NAMESER_H.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test HAVE_SS_FAMILY succeeded with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/src.c.o
+/usr/bin/cc -DHAVE_SS_FAMILY   -o CMakeFiles/cmTC_dbfaa.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/src.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+#include <sys/socket.h>
+#include <sys/types.h>
+
+int main()
+{
+  (void)sizeof(((struct sockaddr_storage *)0)->ss_family);
+  return 0;
+}
+
+Determining if files ctype.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/HAVE_CTYPE_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaa.dir/HAVE_CTYPE_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_CTYPE_H.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/HAVE_CTYPE_H.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files dirent.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/HAVE_DIRENT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaa.dir/HAVE_DIRENT_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_DIRENT_H.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/HAVE_DIRENT_H.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files dlfcn.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/HAVE_DLFCN_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaa.dir/HAVE_DLFCN_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_DLFCN_H.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/HAVE_DLFCN_H.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function dlopen exists in the dl passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=dlopen -o CMakeFiles/cmTC_dbfaa.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=dlopen CMakeFiles/cmTC_dbfaa.dir/CheckFunctionExists.c.o -o cmTC_dbfaa  -ldl /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files errno.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaa.dir/HAVE_ERRNO_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaa.dir/HAVE_ERRNO_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_ERRNO_H.c
+Linking C executable cmTC_dbfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaa.dir/HAVE_ERRNO_H.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files fcntl.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/HAVE_FCNTL_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfad.dir/HAVE_FCNTL_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_FCNTL_H.c
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfad.dir/HAVE_FCNTL_H.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function finite exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=finite -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘finite’; expected ‘int(double)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=finite CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files float.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/HAVE_FLOAT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfad.dir/HAVE_FLOAT_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_FLOAT_H.c
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfad.dir/HAVE_FLOAT_H.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function fprintf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fprintf -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fprintf CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function ftime exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=ftime -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=ftime CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function getaddrinfo exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=getaddrinfo -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=getaddrinfo CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function gettimeofday exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gettimeofday -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=gettimeofday CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files inttypes.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/HAVE_INTTYPES_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfad.dir/HAVE_INTTYPES_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_INTTYPES_H.c
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfad.dir/HAVE_INTTYPES_H.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function isascii exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isascii -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘isascii’; expected ‘int(int)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isascii CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function isinf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isinf -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘isinf’; expected ‘int()’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘isinf’ is declared in header ‘<math.h>’
+  +++ |+#include <math.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isinf CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function isnan exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isnan -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘isnan’; expected ‘int()’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘isnan’ is declared in header ‘<math.h>’
+  +++ |+#include <math.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isnan CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function lzma_code exists in the lzma passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_code -o CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_code CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -o cmTC_dbfac  -llzma /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function pthread_join exists in the pthread passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_join -o CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_join CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -o cmTC_dbfac  -lpthread /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function gzread exists in the z passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gzread -o CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=gzread CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -o cmTC_dbfac  -lz /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files limits.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/HAVE_LIMITS_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfac.dir/HAVE_LIMITS_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_LIMITS_H.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfac.dir/HAVE_LIMITS_H.c.o -o cmTC_dbfac  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function localtime exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=localtime -o CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=localtime CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -o cmTC_dbfac  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files lzma.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/HAVE_LZMA_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfac.dir/HAVE_LZMA_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_LZMA_H.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfac.dir/HAVE_LZMA_H.c.o -o cmTC_dbfac  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files malloc.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/HAVE_MALLOC_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfac.dir/HAVE_MALLOC_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_MALLOC_H.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfac.dir/HAVE_MALLOC_H.c.o -o cmTC_dbfac  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files math.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/HAVE_MATH_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfac.dir/HAVE_MATH_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_MATH_H.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfac.dir/HAVE_MATH_H.c.o -o cmTC_dbfac  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files memory.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfac.dir/HAVE_MEMORY_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfac.dir/HAVE_MEMORY_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_MEMORY_H.c
+Linking C executable cmTC_dbfac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfac.dir/HAVE_MEMORY_H.c.o -o cmTC_dbfac  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function mmap exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=mmap -o CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=mmap CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function munmap exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=munmap -o CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=munmap CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files netdb.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/HAVE_NETDB_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaf.dir/HAVE_NETDB_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_NETDB_H.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaf.dir/HAVE_NETDB_H.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files netinet/in.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/HAVE_NETINET_IN_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaf.dir/HAVE_NETINET_IN_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_NETINET_IN_H.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaf.dir/HAVE_NETINET_IN_H.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files poll.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/HAVE_POLL_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaf.dir/HAVE_POLL_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_POLL_H.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaf.dir/HAVE_POLL_H.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function printf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=printf -o CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘printf’; expected ‘int(const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘printf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=printf CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files pthread.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/HAVE_PTHREAD_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaf.dir/HAVE_PTHREAD_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_PTHREAD_H.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaf.dir/HAVE_PTHREAD_H.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function putenv exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=putenv -o CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=putenv CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function rand exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=rand -o CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=rand CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function rand_r exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=rand_r -o CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=rand_r CMakeFiles/cmTC_dbfaf.dir/CheckFunctionExists.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files resolv.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfaf.dir/HAVE_RESOLV_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfaf.dir/HAVE_RESOLV_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_RESOLV_H.c
+Linking C executable cmTC_dbfaf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaf.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfaf.dir/HAVE_RESOLV_H.c.o -o cmTC_dbfaf  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function signal exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=signal -o CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=signal CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files signal.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/HAVE_SIGNAL_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfae.dir/HAVE_SIGNAL_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_SIGNAL_H.c
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfae.dir/HAVE_SIGNAL_H.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function snprintf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=snprintf -o CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘snprintf’; expected ‘int(char *, long unsigned int,  const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘snprintf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=snprintf CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function sprintf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sprintf -o CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘sprintf’; expected ‘int(char *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘sprintf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sprintf CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function srand exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=srand -o CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=srand CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function sscanf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sscanf -o CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘sscanf’; expected ‘int(const char *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘sscanf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sscanf CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function stat exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=stat -o CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=stat CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files stdarg.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/HAVE_STDARG_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfae.dir/HAVE_STDARG_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_STDARG_H.c
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfae.dir/HAVE_STDARG_H.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files stdint.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/HAVE_STDINT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfae.dir/HAVE_STDINT_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_STDINT_H.c
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfae.dir/HAVE_STDINT_H.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files stdlib.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/HAVE_STDLIB_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfae.dir/HAVE_STDLIB_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_STDLIB_H.c
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfae.dir/HAVE_STDLIB_H.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function strftime exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=strftime -o CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘strftime’; expected ‘long unsigned int(char *, long unsigned int,  const char *, const void *)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘strftime’ is declared in header ‘<time.h>’
+  +++ |+#include <time.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=strftime CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files strings.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfae.dir/HAVE_STRINGS_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfae.dir/HAVE_STRINGS_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_STRINGS_H.c
+Linking C executable cmTC_dbfae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfae.dir/HAVE_STRINGS_H.c.o -o cmTC_dbfae  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files string.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_STRING_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_STRING_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_STRING_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_STRING_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/mman.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_MMAN_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_MMAN_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_SYS_MMAN_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_MMAN_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/select.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_SELECT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_SELECT_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_SYS_SELECT_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_SELECT_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/socket.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_SOCKET_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_SOCKET_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_SYS_SOCKET_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_SOCKET_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/stat.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_STAT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_STAT_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_SYS_STAT_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_STAT_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/timeb.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TIMEB_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TIMEB_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TIMEB_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TIMEB_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/time.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TIME_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TIME_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TIME_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TIME_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/types.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TYPES_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TYPES_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TYPES_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_SYS_TYPES_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function time exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=time -o CMakeFiles/cmTC_dbfb1.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=time CMakeFiles/cmTC_dbfb1.dir/CheckFunctionExists.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files time.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb1.dir/HAVE_TIME_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/HAVE_TIME_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_TIME_H.c
+Linking C executable cmTC_dbfb1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb1.dir/HAVE_TIME_H.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function vfprintf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vfprintf -o CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘vfprintf’; expected ‘int(void *, const char *, __va_list_tag *)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘vfprintf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfb0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb0.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vfprintf CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o -o cmTC_dbfb0  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function vsnprintf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vsnprintf -o CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘vsnprintf’; expected ‘int(char *, long unsigned int,  const char *, __va_list_tag *)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘vsnprintf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfb0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb0.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vsnprintf CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o -o cmTC_dbfb0  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function vsprintf exists passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vsprintf -o CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘vsprintf’; expected ‘int(char *, const char *, __va_list_tag *)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘vsprintf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_dbfb0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb0.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vsprintf CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o -o cmTC_dbfb0  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test ICONV_CONST_TEST succeeded with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb0.dir/src.c.o
+/usr/bin/cc -DICONV_CONST_TEST   -o CMakeFiles/cmTC_dbfb0.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbfb0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb0.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb0.dir/src.c.o -o cmTC_dbfb0  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		#include <stdlib.h>
+		#include <iconv.h>
+		extern
+		#ifdef __cplusplus
+		"C"
+		#endif
+		#if defined(__STDC__) || defined(__cplusplus)
+		size_t iconv(iconv_t cd, char** inbuf, size_t* inbytesleft, char** outbuf, size_t* outbytesleft);
+		#else
+		size_t iconv();
+		#endif
+		int main() { return 0; }
+	
+Performing C SOURCE FILE Test SEND_ARG2_CAST_CONST succeeded with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb0.dir/src.c.o
+/usr/bin/cc -DSEND_ARG2_CAST_CONST   -o CMakeFiles/cmTC_dbfb0.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbfb0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb0.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb0.dir/src.c.o -o cmTC_dbfb0  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		#include <sys/socket.h>
+		#include <sys/types.h>
+		int main() { (void) send(1, (const char*) "", 1, 1); return 0; }
+	
+Determining if files float.h;stdarg.h;stdlib.h;string.h exist passed with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb0.dir/STDC_HEADERS.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dbfb0.dir/STDC_HEADERS.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/STDC_HEADERS.c
+Linking C executable cmTC_dbfb0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb0.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb0.dir/STDC_HEADERS.c.o -o cmTC_dbfb0  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test XML_SOCKLEN_T_SOCKLEN_T succeeded with the following output:
+Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
+gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbfb0.dir/src.c.o
+/usr/bin/cc -DXML_SOCKLEN_T_SOCKLEN_T   -o CMakeFiles/cmTC_dbfb0.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbfb0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb0.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dbfb0.dir/src.c.o -o cmTC_dbfb0  /usr/lib64/liblzma.so /usr/lib64/libz.so 
+gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		#include <stddef.h>
+		#include <sys/socket.h>
+		#include <sys/types.h>
+		int main() { (void) getsockopt(1, 1, 1, NULL, (socklen_t*) NULL); return 0; }
+	
