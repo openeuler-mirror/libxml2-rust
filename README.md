@@ -3,21 +3,27 @@
 #### 介绍
 rewrite memory leak modules for libxml2 using Rust
 
+#### 特别说明
+
+libxml2-2.9.12_openEuler_version目录下的是原始代码，但在openEuler操作系统下有部分ctest测试用例无法通过，故我们将libxml2官方库的代码放在libxml2-2.9.12_github_version目录下一并提交。所有对libxml2-2.9.12_openEuler_version的改写操作也会同步到libxml2-2.9.12_github_version，通过后者能否通过所有ctest测试用例来判断改写内容的正确性。
+
 #### 软件架构
 软件架构说明
 
 
 #### 安装教程
+准备make,cmake,rust等环境。版本推荐：
+- cmake:3.10
+- make: 3.8
+- rust：最新稳定版
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+安装步骤如下：
 
-#### 使用说明
+1. 通过gitee 获取代码 git clone git@gitee.com:openeuler/libxml2-rust.git
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+2. 运行libxml2-2.9.12_openEuler_version/build.sh编译代码
+
+3. 运行make install 将代码安装到系统中
 
 #### 参与贡献
 
