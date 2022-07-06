@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/runxmlconf.dir/runxmlconf.c.o -o runxmlconf  -Wl,-rpath,/home/code/libxml2-2.9.12/build libxml2.so.2.9.10 

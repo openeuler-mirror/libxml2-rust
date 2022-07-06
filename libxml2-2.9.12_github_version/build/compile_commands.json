@@ -1,0 +1,227 @@
+[
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/buf.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/buf.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/buf.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/c14n.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/c14n.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/c14n.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/catalog.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/catalog.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/catalog.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/chvalid.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/chvalid.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/chvalid.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/debugXML.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/debugXML.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/debugXML.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/dict.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/dict.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/dict.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/encoding.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/encoding.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/encoding.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/entities.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/entities.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/entities.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/error.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/error.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/error.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/globals.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/globals.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/globals.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/hash.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/hash.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/hash.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/HTMLparser.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/HTMLparser.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/HTMLparser.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/HTMLtree.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/HTMLtree.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/HTMLtree.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/legacy.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/legacy.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/legacy.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/list.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/list.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/list.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/nanoftp.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/nanoftp.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/nanoftp.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/nanohttp.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/nanohttp.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/nanohttp.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/parser.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/parser.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/parser.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/parserInternals.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/parserInternals.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/parserInternals.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/pattern.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/pattern.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/pattern.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/relaxng.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/relaxng.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/relaxng.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/SAX.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/SAX.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/SAX.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/SAX2.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/SAX2.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/SAX2.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/schematron.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/schematron.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/schematron.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/threads.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/threads.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/threads.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/tree.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/tree.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/tree.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/uri.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/uri.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/uri.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/valid.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/valid.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/valid.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xinclude.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xinclude.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xinclude.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xlink.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xlink.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xlink.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlIO.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlIO.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlIO.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlmemory.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlmemory.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlmemory.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlmodule.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlmodule.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlmodule.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlreader.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlreader.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlreader.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlregexp.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlregexp.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlregexp.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlsave.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlsave.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlsave.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlschemas.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlschemas.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlschemas.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlschemastypes.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlschemastypes.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlschemastypes.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlstring.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlstring.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlstring.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlunicode.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlunicode.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlunicode.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xmlwriter.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlwriter.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xmlwriter.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xpath.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xpath.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xpath.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xpointer.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xpointer.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xpointer.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/xzlib.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xzlib.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/xzlib.c"
+},
+{
+  "directory": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7 -DLibXml2_EXPORTS -D_REENTRANT -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build -I/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/include -g -fPIC -o CMakeFiles/LibXml2.dir/DOCBparser.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/DOCBparser.c",
+  "file": "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/DOCBparser.c"
+}
+]

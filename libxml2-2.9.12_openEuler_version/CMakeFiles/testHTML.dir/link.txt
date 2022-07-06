@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/testHTML.dir/testHTML.c.o -o testHTML   -L/home/code/libxml2-2.9.12_merge_on_huawei/rust/target/debug  -Wl,-rpath,/home/code/libxml2-2.9.12_merge_on_huawei/rust/target/debug libxml2.a -lrust_project -ldl -lm /usr/lib64/liblzma.so /usr/lib64/libz.so 

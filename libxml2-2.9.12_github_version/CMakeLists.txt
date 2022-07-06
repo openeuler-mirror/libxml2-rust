@@ -2,6 +2,15 @@ cmake_minimum_required(VERSION 3.15)
 
 project(libxml2 VERSION 2.9.10 LANGUAGES C)
 
+set(STEP "${STEP}")
+if(STEP STREQUAL "link")
+	ADD_DEFINITIONS(-DCOMPILE_WITH_RUST)
+endif()
+
+set(RUST_PATH "${PROJECT_SOURCE_DIR}/rust")
+
+link_directories(${RUST_PATH}/target/debug)
+
 include(CheckCSourceCompiles)
 include(CheckFunctionExists)
 include(CheckIncludeFiles)
@@ -413,7 +422,13 @@ if(LIBXML2_WITH_TRIO)
 	list(APPEND LIBXML2_SRCS trio.c triostr.c)
 endif()
 
-add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
+#add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
+
+# Libarchive is a shared library
+#ADD_LIBRARY(LibXml2 SHARED ${LIBXML2_SRCS} ${LIBXML2_HDRS})
+# archive_static is a static library
+ADD_LIBRARY(LibXml2 STATIC ${LIBXML2_SRCS} ${LIBXML2_HDRS})
+#SET_TARGET_PROPERTIES(LibXml2_static PROPERTIES OUTPUT_NAME "LibXml2")
 
 if(NOT BUILD_SHARED_LIBS)
 	target_compile_definitions(LibXml2 INTERFACE LIBXML_STATIC)
@@ -425,6 +440,12 @@ if(LIBXML2_WITH_THREADS)
 	if(WIN32)
 		target_compile_definitions(LibXml2 PRIVATE HAVE_WIN32_THREADS)
 	endif()
+endif()
+
+if(STEP STREQUAL "link")
+
+target_link_libraries(LibXml2 PRIVATE rust_project)
+
 endif()
 
 target_include_directories(
@@ -528,6 +549,8 @@ install(
 if(MSVC AND BUILD_SHARED_LIBS)
 	install(FILES $<TARGET_PDB_FILE:LibXml2> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
 endif()
+
+if(STEP STREQUAL "link")
 
 if(LIBXML2_WITH_PROGRAMS)
 	set(
@@ -650,6 +673,8 @@ if(LIBXML2_WITH_PYTHON)
 	endif()
 	install(FILES python/drv_libxml2.py DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime)
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime)
+endif()
+
 endif()
 
 install(FILES libxml.3 DESTINATION ${CMAKE_INSTALL_MANDIR}/man3 COMPONENT documentation)
