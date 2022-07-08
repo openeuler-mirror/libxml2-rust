@@ -87,6 +87,9 @@
 #include "buf.h"
 #include "enc.h"
 
+#ifdef COMPILE_WITH_RUST
+// region1: COMPILE_WITH_RUST宏定义的部分表示需要与rust交互，只有在连接后才生效
+
 struct _xmlStartTag {
     const xmlChar *prefix;
     const xmlChar *URI;
@@ -15547,6 +15550,852 @@ xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
     inputPush(ctxt, stream);
     return (xmlDoRead(ctxt, URL, encoding, options, 1));
 }
+
+// endregion1
+#endif
+
+
+#ifndef COMPILE_WITH_RUST
+// region2: 未被COMPILE_WITH_RUST宏定义的部分表示需要连接前需要对外界提供的内容，包括：对rust部分提供的宏出口，以及对外部提供的空壳方法
+// region2.1: 宏获取方法
+int get_parser_LIBXML_XINCLUDE_ENABLED(){
+#ifdef LIBXML_XINCLUDE_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_THREAD_ENABLED(){
+#ifdef LIBXML_THREAD_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_HTML_ENABLED(){
+#ifdef LIBXML_HTML_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_HAVE_UNISTD_H(){
+#ifdef HAVE_UNISTD_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_DEBUG_PUSH(){
+#ifdef DEBUG_PUSH
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_SCHEMATRON_ENABLED(){
+#ifdef LIBXML_SCHEMATRON_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_SAX2(){
+#ifdef SAX2
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_ICU_ENABLED(){
+#ifdef LIBXML_ICU_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_UNICODE_ENABLED(){
+#ifdef LIBXML_UNICODE_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_FTP_ENABLED(){
+#ifdef LIBXML_FTP_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_HTTP_ENABLED(){
+#ifdef LIBXML_HTTP_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_HAVE_ATTRIBUTE_DESTRUCTOR(){
+#ifdef HAVE_ATTRIBUTE_DESTRUCTOR
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_STATIC(){
+#ifdef LIBXML_STATIC
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_WIN32(){
+#ifdef _WIN32
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_DEBUG_RUNTIME(){
+#ifdef LIBXML_DEBUG_RUNTIME
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_STDC_VERSION_199901(){
+#if __STDC_VERSION__ >= 199901L
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_CATALOG_ENABLED(){
+#ifdef LIBXML_CATALOG_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_REGEXP_ENABLED(){
+#ifdef LIBXML_REGEXP_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_LZMA_ENABLED(){
+#ifdef LIBXML_LZMA_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_SCHEMAS_ENABLED(){
+#ifdef LIBXML_SCHEMAS_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_HAVE_CTYPE_H(){
+#ifdef HAVE_CTYPE_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_STATIC_FOR_DLL(){
+#ifdef LIBXML_STATIC_FOR_DLL
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_READER_ENABLED(){
+#ifdef LIBXML_READER_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_HAVE_FCNTL_H(){
+#ifdef HAVE_FCNTL_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_ZLIB_ENABLED(){
+#ifdef LIBXML_ZLIB_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_XML_XML_NAMESPACE(){
+#ifdef XML_XML_NAMESPACE
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_PATTERN_ENABLED(){
+#ifdef LIBXML_PATTERN_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_VALID_ENABLED(){
+#ifdef LIBXML_VALID_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_C14N_ENABLED(){
+#ifdef LIBXML_C14N_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_WRITER_ENABLED(){
+#ifdef LIBXML_WRITER_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_AUTOMATA_ENABLED(){
+#ifdef LIBXML_AUTOMATA_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_TREE_ENABLED(){
+#ifdef LIBXML_TREE_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_XPTR_ENABLED(){
+#ifdef LIBXML_XPTR_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_XPATH_ENABLED(){
+#ifdef LIBXML_XPATH_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_DEBUG_MEMORY_LOCATION(){
+#ifdef DEBUG_MEMORY_LOCATION
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_SAX1_ENABLED(){
+#ifdef LIBXML_SAX1_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_DEBUG_ENABLED(){
+#ifdef LIBXML_DEBUG_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_HAVE_SYS_STAT_H(){
+#ifdef HAVE_SYS_STAT_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_HAVE_STDLIB_H(){
+#ifdef HAVE_STDLIB_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_ICONV_ENABLED(){
+#ifdef LIBXML_ICONV_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_EXPR_ENABLED(){
+#ifdef LIBXML_EXPR_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_DEBUG(){
+#ifdef DEBUG
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_PUSH_ENABLED(){
+#ifdef LIBXML_PUSH_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_LEGACY_ENABLED(){
+#ifdef LIBXML_LEGACY_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_MODULES_ENABLED(){
+#ifdef LIBXML_MODULES_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_OUTPUT_ENABLED(){
+#ifdef LIBXML_OUTPUT_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parser_LIBXML_ISO8859X_ENABLED(){
+#ifdef LIBXML_ISO8859X_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+// endregion2.1
+
+// region2.2: 对外提供的空壳方法，以便编译可以通过
+
+int
+xmlHasFeature(xmlFeature feature)
+{
+    return(0);
+}
+
+int xmlCheckLanguageID(const xmlChar * lang)
+{
+    return 0;
+}
+
+int inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
+{
+    return 0;
+}
+
+xmlParserInputPtr inputPop(xmlParserCtxtPtr ctxt)
+{
+    return NULL;
+}
+
+int nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
+{
+    return 0;
+}
+
+xmlNodePtr nodePop(xmlParserCtxtPtr ctxt)
+{
+    return NULL;
+}
+
+int namePush(xmlParserCtxtPtr ctxt, const xmlChar * value)
+{
+    return 0;
+}
+
+const xmlChar * namePop(xmlParserCtxtPtr ctxt)
+{
+    return NULL;
+}
+
+int xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
+    return 0;
+}
+
+xmlChar xmlPopInput(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+int xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
+    return 0;
+}
+
+int xmlParseCharRef(xmlParserCtxtPtr ctxt) {
+    return 0;
+}
+
+void xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
+
+}
+
+xmlChar * xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
+                                     int what, xmlChar end, xmlChar  end2, xmlChar end3) {
+    return NULL;
+}
+
+xmlChar * xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
+                                  xmlChar end, xmlChar  end2, xmlChar end3) {
+    return NULL;
+}
+
+xmlChar * xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
+    return NULL;
+}
+
+const xmlChar * xmlParseName(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+xmlChar * xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+xmlChar * xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
+    return NULL;
+}
+
+xmlChar * xmlParseAttValue(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+xmlChar * xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+xmlChar * xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+void xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
+
+}
+
+xmlChar * xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
+    return NULL;
+}
+
+void xmlParseComment(xmlParserCtxtPtr ctxt) {
+
+}
+
+const xmlChar * xmlParsePITarget(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+void xmlParsePI(xmlParserCtxtPtr ctxt) {
+
+}
+
+void xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
+
+}
+
+void xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
+
+}
+
+int xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, xmlChar **value) {
+    return 0;
+}
+
+xmlEnumerationPtr xmlParseNotationType(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+xmlEnumerationPtr xmlParseEnumerationType(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+int xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
+    return 0;
+}
+
+int xmlParseAttributeType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
+    return 0;
+}
+
+void xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
+
+}
+
+xmlElementContentPtr xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
+    return NULL;
+}
+
+xmlElementContentPtr xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
+    return NULL;
+}
+
+int xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlElementContentPtr *result) {
+    return 0;
+}
+
+int xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
+    return 0;
+}
+
+void xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
+
+}
+
+void xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
+
+}
+
+void xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID, const xmlChar *SystemID) {
+
+}
+
+void xmlParseReference(xmlParserCtxtPtr ctxt) {
+
+}
+
+xmlEntityPtr xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+void xmlParsePEReference(xmlParserCtxtPtr ctxt){
+
+}
+
+void xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
+
+}
+
+#ifdef LIBXML_SAX1_ENABLED
+const xmlChar *
+xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
+    return NULL;
+}
+
+const xmlChar *
+xmlParseStartTag(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+void xmlParseEndTag(xmlParserCtxtPtr ctxt) {
+
+}
+#endif
+
+void xmlParseCDSect(xmlParserCtxtPtr ctxt) {
+
+}
+
+void xmlParseContent(xmlParserCtxtPtr ctxt) {
+
+}
+
+void xmlParseElement(xmlParserCtxtPtr ctxt) {
+
+}
+
+xmlChar * xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+xmlChar * xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+xmlChar * xmlParseEncName(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+const xmlChar * xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+int xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
+    return 0;
+}
+
+void xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
+
+}
+
+void xmlParseMisc(xmlParserCtxtPtr ctxt) {
+
+}
+
+int xmlParseDocument(xmlParserCtxtPtr ctxt) {
+    return 0;
+}
+
+int xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
+    return 0;
+}
+
+#ifdef LIBXML_PUSH_ENABLED
+int xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
+              int terminate) {
+    return 0;
+}
+
+xmlParserCtxtPtr xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
+                        const char *chunk, int size, const char *filename) {
+    return NULL;
+}
+#endif /* LIBXML_PUSH_ENABLED */
+
+void xmlStopParser(xmlParserCtxtPtr ctxt) {
+
+}
+
+xmlParserCtxtPtr xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
+                                       xmlInputReadCallback   ioread, xmlInputCloseCallback  ioclose,
+                                       void *ioctx, xmlCharEncoding enc) {
+
+    return NULL;
+}
+
+#ifdef LIBXML_VALID_ENABLED
+xmlDtdPtr xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
+	      xmlCharEncoding enc) {
+    return NULL;
+}
+
+xmlDtdPtr xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
+                          const xmlChar *SystemID) {
+    return NULL;
+}
+
+xmlDtdPtr xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
+    return NULL;
+}
+#endif /* LIBXML_VALID_ENABLED */
+
+int xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
+                               const xmlChar *ID, xmlNodePtr *lst) {
+    return 0;
+}
+
+#ifdef LIBXML_SAX1_ENABLED
+int xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
+	  int depth, const xmlChar *URL, const xmlChar *ID, xmlNodePtr *lst) {
+    return 0;
+}
+
+int xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
+     void *user_data, int depth, const xmlChar *string, xmlNodePtr *lst) {
+
+    return 0;
+}
+#endif /* LIBXML_SAX1_ENABLED */
+
+xmlParserErrors xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
+                                      int options, xmlNodePtr *lst) {
+    return XML_ERR_OK;
+}
+
+#ifdef LIBXML_SAX1_ENABLED
+int xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
+     void *user_data, int depth, const xmlChar *string, xmlNodePtr *lst,
+     int recover) {
+    return 0;
+}
+
+xmlDocPtr xmlSAXParseEntity(xmlSAXHandlerPtr sax, const char *filename) {
+    return NULL;
+}
+
+xmlDocPtr xmlParseEntity(const char *filename) {
+    return NULL;
+}
+#endif
+
+xmlParserCtxtPtr xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
+                                           const xmlChar *base) {
+    return NULL;
+}
+
+xmlParserCtxtPtr xmlCreateURLParserCtxt(const char *filename, int options){
+    return NULL;
+}
+
+xmlParserCtxtPtr xmlCreateFileParserCtxt(const char *filename){
+    return NULL;
+}
+
+#ifdef LIBXML_SAX1_ENABLED
+xmlDocPtr xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
+                        int recovery, void *data) {
+    return NULL;
+}
+
+xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
+                          int recovery) {
+    return NULL;
+}
+
+xmlDocPtr xmlRecoverDoc(const xmlChar *cur) {
+    return NULL;
+}
+
+xmlDocPtr xmlParseFile(const char *filename) {
+    return NULL;
+}
+
+xmlDocPtr xmlRecoverFile(const char *filename) {
+    return NULL;
+}
+
+void xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
+                             const char* filename){
+
+}
+
+int xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
+                    const char *filename) {
+    return 0;
+}
+#endif
+
+xmlParserCtxtPtr xmlCreateMemoryParserCtxt(const char *buffer, int size) {
+    return NULL;
+}
+
+#ifdef LIBXML_SAX1_ENABLED
+xmlDocPtr xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
+	          int size, int recovery, void *data) {
+    return NULL;
+}
+
+xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, const char *buffer,
+	          int size, int recovery) {
+    return NULL;
+}
+
+xmlDocPtr xmlParseMemory(const char *buffer, int size) {
+   return NULL;
+}
+
+xmlDocPtr xmlRecoverMemory(const char *buffer, int size) {
+   return NULL;
+}
+
+int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
+			  const char *buffer, int size) {
+    return 0;
+}
+#endif
+
+xmlParserCtxtPtr xmlCreateDocParserCtxt(const xmlChar *cur) {
+    return NULL;
+}
+
+#ifdef LIBXML_SAX1_ENABLED
+xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, const xmlChar *cur, int recovery) {
+    return NULL;
+}
+
+xmlDocPtr xmlParseDoc(const xmlChar *cur) {
+    return NULL;
+}
+#endif
+
+#ifdef LIBXML_LEGACY_ENABLED
+void xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func){
+
+}
+#endif
+
+void xmlInitParser(void){
+
+}
+
+void xmlCleanupParser(void){
+
+}
+
+void xmlCtxtReset(xmlParserCtxtPtr ctxt){
+
+}
+
+int xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
+                     int size, const char *filename, const char *encoding){
+    return 0;
+}
+
+int xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options){
+    return 0;
+}
+
+xmlDocPtr xmlReadDoc(const xmlChar * cur, const char *URL, const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlReadFile(const char *filename, const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlReadMemory(const char *buffer, int size, const char *URL, const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlReadFd(int fd, const char *URL, const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
+                    void *ioctx, const char *URL, const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar * cur,
+                         const char *URL, const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
+                          const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
+                            const char *URL, const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
+                        const char *URL, const char *encoding, int options){
+    return NULL;
+}
+
+xmlDocPtr xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
+                        xmlInputCloseCallback ioclose, void *ioctx,
+                        const char *URL,
+                        const char *encoding, int options){
+    return NULL;
+}
+// endregion2.2
+
+// endregion2
+#endif
 
 #define bottom_parser
 #include "elfgcchack.h"

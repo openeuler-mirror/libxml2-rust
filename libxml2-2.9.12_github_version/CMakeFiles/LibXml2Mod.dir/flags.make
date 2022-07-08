@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = -DCOMPILE_WITH_RUST -DLibXml2Mod_EXPORTS
 
-C_INCLUDES = -I/root/data01/commti_test/libxml2-nju-huawei/libxml2-2.9.12_github_version/python -I/root/data01/commti_test/libxml2-nju-huawei/libxml2-2.9.12_github_version -I/root/data01/commti_test/libxml2-nju-huawei/libxml2-2.9.12_github_version/include -isystem /usr/include/python2.7
+C_INCLUDES = -I/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version/python -I/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version -I/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version/include -isystem /usr/include/python2.7
 
 C_FLAGS = -fPIC
 
