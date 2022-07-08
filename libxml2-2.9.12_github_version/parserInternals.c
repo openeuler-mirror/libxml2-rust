@@ -62,6 +62,9 @@
 #include "buf.h"
 #include "enc.h"
 
+#ifdef COMPILE_WITH_RUST
+// region1: COMPILE_WITH_RUST宏定义的部分表示需要与rust交互，只有在连接后才生效
+
 /*
  * Various global defaults for parsing
  */
@@ -2159,6 +2162,238 @@ xmlKeepBlanksDefault(int val) {
     if (!val) xmlIndentTreeOutput = 1;
     return(old);
 }
+
+// endregion1
+#endif
+
+#ifndef COMPILE_WITH_RUST
+// region2: 未被COMPILE_WITH_RUST宏定义的部分表示需要连接前需要对外界提供的内容，包括：对rust部分提供的宏出口，以及对外部提供的空壳方法
+// region2.1: 宏获取方法
+int get_parserInternals_WIN32(){
+#ifdef _WIN32
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_CYGWIN(){
+#ifdef __CYGWIN__
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_HAVE_CTYPE_H(){
+#ifdef HAVE_CTYPE_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_HAVE_STDLIB_H(){
+#ifdef HAVE_STDLIB_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_HAVE_SYS_STAT_H(){
+#ifdef HAVE_SYS_STAT_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_HAVE_FCNTL_H(){
+#ifdef HAVE_FCNTL_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_HAVE_UNISTD_H(){
+#ifdef HAVE_UNISTD_H
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_LIBXML_ZLIB_ENABLED(){
+#ifdef LIBXML_ZLIB_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_LIBXML_CATALOG_ENABLED(){
+#ifdef LIBXML_CATALOG_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_DEBUG_INPUT(){
+#ifdef DEBUG_INPUT
+    return 1;
+#else
+    return 0;
+#endif
+}
+int get_parserInternals_LIBXML_SAX1_ENABLED(){
+#ifdef LIBXML_SAX1_ENABLED
+    return 1;
+#else
+    return 0;
+#endif
+}
+// endregion2.1
+
+// region2.2: 对外提供的空壳方法，以便编译可以通过
+void xmlCheckVersion(int version) {
+
+}
+
+void xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra){
+
+}
+
+void __xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors xmlerr,
+                 const char *msg, const xmlChar * str1, const xmlChar * str2){
+
+}
+
+int xmlIsLetter(int c) {
+    return 0;
+}
+
+int xmlParserInputRead(xmlParserInputPtr in ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUSED) {
+    return (-1);
+}
+
+int xmlParserInputGrow(xmlParserInputPtr in, int len) {
+    return 0;
+}
+
+void xmlParserInputShrink(xmlParserInputPtr in) {
+
+}
+
+void xmlNextChar(xmlParserCtxtPtr ctxt){
+
+}
+
+int xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
+    return 0;
+}
+
+int xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len){
+    return 0;
+}
+
+int xmlCopyCharMultiByte(xmlChar *out, int val) {
+    return 0;
+}
+
+int xmlCopyChar(int len ATTRIBUTE_UNUSED, xmlChar *out, int val) {
+    return 0;
+}
+
+int xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc){
+    return 0;
+}
+
+int xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
+                       xmlCharEncodingHandlerPtr handler) {
+    return 0;
+}
+
+int xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler){
+    return 0;
+}
+
+void xmlFreeInputStream(xmlParserInputPtr input) {
+
+}
+
+xmlParserInputPtr xmlNewInputStream(xmlParserCtxtPtr ctxt) {
+    return NULL;
+}
+
+xmlParserInputPtr xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
+                    xmlCharEncoding enc) {
+    return NULL;
+}
+
+xmlParserInputPtr xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
+    return NULL;
+
+}
+
+xmlParserInputPtr xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
+    return NULL;
+}
+
+xmlParserInputPtr xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
+    return NULL;
+}
+
+int xmlInitParserCtxt(xmlParserCtxtPtr ctxt){
+    return 0;
+}
+
+void xmlFreeParserCtxt(xmlParserCtxtPtr ctxt){
+
+}
+
+xmlParserCtxtPtr xmlNewParserCtxt(void){
+    return NULL;
+}
+
+void xmlClearParserCtxt(xmlParserCtxtPtr ctxt){
+
+}
+
+const xmlParserNodeInfo * xmlParserFindNodeInfo(const xmlParserCtxtPtr ctx, const xmlNodePtr node){
+    return NULL;
+}
+
+void xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq){
+
+}
+
+void xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq){
+
+}
+
+unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
+                           const xmlNodePtr node){
+    return 0;
+}
+
+void xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
+                     const xmlParserNodeInfoPtr info){
+
+}
+
+int xmlPedanticParserDefault(int val) {
+    return 0;
+}
+
+int xmlLineNumbersDefault(int val) {
+    return 0;
+}
+
+int xmlSubstituteEntitiesDefault(int val) {
+    return 0;
+}
+
+int xmlKeepBlanksDefault(int val) {
+    return 0;
+}
+// endregion2.2
+
+// endregion2
+#endif
 
 #define bottom_parserInternals
 #include "elfgcchack.h"
