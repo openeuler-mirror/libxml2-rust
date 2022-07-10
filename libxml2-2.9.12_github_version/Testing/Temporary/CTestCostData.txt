@@ -1,8 +1,8 @@
-testapi 85 0.117737
-testchar 112 0.0104451
-testdict 125 0.000137001
-testrecurse 118 0.104002
+testapi 86 0.116841
+testchar 113 0.0111209
+testdict 126 0.000118277
+testrecurse 119 0.10173
 runtest 107 0
-testThreads 119 0.013306
+testThreads 120 0.0112439
 ---
 runtest

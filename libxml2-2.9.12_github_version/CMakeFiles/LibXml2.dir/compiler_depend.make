@@ -191,8 +191,7 @@ CMakeFiles/LibXml2.dir/HTMLparser.c.o: HTMLparser.c \
   include/libxml/HTMLtree.h \
   include/libxml/uri.h \
   buf.h \
-  enc.h \
-  elfgcchack.h
+  enc.h
 
 CMakeFiles/LibXml2.dir/HTMLtree.c.o: HTMLtree.c \
   /usr/include/stdc-predef.h \
@@ -4088,11 +4087,6 @@ CMakeFiles/LibXml2.dir/xpath.c.o: xpath.c \
   include/libxml/debugXML.h \
   include/libxml/pattern.h \
   buf.h \
-  timsort.h \
-  /usr/lib/gcc/x86_64-linux-gnu/7/include/stdint.h \
-  /usr/include/stdint.h \
-  /usr/include/x86_64-linux-gnu/bits/wchar.h \
-  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
   elfgcchack.h
 
 CMakeFiles/LibXml2.dir/xpointer.c.o: xpointer.c \
@@ -4317,8 +4311,6 @@ CMakeFiles/LibXml2.dir/xzlib.c.o: xzlib.c \
 xzlib.c:
 
 xpointer.c:
-
-timsort.h:
 
 include/libxml/xmlwriter.h:
 
