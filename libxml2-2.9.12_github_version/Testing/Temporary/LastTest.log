@@ -1,10 +1,10 @@
-Start testing: Jul 08 14:27 UTC
+Start testing: Jul 10 01:05 UTC
 ----------------------------------------------------------
 1/6 Testing: testapi
 1/6 Test: testapi
-Command: "/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version/testapi"
-Directory: /root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version
-"testapi" start time: Jul 08 14:27 UTC
+Command: "/root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/testapi"
+Directory: /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version
+"testapi" start time: Jul 10 01:05 UTC
 Output:
 ----------------------------------------------------------
 Testing HTMLparser : 32 of 38 functions ...
@@ -48,52 +48,52 @@ Testing xpathInternals : 106 of 117 functions ...
 Testing xpointer : 17 of 21 functions ...
 Total: 1164 functions, 280912 tests, 0 errors
 <end of output>
-Test time =  10.01 sec
+Test time =  10.05 sec
 ----------------------------------------------------------
 Test Passed.
-"testapi" end time: Jul 08 14:27 UTC
+"testapi" end time: Jul 10 01:05 UTC
 "testapi" time elapsed: 00:00:10
 ----------------------------------------------------------
 
 2/6 Testing: testchar
 2/6 Test: testchar
-Command: "/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version/testchar"
-Directory: /root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version
-"testchar" start time: Jul 08 14:27 UTC
+Command: "/root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/testchar"
+Directory: /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version
+"testchar" start time: Jul 10 01:05 UTC
 Output:
 ----------------------------------------------------------
 testing char range: 1 2 3 4 done
 testing 1 byte char in document: 1 2 3 4 done
 testing 2 byte char in document: 1 2 3 4 done
 <end of output>
-Test time =   1.17 sec
+Test time =   1.26 sec
 ----------------------------------------------------------
 Test Passed.
-"testchar" end time: Jul 08 14:27 UTC
+"testchar" end time: Jul 10 01:05 UTC
 "testchar" time elapsed: 00:00:01
 ----------------------------------------------------------
 
 3/6 Testing: testdict
 3/6 Test: testdict
-Command: "/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version/testdict"
-Directory: /root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version
-"testdict" start time: Jul 08 14:27 UTC
+Command: "/root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/testdict"
+Directory: /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version
+"testdict" start time: Jul 10 01:05 UTC
 Output:
 ----------------------------------------------------------
 dictionary tests succeeded 20000 strings
 <end of output>
-Test time =   0.02 sec
+Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"testdict" end time: Jul 08 14:27 UTC
+"testdict" end time: Jul 10 01:05 UTC
 "testdict" time elapsed: 00:00:00
 ----------------------------------------------------------
 
 4/6 Testing: testrecurse
 4/6 Test: testrecurse
-Command: "/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version/testrecurse"
-Directory: /root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version
-"testrecurse" start time: Jul 08 14:27 UTC
+Command: "/root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/testrecurse"
+Directory: /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version
+"testrecurse" start time: Jul 10 01:05 UTC
 Output:
 ----------------------------------------------------------
 .........
@@ -102,18 +102,18 @@ Output:
 ## Parsing non-recursive huge case
 Total 9 tests, no errors
 <end of output>
-Test time =  12.27 sec
+Test time =  12.11 sec
 ----------------------------------------------------------
 Test Passed.
-"testrecurse" end time: Jul 08 14:28 UTC
+"testrecurse" end time: Jul 10 01:05 UTC
 "testrecurse" time elapsed: 00:00:12
 ----------------------------------------------------------
 
 5/6 Testing: runtest
 5/6 Test: runtest
-Command: "/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version/runtest" "--out" "/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version"
-Directory: /root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version
-"runtest" start time: Jul 08 14:28 UTC
+Command: "/root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/runtest" "--out" "/root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version"
+Directory: /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version
+"runtest" start time: Jul 10 01:05 UTC
 Output:
 ----------------------------------------------------------
 Got a difference for ./test/att11
@@ -184,26 +184,26 @@ File ./test/HTML/wired.html generated an error
 ## Catalog and Threads regression tests
 Total 3237 tests, 11 errors, 0 leaks
 <end of output>
-Test time =   6.32 sec
+Test time =  10.17 sec
 ----------------------------------------------------------
 Test Failed.
-"runtest" end time: Jul 08 14:28 UTC
-"runtest" time elapsed: 00:00:06
+"runtest" end time: Jul 10 01:05 UTC
+"runtest" time elapsed: 00:00:10
 ----------------------------------------------------------
 
 6/6 Testing: testThreads
 6/6 Test: testThreads
-Command: "/root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version/testThreads"
-Directory: /root/pr/20220707/libxml2-rust/libxml2-2.9.12_github_version
-"testThreads" start time: Jul 08 14:28 UTC
+Command: "/root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/testThreads"
+Directory: /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version
+"testThreads" start time: Jul 10 01:05 UTC
 Output:
 ----------------------------------------------------------
 <end of output>
-Test time =   1.58 sec
+Test time =   1.35 sec
 ----------------------------------------------------------
 Test Passed.
-"testThreads" end time: Jul 08 14:28 UTC
+"testThreads" end time: Jul 10 01:05 UTC
 "testThreads" time elapsed: 00:00:01
 ----------------------------------------------------------
 
-End testing: Jul 08 14:28 UTC
+End testing: Jul 10 01:05 UTC
