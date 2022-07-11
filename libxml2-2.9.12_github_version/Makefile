@@ -57,10 +57,10 @@ RM = /snap/cmake/1088/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version
+CMAKE_SOURCE_DIR = /root/pr/20220711_01/libxml2-rust_1/libxml2-2.9.12_github_version
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version
+CMAKE_BINARY_DIR = /root/pr/20220711_01/libxml2-rust_1/libxml2-2.9.12_github_version
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -78,7 +78,7 @@ package/fast: package
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	/snap/cmake/1088/bin/cpack --config ./CPackSourceConfig.cmake /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/CPackSourceConfig.cmake
+	/snap/cmake/1088/bin/cpack --config ./CPackSourceConfig.cmake /root/pr/20220711_01/libxml2-rust_1/libxml2-2.9.12_github_version/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -162,9 +162,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/CMakeFiles /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pr/20220711_01/libxml2-rust_1/libxml2-2.9.12_github_version/CMakeFiles /root/pr/20220711_01/libxml2-rust_1/libxml2-2.9.12_github_version//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/pr/20220710_1/libxml2-rust_1/libxml2-2.9.12_github_version/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pr/20220711_01/libxml2-rust_1/libxml2-2.9.12_github_version/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
