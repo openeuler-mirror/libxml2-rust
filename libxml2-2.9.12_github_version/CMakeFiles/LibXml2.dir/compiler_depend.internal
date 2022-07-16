@@ -4051,6 +4051,11 @@ CMakeFiles/LibXml2.dir/xpath.c.o
  /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/include/libxml/debugXML.h
  /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/include/libxml/pattern.h
  /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/buf.h
+ /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/timsort.h
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/stdint.h
+ /usr/include/stdint.h
+ /usr/include/x86_64-linux-gnu/bits/wchar.h
+ /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h
  /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/elfgcchack.h
 
 CMakeFiles/LibXml2.dir/xpointer.c.o
