@@ -9,3 +9,5 @@ include!("parserInternals.rs");
 include!("parserInternals_rust.rs");
 include!("HTMLparser.rs");
 include!("HTMLparser_rust.rs");
+include!("xpath.rs");
+include!("xpath_rust.rs");
