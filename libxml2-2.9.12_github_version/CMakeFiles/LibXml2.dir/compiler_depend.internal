@@ -1931,6 +1931,7 @@ CMakeFiles/LibXml2.dir/parser.c.o
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h
  /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/buf.h
  /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/enc.h
+ /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/include/libxml/xpath.h
  /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/elfgcchack.h
 
 CMakeFiles/LibXml2.dir/parserInternals.c.o

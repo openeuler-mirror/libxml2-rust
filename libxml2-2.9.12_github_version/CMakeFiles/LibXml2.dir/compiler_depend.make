@@ -1910,6 +1910,7 @@ CMakeFiles/LibXml2.dir/parser.c.o: parser.c \
   /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
   buf.h \
   enc.h \
+  include/libxml/xpath.h \
   elfgcchack.h
 
 CMakeFiles/LibXml2.dir/parserInternals.c.o: parserInternals.c \
