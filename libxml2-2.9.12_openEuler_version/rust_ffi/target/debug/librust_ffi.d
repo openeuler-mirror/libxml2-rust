@@ -1,0 +1,1 @@
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust_ffi/target/debug/librust_ffi.rlib: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust_ffi/src/build.rs /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust_ffi/src/lib.rs

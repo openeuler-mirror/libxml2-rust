@@ -1,4 +1,4 @@
-# Install script for directory: /home/code/libxml2-2.9.12_merge_on_huawei
+# Install script for directory: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -29,7 +29,7 @@ endif()
 
 # Install shared libraries without execute permission?
 if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "0")
+  set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
 # Is this installation the result of a crosscompile?
@@ -44,57 +44,57 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/libxml2/libxml" TYPE FILE FILES
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/c14n.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/catalog.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/chvalid.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/debugXML.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/dict.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/DOCBparser.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/encoding.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/entities.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/globals.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/hash.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/HTMLparser.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/HTMLtree.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/list.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/nanoftp.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/nanohttp.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/parser.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/parserInternals.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/pattern.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/relaxng.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/SAX.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/SAX2.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/schemasInternals.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/schematron.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/threads.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/tree.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/uri.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/valid.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xinclude.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xlink.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlIO.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlautomata.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlerror.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlexports.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlmemory.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlmodule.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlreader.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlregexp.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlsave.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlschemas.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlschemastypes.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlstring.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlunicode.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xmlwriter.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xpath.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xpathInternals.h"
-    "/home/code/libxml2-2.9.12_merge_on_huawei/include/libxml/xpointer.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/c14n.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/catalog.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/chvalid.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/debugXML.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/dict.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/DOCBparser.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/encoding.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/entities.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/globals.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/hash.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/HTMLparser.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/HTMLtree.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/list.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/nanoftp.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/nanohttp.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/parser.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/parserInternals.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/pattern.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/relaxng.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/SAX.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/SAX2.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/schemasInternals.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/schematron.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/threads.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/tree.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/uri.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/valid.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xinclude.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xlink.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlIO.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlautomata.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlerror.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlexports.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlmemory.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlmodule.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlreader.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlregexp.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlsave.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlschemas.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlschemastypes.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlstring.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlunicode.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xmlwriter.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xpath.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xpathInternals.h"
+    "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/include/libxml/xpointer.h"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib64" TYPE STATIC_LIBRARY FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml2.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml2.a")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xprogramsx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -104,12 +104,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xprogramsx" OR NOT CMAKE_INSTALL_COM
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmlcatalog"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/xmlcatalog")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/xmlcatalog")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmlcatalog" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmlcatalog")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmlcatalog"
-         OLD_RPATH "/home/code/libxml2-2.9.12_merge_on_huawei/rust/target/debug:"
+         OLD_RPATH "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust/target/debug:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmlcatalog")
@@ -124,12 +124,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xprogramsx" OR NOT CMAKE_INSTALL_COM
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmllint"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/xmllint")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/xmllint")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmllint" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmllint")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmllint"
-         OLD_RPATH "/home/code/libxml2-2.9.12_merge_on_huawei/rust/target/debug:"
+         OLD_RPATH "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust/target/debug:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/xmllint")
@@ -138,142 +138,142 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xprogramsx" OR NOT CMAKE_INSTALL_COM
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xruntimex" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so.2.9.10" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so.2.9.10")
+  if(EXISTS "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so.2.9.10" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so.2.9.10")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so.2.9.10"
+         FILE "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so.2.9.10"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/lib64/python3.9/site-packages/libxml2mod.so.2.9.10")
+   "/usr/lib/python2.7/dist-packages/libxml2mod.so.2.9.10")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/lib64/python3.9/site-packages" TYPE SHARED_LIBRARY FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml2mod.so.2.9.10")
-  if(EXISTS "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so.2.9.10" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so.2.9.10")
+  file(INSTALL DESTINATION "/usr/lib/python2.7/dist-packages" TYPE SHARED_LIBRARY FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml2mod.so.2.9.10")
+  if(EXISTS "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so.2.9.10" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so.2.9.10")
     file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so.2.9.10"
-         OLD_RPATH "/home/code/libxml2-2.9.12_merge_on_huawei/rust/target/debug:"
+         FILE "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so.2.9.10"
+         OLD_RPATH "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust/target/debug:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so.2.9.10")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so.2.9.10")
     endif()
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so")
+  if(EXISTS "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so"
+         FILE "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/lib64/python3.9/site-packages/libxml2mod.so")
+   "/usr/lib/python2.7/dist-packages/libxml2mod.so")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/lib64/python3.9/site-packages" TYPE SHARED_LIBRARY FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml2mod.so")
-  if(EXISTS "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so")
+  file(INSTALL DESTINATION "/usr/lib/python2.7/dist-packages" TYPE SHARED_LIBRARY FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml2mod.so")
+  if(EXISTS "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so")
     file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so"
-         OLD_RPATH "/home/code/libxml2-2.9.12_merge_on_huawei/rust/target/debug:"
+         FILE "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so"
+         OLD_RPATH "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust/target/debug:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/usr/lib64/python3.9/site-packages/libxml2mod.so")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/usr/lib/python2.7/dist-packages/libxml2mod.so")
     endif()
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xruntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/lib64/python3.9/site-packages/drv_libxml2.py")
+   "/usr/lib/python2.7/dist-packages/drv_libxml2.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/lib64/python3.9/site-packages" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/python/drv_libxml2.py")
+  file(INSTALL DESTINATION "/usr/lib/python2.7/dist-packages" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/python/drv_libxml2.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xruntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/lib64/python3.9/site-packages/libxml2.py")
+   "/usr/lib/python2.7/dist-packages/libxml2.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/lib64/python3.9/site-packages" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml2.py")
+  file(INSTALL DESTINATION "/usr/lib/python2.7/dist-packages" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml2.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdocumentationx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man3" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml.3")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man3" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml.3")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdocumentationx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man1" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/doc/xmlcatalog.1")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man1" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/doc/xmlcatalog.1")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdocumentationx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man1" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/doc/xmllint.1")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man1" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/doc/xmllint.1")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdocumentationx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/doc/libxml2" TYPE DIRECTORY FILES "/home/code/libxml2-2.9.12_merge_on_huawei/doc/" REGEX "/Makefile\\.[^/]*$" EXCLUDE)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/doc/libxml2" TYPE DIRECTORY FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/doc/" REGEX "/Makefile\\.[^/]*$" EXCLUDE)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib64/cmake/libxml2-2.9.10" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml2-config.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/libxml2-2.9.10" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml2-config.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib64/cmake/libxml2-2.9.10" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml2-config-version.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/libxml2-2.9.10" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml2-config-version.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib64/cmake/libxml2-2.9.10/libxml2-export.cmake")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/libxml2-2.9.10/libxml2-export.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
-         "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib64/cmake/libxml2-2.9.10/libxml2-export.cmake"
-         "/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/Export/lib64/cmake/libxml2-2.9.10/libxml2-export.cmake")
+         "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/libxml2-2.9.10/libxml2-export.cmake"
+         "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/Export/lib/cmake/libxml2-2.9.10/libxml2-export.cmake")
     if(EXPORT_FILE_CHANGED)
-      file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib64/cmake/libxml2-2.9.10/libxml2-export-*.cmake")
+      file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/libxml2-2.9.10/libxml2-export-*.cmake")
       if(OLD_CONFIG_FILES)
-        message(STATUS "Old export file \"$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib64/cmake/libxml2-2.9.10/libxml2-export.cmake\" will be replaced.  Removing files [${OLD_CONFIG_FILES}].")
+        message(STATUS "Old export file \"$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/libxml2-2.9.10/libxml2-export.cmake\" will be replaced.  Removing files [${OLD_CONFIG_FILES}].")
         file(REMOVE ${OLD_CONFIG_FILES})
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib64/cmake/libxml2-2.9.10" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/Export/lib64/cmake/libxml2-2.9.10/libxml2-export.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/libxml2-2.9.10" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/Export/lib/cmake/libxml2-2.9.10/libxml2-export.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^()$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib64/cmake/libxml2-2.9.10" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/Export/lib64/cmake/libxml2-2.9.10/libxml2-export-noconfig.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/libxml2-2.9.10" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/Export/lib/cmake/libxml2-2.9.10/libxml2-export-noconfig.cmake")
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/libxml2/libxml" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml/xmlversion.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/libxml2/libxml" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml/xmlversion.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib64/pkgconfig" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/libxml-2.0.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/libxml-2.0.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE PROGRAM FILES "/home/code/libxml2-2.9.12_merge_on_huawei/xml2-config")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE PROGRAM FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/xml2-config")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib64" TYPE FILE FILES "/home/code/libxml2-2.9.12_merge_on_huawei/xml2Conf.sh")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE FILE FILES "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/xml2Conf.sh")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -284,5 +284,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/code/libxml2-2.9.12_merge_on_huawei/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

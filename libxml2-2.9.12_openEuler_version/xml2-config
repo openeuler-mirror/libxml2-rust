@@ -3,7 +3,7 @@
 prefix=$(cd "$(dirname "$0")"; pwd -P)/..
 exec_prefix=${prefix}
 includedir=${prefix}/include
-libdir=${prefix}/lib64
+libdir=${prefix}/lib
 cflags=
 libs=
 
@@ -86,7 +86,7 @@ while test $# -gt 0; do
             shift
             libs="-lxml2"
         else
-            libs="-lxml2 -lz -llzma    -lm -ldl"
+            libs="-lxml2 -lz -llzma -lpthread   -lm -ldl"
         fi
 
         if [ "-L${libdir}" != "-L/usr/lib" -a "-L${libdir}" != "-L/usr/lib64" ]; then
