@@ -1,6 +1,6 @@
 prefix=${pcfiledir}/../..
 exec_prefix=${prefix}
-libdir=${prefix}/lib64
+libdir=${prefix}/lib
 includedir=${prefix}/include
 modules=1
 
@@ -9,5 +9,5 @@ Version: 2.9.10
 Description: libXML library version2.
 Requires:
 Libs: -L${libdir} -lxml2
-Libs.private:   -lz -llzma  -lm  
+Libs.private:  -lpthread -lz -llzma  -lm  
 Cflags: -I${includedir}/libxml2 

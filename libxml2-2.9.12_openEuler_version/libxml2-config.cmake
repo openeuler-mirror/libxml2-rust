@@ -52,7 +52,7 @@ set(LIBXML2_VERSION_PATCH  10)
 set(LIBXML2_VERSION_STRING "2.9.10")
 set(LIBXML2_INSTALL_PREFIX ${PACKAGE_PREFIX_DIR})
 set(LIBXML2_INCLUDE_DIR    ${PACKAGE_PREFIX_DIR}/include/libxml2)
-set(LIBXML2_LIBRARY_DIR    ${PACKAGE_PREFIX_DIR}/lib64)
+set(LIBXML2_LIBRARY_DIR    ${PACKAGE_PREFIX_DIR}/lib)
 
 macro(select_library_location target basename)
   if(TARGET ${target})

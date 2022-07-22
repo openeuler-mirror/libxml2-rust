@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/code/libxml2-2.9.12_merge_on_huawei/xmlcatalog.c" "CMakeFiles/xmlcatalog.dir/xmlcatalog.c.o" "gcc" "CMakeFiles/xmlcatalog.dir/xmlcatalog.c.o.d"
+  "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/xmlcatalog.c" "CMakeFiles/xmlcatalog.dir/xmlcatalog.c.o" "gcc" "CMakeFiles/xmlcatalog.dir/xmlcatalog.c.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/LibXml2.dir/DependInfo.cmake"
+  "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/LibXml2.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

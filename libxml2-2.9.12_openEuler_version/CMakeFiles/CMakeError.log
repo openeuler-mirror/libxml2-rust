@@ -1,18 +1,85 @@
-Performing C SOURCE FILE Test HAVE_BROKEN_SS_FAMILY failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfaa.dir/src.c.o
-/usr/bin/cc -DHAVE_BROKEN_SS_FAMILY   -o CMakeFiles/cmTC_dbfaa.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c:7:48: error: ‘struct sockaddr_storage’ has no member named ‘__ss_family’; did you mean ‘ss_family’?
-    7 |   (void)sizeof(((struct sockaddr_storage *)0)->__ss_family);
-      |                                                ^~~~~~~~~~~
-      |                                                ss_family
-gmake[1]: *** [CMakeFiles/cmTC_dbfaa.dir/build.make:78: CMakeFiles/cmTC_dbfaa.dir/src.c.o] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfaa/fast] Error 2
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_a68d2/fast && /usr/bin/make  -f CMakeFiles/cmTC_a68d2.dir/build.make CMakeFiles/cmTC_a68d2.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a68d2.dir/src.c.o
+/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_a68d2.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_a68d2
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a68d2.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_a68d2.dir/src.c.o -o cmTC_a68d2 
+CMakeFiles/cmTC_a68d2.dir/src.c.o: In function `main':
+src.c:(.text+0x3e): undefined reference to `pthread_create'
+src.c:(.text+0x4a): undefined reference to `pthread_detach'
+src.c:(.text+0x56): undefined reference to `pthread_cancel'
+src.c:(.text+0x67): undefined reference to `pthread_join'
+src.c:(.text+0x7b): undefined reference to `pthread_atfork'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_a68d2.dir/build.make:98: recipe for target 'cmTC_a68d2' failed
+make[1]: *** [cmTC_a68d2] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_a68d2/fast' failed
+make: *** [cmTC_a68d2/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0737a/fast && /usr/bin/make  -f CMakeFiles/cmTC_0737a.dir/build.make CMakeFiles/cmTC_0737a.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0737a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_0737a.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0737a
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0737a.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_0737a.dir/CheckFunctionExists.c.o -o cmTC_0737a  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_0737a.dir/build.make:98: recipe for target 'cmTC_0737a' failed
+make[1]: *** [cmTC_0737a] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_0737a/fast' failed
+make: *** [cmTC_0737a/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test HAVE_BROKEN_SS_FAMILY failed with the following output:
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_92053/fast && /usr/bin/make  -f CMakeFiles/cmTC_92053.dir/build.make CMakeFiles/cmTC_92053.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_92053.dir/src.c.o
+/usr/bin/cc -DHAVE_BROKEN_SS_FAMILY   -o CMakeFiles/cmTC_92053.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/src.c
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/src.c:7:48: error: ‘struct sockaddr_storage’ has no member named ‘__ss_family’; did you mean ‘ss_family’?
+   (void)sizeof(((struct sockaddr_storage *)0)->__ss_family);
+                                                ^~~~~~~~~~~
+                                                ss_family
+CMakeFiles/cmTC_92053.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_92053.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_92053.dir/src.c.o] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_92053/fast' failed
+make: *** [cmTC_92053/fast] Error 2
 
 
 Source file was:
@@ -27,38 +94,42 @@ int main()
 }
 
 Determining if the function class exists failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfaa.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=class -o CMakeFiles/cmTC_dbfaa.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfaa
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfaa.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=class CMakeFiles/cmTC_dbfaa.dir/CheckFunctionExists.c.o -o cmTC_dbfaa  /usr/lib64/liblzma.so /usr/lib64/libz.so 
-/usr/bin/ld: CMakeFiles/cmTC_dbfaa.dir/CheckFunctionExists.c.o: in function `main':
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_48c8e/fast && /usr/bin/make  -f CMakeFiles/cmTC_48c8e.dir/build.make CMakeFiles/cmTC_48c8e.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_48c8e.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=class -o CMakeFiles/cmTC_48c8e.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_48c8e
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_48c8e.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=class CMakeFiles/cmTC_48c8e.dir/CheckFunctionExists.c.o -o cmTC_48c8e  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_48c8e.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `class'
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfaa.dir/build.make:101: cmTC_dbfaa] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfaa/fast] Error 2
+CMakeFiles/cmTC_48c8e.dir/build.make:100: recipe for target 'cmTC_48c8e' failed
+make[1]: *** [cmTC_48c8e] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_48c8e/fast' failed
+make: *** [cmTC_48c8e/fast] Error 2
 
 
 
 Determining if files dl.h exist failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaa/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaa.dir/build.make CMakeFiles/cmTC_dbfaa.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfaa.dir/HAVE_DL_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_dbfaa.dir/HAVE_DL_H.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_DL_H.c
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CheckIncludeFiles/HAVE_DL_H.c:2:10: fatal error: dl.h: No such file or directory
-    2 | #include <dl.h>
-      |          ^~~~~~
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d7cb2/fast && /usr/bin/make  -f CMakeFiles/cmTC_d7cb2.dir/build.make CMakeFiles/cmTC_d7cb2.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d7cb2.dir/HAVE_DL_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_d7cb2.dir/HAVE_DL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CheckIncludeFiles/HAVE_DL_H.c
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CheckIncludeFiles/HAVE_DL_H.c:2:10: fatal error: dl.h: No such file or directory
+ #include <dl.h>
+          ^~~~~~
 compilation terminated.
-gmake[1]: *** [CMakeFiles/cmTC_dbfaa.dir/build.make:78: CMakeFiles/cmTC_dbfaa.dir/HAVE_DL_H.c.o] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfaa/fast] Error 2
+CMakeFiles/cmTC_d7cb2.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_d7cb2.dir/HAVE_DL_H.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_d7cb2.dir/HAVE_DL_H.c.o] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_d7cb2/fast' failed
+make: *** [cmTC_d7cb2/fast] Error 2
 
 
 Source:
@@ -69,115 +140,127 @@ Source:
 int main(void){return 0;}
 
 Determining if the function fpclass exists failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fpclass -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfad
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fpclass CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
-/usr/bin/ld: CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o: in function `main':
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_2f0b1/fast && /usr/bin/make  -f CMakeFiles/cmTC_2f0b1.dir/build.make CMakeFiles/cmTC_2f0b1.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2f0b1.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fpclass -o CMakeFiles/cmTC_2f0b1.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_2f0b1
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2f0b1.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fpclass CMakeFiles/cmTC_2f0b1.dir/CheckFunctionExists.c.o -o cmTC_2f0b1  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_2f0b1.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `fpclass'
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfad.dir/build.make:101: cmTC_dbfad] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfad/fast] Error 2
+CMakeFiles/cmTC_2f0b1.dir/build.make:100: recipe for target 'cmTC_2f0b1' failed
+make[1]: *** [cmTC_2f0b1] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_2f0b1/fast' failed
+make: *** [cmTC_2f0b1/fast] Error 2
 
 
 
 Determining if the function fp_class exists failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfad/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfad.dir/build.make CMakeFiles/cmTC_dbfad.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fp_class -o CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfad
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfad.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fp_class CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o -o cmTC_dbfad  /usr/lib64/liblzma.so /usr/lib64/libz.so 
-/usr/bin/ld: CMakeFiles/cmTC_dbfad.dir/CheckFunctionExists.c.o: in function `main':
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0bbc6/fast && /usr/bin/make  -f CMakeFiles/cmTC_0bbc6.dir/build.make CMakeFiles/cmTC_0bbc6.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0bbc6.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fp_class -o CMakeFiles/cmTC_0bbc6.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0bbc6
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0bbc6.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fp_class CMakeFiles/cmTC_0bbc6.dir/CheckFunctionExists.c.o -o cmTC_0bbc6  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_0bbc6.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `fp_class'
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfad.dir/build.make:101: cmTC_dbfad] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfad/fast] Error 2
+CMakeFiles/cmTC_0bbc6.dir/build.make:100: recipe for target 'cmTC_0bbc6' failed
+make[1]: *** [cmTC_0bbc6] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_0bbc6/fast' failed
+make: *** [cmTC_0bbc6/fast] Error 2
 
 
 
 Determining if the function isnand exists failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isnand -o CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfac
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isnand CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -o cmTC_dbfac  /usr/lib64/liblzma.so /usr/lib64/libz.so 
-/usr/bin/ld: CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o: in function `main':
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_132ad/fast && /usr/bin/make  -f CMakeFiles/cmTC_132ad.dir/build.make CMakeFiles/cmTC_132ad.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_132ad.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isnand -o CMakeFiles/cmTC_132ad.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_132ad
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_132ad.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isnand CMakeFiles/cmTC_132ad.dir/CheckFunctionExists.c.o -o cmTC_132ad  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_132ad.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `isnand'
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfac.dir/build.make:101: cmTC_dbfac] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfac/fast] Error 2
+CMakeFiles/cmTC_132ad.dir/build.make:100: recipe for target 'cmTC_132ad' failed
+make[1]: *** [cmTC_132ad] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_132ad/fast' failed
+make: *** [cmTC_132ad/fast] Error 2
 
 
 
 Determining if the function append_history exists in the history failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=append_history -o CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfac
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=append_history CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -o cmTC_dbfac  -lhistory /usr/lib64/liblzma.so /usr/lib64/libz.so 
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_aab89/fast && /usr/bin/make  -f CMakeFiles/cmTC_aab89.dir/build.make CMakeFiles/cmTC_aab89.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_aab89.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=append_history -o CMakeFiles/cmTC_aab89.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_aab89
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aab89.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=append_history CMakeFiles/cmTC_aab89.dir/CheckFunctionExists.c.o -o cmTC_aab89  -lhistory /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 /usr/bin/ld: cannot find -lhistory
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfac.dir/build.make:101: cmTC_dbfac] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfac/fast] Error 2
+CMakeFiles/cmTC_aab89.dir/build.make:100: recipe for target 'cmTC_aab89' failed
+make[1]: *** [cmTC_aab89] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_aab89/fast' failed
+make: *** [cmTC_aab89/fast] Error 2
 
 
 
 Determining if the function readline exists in the readline failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfac.dir/build.make CMakeFiles/cmTC_dbfac.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=readline -o CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfac
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfac.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=readline CMakeFiles/cmTC_dbfac.dir/CheckFunctionExists.c.o -o cmTC_dbfac  -lreadline /usr/lib64/liblzma.so /usr/lib64/libz.so 
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_2101e/fast && /usr/bin/make  -f CMakeFiles/cmTC_2101e.dir/build.make CMakeFiles/cmTC_2101e.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2101e.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=readline -o CMakeFiles/cmTC_2101e.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_2101e
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2101e.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=readline CMakeFiles/cmTC_2101e.dir/CheckFunctionExists.c.o -o cmTC_2101e  -lreadline /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 /usr/bin/ld: cannot find -lreadline
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfac.dir/build.make:101: cmTC_dbfac] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfac/fast] Error 2
+CMakeFiles/cmTC_2101e.dir/build.make:100: recipe for target 'cmTC_2101e' failed
+make[1]: *** [cmTC_2101e] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_2101e/fast' failed
+make: *** [cmTC_2101e/fast] Error 2
 
 
 
 Determining if the DIR exist failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfaf/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfaf.dir/build.make CMakeFiles/cmTC_dbfaf.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfaf.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_dbfaf.dir/CheckSymbolExists.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: ndir.h: No such file or directory
-    2 | #include <ndir.h>
-      |          ^~~~~~~~
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_1aec7/fast && /usr/bin/make  -f CMakeFiles/cmTC_1aec7.dir/build.make CMakeFiles/cmTC_1aec7.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1aec7.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_1aec7.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: ndir.h: No such file or directory
+ #include <ndir.h>
+          ^~~~~~~~
 compilation terminated.
-gmake[1]: *** [CMakeFiles/cmTC_dbfaf.dir/build.make:78: CMakeFiles/cmTC_dbfaf.dir/CheckSymbolExists.c.o] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfaf/fast] Error 2
+CMakeFiles/cmTC_1aec7.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_1aec7.dir/CheckSymbolExists.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_1aec7.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_1aec7/fast' failed
+make: *** [cmTC_1aec7/fast] Error 2
 
 
-File /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <ndir.h>
 
@@ -192,40 +275,44 @@ int main(int argc, char** argv)
 #endif
 }
 Determining if the function shl_load exists in the dld failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfae.dir/build.make CMakeFiles/cmTC_dbfae.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=shl_load -o CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfae
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfae.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=shl_load CMakeFiles/cmTC_dbfae.dir/CheckFunctionExists.c.o -o cmTC_dbfae  -ldld /usr/lib64/liblzma.so /usr/lib64/libz.so 
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_16118/fast && /usr/bin/make  -f CMakeFiles/cmTC_16118.dir/build.make CMakeFiles/cmTC_16118.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_16118.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=shl_load -o CMakeFiles/cmTC_16118.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_16118
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16118.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=shl_load CMakeFiles/cmTC_16118.dir/CheckFunctionExists.c.o -o cmTC_16118  -ldld /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 /usr/bin/ld: cannot find -ldld
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfae.dir/build.make:101: cmTC_dbfae] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfae/fast] Error 2
+CMakeFiles/cmTC_16118.dir/build.make:100: recipe for target 'cmTC_16118' failed
+make[1]: *** [cmTC_16118] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_16118/fast' failed
+make: *** [cmTC_16118/fast] Error 2
 
 
 
 Determining if the DIR exist failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfb1.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/CheckSymbolExists.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: expected expression before ‘DIR’
-    8 |   return ((int*)(&DIR))[argc];
-      |                   ^~~
-gmake[1]: *** [CMakeFiles/cmTC_dbfb1.dir/build.make:78: CMakeFiles/cmTC_dbfb1.dir/CheckSymbolExists.c.o] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfb1/fast] Error 2
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_142ef/fast && /usr/bin/make  -f CMakeFiles/cmTC_142ef.dir/build.make CMakeFiles/cmTC_142ef.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_142ef.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_142ef.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: expected expression before ‘DIR’
+   return ((int*)(&DIR))[argc];
+                   ^~~
+CMakeFiles/cmTC_142ef.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_142ef.dir/CheckSymbolExists.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_142ef.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_142ef/fast' failed
+make: *** [cmTC_142ef/fast] Error 2
 
 
-File /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <sys/dir.h>
 
@@ -240,22 +327,24 @@ int main(int argc, char** argv)
 #endif
 }
 Determining if the DIR exist failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfb1.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_dbfb1.dir/CheckSymbolExists.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: sys/ndir.h: No such file or directory
-    2 | #include <sys/ndir.h>
-      |          ^~~~~~~~~~~~
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_643d0/fast && /usr/bin/make  -f CMakeFiles/cmTC_643d0.dir/build.make CMakeFiles/cmTC_643d0.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_643d0.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_643d0.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: sys/ndir.h: No such file or directory
+ #include <sys/ndir.h>
+          ^~~~~~~~~~~~
 compilation terminated.
-gmake[1]: *** [CMakeFiles/cmTC_dbfb1.dir/build.make:78: CMakeFiles/cmTC_dbfb1.dir/CheckSymbolExists.c.o] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfb1/fast] Error 2
+CMakeFiles/cmTC_643d0.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_643d0.dir/CheckSymbolExists.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_643d0.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_643d0/fast' failed
+make: *** [cmTC_643d0/fast] Error 2
 
 
-File /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <sys/ndir.h>
 
@@ -270,57 +359,63 @@ int main(int argc, char** argv)
 #endif
 }
 Determining if the function va_copy exists failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb1.dir/build.make CMakeFiles/cmTC_dbfb1.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfb1.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=va_copy -o CMakeFiles/cmTC_dbfb1.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfb1
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb1.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=va_copy CMakeFiles/cmTC_dbfb1.dir/CheckFunctionExists.c.o -o cmTC_dbfb1  /usr/lib64/liblzma.so /usr/lib64/libz.so 
-/usr/bin/ld: CMakeFiles/cmTC_dbfb1.dir/CheckFunctionExists.c.o: in function `main':
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c53d9/fast && /usr/bin/make  -f CMakeFiles/cmTC_c53d9.dir/build.make CMakeFiles/cmTC_c53d9.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c53d9.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=va_copy -o CMakeFiles/cmTC_c53d9.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c53d9
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c53d9.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=va_copy CMakeFiles/cmTC_c53d9.dir/CheckFunctionExists.c.o -o cmTC_c53d9  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_c53d9.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `va_copy'
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfb1.dir/build.make:101: cmTC_dbfb1] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfb1/fast] Error 2
+CMakeFiles/cmTC_c53d9.dir/build.make:100: recipe for target 'cmTC_c53d9' failed
+make[1]: *** [cmTC_c53d9] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_c53d9/fast' failed
+make: *** [cmTC_c53d9/fast] Error 2
 
 
 
 Determining if the function __va_copy exists failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=__va_copy -o CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dbfb0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbfb0.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=__va_copy CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o -o cmTC_dbfb0  /usr/lib64/liblzma.so /usr/lib64/libz.so 
-/usr/bin/ld: CMakeFiles/cmTC_dbfb0.dir/CheckFunctionExists.c.o: in function `main':
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_e500d/fast && /usr/bin/make  -f CMakeFiles/cmTC_e500d.dir/build.make CMakeFiles/cmTC_e500d.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e500d.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=__va_copy -o CMakeFiles/cmTC_e500d.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e500d
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e500d.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=__va_copy CMakeFiles/cmTC_e500d.dir/CheckFunctionExists.c.o -o cmTC_e500d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_e500d.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `__va_copy'
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_dbfb0.dir/build.make:101: cmTC_dbfb0] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfb0/fast] Error 2
+CMakeFiles/cmTC_e500d.dir/build.make:100: recipe for target 'cmTC_e500d' failed
+make[1]: *** [cmTC_e500d] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_e500d/fast' failed
+make: *** [cmTC_e500d/fast] Error 2
 
 
 
 Performing C SOURCE FILE Test VA_LIST_IS_ARRAY_TEST failed with the following output:
-Change Dir: /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp
+Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_dbfb0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_dbfb0.dir/build.make CMakeFiles/cmTC_dbfb0.dir/build
-gmake[1]: Entering directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dbfb0.dir/src.c.o
-/usr/bin/cc -DVA_LIST_IS_ARRAY_TEST   -o CMakeFiles/cmTC_dbfb0.dir/src.c.o -c /home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
-/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp/src.c:4:49: error: cast specifies array type
-    4 |   int main() { va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1; return 0; }
-      |                                                 ^
-gmake[1]: *** [CMakeFiles/cmTC_dbfb0.dir/build.make:78: CMakeFiles/cmTC_dbfb0.dir/src.c.o] Error 1
-gmake[1]: Leaving directory '/home/code/libxml2-2.9.12_merge_on_huawei/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_dbfb0/fast] Error 2
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_45bf6/fast && /usr/bin/make  -f CMakeFiles/cmTC_45bf6.dir/build.make CMakeFiles/cmTC_45bf6.dir/build
+make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_45bf6.dir/src.c.o
+/usr/bin/cc -DVA_LIST_IS_ARRAY_TEST   -o CMakeFiles/cmTC_45bf6.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/src.c
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp/src.c:4:49: error: cast specifies array type
+   int main() { va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1; return 0; }
+                                                 ^
+CMakeFiles/cmTC_45bf6.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_45bf6.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_45bf6.dir/src.c.o] Error 1
+make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_45bf6/fast' failed
+make: *** [cmTC_45bf6/fast] Error 2
 
 
 Source file was:
