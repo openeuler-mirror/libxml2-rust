@@ -5,14 +5,31 @@ pub fn xmlCheckVersion(mut version: libc::c_int) {
     xmlInitParser_safe();
     if myversion / 10000 as libc::c_int != version / 10000 as libc::c_int {
         unsafe {
-            safe__xmlGenericError.expect("non-null function pointer")(safe__xmlGenericErrorContext,b"Fatal: program compiled against libxml %d using libxml %d\n\x00" as *const u8 as *const libc::c_char,
-                version / 10000 as libc::c_int,myversion / 10000 as libc::c_int,);
-            fprintf(stderr,b"Fatal: program compiled against libxml %d using libxml %d\n\x00" as *const u8 as *const libc::c_char,version / 10000 as libc::c_int,myversion / 10000 as libc::c_int,);
+            safe__xmlGenericError.expect("non-null function pointer")(
+                safe__xmlGenericErrorContext,
+                b"Fatal: program compiled against libxml %d using libxml %d\n\x00" as *const u8
+                    as *const libc::c_char,
+                version / 10000 as libc::c_int,
+                myversion / 10000 as libc::c_int,
+            );
+            fprintf(
+                stderr,
+                b"Fatal: program compiled against libxml %d using libxml %d\n\x00" as *const u8
+                    as *const libc::c_char,
+                version / 10000 as libc::c_int,
+                myversion / 10000 as libc::c_int,
+            );
         }
     }
     if (myversion / 100 as libc::c_int) < version / 100 as libc::c_int {
         unsafe {
-            safe__xmlGenericError.expect("non-null function pointer")(safe__xmlGenericErrorContext,b"Warning: program compiled against libxml %d using older %d\n\x00" as *const u8 as *const libc::c_char,version / 100 as libc::c_int,myversion / 100 as libc::c_int,);
+            safe__xmlGenericError.expect("non-null function pointer")(
+                safe__xmlGenericErrorContext,
+                b"Warning: program compiled against libxml %d using older %d\n\x00" as *const u8
+                    as *const libc::c_char,
+                version / 100 as libc::c_int,
+                myversion / 100 as libc::c_int,
+            );
         }
     };
 }
@@ -32,11 +49,46 @@ pub fn xmlErrMemory(mut ctxt: xmlParserCtxtPtr, mut extra: *const libc::c_char) 
     }
     if !extra.is_null() {
         unsafe {
-            __xmlRaiseError(None,None,0 as *mut libc::c_void,ctxt as *mut libc::c_void,0 as *mut libc::c_void,XML_FROM_PARSER as libc::c_int,XML_ERR_NO_MEMORY as libc::c_int,XML_ERR_FATAL,0 as *const libc::c_char,0 as libc::c_int,extra,0 as *const libc::c_char,0 as *const libc::c_char,0 as libc::c_int,0 as libc::c_int,b"Memory allocation failed : %s\n\x00" as *const u8 as *const libc::c_char,extra,);
+            __xmlRaiseError(
+                None,
+                None,
+                0 as *mut libc::c_void,
+                ctxt as *mut libc::c_void,
+                0 as *mut libc::c_void,
+                XML_FROM_PARSER as libc::c_int,
+                XML_ERR_NO_MEMORY as libc::c_int,
+                XML_ERR_FATAL,
+                0 as *const libc::c_char,
+                0 as libc::c_int,
+                extra,
+                0 as *const libc::c_char,
+                0 as *const libc::c_char,
+                0 as libc::c_int,
+                0 as libc::c_int,
+                b"Memory allocation failed : %s\n\x00" as *const u8 as *const libc::c_char,
+                extra,
+            );
         }
     } else {
         unsafe {
-            __xmlRaiseError(None,None,0 as *mut libc::c_void,ctxt as *mut libc::c_void,0 as *mut libc::c_void,XML_FROM_PARSER as libc::c_int,XML_ERR_NO_MEMORY as libc::c_int,XML_ERR_FATAL,0 as *const libc::c_char,0 as libc::c_int,0 as *const libc::c_char,0 as *const libc::c_char,0 as *const libc::c_char,0 as libc::c_int,0 as libc::c_int,b"Memory allocation failed\n\x00" as *const u8 as *const libc::c_char,);
+            __xmlRaiseError(
+                None,
+                None,
+                0 as *mut libc::c_void,
+                ctxt as *mut libc::c_void,
+                0 as *mut libc::c_void,
+                XML_FROM_PARSER as libc::c_int,
+                XML_ERR_NO_MEMORY as libc::c_int,
+                XML_ERR_FATAL,
+                0 as *const libc::c_char,
+                0 as libc::c_int,
+                0 as *const libc::c_char,
+                0 as *const libc::c_char,
+                0 as *const libc::c_char,
+                0 as libc::c_int,
+                0 as libc::c_int,
+                b"Memory allocation failed\n\x00" as *const u8 as *const libc::c_char,
+            );
         }
     };
 }
@@ -59,7 +111,26 @@ pub fn __xmlErrEncoding(
         safe_ctxt.errNo = xmlerr as libc::c_int
     }
     unsafe {
-        __xmlRaiseError(None,None,0 as *mut libc::c_void,ctxt as *mut libc::c_void,0 as *mut libc::c_void,XML_FROM_PARSER as libc::c_int,xmlerr as libc::c_int,XML_ERR_FATAL,0 as *const libc::c_char,0 as libc::c_int,str1 as *const libc::c_char,str2 as *const libc::c_char,0 as *const libc::c_char,0 as libc::c_int,0 as libc::c_int,msg,str1,str2,);
+        __xmlRaiseError(
+            None,
+            None,
+            0 as *mut libc::c_void,
+            ctxt as *mut libc::c_void,
+            0 as *mut libc::c_void,
+            XML_FROM_PARSER as libc::c_int,
+            xmlerr as libc::c_int,
+            XML_ERR_FATAL,
+            0 as *const libc::c_char,
+            0 as libc::c_int,
+            str1 as *const libc::c_char,
+            str2 as *const libc::c_char,
+            0 as *const libc::c_char,
+            0 as libc::c_int,
+            0 as libc::c_int,
+            msg,
+            str1,
+            str2,
+        );
     }
     if !ctxt.is_null() {
         safe_ctxt.wellFormed = 0 as libc::c_int;
@@ -68,7 +139,6 @@ pub fn __xmlErrEncoding(
         }
     };
 }
-
 
 fn xmlErrInternal(
     mut ctxt: xmlParserCtxtPtr,
@@ -86,7 +156,25 @@ fn xmlErrInternal(
         safe_ctxt.errNo = XML_ERR_INTERNAL_ERROR as libc::c_int
     }
     unsafe {
-        __xmlRaiseError(None,None,0 as *mut libc::c_void,ctxt as *mut libc::c_void,0 as *mut libc::c_void,XML_FROM_PARSER as libc::c_int,XML_ERR_INTERNAL_ERROR as libc::c_int,XML_ERR_FATAL,0 as *const libc::c_char,0 as libc::c_int,str as *const libc::c_char,0 as *const libc::c_char,0 as *const libc::c_char,0 as libc::c_int,0 as libc::c_int,msg,str,);
+        __xmlRaiseError(
+            None,
+            None,
+            0 as *mut libc::c_void,
+            ctxt as *mut libc::c_void,
+            0 as *mut libc::c_void,
+            XML_FROM_PARSER as libc::c_int,
+            XML_ERR_INTERNAL_ERROR as libc::c_int,
+            XML_ERR_FATAL,
+            0 as *const libc::c_char,
+            0 as libc::c_int,
+            str as *const libc::c_char,
+            0 as *const libc::c_char,
+            0 as *const libc::c_char,
+            0 as libc::c_int,
+            0 as libc::c_int,
+            msg,
+            str,
+        );
     }
     if !ctxt.is_null() {
         safe_ctxt.wellFormed = 0 as libc::c_int;
@@ -95,7 +183,6 @@ fn xmlErrInternal(
         }
     };
 }
-
 
 fn xmlErrEncodingInt(
     mut ctxt: xmlParserCtxtPtr,
@@ -114,7 +201,25 @@ fn xmlErrEncodingInt(
         safe_ctxt.errNo = error as libc::c_int
     }
     unsafe {
-        __xmlRaiseError(None,None,0 as *mut libc::c_void,ctxt as *mut libc::c_void,0 as *mut libc::c_void,XML_FROM_PARSER as libc::c_int,error as libc::c_int,XML_ERR_FATAL,0 as *const libc::c_char,0 as libc::c_int,0 as *const libc::c_char,0 as *const libc::c_char,0 as *const libc::c_char,val,0 as libc::c_int,msg,val,);
+        __xmlRaiseError(
+            None,
+            None,
+            0 as *mut libc::c_void,
+            ctxt as *mut libc::c_void,
+            0 as *mut libc::c_void,
+            XML_FROM_PARSER as libc::c_int,
+            error as libc::c_int,
+            XML_ERR_FATAL,
+            0 as *const libc::c_char,
+            0 as libc::c_int,
+            0 as *const libc::c_char,
+            0 as *const libc::c_char,
+            0 as *const libc::c_char,
+            val,
+            0 as libc::c_int,
+            msg,
+            val,
+        );
     }
     if !ctxt.is_null() {
         safe_ctxt.wellFormed = 0 as libc::c_int;
@@ -126,14 +231,21 @@ fn xmlErrEncodingInt(
 
 pub fn xmlIsLetter(mut c: libc::c_int) -> libc::c_int {
     return ((if c < 0x100 as libc::c_int {
-        (0x41 as libc::c_int <= c && c <= 0x5a as libc::c_int|| 0x61 as libc::c_int <= c && c <= 0x7a as libc::c_int|| 0xc0 as libc::c_int <= c && c <= 0xd6 as libc::c_int|| 0xd8 as libc::c_int <= c && c <= 0xf6 as libc::c_int|| 0xf8 as libc::c_int <= c) as libc::c_int
+        (0x41 as libc::c_int <= c && c <= 0x5a as libc::c_int
+            || 0x61 as libc::c_int <= c && c <= 0x7a as libc::c_int
+            || 0xc0 as libc::c_int <= c && c <= 0xd6 as libc::c_int
+            || 0xd8 as libc::c_int <= c && c <= 0xf6 as libc::c_int
+            || 0xf8 as libc::c_int <= c) as libc::c_int
     } else {
         unsafe { xmlCharInRange(c as libc::c_uint, &xmlIsBaseCharGroup) }
     }) != 0
         || (if c < 0x100 as libc::c_int {
             0 as libc::c_int
         } else {
-            (0x4e00 as libc::c_int <= c && c <= 0x9fa5 as libc::c_int|| c == 0x3007 as libc::c_int|| 0x3021 as libc::c_int <= c && c <= 0x3029 as libc::c_int) as libc::c_int
+            (0x4e00 as libc::c_int <= c && c <= 0x9fa5 as libc::c_int
+                || c == 0x3007 as libc::c_int
+                || 0x3021 as libc::c_int <= c && c <= 0x3029 as libc::c_int)
+                as libc::c_int
         }) != 0) as libc::c_int;
 }
 
@@ -437,7 +549,15 @@ pub fn xmlNextChar_parserInternals(mut ctxt: xmlParserCtxtPtr) {
                                         || val > 0xfffd as libc::c_int as libc::c_uint
                                             && val < 0x10000 as libc::c_int as libc::c_uint
                                         || val >= 0x110000 as libc::c_int as libc::c_uint
-                                    {xmlErrEncodingInt(ctxt,XML_ERR_INVALID_CHAR,b"Char 0x%X out of allowed range\n\x00" as *const u8 as *const libc::c_char,val as libc::c_int,);}
+                                    {
+                                        xmlErrEncodingInt(
+                                            ctxt,
+                                            XML_ERR_INVALID_CHAR,
+                                            b"Char 0x%X out of allowed range\n\x00" as *const u8
+                                                as *const libc::c_char,
+                                            val as libc::c_int,
+                                        );
+                                    }
                                     current_block = 6072622540298447352;
                                 }
                             }
@@ -457,7 +577,14 @@ pub fn xmlNextChar_parserInternals(mut ctxt: xmlParserCtxtPtr) {
                                 as libc::c_long)
                                 < 4 as libc::c_int as libc::c_long
                         {
-                            __xmlErrEncoding(ctxt,XML_ERR_INVALID_CHAR,b"Input is not proper UTF-8, indicate encoding !\n\x00" as *const u8 as *const libc::c_char,0 as *const xmlChar,0 as *const xmlChar,);
+                            __xmlErrEncoding(
+                                ctxt,
+                                XML_ERR_INVALID_CHAR,
+                                b"Input is not proper UTF-8, indicate encoding !\n\x00" as *const u8
+                                    as *const libc::c_char,
+                                0 as *const xmlChar,
+                                0 as *const xmlChar,
+                            );
                         } else {
                             let mut buffer: [libc::c_char; 150] = [0; 150];
                             snprintf(
@@ -474,7 +601,15 @@ pub fn xmlNextChar_parserInternals(mut ctxt: xmlParserCtxtPtr) {
                                 *(*safe_ctxt.input).cur.offset(3 as libc::c_int as isize)
                                     as libc::c_int,
                             );
-                            __xmlErrEncoding(ctxt,XML_ERR_INVALID_CHAR,b"Input is not proper UTF-8, indicate encoding !\n%s\x00" as *const u8 as *const libc::c_char,buffer.as_mut_ptr() as *mut xmlChar,0 as *const xmlChar,);
+                            __xmlErrEncoding(
+                                ctxt,
+                                XML_ERR_INVALID_CHAR,
+                                b"Input is not proper UTF-8, indicate encoding !\n%s\x00"
+                                    as *const u8
+                                    as *const libc::c_char,
+                                buffer.as_mut_ptr() as *mut xmlChar,
+                                0 as *const xmlChar,
+                            );
                         }
                         safe_ctxt.charset = XML_CHAR_ENCODING_8859_1 as libc::c_int;
                         (*safe_ctxt.input).cur = (*safe_ctxt.input).cur.offset(1);
@@ -670,7 +805,14 @@ pub fn xmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut libc::c_int) -> 
                     *(*safe_ctxt.input).cur.offset(2 as libc::c_int as isize) as libc::c_int,
                     *(*safe_ctxt.input).cur.offset(3 as libc::c_int as isize) as libc::c_int,
                 );
-                __xmlErrEncoding(ctxt,XML_ERR_INVALID_CHAR,b"Input is not proper UTF-8, indicate encoding !\n%s\x00" as *const u8 as *const libc::c_char,buffer.as_mut_ptr() as *mut xmlChar,0 as *const xmlChar,);
+                __xmlErrEncoding(
+                    ctxt,
+                    XML_ERR_INVALID_CHAR,
+                    b"Input is not proper UTF-8, indicate encoding !\n%s\x00" as *const u8
+                        as *const libc::c_char,
+                    buffer.as_mut_ptr() as *mut xmlChar,
+                    0 as *const xmlChar,
+                );
                 safe_ctxt.charset = XML_CHAR_ENCODING_8859_1 as libc::c_int;
                 *len = 1 as libc::c_int;
                 return *(*safe_ctxt.input).cur as libc::c_int;
@@ -682,7 +824,12 @@ pub fn xmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut libc::c_int) -> 
                 if *(*safe_ctxt.input).cur as libc::c_int == 0 as libc::c_int
                     && (*safe_ctxt.input).end > (*safe_ctxt.input).cur
                 {
-                    xmlErrEncodingInt(ctxt,XML_ERR_INVALID_CHAR,b"Char 0x0 out of allowed range\n\x00" as *const u8 as *const libc::c_char,0 as libc::c_int,);
+                    xmlErrEncodingInt(
+                        ctxt,
+                        XML_ERR_INVALID_CHAR,
+                        b"Char 0x0 out of allowed range\n\x00" as *const u8 as *const libc::c_char,
+                        0 as libc::c_int,
+                    );
                 }
                 if *(*safe_ctxt.input).cur as libc::c_int == 0xd as libc::c_int {
                     if *(*safe_ctxt.input).cur.offset(1 as libc::c_int as isize) as libc::c_int
@@ -835,7 +982,14 @@ pub fn xmlStringCurrentChar(
                     *(*safe_ctxt.input).cur.offset(2 as libc::c_int as isize) as libc::c_int,
                     *(*safe_ctxt.input).cur.offset(3 as libc::c_int as isize) as libc::c_int,
                 );
-                __xmlErrEncoding(ctxt,XML_ERR_INVALID_CHAR,b"Input is not proper UTF-8, indicate encoding !\n%s\x00" as *const u8 as *const libc::c_char,buffer.as_mut_ptr() as *mut xmlChar,0 as *const xmlChar,);
+                __xmlErrEncoding(
+                    ctxt,
+                    XML_ERR_INVALID_CHAR,
+                    b"Input is not proper UTF-8, indicate encoding !\n%s\x00" as *const u8
+                        as *const libc::c_char,
+                    buffer.as_mut_ptr() as *mut xmlChar,
+                    0 as *const xmlChar,
+                );
                 *len = 1 as libc::c_int;
                 return *cur as libc::c_int;
             } else {
@@ -883,7 +1037,13 @@ pub fn xmlCopyCharMultiByte(mut out: *mut xmlChar, mut val: libc::c_int) -> libc
             bits = 12 as libc::c_int
         } else {
             unsafe {
-                xmlErrEncodingInt(0 as xmlParserCtxtPtr,XML_ERR_INVALID_CHAR,b"Internal error, xmlCopyCharMultiByte 0x%X out of bound\n\x00" as *const u8 as *const libc::c_char,val,);
+                xmlErrEncodingInt(
+                    0 as xmlParserCtxtPtr,
+                    XML_ERR_INVALID_CHAR,
+                    b"Internal error, xmlCopyCharMultiByte 0x%X out of bound\n\x00" as *const u8
+                        as *const libc::c_char,
+                    val,
+                );
             }
             return 0 as libc::c_int;
         }
@@ -921,7 +1081,6 @@ pub fn xmlCopyChar_parserInternals(
     }
     return 1 as libc::c_int;
 }
-
 
 pub fn xmlSwitchEncoding_parserInternals(
     mut ctxt: xmlParserCtxtPtr,
@@ -1005,23 +1164,59 @@ pub fn xmlSwitchEncoding_parserInternals(
                     return 0 as libc::c_int;
                 }
                 4 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"USC4 little endian\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,);
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"USC4 little endian\x00" as *const u8 as *const libc::c_char
+                            as *mut xmlChar,
+                        0 as *const xmlChar,
+                    );
                 }
                 5 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"USC4 big endian\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,);
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"USC4 big endian\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
+                        0 as *const xmlChar,
+                    );
                 }
                 6 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"EBCDIC\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"EBCDIC\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
+                        0 as *const xmlChar,
                     );
                 }
                 7 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"UCS4 2143\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,);
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"UCS4 2143\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
+                        0 as *const xmlChar,
+                    );
                 }
                 8 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"UCS4 3412\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,);
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"UCS4 3412\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
+                        0 as *const xmlChar,
+                    );
                 }
                 9 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"UCS2\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,);
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"UCS2\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
+                        0 as *const xmlChar,
+                    );
                 }
                 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 => {
                     if safe_ctxt.inputNr == 1 as libc::c_int
@@ -1035,13 +1230,31 @@ pub fn xmlSwitchEncoding_parserInternals(
                     return 0 as libc::c_int;
                 }
                 19 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"ISO-2022-JP\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,);
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"ISO-2022-JP\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
+                        0 as *const xmlChar,
+                    );
                 }
                 20 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"Shift_JIS\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,);
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"Shift_JIS\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
+                        0 as *const xmlChar,
+                    );
                 }
                 21 => {
-                    __xmlErrEncoding(ctxt,XML_ERR_UNSUPPORTED_ENCODING,b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,b"EUC-JP\x00" as *const u8 as *const libc::c_char as *mut xmlChar,0 as *const xmlChar,);
+                    __xmlErrEncoding(
+                        ctxt,
+                        XML_ERR_UNSUPPORTED_ENCODING,
+                        b"encoding not supported %s\n\x00" as *const u8 as *const libc::c_char,
+                        b"EUC-JP\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
+                        0 as *const xmlChar,
+                    );
                 }
                 2 | 3 | _ => {}
             }
@@ -1199,7 +1412,11 @@ fn xmlSwitchToEncodingInt(
             if !safe_ctxt.input.is_null() {
                 ret = xmlSwitchInputEncodingInt(ctxt, safe_ctxt.input, handler, len)
             } else {
-                xmlErrInternal(ctxt,b"xmlSwitchToEncoding : no input\n\x00" as *const u8 as *const libc::c_char,0 as *const xmlChar,);
+                xmlErrInternal(
+                    ctxt,
+                    b"xmlSwitchToEncoding : no input\n\x00" as *const u8 as *const libc::c_char,
+                    0 as *const xmlChar,
+                );
                 return -(1 as libc::c_int);
             }
         }
@@ -1325,28 +1542,59 @@ pub fn xmlNewEntityInputStream(
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
     unsafe {
         if entity.is_null() {
-            xmlErrInternal(ctxt,b"xmlNewEntityInputStream entity = NULL\n\x00" as *const u8 as *const libc::c_char,0 as *const xmlChar,);
+            xmlErrInternal(
+                ctxt,
+                b"xmlNewEntityInputStream entity = NULL\n\x00" as *const u8 as *const libc::c_char,
+                0 as *const xmlChar,
+            );
             return 0 as xmlParserInputPtr;
         }
         if *__xmlParserDebugEntities() != 0 {
-            (safe__xmlGenericError).expect("non-null function pointer")(safe__xmlGenericErrorContext,b"new input from entity: %s\n\x00" as *const u8 as *const libc::c_char,(*entity).name,);
+            (safe__xmlGenericError).expect("non-null function pointer")(
+                safe__xmlGenericErrorContext,
+                b"new input from entity: %s\n\x00" as *const u8 as *const libc::c_char,
+                (*entity).name,
+            );
         }
         if (*entity).content.is_null() {
             match (*entity).etype as libc::c_uint {
                 3 => {
-                    xmlErrInternal(ctxt,b"Cannot parse entity %s\n\x00" as *const u8 as *const libc::c_char,(*entity).name,);
+                    xmlErrInternal(
+                        ctxt,
+                        b"Cannot parse entity %s\n\x00" as *const u8 as *const libc::c_char,
+                        (*entity).name,
+                    );
                 }
                 2 | 5 => {
-                    return xmlLoadExternalEntity((*entity).URI as *mut libc::c_char,(*entity).ExternalID as *mut libc::c_char,ctxt,)
+                    return xmlLoadExternalEntity(
+                        (*entity).URI as *mut libc::c_char,
+                        (*entity).ExternalID as *mut libc::c_char,
+                        ctxt,
+                    )
                 }
                 1 => {
-                    xmlErrInternal(ctxt,b"Internal entity %s without content !\n\x00" as *const u8 as *const libc::c_char,(*entity).name,);
+                    xmlErrInternal(
+                        ctxt,
+                        b"Internal entity %s without content !\n\x00" as *const u8
+                            as *const libc::c_char,
+                        (*entity).name,
+                    );
                 }
                 4 => {
-                    xmlErrInternal(ctxt,b"Internal parameter entity %s without content !\n\x00" as *const u8 as *const libc::c_char,(*entity).name,);
+                    xmlErrInternal(
+                        ctxt,
+                        b"Internal parameter entity %s without content !\n\x00" as *const u8
+                            as *const libc::c_char,
+                        (*entity).name,
+                    );
                 }
                 6 => {
-                    xmlErrInternal(ctxt,b"Predefined entity %s without content !\n\x00" as *const u8 as *const libc::c_char,(*entity).name,);
+                    xmlErrInternal(
+                        ctxt,
+                        b"Predefined entity %s without content !\n\x00" as *const u8
+                            as *const libc::c_char,
+                        (*entity).name,
+                    );
                 }
                 _ => {}
             }
@@ -1384,15 +1632,26 @@ pub fn xmlNewStringInputStream_parserInternals(
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
     unsafe {
         if buffer.is_null() {
-            xmlErrInternal(ctxt,b"xmlNewStringInputStream string = NULL\n\x00" as *const u8 as *const libc::c_char,0 as *const xmlChar,);
+            xmlErrInternal(
+                ctxt,
+                b"xmlNewStringInputStream string = NULL\n\x00" as *const u8 as *const libc::c_char,
+                0 as *const xmlChar,
+            );
             return 0 as xmlParserInputPtr;
         }
         if *__xmlParserDebugEntities() != 0 {
-            (safe__xmlGenericError).expect("non-null function pointer")(safe__xmlGenericErrorContext,b"new fixed input: %.30s\n\x00" as *const u8 as *const libc::c_char,buffer,);
+            (safe__xmlGenericError).expect("non-null function pointer")(
+                safe__xmlGenericErrorContext,
+                b"new fixed input: %.30s\n\x00" as *const u8 as *const libc::c_char,
+                buffer,
+            );
         }
         input = xmlNewInputStream(ctxt);
         if input.is_null() {
-            xmlErrMemory(ctxt,b"couldn\'t allocate a new input stream\n\x00" as *const u8 as *const libc::c_char,);
+            xmlErrMemory(
+                ctxt,
+                b"couldn\'t allocate a new input stream\n\x00" as *const u8 as *const libc::c_char,
+            );
             return 0 as xmlParserInputPtr;
         }
     }
@@ -1418,7 +1677,11 @@ pub fn xmlNewInputFromFile(
     let mut URI: *mut xmlChar = 0 as *mut xmlChar;
     unsafe {
         if *__xmlParserDebugEntities() != 0 {
-            (safe__xmlGenericError).expect("non-null function pointer")(safe__xmlGenericErrorContext,b"new input from file: %s\n\x00" as *const u8 as *const libc::c_char,filename,);
+            (safe__xmlGenericError).expect("non-null function pointer")(
+                safe__xmlGenericErrorContext,
+                b"new input from file: %s\n\x00" as *const u8 as *const libc::c_char,
+                filename,
+            );
         }
     }
     if ctxt.is_null() {
@@ -1428,9 +1691,19 @@ pub fn xmlNewInputFromFile(
         buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
         if buf.is_null() {
             if filename.is_null() {
-                __xmlLoaderErr(ctxt as *mut libc::c_void,b"failed to load external entity: NULL filename \n\x00" as *const u8 as *const libc::c_char,0 as *const libc::c_char,);
+                __xmlLoaderErr(
+                    ctxt as *mut libc::c_void,
+                    b"failed to load external entity: NULL filename \n\x00" as *const u8
+                        as *const libc::c_char,
+                    0 as *const libc::c_char,
+                );
             } else {
-                __xmlLoaderErr(ctxt as *mut libc::c_void,b"failed to load external entity \"%s\"\n\x00" as *const u8 as *const libc::c_char,filename,);
+                __xmlLoaderErr(
+                    ctxt as *mut libc::c_void,
+                    b"failed to load external entity \"%s\"\n\x00" as *const u8
+                        as *const libc::c_char,
+                    filename,
+                );
             }
             return 0 as xmlParserInputPtr;
         }
@@ -1475,7 +1748,11 @@ pub fn xmlInitParserCtxt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
     if ctxt.is_null() {
         unsafe {
-            xmlErrInternal(0 as xmlParserCtxtPtr,b"Got NULL parser context\n\x00" as *const u8 as *const libc::c_char,0 as *const xmlChar,);
+            xmlErrInternal(
+                0 as xmlParserCtxtPtr,
+                b"Got NULL parser context\n\x00" as *const u8 as *const libc::c_char,
+                0 as *const xmlChar,
+            );
         }
         return -(1 as libc::c_int);
     }
@@ -1487,13 +1764,21 @@ pub fn xmlInitParserCtxt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     }
     if safe_ctxt.dict.is_null() {
         unsafe {
-            xmlErrMemory(0 as xmlParserCtxtPtr,b"cannot initialize parser context\n\x00" as *const u8 as *const libc::c_char,);
+            xmlErrMemory(
+                0 as xmlParserCtxtPtr,
+                b"cannot initialize parser context\n\x00" as *const u8 as *const libc::c_char,
+            );
         }
         return -(1 as libc::c_int);
     }
     xmlDictSetLimit_safe(safe_ctxt.dict, 10000000 as libc::c_int as size_t);
     unsafe {
-        if safe_ctxt.sax.is_null() {safe_ctxt.sax = xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::< xmlSAXHandler,>() as libc::c_ulong) as *mut xmlSAXHandler}
+        if safe_ctxt.sax.is_null() {
+            safe_ctxt.sax = xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<
+                xmlSAXHandler,
+            >()
+                as libc::c_ulong) as *mut xmlSAXHandler
+        }
         if safe_ctxt.sax.is_null() {
             xmlErrMemory(
                 0 as xmlParserCtxtPtr,
@@ -1877,7 +2162,11 @@ pub fn xmlNewParserCtxt_parserInternals() -> xmlParserCtxtPtr {
             );
             return 0 as xmlParserCtxtPtr;
         }
-        memset(ctxt as *mut libc::c_void,0 as libc::c_int,::std::mem::size_of::<xmlParserCtxt>() as libc::c_ulong,);
+        memset(
+            ctxt as *mut libc::c_void,
+            0 as libc::c_int,
+            ::std::mem::size_of::<xmlParserCtxt>() as libc::c_ulong,
+        );
         if xmlInitParserCtxt(ctxt) < 0 as libc::c_int {
             xmlFreeParserCtxt(ctxt);
             return 0 as xmlParserCtxtPtr;
@@ -1885,7 +2174,6 @@ pub fn xmlNewParserCtxt_parserInternals() -> xmlParserCtxtPtr {
     }
     return ctxt;
 }
-
 
 pub fn xmlClearParserCtxt(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -2036,7 +2324,10 @@ pub fn xmlParserAddNodeInfo_parserInternals(
             }
             if tmp_buffer.is_null() {
                 unsafe {
-                    xmlErrMemory(ctxt,b"failed to allocate buffer\n\x00" as *const u8 as *const libc::c_char,)
+                    xmlErrMemory(
+                        ctxt,
+                        b"failed to allocate buffer\n\x00" as *const u8 as *const libc::c_char,
+                    )
                 };
                 return;
             }
@@ -2051,7 +2342,10 @@ pub fn xmlParserAddNodeInfo_parserInternals(
             i = safe_ctxt.node_seq.length;
             while i > pos {
                 unsafe {
-                    *safe_ctxt.node_seq.buffer.offset(i as isize) = *safe_ctxt.node_seq.buffer.offset(i.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize)
+                    *safe_ctxt.node_seq.buffer.offset(i as isize) = *safe_ctxt
+                        .node_seq
+                        .buffer
+                        .offset(i.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize)
                 };
                 i = i.wrapping_sub(1)
             }
