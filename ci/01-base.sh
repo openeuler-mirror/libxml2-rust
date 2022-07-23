@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /libxml2-2.9.12_github_version/rust
+
 #开始检查
 cargo fmt --all -- --check -v
 cargo clean
