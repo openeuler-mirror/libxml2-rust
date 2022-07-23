@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cd /libxml2-2.9.12_github_version/rust
+cd $(cd `dirname $0`;pwd)
+cd ./libxml2-2.9.12_github_version/rust
 
 #开始检查
 cargo fmt --all -- --check -v
