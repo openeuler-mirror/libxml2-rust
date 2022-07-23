@@ -10,16 +10,16 @@ cargo clean
 cargo clippy --all-targets --all-features --tests --benches -- -v
 cargo clean
 
-cargo check
-cargo clean
+# cargo check
+# cargo clean
 
-#cargo rustc -- -D warnings
-bin=$(sed -n '/[[bin]]/ {n;p}' Cargo.toml | sed 's/\"//g' | sed 's/name = //g')
-for bin_name in $bin
-do
-echo $bin_name
-cargo rustc --bin $bin_name -- -D warnings -v
-done
+# #cargo rustc -- -D warnings
+# bin=$(sed -n '/[[bin]]/ {n;p}' Cargo.toml | sed 's/\"//g' | sed 's/name = //g')
+# for bin_name in $bin
+# do
+# echo $bin_name
+# cargo rustc --bin $bin_name -- -D warnings -v
+# done
 
 # cargo build --release -v
 
