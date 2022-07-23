@@ -5,8 +5,6 @@ rm -rf CMakeCache.txt
 rm -rf cmake_install.cmake
 rm -rf CMakeFiles
 rm -rf Makefile
-make clean
-make distclean
 cmake -DSTEP="build"
 make
 
