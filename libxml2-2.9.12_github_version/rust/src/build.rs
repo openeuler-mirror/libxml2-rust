@@ -5,7 +5,7 @@ extern crate rust_ffi;
 fn main() {
     let mut rust_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     rust_path.pop();
-    let archive_path: String =String::from(rust_path.to_string_lossy());
+    let archive_path: String = String::from(rust_path.to_string_lossy());
     println!("cargo:rustc-link-lib=static=xml2");
     println!("cargo:rustc-link-search=native={}", archive_path);
 
@@ -87,28 +87,28 @@ fn main() {
     /**
      * xpath.c
      **/
-     rust_ffi::xp_optimized_non_elem_comparison_add_cfg();
-     rust_ffi::with_tim_sort_add_cfg();
-     rust_ffi::xp_optimized_filter_first_add_cfg();
-     rust_ffi::debug_eval_counts_add_cfg();
-     rust_ffi::xpath_streaming_add_cfg();
-     rust_ffi::libxml_thread_enabled_add_cfg();
-     rust_ffi::libxml_xptr_enabled_add_cfg();
-     rust_ffi::borlandc_or_msc_ver_and_msc_ver_add_cfg();
-     rust_ffi::xmlxpathnodesetsort_add_cfg();
-     rust_ffi::gnuc_add_cfg();
-     rust_ffi::aix_add_cfg();
-     rust_ffi::debug_expr_add_cfg();
-     rust_ffi::libxml_docb_enabled_add_cfg();
-     rust_ffi::xp_default_cache_on_add_cfg();
-     rust_ffi::xp_debug_obj_usage_add_cfg();
-     rust_ffi::xml_xml_namespace_add_cfg();
-     rust_ffi::debug_or_debug_step_add_cfg();
-     rust_ffi::debug_add_cfg();
-     rust_ffi::isnan_add_cfg();
-     rust_ffi::isinf_add_cfg();
-     rust_ffi::libxml_debug_enabled_add_cfg();
-     rust_ffi::libxml_xpath_enabled_or_libxml_schemas_enabled_add_cfg();
-     rust_ffi::libxml_xpath_enabled_add_cfg();
-     rust_ffi::debug_step_add_cfg();
+    rust_ffi::xp_optimized_non_elem_comparison_add_cfg();
+    rust_ffi::with_tim_sort_add_cfg();
+    rust_ffi::xp_optimized_filter_first_add_cfg();
+    rust_ffi::debug_eval_counts_add_cfg();
+    rust_ffi::xpath_streaming_add_cfg();
+    rust_ffi::libxml_thread_enabled_add_cfg();
+    rust_ffi::libxml_xptr_enabled_add_cfg();
+    rust_ffi::borlandc_or_msc_ver_and_msc_ver_add_cfg();
+    rust_ffi::xmlxpathnodesetsort_add_cfg();
+    rust_ffi::gnuc_add_cfg();
+    rust_ffi::aix_add_cfg();
+    rust_ffi::debug_expr_add_cfg();
+    rust_ffi::libxml_docb_enabled_add_cfg();
+    rust_ffi::xp_default_cache_on_add_cfg();
+    rust_ffi::xp_debug_obj_usage_add_cfg();
+    rust_ffi::xml_xml_namespace_add_cfg();
+    rust_ffi::debug_or_debug_step_add_cfg();
+    rust_ffi::debug_add_cfg();
+    rust_ffi::isnan_add_cfg();
+    rust_ffi::isinf_add_cfg();
+    rust_ffi::libxml_debug_enabled_add_cfg();
+    rust_ffi::libxml_xpath_enabled_or_libxml_schemas_enabled_add_cfg();
+    rust_ffi::libxml_xpath_enabled_add_cfg();
+    rust_ffi::debug_step_add_cfg();
 }

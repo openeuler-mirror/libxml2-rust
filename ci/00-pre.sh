@@ -1,6 +1,9 @@
 #!/bin/bash
 sudo yum clean all
-sudo yum install -y gcc openssl-libs
+sudo yum install -y gcc  openssl-libs
+
+sudo yum install -y make cmake
+sudo yum install -y libxml2-devel python3-devel zlib-devel bzip2-devel
 
 #git加速并安装rust工具链
 git config --global url."https://github.91chi.fun/https://github.com/".insteadOf "https://github.com/"

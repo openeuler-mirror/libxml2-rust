@@ -1,12 +1,22 @@
 #!/bin/bash
 
+cd ./libxml2-2.9.12_github_version
+rm -rf CMakeCache.txt
+rm -rf cmake_install.cmake
+rm -rf CMakeFiles
+rm -rf Makefile
+cmake -DSTEP="build"
+make
+
+cd ./rust
+
 #开始检查
 cargo fmt --all -- --check -v
 cargo clean
 
 #cargo clippy --all-targets --all-features --tests --benches -- -D warnings
-cargo clippy --all-targets --all-features --tests --benches -- -v
-cargo clean
+# cargo clippy --all-targets --all-features --tests --benches -- -v
+# cargo clean
 
 cargo check
 cargo clean
