@@ -21,7 +21,9 @@ cargo clean
 cargo check
 cargo clean
 
-cd ..
+cd ../
+cmake -DSTEP="link"
+make 
 ctest
 
 #cargo rustc -- -D warnings
