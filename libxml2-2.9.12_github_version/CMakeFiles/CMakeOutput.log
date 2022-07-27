@@ -15,10 +15,10 @@ The C compiler identification is GNU, found in "/root/pr/20220713_01/libxml2-rus
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_a090b/fast && /usr/bin/make  -f CMakeFiles/cmTC_a090b.dir/build.make CMakeFiles/cmTC_a090b.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_19844/fast && /usr/bin/make  -f CMakeFiles/cmTC_19844.dir/build.make CMakeFiles/cmTC_19844.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc   -v -o CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CMakeCCompilerABI.c
+Building C object CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc   -v -o CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CMakeCCompilerABI.c
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 OFFLOAD_TARGET_NAMES=nvptx-none
@@ -27,8 +27,8 @@ Target: x86_64-linux-gnu
 Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.5.0-3ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
 gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) 
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/7/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/cmake/1088/share/cmake-3.23/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o -version -fstack-protector-strong -Wformat -Wformat-security -o /tmp/cczBZGFV.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/7/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/cmake/1088/share/cmake-3.23/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o -version -fstack-protector-strong -Wformat -Wformat-security -o /tmp/cce6pccm.s
 GNU C11 (Ubuntu 7.5.0-3ubuntu1~18.04) version 7.5.0 (x86_64-linux-gnu)
 	compiled by GNU C version 7.5.0, GMP version 6.1.2, MPFR version 4.0.1, MPC version 1.1.0, isl version isl-0.19-GMP
 
@@ -48,15 +48,15 @@ GNU C11 (Ubuntu 7.5.0-3ubuntu1~18.04) version 7.5.0 (x86_64-linux-gnu)
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 Compiler executable checksum: b62ed4a2880cd4159476ea8293b72fa8
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
- as -v --64 -o CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o /tmp/cczBZGFV.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ as -v --64 -o CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o /tmp/cce6pccm.s
 GNU assembler version 2.30 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.30
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
-Linking C executable cmTC_a090b
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a090b.dir/link.txt --verbose=1
-/usr/bin/cc  -v CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o -o cmTC_a090b 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+Linking C executable cmTC_19844
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19844.dir/link.txt --verbose=1
+/usr/bin/cc  -v CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o -o cmTC_19844 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper
@@ -68,9 +68,9 @@ Thread model: posix
 gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a090b' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccnuSTiY.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_a090b /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a090b' '-mtune=generic' '-march=x86-64'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_19844' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/cco9e50n.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_19844 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_19844' '-mtune=generic' '-march=x86-64'
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -96,10 +96,10 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/make -f Makefile cmTC_a090b/fast && /usr/bin/make  -f CMakeFiles/cmTC_a090b.dir/build.make CMakeFiles/cmTC_a090b.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/make -f Makefile cmTC_19844/fast && /usr/bin/make  -f CMakeFiles/cmTC_19844.dir/build.make CMakeFiles/cmTC_19844.dir/build]
   ignore line: [make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CMakeCCompilerABI.c]
+  ignore line: [Building C object CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CMakeCCompilerABI.c]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
@@ -108,8 +108,8 @@ Parsed C implicit link information from above output:
   ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.5.0-3ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
   ignore line: [Thread model: posix]
   ignore line: [gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/7/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/cmake/1088/share/cmake-3.23/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o -version -fstack-protector-strong -Wformat -Wformat-security -o /tmp/cczBZGFV.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/7/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/cmake/1088/share/cmake-3.23/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o -version -fstack-protector-strong -Wformat -Wformat-security -o /tmp/cce6pccm.s]
   ignore line: [GNU C11 (Ubuntu 7.5.0-3ubuntu1~18.04) version 7.5.0 (x86_64-linux-gnu)]
   ignore line: [	compiled by GNU C version 7.5.0  GMP version 6.1.2  MPFR version 4.0.1  MPC version 1.1.0  isl version isl-0.19-GMP]
   ignore line: []
@@ -129,15 +129,15 @@ Parsed C implicit link information from above output:
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [Compiler executable checksum: b62ed4a2880cd4159476ea8293b72fa8]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [ as -v --64 -o CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o /tmp/cczBZGFV.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o /tmp/cce6pccm.s]
   ignore line: [GNU assembler version 2.30 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.30]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [Linking C executable cmTC_a090b]
-  ignore line: [/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a090b.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc  -v CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o -o cmTC_a090b ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [Linking C executable cmTC_19844]
+  ignore line: [/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19844.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc  -v CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o -o cmTC_19844 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper]
@@ -149,13 +149,13 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a090b' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccnuSTiY.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_a090b /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_19844' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/cco9e50n.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_19844 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccnuSTiY.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cco9e50n.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -173,7 +173,7 @@ Parsed C implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_a090b] ==> ignore
+    arg [cmTC_19844] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o]
@@ -185,7 +185,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..]
-    arg [CMakeFiles/cmTC_a090b.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_19844.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--push-state] ==> ignore
     arg [--as-needed] ==> ignore
@@ -219,13 +219,13 @@ Parsed C implicit link information from above output:
 Performing C SOURCE FILE Test Iconv_IS_BUILT_IN succeeded with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_d2d5f/fast && /usr/bin/make  -f CMakeFiles/cmTC_d2d5f.dir/build.make CMakeFiles/cmTC_d2d5f.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_739b3/fast && /usr/bin/make  -f CMakeFiles/cmTC_739b3.dir/build.make CMakeFiles/cmTC_739b3.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_d2d5f.dir/src.c.o
-/usr/bin/cc -DIconv_IS_BUILT_IN   -o CMakeFiles/cmTC_d2d5f.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_d2d5f
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d2d5f.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_d2d5f.dir/src.c.o -o cmTC_d2d5f 
+Building C object CMakeFiles/cmTC_739b3.dir/src.c.o
+/usr/bin/cc -DIconv_IS_BUILT_IN   -o CMakeFiles/cmTC_739b3.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_739b3
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_739b3.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_739b3.dir/src.c.o -o cmTC_739b3 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -245,13 +245,13 @@ Source file was:
 Determining if the function lzma_auto_decoder exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_3d303/fast && /usr/bin/make  -f CMakeFiles/cmTC_3d303.dir/build.make CMakeFiles/cmTC_3d303.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_b5dfa/fast && /usr/bin/make  -f CMakeFiles/cmTC_b5dfa.dir/build.make CMakeFiles/cmTC_b5dfa.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_3d303.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder -o CMakeFiles/cmTC_3d303.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_3d303
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3d303.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder CMakeFiles/cmTC_3d303.dir/CheckFunctionExists.c.o -o cmTC_3d303  /usr/lib/x86_64-linux-gnu/liblzma.so 
+Building C object CMakeFiles/cmTC_b5dfa.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder -o CMakeFiles/cmTC_b5dfa.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b5dfa
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b5dfa.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder CMakeFiles/cmTC_b5dfa.dir/CheckFunctionExists.c.o -o cmTC_b5dfa  /usr/lib/x86_64-linux-gnu/liblzma.so 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -259,13 +259,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function lzma_easy_encoder exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_80b8f/fast && /usr/bin/make  -f CMakeFiles/cmTC_80b8f.dir/build.make CMakeFiles/cmTC_80b8f.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_dbd30/fast && /usr/bin/make  -f CMakeFiles/cmTC_dbd30.dir/build.make CMakeFiles/cmTC_dbd30.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_80b8f.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder -o CMakeFiles/cmTC_80b8f.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_80b8f
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_80b8f.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder CMakeFiles/cmTC_80b8f.dir/CheckFunctionExists.c.o -o cmTC_80b8f  /usr/lib/x86_64-linux-gnu/liblzma.so 
+Building C object CMakeFiles/cmTC_dbd30.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder -o CMakeFiles/cmTC_dbd30.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dbd30
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbd30.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder CMakeFiles/cmTC_dbd30.dir/CheckFunctionExists.c.o -o cmTC_dbd30  /usr/lib/x86_64-linux-gnu/liblzma.so 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -273,13 +273,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function lzma_lzma_preset exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_f5d30/fast && /usr/bin/make  -f CMakeFiles/cmTC_f5d30.dir/build.make CMakeFiles/cmTC_f5d30.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4ec9b/fast && /usr/bin/make  -f CMakeFiles/cmTC_4ec9b.dir/build.make CMakeFiles/cmTC_4ec9b.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f5d30.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset -o CMakeFiles/cmTC_f5d30.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_f5d30
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f5d30.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset CMakeFiles/cmTC_f5d30.dir/CheckFunctionExists.c.o -o cmTC_f5d30  /usr/lib/x86_64-linux-gnu/liblzma.so 
+Building C object CMakeFiles/cmTC_4ec9b.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset -o CMakeFiles/cmTC_4ec9b.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_4ec9b
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4ec9b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset CMakeFiles/cmTC_4ec9b.dir/CheckFunctionExists.c.o -o cmTC_4ec9b  /usr/lib/x86_64-linux-gnu/liblzma.so 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -287,13 +287,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files unistd.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_00616/fast && /usr/bin/make  -f CMakeFiles/cmTC_00616.dir/build.make CMakeFiles/cmTC_00616.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_023d3/fast && /usr/bin/make  -f CMakeFiles/cmTC_023d3.dir/build.make CMakeFiles/cmTC_023d3.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_00616.dir/HAVE_UNISTD_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_00616.dir/HAVE_UNISTD_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_UNISTD_H.c
-Linking C executable cmTC_00616
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_00616.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_00616.dir/HAVE_UNISTD_H.c.o -o cmTC_00616 
+Building C object CMakeFiles/cmTC_023d3.dir/HAVE_UNISTD_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_023d3.dir/HAVE_UNISTD_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_UNISTD_H.c
+Linking C executable cmTC_023d3
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_023d3.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_023d3.dir/HAVE_UNISTD_H.c.o -o cmTC_023d3 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -301,13 +301,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the F_GETFL exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_791d4/fast && /usr/bin/make  -f CMakeFiles/cmTC_791d4.dir/build.make CMakeFiles/cmTC_791d4.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_08534/fast && /usr/bin/make  -f CMakeFiles/cmTC_08534.dir/build.make CMakeFiles/cmTC_08534.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_791d4.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_791d4.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_791d4
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_791d4.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_791d4.dir/CheckSymbolExists.c.o -o cmTC_791d4 
+Building C object CMakeFiles/cmTC_08534.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_08534.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_08534
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_08534.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_08534.dir/CheckSymbolExists.c.o -o cmTC_08534 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -328,13 +328,13 @@ int main(int argc, char** argv)
 Determining if the include file pthread.h exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_27aa8/fast && /usr/bin/make  -f CMakeFiles/cmTC_27aa8.dir/build.make CMakeFiles/cmTC_27aa8.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4e3cd/fast && /usr/bin/make  -f CMakeFiles/cmTC_4e3cd.dir/build.make CMakeFiles/cmTC_4e3cd.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_27aa8.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_27aa8.dir/CheckIncludeFile.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_27aa8
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_27aa8.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_27aa8.dir/CheckIncludeFile.c.o -o cmTC_27aa8 
+Building C object CMakeFiles/cmTC_4e3cd.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_4e3cd.dir/CheckIncludeFile.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_4e3cd
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4e3cd.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_4e3cd.dir/CheckIncludeFile.c.o -o cmTC_4e3cd 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -342,13 +342,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function pthread_create exists in the pthread passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_27379/fast && /usr/bin/make  -f CMakeFiles/cmTC_27379.dir/build.make CMakeFiles/cmTC_27379.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c8212/fast && /usr/bin/make  -f CMakeFiles/cmTC_c8212.dir/build.make CMakeFiles/cmTC_c8212.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_27379.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_27379.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_27379
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_27379.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_27379.dir/CheckFunctionExists.c.o -o cmTC_27379  -lpthread 
+Building C object CMakeFiles/cmTC_c8212.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_c8212.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c8212
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c8212.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_c8212.dir/CheckFunctionExists.c.o -o cmTC_c8212  -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -356,13 +356,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Performing C SOURCE FILE Test ATTRIBUTE_DESTRUCTOR succeeded with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_a21e4/fast && /usr/bin/make  -f CMakeFiles/cmTC_a21e4.dir/build.make CMakeFiles/cmTC_a21e4.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4b448/fast && /usr/bin/make  -f CMakeFiles/cmTC_4b448.dir/build.make CMakeFiles/cmTC_4b448.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a21e4.dir/src.c.o
-/usr/bin/cc -DATTRIBUTE_DESTRUCTOR   -o CMakeFiles/cmTC_a21e4.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_a21e4
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a21e4.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_a21e4.dir/src.c.o -o cmTC_a21e4  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_4b448.dir/src.c.o
+/usr/bin/cc -DATTRIBUTE_DESTRUCTOR   -o CMakeFiles/cmTC_4b448.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_4b448
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4b448.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_4b448.dir/src.c.o -o cmTC_4b448  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -375,13 +375,13 @@ Source file was:
 Performing C SOURCE FILE Test GETHOSTBYNAME_ARG_CAST_CONST succeeded with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_1cd61/fast && /usr/bin/make  -f CMakeFiles/cmTC_1cd61.dir/build.make CMakeFiles/cmTC_1cd61.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_10c0d/fast && /usr/bin/make  -f CMakeFiles/cmTC_10c0d.dir/build.make CMakeFiles/cmTC_10c0d.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1cd61.dir/src.c.o
-/usr/bin/cc -DGETHOSTBYNAME_ARG_CAST_CONST   -o CMakeFiles/cmTC_1cd61.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_1cd61
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1cd61.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_1cd61.dir/src.c.o -o cmTC_1cd61  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_10c0d.dir/src.c.o
+/usr/bin/cc -DGETHOSTBYNAME_ARG_CAST_CONST   -o CMakeFiles/cmTC_10c0d.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_10c0d
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_10c0d.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_10c0d.dir/src.c.o -o cmTC_10c0d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -393,13 +393,13 @@ Source file was:
 Determining if files arpa/inet.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_4d7c5/fast && /usr/bin/make  -f CMakeFiles/cmTC_4d7c5.dir/build.make CMakeFiles/cmTC_4d7c5.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_f7185/fast && /usr/bin/make  -f CMakeFiles/cmTC_f7185.dir/build.make CMakeFiles/cmTC_f7185.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4d7c5.dir/HAVE_ARPA_INET_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_4d7c5.dir/HAVE_ARPA_INET_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_ARPA_INET_H.c
-Linking C executable cmTC_4d7c5
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d7c5.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_4d7c5.dir/HAVE_ARPA_INET_H.c.o -o cmTC_4d7c5  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_f7185.dir/HAVE_ARPA_INET_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_f7185.dir/HAVE_ARPA_INET_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_ARPA_INET_H.c
+Linking C executable cmTC_f7185
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f7185.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_f7185.dir/HAVE_ARPA_INET_H.c.o -o cmTC_f7185  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -407,13 +407,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files arpa/nameser.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_96db4/fast && /usr/bin/make  -f CMakeFiles/cmTC_96db4.dir/build.make CMakeFiles/cmTC_96db4.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_2612b/fast && /usr/bin/make  -f CMakeFiles/cmTC_2612b.dir/build.make CMakeFiles/cmTC_2612b.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_96db4.dir/HAVE_ARPA_NAMESER_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_96db4.dir/HAVE_ARPA_NAMESER_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_ARPA_NAMESER_H.c
-Linking C executable cmTC_96db4
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_96db4.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_96db4.dir/HAVE_ARPA_NAMESER_H.c.o -o cmTC_96db4  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_2612b.dir/HAVE_ARPA_NAMESER_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_2612b.dir/HAVE_ARPA_NAMESER_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_ARPA_NAMESER_H.c
+Linking C executable cmTC_2612b
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2612b.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_2612b.dir/HAVE_ARPA_NAMESER_H.c.o -o cmTC_2612b  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -421,13 +421,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Performing C SOURCE FILE Test HAVE_SS_FAMILY succeeded with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_70baa/fast && /usr/bin/make  -f CMakeFiles/cmTC_70baa.dir/build.make CMakeFiles/cmTC_70baa.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_f67f2/fast && /usr/bin/make  -f CMakeFiles/cmTC_f67f2.dir/build.make CMakeFiles/cmTC_f67f2.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_70baa.dir/src.c.o
-/usr/bin/cc -DHAVE_SS_FAMILY   -o CMakeFiles/cmTC_70baa.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_70baa
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_70baa.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_70baa.dir/src.c.o -o cmTC_70baa  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_f67f2.dir/src.c.o
+/usr/bin/cc -DHAVE_SS_FAMILY   -o CMakeFiles/cmTC_f67f2.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_f67f2
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f67f2.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_f67f2.dir/src.c.o -o cmTC_f67f2  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -445,13 +445,13 @@ int main()
 Determining if files ctype.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_41c8a/fast && /usr/bin/make  -f CMakeFiles/cmTC_41c8a.dir/build.make CMakeFiles/cmTC_41c8a.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c3877/fast && /usr/bin/make  -f CMakeFiles/cmTC_c3877.dir/build.make CMakeFiles/cmTC_c3877.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_41c8a.dir/HAVE_CTYPE_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_41c8a.dir/HAVE_CTYPE_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_CTYPE_H.c
-Linking C executable cmTC_41c8a
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41c8a.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_41c8a.dir/HAVE_CTYPE_H.c.o -o cmTC_41c8a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_c3877.dir/HAVE_CTYPE_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_c3877.dir/HAVE_CTYPE_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_CTYPE_H.c
+Linking C executable cmTC_c3877
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c3877.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_c3877.dir/HAVE_CTYPE_H.c.o -o cmTC_c3877  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -459,13 +459,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files dirent.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_9307a/fast && /usr/bin/make  -f CMakeFiles/cmTC_9307a.dir/build.make CMakeFiles/cmTC_9307a.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_1df46/fast && /usr/bin/make  -f CMakeFiles/cmTC_1df46.dir/build.make CMakeFiles/cmTC_1df46.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9307a.dir/HAVE_DIRENT_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_9307a.dir/HAVE_DIRENT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_DIRENT_H.c
-Linking C executable cmTC_9307a
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9307a.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_9307a.dir/HAVE_DIRENT_H.c.o -o cmTC_9307a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_1df46.dir/HAVE_DIRENT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_1df46.dir/HAVE_DIRENT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_DIRENT_H.c
+Linking C executable cmTC_1df46
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1df46.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_1df46.dir/HAVE_DIRENT_H.c.o -o cmTC_1df46  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -473,13 +473,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files dlfcn.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_8346a/fast && /usr/bin/make  -f CMakeFiles/cmTC_8346a.dir/build.make CMakeFiles/cmTC_8346a.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0e0d0/fast && /usr/bin/make  -f CMakeFiles/cmTC_0e0d0.dir/build.make CMakeFiles/cmTC_0e0d0.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8346a.dir/HAVE_DLFCN_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_8346a.dir/HAVE_DLFCN_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_DLFCN_H.c
-Linking C executable cmTC_8346a
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8346a.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_8346a.dir/HAVE_DLFCN_H.c.o -o cmTC_8346a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_0e0d0.dir/HAVE_DLFCN_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_0e0d0.dir/HAVE_DLFCN_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_DLFCN_H.c
+Linking C executable cmTC_0e0d0
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0e0d0.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_0e0d0.dir/HAVE_DLFCN_H.c.o -o cmTC_0e0d0  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -487,13 +487,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function dlopen exists in the dl passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_700aa/fast && /usr/bin/make  -f CMakeFiles/cmTC_700aa.dir/build.make CMakeFiles/cmTC_700aa.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c1736/fast && /usr/bin/make  -f CMakeFiles/cmTC_c1736.dir/build.make CMakeFiles/cmTC_c1736.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_700aa.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=dlopen -o CMakeFiles/cmTC_700aa.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_700aa
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_700aa.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=dlopen CMakeFiles/cmTC_700aa.dir/CheckFunctionExists.c.o -o cmTC_700aa  -ldl /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_c1736.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=dlopen -o CMakeFiles/cmTC_c1736.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c1736
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c1736.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=dlopen CMakeFiles/cmTC_c1736.dir/CheckFunctionExists.c.o -o cmTC_c1736  -ldl /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -501,13 +501,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files errno.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_947a5/fast && /usr/bin/make  -f CMakeFiles/cmTC_947a5.dir/build.make CMakeFiles/cmTC_947a5.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_648c4/fast && /usr/bin/make  -f CMakeFiles/cmTC_648c4.dir/build.make CMakeFiles/cmTC_648c4.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_947a5.dir/HAVE_ERRNO_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_947a5.dir/HAVE_ERRNO_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_ERRNO_H.c
-Linking C executable cmTC_947a5
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_947a5.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_947a5.dir/HAVE_ERRNO_H.c.o -o cmTC_947a5  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_648c4.dir/HAVE_ERRNO_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_648c4.dir/HAVE_ERRNO_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_ERRNO_H.c
+Linking C executable cmTC_648c4
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_648c4.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_648c4.dir/HAVE_ERRNO_H.c.o -o cmTC_648c4  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -515,13 +515,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files fcntl.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_7fca9/fast && /usr/bin/make  -f CMakeFiles/cmTC_7fca9.dir/build.make CMakeFiles/cmTC_7fca9.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_51c34/fast && /usr/bin/make  -f CMakeFiles/cmTC_51c34.dir/build.make CMakeFiles/cmTC_51c34.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7fca9.dir/HAVE_FCNTL_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_7fca9.dir/HAVE_FCNTL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_FCNTL_H.c
-Linking C executable cmTC_7fca9
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7fca9.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_7fca9.dir/HAVE_FCNTL_H.c.o -o cmTC_7fca9  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_51c34.dir/HAVE_FCNTL_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_51c34.dir/HAVE_FCNTL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_FCNTL_H.c
+Linking C executable cmTC_51c34
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_51c34.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_51c34.dir/HAVE_FCNTL_H.c.o -o cmTC_51c34  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -529,17 +529,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function finite exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_64e7a/fast && /usr/bin/make  -f CMakeFiles/cmTC_64e7a.dir/build.make CMakeFiles/cmTC_64e7a.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_1658d/fast && /usr/bin/make  -f CMakeFiles/cmTC_1658d.dir/build.make CMakeFiles/cmTC_1658d.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_64e7a.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=finite -o CMakeFiles/cmTC_64e7a.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_1658d.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=finite -o CMakeFiles/cmTC_1658d.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘finite’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_64e7a
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_64e7a.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=finite CMakeFiles/cmTC_64e7a.dir/CheckFunctionExists.c.o -o cmTC_64e7a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_1658d
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1658d.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=finite CMakeFiles/cmTC_1658d.dir/CheckFunctionExists.c.o -o cmTC_1658d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -547,13 +547,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files float.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_3620d/fast && /usr/bin/make  -f CMakeFiles/cmTC_3620d.dir/build.make CMakeFiles/cmTC_3620d.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_673bd/fast && /usr/bin/make  -f CMakeFiles/cmTC_673bd.dir/build.make CMakeFiles/cmTC_673bd.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_3620d.dir/HAVE_FLOAT_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_3620d.dir/HAVE_FLOAT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_FLOAT_H.c
-Linking C executable cmTC_3620d
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3620d.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_3620d.dir/HAVE_FLOAT_H.c.o -o cmTC_3620d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_673bd.dir/HAVE_FLOAT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_673bd.dir/HAVE_FLOAT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_FLOAT_H.c
+Linking C executable cmTC_673bd
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_673bd.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_673bd.dir/HAVE_FLOAT_H.c.o -o cmTC_673bd  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -561,17 +561,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function fprintf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_d2f75/fast && /usr/bin/make  -f CMakeFiles/cmTC_d2f75.dir/build.make CMakeFiles/cmTC_d2f75.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_5428a/fast && /usr/bin/make  -f CMakeFiles/cmTC_5428a.dir/build.make CMakeFiles/cmTC_5428a.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_d2f75.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fprintf -o CMakeFiles/cmTC_d2f75.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_5428a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fprintf -o CMakeFiles/cmTC_5428a.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘fprintf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_d2f75
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d2f75.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fprintf CMakeFiles/cmTC_d2f75.dir/CheckFunctionExists.c.o -o cmTC_d2f75  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_5428a
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5428a.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fprintf CMakeFiles/cmTC_5428a.dir/CheckFunctionExists.c.o -o cmTC_5428a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -579,13 +579,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function ftime exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_a9dcd/fast && /usr/bin/make  -f CMakeFiles/cmTC_a9dcd.dir/build.make CMakeFiles/cmTC_a9dcd.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4780f/fast && /usr/bin/make  -f CMakeFiles/cmTC_4780f.dir/build.make CMakeFiles/cmTC_4780f.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a9dcd.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=ftime -o CMakeFiles/cmTC_a9dcd.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_a9dcd
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a9dcd.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=ftime CMakeFiles/cmTC_a9dcd.dir/CheckFunctionExists.c.o -o cmTC_a9dcd  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_4780f.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=ftime -o CMakeFiles/cmTC_4780f.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_4780f
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4780f.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=ftime CMakeFiles/cmTC_4780f.dir/CheckFunctionExists.c.o -o cmTC_4780f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -593,13 +593,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function getaddrinfo exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_6b66e/fast && /usr/bin/make  -f CMakeFiles/cmTC_6b66e.dir/build.make CMakeFiles/cmTC_6b66e.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_9ef08/fast && /usr/bin/make  -f CMakeFiles/cmTC_9ef08.dir/build.make CMakeFiles/cmTC_9ef08.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_6b66e.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=getaddrinfo -o CMakeFiles/cmTC_6b66e.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_6b66e
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6b66e.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=getaddrinfo CMakeFiles/cmTC_6b66e.dir/CheckFunctionExists.c.o -o cmTC_6b66e  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_9ef08.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=getaddrinfo -o CMakeFiles/cmTC_9ef08.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_9ef08
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9ef08.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=getaddrinfo CMakeFiles/cmTC_9ef08.dir/CheckFunctionExists.c.o -o cmTC_9ef08  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -607,13 +607,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function gettimeofday exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_597bc/fast && /usr/bin/make  -f CMakeFiles/cmTC_597bc.dir/build.make CMakeFiles/cmTC_597bc.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d75b6/fast && /usr/bin/make  -f CMakeFiles/cmTC_d75b6.dir/build.make CMakeFiles/cmTC_d75b6.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_597bc.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gettimeofday -o CMakeFiles/cmTC_597bc.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_597bc
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_597bc.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=gettimeofday CMakeFiles/cmTC_597bc.dir/CheckFunctionExists.c.o -o cmTC_597bc  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_d75b6.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gettimeofday -o CMakeFiles/cmTC_d75b6.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d75b6
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d75b6.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=gettimeofday CMakeFiles/cmTC_d75b6.dir/CheckFunctionExists.c.o -o cmTC_d75b6  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -621,13 +621,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files inttypes.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_91c3a/fast && /usr/bin/make  -f CMakeFiles/cmTC_91c3a.dir/build.make CMakeFiles/cmTC_91c3a.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_ae625/fast && /usr/bin/make  -f CMakeFiles/cmTC_ae625.dir/build.make CMakeFiles/cmTC_ae625.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_91c3a.dir/HAVE_INTTYPES_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_91c3a.dir/HAVE_INTTYPES_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_INTTYPES_H.c
-Linking C executable cmTC_91c3a
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_91c3a.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_91c3a.dir/HAVE_INTTYPES_H.c.o -o cmTC_91c3a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_ae625.dir/HAVE_INTTYPES_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_ae625.dir/HAVE_INTTYPES_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_INTTYPES_H.c
+Linking C executable cmTC_ae625
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ae625.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_ae625.dir/HAVE_INTTYPES_H.c.o -o cmTC_ae625  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -635,17 +635,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function isascii exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_9163f/fast && /usr/bin/make  -f CMakeFiles/cmTC_9163f.dir/build.make CMakeFiles/cmTC_9163f.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_a53d6/fast && /usr/bin/make  -f CMakeFiles/cmTC_a53d6.dir/build.make CMakeFiles/cmTC_a53d6.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9163f.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isascii -o CMakeFiles/cmTC_9163f.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_a53d6.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isascii -o CMakeFiles/cmTC_a53d6.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘isascii’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_9163f
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9163f.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isascii CMakeFiles/cmTC_9163f.dir/CheckFunctionExists.c.o -o cmTC_9163f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_a53d6
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a53d6.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isascii CMakeFiles/cmTC_a53d6.dir/CheckFunctionExists.c.o -o cmTC_a53d6  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -653,17 +653,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function isinf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_469f7/fast && /usr/bin/make  -f CMakeFiles/cmTC_469f7.dir/build.make CMakeFiles/cmTC_469f7.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_72ede/fast && /usr/bin/make  -f CMakeFiles/cmTC_72ede.dir/build.make CMakeFiles/cmTC_72ede.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_469f7.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isinf -o CMakeFiles/cmTC_469f7.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_72ede.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isinf -o CMakeFiles/cmTC_72ede.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘isinf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_469f7
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_469f7.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isinf CMakeFiles/cmTC_469f7.dir/CheckFunctionExists.c.o -o cmTC_469f7  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_72ede
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_72ede.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isinf CMakeFiles/cmTC_72ede.dir/CheckFunctionExists.c.o -o cmTC_72ede  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -671,17 +671,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function isnan exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_e76f8/fast && /usr/bin/make  -f CMakeFiles/cmTC_e76f8.dir/build.make CMakeFiles/cmTC_e76f8.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_f7d7d/fast && /usr/bin/make  -f CMakeFiles/cmTC_f7d7d.dir/build.make CMakeFiles/cmTC_f7d7d.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e76f8.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isnan -o CMakeFiles/cmTC_e76f8.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_f7d7d.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isnan -o CMakeFiles/cmTC_f7d7d.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘isnan’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_e76f8
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e76f8.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isnan CMakeFiles/cmTC_e76f8.dir/CheckFunctionExists.c.o -o cmTC_e76f8  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_f7d7d
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f7d7d.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isnan CMakeFiles/cmTC_f7d7d.dir/CheckFunctionExists.c.o -o cmTC_f7d7d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -689,13 +689,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function lzma_code exists in the lzma passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_8b0e9/fast && /usr/bin/make  -f CMakeFiles/cmTC_8b0e9.dir/build.make CMakeFiles/cmTC_8b0e9.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_f6ff3/fast && /usr/bin/make  -f CMakeFiles/cmTC_f6ff3.dir/build.make CMakeFiles/cmTC_f6ff3.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8b0e9.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_code -o CMakeFiles/cmTC_8b0e9.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_8b0e9
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8b0e9.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_code CMakeFiles/cmTC_8b0e9.dir/CheckFunctionExists.c.o -o cmTC_8b0e9  -llzma /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_f6ff3.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_code -o CMakeFiles/cmTC_f6ff3.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f6ff3
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f6ff3.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_code CMakeFiles/cmTC_f6ff3.dir/CheckFunctionExists.c.o -o cmTC_f6ff3  -llzma /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -703,13 +703,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function pthread_join exists in the pthread passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_da3d3/fast && /usr/bin/make  -f CMakeFiles/cmTC_da3d3.dir/build.make CMakeFiles/cmTC_da3d3.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_3a390/fast && /usr/bin/make  -f CMakeFiles/cmTC_3a390.dir/build.make CMakeFiles/cmTC_3a390.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_da3d3.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_join -o CMakeFiles/cmTC_da3d3.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_da3d3
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_da3d3.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_join CMakeFiles/cmTC_da3d3.dir/CheckFunctionExists.c.o -o cmTC_da3d3  -lpthread /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_3a390.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_join -o CMakeFiles/cmTC_3a390.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_3a390
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3a390.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_join CMakeFiles/cmTC_3a390.dir/CheckFunctionExists.c.o -o cmTC_3a390  -lpthread /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -717,13 +717,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function gzread exists in the z passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_1e5e2/fast && /usr/bin/make  -f CMakeFiles/cmTC_1e5e2.dir/build.make CMakeFiles/cmTC_1e5e2.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_982bf/fast && /usr/bin/make  -f CMakeFiles/cmTC_982bf.dir/build.make CMakeFiles/cmTC_982bf.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1e5e2.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gzread -o CMakeFiles/cmTC_1e5e2.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_1e5e2
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1e5e2.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=gzread CMakeFiles/cmTC_1e5e2.dir/CheckFunctionExists.c.o -o cmTC_1e5e2  -lz /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_982bf.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gzread -o CMakeFiles/cmTC_982bf.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_982bf
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_982bf.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=gzread CMakeFiles/cmTC_982bf.dir/CheckFunctionExists.c.o -o cmTC_982bf  -lz /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -731,13 +731,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files limits.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_8ffbb/fast && /usr/bin/make  -f CMakeFiles/cmTC_8ffbb.dir/build.make CMakeFiles/cmTC_8ffbb.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_be017/fast && /usr/bin/make  -f CMakeFiles/cmTC_be017.dir/build.make CMakeFiles/cmTC_be017.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8ffbb.dir/HAVE_LIMITS_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_8ffbb.dir/HAVE_LIMITS_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_LIMITS_H.c
-Linking C executable cmTC_8ffbb
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8ffbb.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_8ffbb.dir/HAVE_LIMITS_H.c.o -o cmTC_8ffbb  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_be017.dir/HAVE_LIMITS_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_be017.dir/HAVE_LIMITS_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_LIMITS_H.c
+Linking C executable cmTC_be017
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_be017.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_be017.dir/HAVE_LIMITS_H.c.o -o cmTC_be017  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -745,13 +745,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function localtime exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_0a2a0/fast && /usr/bin/make  -f CMakeFiles/cmTC_0a2a0.dir/build.make CMakeFiles/cmTC_0a2a0.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_668c3/fast && /usr/bin/make  -f CMakeFiles/cmTC_668c3.dir/build.make CMakeFiles/cmTC_668c3.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_0a2a0.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=localtime -o CMakeFiles/cmTC_0a2a0.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_0a2a0
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0a2a0.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=localtime CMakeFiles/cmTC_0a2a0.dir/CheckFunctionExists.c.o -o cmTC_0a2a0  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_668c3.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=localtime -o CMakeFiles/cmTC_668c3.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_668c3
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_668c3.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=localtime CMakeFiles/cmTC_668c3.dir/CheckFunctionExists.c.o -o cmTC_668c3  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -759,13 +759,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files lzma.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_9097c/fast && /usr/bin/make  -f CMakeFiles/cmTC_9097c.dir/build.make CMakeFiles/cmTC_9097c.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_91552/fast && /usr/bin/make  -f CMakeFiles/cmTC_91552.dir/build.make CMakeFiles/cmTC_91552.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9097c.dir/HAVE_LZMA_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_9097c.dir/HAVE_LZMA_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_LZMA_H.c
-Linking C executable cmTC_9097c
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9097c.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_9097c.dir/HAVE_LZMA_H.c.o -o cmTC_9097c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_91552.dir/HAVE_LZMA_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_91552.dir/HAVE_LZMA_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_LZMA_H.c
+Linking C executable cmTC_91552
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_91552.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_91552.dir/HAVE_LZMA_H.c.o -o cmTC_91552  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -773,13 +773,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files malloc.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_24824/fast && /usr/bin/make  -f CMakeFiles/cmTC_24824.dir/build.make CMakeFiles/cmTC_24824.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_48f88/fast && /usr/bin/make  -f CMakeFiles/cmTC_48f88.dir/build.make CMakeFiles/cmTC_48f88.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_24824.dir/HAVE_MALLOC_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_24824.dir/HAVE_MALLOC_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_MALLOC_H.c
-Linking C executable cmTC_24824
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_24824.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_24824.dir/HAVE_MALLOC_H.c.o -o cmTC_24824  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_48f88.dir/HAVE_MALLOC_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_48f88.dir/HAVE_MALLOC_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_MALLOC_H.c
+Linking C executable cmTC_48f88
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_48f88.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_48f88.dir/HAVE_MALLOC_H.c.o -o cmTC_48f88  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -787,13 +787,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files math.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_e0179/fast && /usr/bin/make  -f CMakeFiles/cmTC_e0179.dir/build.make CMakeFiles/cmTC_e0179.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4957c/fast && /usr/bin/make  -f CMakeFiles/cmTC_4957c.dir/build.make CMakeFiles/cmTC_4957c.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e0179.dir/HAVE_MATH_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_e0179.dir/HAVE_MATH_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_MATH_H.c
-Linking C executable cmTC_e0179
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e0179.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_e0179.dir/HAVE_MATH_H.c.o -o cmTC_e0179  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_4957c.dir/HAVE_MATH_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_4957c.dir/HAVE_MATH_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_MATH_H.c
+Linking C executable cmTC_4957c
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4957c.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_4957c.dir/HAVE_MATH_H.c.o -o cmTC_4957c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -801,13 +801,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files memory.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_47eda/fast && /usr/bin/make  -f CMakeFiles/cmTC_47eda.dir/build.make CMakeFiles/cmTC_47eda.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_73193/fast && /usr/bin/make  -f CMakeFiles/cmTC_73193.dir/build.make CMakeFiles/cmTC_73193.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_47eda.dir/HAVE_MEMORY_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_47eda.dir/HAVE_MEMORY_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_MEMORY_H.c
-Linking C executable cmTC_47eda
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_47eda.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_47eda.dir/HAVE_MEMORY_H.c.o -o cmTC_47eda  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_73193.dir/HAVE_MEMORY_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_73193.dir/HAVE_MEMORY_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_MEMORY_H.c
+Linking C executable cmTC_73193
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_73193.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_73193.dir/HAVE_MEMORY_H.c.o -o cmTC_73193  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -815,13 +815,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function mmap exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_19a39/fast && /usr/bin/make  -f CMakeFiles/cmTC_19a39.dir/build.make CMakeFiles/cmTC_19a39.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_725d4/fast && /usr/bin/make  -f CMakeFiles/cmTC_725d4.dir/build.make CMakeFiles/cmTC_725d4.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_19a39.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=mmap -o CMakeFiles/cmTC_19a39.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_19a39
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19a39.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=mmap CMakeFiles/cmTC_19a39.dir/CheckFunctionExists.c.o -o cmTC_19a39  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_725d4.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=mmap -o CMakeFiles/cmTC_725d4.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_725d4
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_725d4.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=mmap CMakeFiles/cmTC_725d4.dir/CheckFunctionExists.c.o -o cmTC_725d4  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -829,13 +829,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function munmap exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_dca93/fast && /usr/bin/make  -f CMakeFiles/cmTC_dca93.dir/build.make CMakeFiles/cmTC_dca93.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_15b7c/fast && /usr/bin/make  -f CMakeFiles/cmTC_15b7c.dir/build.make CMakeFiles/cmTC_15b7c.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dca93.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=munmap -o CMakeFiles/cmTC_dca93.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_dca93
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dca93.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=munmap CMakeFiles/cmTC_dca93.dir/CheckFunctionExists.c.o -o cmTC_dca93  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_15b7c.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=munmap -o CMakeFiles/cmTC_15b7c.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_15b7c
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_15b7c.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=munmap CMakeFiles/cmTC_15b7c.dir/CheckFunctionExists.c.o -o cmTC_15b7c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -843,13 +843,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files netdb.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_0e017/fast && /usr/bin/make  -f CMakeFiles/cmTC_0e017.dir/build.make CMakeFiles/cmTC_0e017.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_1d5fd/fast && /usr/bin/make  -f CMakeFiles/cmTC_1d5fd.dir/build.make CMakeFiles/cmTC_1d5fd.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_0e017.dir/HAVE_NETDB_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_0e017.dir/HAVE_NETDB_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_NETDB_H.c
-Linking C executable cmTC_0e017
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0e017.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_0e017.dir/HAVE_NETDB_H.c.o -o cmTC_0e017  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_1d5fd.dir/HAVE_NETDB_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_1d5fd.dir/HAVE_NETDB_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_NETDB_H.c
+Linking C executable cmTC_1d5fd
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1d5fd.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_1d5fd.dir/HAVE_NETDB_H.c.o -o cmTC_1d5fd  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -857,13 +857,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files netinet/in.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_34cab/fast && /usr/bin/make  -f CMakeFiles/cmTC_34cab.dir/build.make CMakeFiles/cmTC_34cab.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_20c12/fast && /usr/bin/make  -f CMakeFiles/cmTC_20c12.dir/build.make CMakeFiles/cmTC_20c12.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_34cab.dir/HAVE_NETINET_IN_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_34cab.dir/HAVE_NETINET_IN_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_NETINET_IN_H.c
-Linking C executable cmTC_34cab
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_34cab.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_34cab.dir/HAVE_NETINET_IN_H.c.o -o cmTC_34cab  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_20c12.dir/HAVE_NETINET_IN_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_20c12.dir/HAVE_NETINET_IN_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_NETINET_IN_H.c
+Linking C executable cmTC_20c12
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_20c12.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_20c12.dir/HAVE_NETINET_IN_H.c.o -o cmTC_20c12  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -871,13 +871,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files poll.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_5c7e0/fast && /usr/bin/make  -f CMakeFiles/cmTC_5c7e0.dir/build.make CMakeFiles/cmTC_5c7e0.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_29c0a/fast && /usr/bin/make  -f CMakeFiles/cmTC_29c0a.dir/build.make CMakeFiles/cmTC_29c0a.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_5c7e0.dir/HAVE_POLL_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_5c7e0.dir/HAVE_POLL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_POLL_H.c
-Linking C executable cmTC_5c7e0
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5c7e0.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_5c7e0.dir/HAVE_POLL_H.c.o -o cmTC_5c7e0  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_29c0a.dir/HAVE_POLL_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_29c0a.dir/HAVE_POLL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_POLL_H.c
+Linking C executable cmTC_29c0a
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_29c0a.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_29c0a.dir/HAVE_POLL_H.c.o -o cmTC_29c0a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -885,17 +885,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function printf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_7a418/fast && /usr/bin/make  -f CMakeFiles/cmTC_7a418.dir/build.make CMakeFiles/cmTC_7a418.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_82cee/fast && /usr/bin/make  -f CMakeFiles/cmTC_82cee.dir/build.make CMakeFiles/cmTC_82cee.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7a418.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=printf -o CMakeFiles/cmTC_7a418.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_82cee.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=printf -o CMakeFiles/cmTC_82cee.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘printf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_7a418
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7a418.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=printf CMakeFiles/cmTC_7a418.dir/CheckFunctionExists.c.o -o cmTC_7a418  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_82cee
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_82cee.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=printf CMakeFiles/cmTC_82cee.dir/CheckFunctionExists.c.o -o cmTC_82cee  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -903,13 +903,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files pthread.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_3f5ef/fast && /usr/bin/make  -f CMakeFiles/cmTC_3f5ef.dir/build.make CMakeFiles/cmTC_3f5ef.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_60b8c/fast && /usr/bin/make  -f CMakeFiles/cmTC_60b8c.dir/build.make CMakeFiles/cmTC_60b8c.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_3f5ef.dir/HAVE_PTHREAD_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_3f5ef.dir/HAVE_PTHREAD_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_PTHREAD_H.c
-Linking C executable cmTC_3f5ef
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3f5ef.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_3f5ef.dir/HAVE_PTHREAD_H.c.o -o cmTC_3f5ef  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_60b8c.dir/HAVE_PTHREAD_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_60b8c.dir/HAVE_PTHREAD_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_PTHREAD_H.c
+Linking C executable cmTC_60b8c
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_60b8c.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_60b8c.dir/HAVE_PTHREAD_H.c.o -o cmTC_60b8c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -917,13 +917,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function putenv exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_7b68c/fast && /usr/bin/make  -f CMakeFiles/cmTC_7b68c.dir/build.make CMakeFiles/cmTC_7b68c.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_b4bfe/fast && /usr/bin/make  -f CMakeFiles/cmTC_b4bfe.dir/build.make CMakeFiles/cmTC_b4bfe.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7b68c.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=putenv -o CMakeFiles/cmTC_7b68c.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_7b68c
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7b68c.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=putenv CMakeFiles/cmTC_7b68c.dir/CheckFunctionExists.c.o -o cmTC_7b68c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_b4bfe.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=putenv -o CMakeFiles/cmTC_b4bfe.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b4bfe
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b4bfe.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=putenv CMakeFiles/cmTC_b4bfe.dir/CheckFunctionExists.c.o -o cmTC_b4bfe  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -931,13 +931,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function rand exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_f7ce7/fast && /usr/bin/make  -f CMakeFiles/cmTC_f7ce7.dir/build.make CMakeFiles/cmTC_f7ce7.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_fe500/fast && /usr/bin/make  -f CMakeFiles/cmTC_fe500.dir/build.make CMakeFiles/cmTC_fe500.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f7ce7.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=rand -o CMakeFiles/cmTC_f7ce7.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_f7ce7
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f7ce7.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=rand CMakeFiles/cmTC_f7ce7.dir/CheckFunctionExists.c.o -o cmTC_f7ce7  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_fe500.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=rand -o CMakeFiles/cmTC_fe500.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_fe500
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fe500.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=rand CMakeFiles/cmTC_fe500.dir/CheckFunctionExists.c.o -o cmTC_fe500  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -945,13 +945,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function rand_r exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_a10ad/fast && /usr/bin/make  -f CMakeFiles/cmTC_a10ad.dir/build.make CMakeFiles/cmTC_a10ad.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_71f22/fast && /usr/bin/make  -f CMakeFiles/cmTC_71f22.dir/build.make CMakeFiles/cmTC_71f22.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a10ad.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=rand_r -o CMakeFiles/cmTC_a10ad.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_a10ad
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a10ad.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=rand_r CMakeFiles/cmTC_a10ad.dir/CheckFunctionExists.c.o -o cmTC_a10ad  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_71f22.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=rand_r -o CMakeFiles/cmTC_71f22.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_71f22
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_71f22.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=rand_r CMakeFiles/cmTC_71f22.dir/CheckFunctionExists.c.o -o cmTC_71f22  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -959,13 +959,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files resolv.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_2bbe8/fast && /usr/bin/make  -f CMakeFiles/cmTC_2bbe8.dir/build.make CMakeFiles/cmTC_2bbe8.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_53aa4/fast && /usr/bin/make  -f CMakeFiles/cmTC_53aa4.dir/build.make CMakeFiles/cmTC_53aa4.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_2bbe8.dir/HAVE_RESOLV_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_2bbe8.dir/HAVE_RESOLV_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_RESOLV_H.c
-Linking C executable cmTC_2bbe8
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2bbe8.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_2bbe8.dir/HAVE_RESOLV_H.c.o -o cmTC_2bbe8  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_53aa4.dir/HAVE_RESOLV_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_53aa4.dir/HAVE_RESOLV_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_RESOLV_H.c
+Linking C executable cmTC_53aa4
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_53aa4.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_53aa4.dir/HAVE_RESOLV_H.c.o -o cmTC_53aa4  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -973,13 +973,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function signal exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_8b44f/fast && /usr/bin/make  -f CMakeFiles/cmTC_8b44f.dir/build.make CMakeFiles/cmTC_8b44f.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_76c20/fast && /usr/bin/make  -f CMakeFiles/cmTC_76c20.dir/build.make CMakeFiles/cmTC_76c20.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8b44f.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=signal -o CMakeFiles/cmTC_8b44f.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_8b44f
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8b44f.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=signal CMakeFiles/cmTC_8b44f.dir/CheckFunctionExists.c.o -o cmTC_8b44f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_76c20.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=signal -o CMakeFiles/cmTC_76c20.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_76c20
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_76c20.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=signal CMakeFiles/cmTC_76c20.dir/CheckFunctionExists.c.o -o cmTC_76c20  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -987,13 +987,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files signal.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_0152f/fast && /usr/bin/make  -f CMakeFiles/cmTC_0152f.dir/build.make CMakeFiles/cmTC_0152f.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_1be79/fast && /usr/bin/make  -f CMakeFiles/cmTC_1be79.dir/build.make CMakeFiles/cmTC_1be79.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_0152f.dir/HAVE_SIGNAL_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_0152f.dir/HAVE_SIGNAL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SIGNAL_H.c
-Linking C executable cmTC_0152f
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0152f.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_0152f.dir/HAVE_SIGNAL_H.c.o -o cmTC_0152f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_1be79.dir/HAVE_SIGNAL_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_1be79.dir/HAVE_SIGNAL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SIGNAL_H.c
+Linking C executable cmTC_1be79
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1be79.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_1be79.dir/HAVE_SIGNAL_H.c.o -o cmTC_1be79  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1001,17 +1001,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function snprintf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_a5de9/fast && /usr/bin/make  -f CMakeFiles/cmTC_a5de9.dir/build.make CMakeFiles/cmTC_a5de9.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_e7b40/fast && /usr/bin/make  -f CMakeFiles/cmTC_e7b40.dir/build.make CMakeFiles/cmTC_e7b40.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a5de9.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=snprintf -o CMakeFiles/cmTC_a5de9.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_e7b40.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=snprintf -o CMakeFiles/cmTC_e7b40.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘snprintf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_a5de9
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a5de9.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=snprintf CMakeFiles/cmTC_a5de9.dir/CheckFunctionExists.c.o -o cmTC_a5de9  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_e7b40
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e7b40.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=snprintf CMakeFiles/cmTC_e7b40.dir/CheckFunctionExists.c.o -o cmTC_e7b40  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1019,17 +1019,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function sprintf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_74f06/fast && /usr/bin/make  -f CMakeFiles/cmTC_74f06.dir/build.make CMakeFiles/cmTC_74f06.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_dab86/fast && /usr/bin/make  -f CMakeFiles/cmTC_dab86.dir/build.make CMakeFiles/cmTC_dab86.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_74f06.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sprintf -o CMakeFiles/cmTC_74f06.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_dab86.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sprintf -o CMakeFiles/cmTC_dab86.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘sprintf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_74f06
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_74f06.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sprintf CMakeFiles/cmTC_74f06.dir/CheckFunctionExists.c.o -o cmTC_74f06  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_dab86
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dab86.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sprintf CMakeFiles/cmTC_dab86.dir/CheckFunctionExists.c.o -o cmTC_dab86  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1037,13 +1037,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function srand exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_eac19/fast && /usr/bin/make  -f CMakeFiles/cmTC_eac19.dir/build.make CMakeFiles/cmTC_eac19.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_57794/fast && /usr/bin/make  -f CMakeFiles/cmTC_57794.dir/build.make CMakeFiles/cmTC_57794.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_eac19.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=srand -o CMakeFiles/cmTC_eac19.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_eac19
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eac19.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=srand CMakeFiles/cmTC_eac19.dir/CheckFunctionExists.c.o -o cmTC_eac19  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_57794.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=srand -o CMakeFiles/cmTC_57794.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_57794
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_57794.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=srand CMakeFiles/cmTC_57794.dir/CheckFunctionExists.c.o -o cmTC_57794  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1051,17 +1051,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function sscanf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_4bb26/fast && /usr/bin/make  -f CMakeFiles/cmTC_4bb26.dir/build.make CMakeFiles/cmTC_4bb26.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_83516/fast && /usr/bin/make  -f CMakeFiles/cmTC_83516.dir/build.make CMakeFiles/cmTC_83516.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4bb26.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sscanf -o CMakeFiles/cmTC_4bb26.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_83516.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sscanf -o CMakeFiles/cmTC_83516.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘sscanf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_4bb26
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4bb26.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sscanf CMakeFiles/cmTC_4bb26.dir/CheckFunctionExists.c.o -o cmTC_4bb26  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_83516
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_83516.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sscanf CMakeFiles/cmTC_83516.dir/CheckFunctionExists.c.o -o cmTC_83516  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1069,13 +1069,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function stat exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_be62f/fast && /usr/bin/make  -f CMakeFiles/cmTC_be62f.dir/build.make CMakeFiles/cmTC_be62f.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_b1286/fast && /usr/bin/make  -f CMakeFiles/cmTC_b1286.dir/build.make CMakeFiles/cmTC_b1286.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_be62f.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=stat -o CMakeFiles/cmTC_be62f.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_be62f
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_be62f.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=stat CMakeFiles/cmTC_be62f.dir/CheckFunctionExists.c.o -o cmTC_be62f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_b1286.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=stat -o CMakeFiles/cmTC_b1286.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b1286
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b1286.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=stat CMakeFiles/cmTC_b1286.dir/CheckFunctionExists.c.o -o cmTC_b1286  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1083,13 +1083,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files stdarg.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_a15db/fast && /usr/bin/make  -f CMakeFiles/cmTC_a15db.dir/build.make CMakeFiles/cmTC_a15db.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c6792/fast && /usr/bin/make  -f CMakeFiles/cmTC_c6792.dir/build.make CMakeFiles/cmTC_c6792.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a15db.dir/HAVE_STDARG_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_a15db.dir/HAVE_STDARG_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STDARG_H.c
-Linking C executable cmTC_a15db
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a15db.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_a15db.dir/HAVE_STDARG_H.c.o -o cmTC_a15db  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_c6792.dir/HAVE_STDARG_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_c6792.dir/HAVE_STDARG_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STDARG_H.c
+Linking C executable cmTC_c6792
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c6792.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_c6792.dir/HAVE_STDARG_H.c.o -o cmTC_c6792  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1097,13 +1097,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files stdint.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_be32f/fast && /usr/bin/make  -f CMakeFiles/cmTC_be32f.dir/build.make CMakeFiles/cmTC_be32f.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_52263/fast && /usr/bin/make  -f CMakeFiles/cmTC_52263.dir/build.make CMakeFiles/cmTC_52263.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_be32f.dir/HAVE_STDINT_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_be32f.dir/HAVE_STDINT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STDINT_H.c
-Linking C executable cmTC_be32f
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_be32f.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_be32f.dir/HAVE_STDINT_H.c.o -o cmTC_be32f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_52263.dir/HAVE_STDINT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_52263.dir/HAVE_STDINT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STDINT_H.c
+Linking C executable cmTC_52263
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_52263.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_52263.dir/HAVE_STDINT_H.c.o -o cmTC_52263  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1111,13 +1111,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files stdlib.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_e60b4/fast && /usr/bin/make  -f CMakeFiles/cmTC_e60b4.dir/build.make CMakeFiles/cmTC_e60b4.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_ca541/fast && /usr/bin/make  -f CMakeFiles/cmTC_ca541.dir/build.make CMakeFiles/cmTC_ca541.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e60b4.dir/HAVE_STDLIB_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_e60b4.dir/HAVE_STDLIB_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STDLIB_H.c
-Linking C executable cmTC_e60b4
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e60b4.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_e60b4.dir/HAVE_STDLIB_H.c.o -o cmTC_e60b4  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_ca541.dir/HAVE_STDLIB_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_ca541.dir/HAVE_STDLIB_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STDLIB_H.c
+Linking C executable cmTC_ca541
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ca541.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_ca541.dir/HAVE_STDLIB_H.c.o -o cmTC_ca541  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1125,17 +1125,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function strftime exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_851a0/fast && /usr/bin/make  -f CMakeFiles/cmTC_851a0.dir/build.make CMakeFiles/cmTC_851a0.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_7aa9c/fast && /usr/bin/make  -f CMakeFiles/cmTC_7aa9c.dir/build.make CMakeFiles/cmTC_7aa9c.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_851a0.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=strftime -o CMakeFiles/cmTC_851a0.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_7aa9c.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=strftime -o CMakeFiles/cmTC_7aa9c.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘strftime’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_851a0
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_851a0.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=strftime CMakeFiles/cmTC_851a0.dir/CheckFunctionExists.c.o -o cmTC_851a0  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_7aa9c
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7aa9c.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=strftime CMakeFiles/cmTC_7aa9c.dir/CheckFunctionExists.c.o -o cmTC_7aa9c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1143,13 +1143,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files strings.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_085ca/fast && /usr/bin/make  -f CMakeFiles/cmTC_085ca.dir/build.make CMakeFiles/cmTC_085ca.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_3c344/fast && /usr/bin/make  -f CMakeFiles/cmTC_3c344.dir/build.make CMakeFiles/cmTC_3c344.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_085ca.dir/HAVE_STRINGS_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_085ca.dir/HAVE_STRINGS_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STRINGS_H.c
-Linking C executable cmTC_085ca
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_085ca.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_085ca.dir/HAVE_STRINGS_H.c.o -o cmTC_085ca  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_3c344.dir/HAVE_STRINGS_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_3c344.dir/HAVE_STRINGS_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STRINGS_H.c
+Linking C executable cmTC_3c344
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3c344.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_3c344.dir/HAVE_STRINGS_H.c.o -o cmTC_3c344  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1157,13 +1157,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files string.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_14464/fast && /usr/bin/make  -f CMakeFiles/cmTC_14464.dir/build.make CMakeFiles/cmTC_14464.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_cca5a/fast && /usr/bin/make  -f CMakeFiles/cmTC_cca5a.dir/build.make CMakeFiles/cmTC_cca5a.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_14464.dir/HAVE_STRING_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_14464.dir/HAVE_STRING_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STRING_H.c
-Linking C executable cmTC_14464
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_14464.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_14464.dir/HAVE_STRING_H.c.o -o cmTC_14464  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_cca5a.dir/HAVE_STRING_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_cca5a.dir/HAVE_STRING_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_STRING_H.c
+Linking C executable cmTC_cca5a
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cca5a.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_cca5a.dir/HAVE_STRING_H.c.o -o cmTC_cca5a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1171,13 +1171,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files sys/mman.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_b4db6/fast && /usr/bin/make  -f CMakeFiles/cmTC_b4db6.dir/build.make CMakeFiles/cmTC_b4db6.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d3d37/fast && /usr/bin/make  -f CMakeFiles/cmTC_d3d37.dir/build.make CMakeFiles/cmTC_d3d37.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_b4db6.dir/HAVE_SYS_MMAN_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_b4db6.dir/HAVE_SYS_MMAN_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_MMAN_H.c
-Linking C executable cmTC_b4db6
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b4db6.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_b4db6.dir/HAVE_SYS_MMAN_H.c.o -o cmTC_b4db6  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_d3d37.dir/HAVE_SYS_MMAN_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_d3d37.dir/HAVE_SYS_MMAN_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_MMAN_H.c
+Linking C executable cmTC_d3d37
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d3d37.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_d3d37.dir/HAVE_SYS_MMAN_H.c.o -o cmTC_d3d37  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1185,13 +1185,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files sys/select.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_2cdf3/fast && /usr/bin/make  -f CMakeFiles/cmTC_2cdf3.dir/build.make CMakeFiles/cmTC_2cdf3.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c3464/fast && /usr/bin/make  -f CMakeFiles/cmTC_c3464.dir/build.make CMakeFiles/cmTC_c3464.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_2cdf3.dir/HAVE_SYS_SELECT_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_2cdf3.dir/HAVE_SYS_SELECT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_SELECT_H.c
-Linking C executable cmTC_2cdf3
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2cdf3.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_2cdf3.dir/HAVE_SYS_SELECT_H.c.o -o cmTC_2cdf3  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_c3464.dir/HAVE_SYS_SELECT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_c3464.dir/HAVE_SYS_SELECT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_SELECT_H.c
+Linking C executable cmTC_c3464
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c3464.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_c3464.dir/HAVE_SYS_SELECT_H.c.o -o cmTC_c3464  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1199,13 +1199,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files sys/socket.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_4898b/fast && /usr/bin/make  -f CMakeFiles/cmTC_4898b.dir/build.make CMakeFiles/cmTC_4898b.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4b495/fast && /usr/bin/make  -f CMakeFiles/cmTC_4b495.dir/build.make CMakeFiles/cmTC_4b495.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4898b.dir/HAVE_SYS_SOCKET_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_4898b.dir/HAVE_SYS_SOCKET_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_SOCKET_H.c
-Linking C executable cmTC_4898b
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4898b.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_4898b.dir/HAVE_SYS_SOCKET_H.c.o -o cmTC_4898b  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_4b495.dir/HAVE_SYS_SOCKET_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_4b495.dir/HAVE_SYS_SOCKET_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_SOCKET_H.c
+Linking C executable cmTC_4b495
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4b495.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_4b495.dir/HAVE_SYS_SOCKET_H.c.o -o cmTC_4b495  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1213,13 +1213,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files sys/stat.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_b7b22/fast && /usr/bin/make  -f CMakeFiles/cmTC_b7b22.dir/build.make CMakeFiles/cmTC_b7b22.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_9cfa5/fast && /usr/bin/make  -f CMakeFiles/cmTC_9cfa5.dir/build.make CMakeFiles/cmTC_9cfa5.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_b7b22.dir/HAVE_SYS_STAT_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_b7b22.dir/HAVE_SYS_STAT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_STAT_H.c
-Linking C executable cmTC_b7b22
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b7b22.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_b7b22.dir/HAVE_SYS_STAT_H.c.o -o cmTC_b7b22  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_9cfa5.dir/HAVE_SYS_STAT_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_9cfa5.dir/HAVE_SYS_STAT_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_STAT_H.c
+Linking C executable cmTC_9cfa5
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9cfa5.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_9cfa5.dir/HAVE_SYS_STAT_H.c.o -o cmTC_9cfa5  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1227,13 +1227,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files sys/timeb.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_72c1e/fast && /usr/bin/make  -f CMakeFiles/cmTC_72c1e.dir/build.make CMakeFiles/cmTC_72c1e.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_e0fad/fast && /usr/bin/make  -f CMakeFiles/cmTC_e0fad.dir/build.make CMakeFiles/cmTC_e0fad.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_72c1e.dir/HAVE_SYS_TIMEB_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_72c1e.dir/HAVE_SYS_TIMEB_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TIMEB_H.c
-Linking C executable cmTC_72c1e
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_72c1e.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_72c1e.dir/HAVE_SYS_TIMEB_H.c.o -o cmTC_72c1e  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_e0fad.dir/HAVE_SYS_TIMEB_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_e0fad.dir/HAVE_SYS_TIMEB_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TIMEB_H.c
+Linking C executable cmTC_e0fad
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e0fad.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_e0fad.dir/HAVE_SYS_TIMEB_H.c.o -o cmTC_e0fad  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1241,13 +1241,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files sys/time.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_6a946/fast && /usr/bin/make  -f CMakeFiles/cmTC_6a946.dir/build.make CMakeFiles/cmTC_6a946.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_ba605/fast && /usr/bin/make  -f CMakeFiles/cmTC_ba605.dir/build.make CMakeFiles/cmTC_ba605.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_6a946.dir/HAVE_SYS_TIME_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_6a946.dir/HAVE_SYS_TIME_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TIME_H.c
-Linking C executable cmTC_6a946
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6a946.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_6a946.dir/HAVE_SYS_TIME_H.c.o -o cmTC_6a946  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_ba605.dir/HAVE_SYS_TIME_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_ba605.dir/HAVE_SYS_TIME_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TIME_H.c
+Linking C executable cmTC_ba605
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ba605.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_ba605.dir/HAVE_SYS_TIME_H.c.o -o cmTC_ba605  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1255,13 +1255,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files sys/types.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_93642/fast && /usr/bin/make  -f CMakeFiles/cmTC_93642.dir/build.make CMakeFiles/cmTC_93642.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_dd897/fast && /usr/bin/make  -f CMakeFiles/cmTC_dd897.dir/build.make CMakeFiles/cmTC_dd897.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_93642.dir/HAVE_SYS_TYPES_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_93642.dir/HAVE_SYS_TYPES_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TYPES_H.c
-Linking C executable cmTC_93642
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_93642.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_93642.dir/HAVE_SYS_TYPES_H.c.o -o cmTC_93642  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_dd897.dir/HAVE_SYS_TYPES_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_dd897.dir/HAVE_SYS_TYPES_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TYPES_H.c
+Linking C executable cmTC_dd897
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dd897.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_dd897.dir/HAVE_SYS_TYPES_H.c.o -o cmTC_dd897  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1269,13 +1269,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function time exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_f65dd/fast && /usr/bin/make  -f CMakeFiles/cmTC_f65dd.dir/build.make CMakeFiles/cmTC_f65dd.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_e6ba4/fast && /usr/bin/make  -f CMakeFiles/cmTC_e6ba4.dir/build.make CMakeFiles/cmTC_e6ba4.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f65dd.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=time -o CMakeFiles/cmTC_f65dd.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_f65dd
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f65dd.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=time CMakeFiles/cmTC_f65dd.dir/CheckFunctionExists.c.o -o cmTC_f65dd  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_e6ba4.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=time -o CMakeFiles/cmTC_e6ba4.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e6ba4
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e6ba4.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=time CMakeFiles/cmTC_e6ba4.dir/CheckFunctionExists.c.o -o cmTC_e6ba4  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1283,13 +1283,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if files time.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_4d9ec/fast && /usr/bin/make  -f CMakeFiles/cmTC_4d9ec.dir/build.make CMakeFiles/cmTC_4d9ec.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_07ae6/fast && /usr/bin/make  -f CMakeFiles/cmTC_07ae6.dir/build.make CMakeFiles/cmTC_07ae6.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4d9ec.dir/HAVE_TIME_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_4d9ec.dir/HAVE_TIME_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_TIME_H.c
-Linking C executable cmTC_4d9ec
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d9ec.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_4d9ec.dir/HAVE_TIME_H.c.o -o cmTC_4d9ec  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_07ae6.dir/HAVE_TIME_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_07ae6.dir/HAVE_TIME_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_TIME_H.c
+Linking C executable cmTC_07ae6
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_07ae6.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_07ae6.dir/HAVE_TIME_H.c.o -o cmTC_07ae6  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1297,17 +1297,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function vfprintf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_58d63/fast && /usr/bin/make  -f CMakeFiles/cmTC_58d63.dir/build.make CMakeFiles/cmTC_58d63.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_205a5/fast && /usr/bin/make  -f CMakeFiles/cmTC_205a5.dir/build.make CMakeFiles/cmTC_205a5.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_58d63.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vfprintf -o CMakeFiles/cmTC_58d63.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_205a5.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vfprintf -o CMakeFiles/cmTC_205a5.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘vfprintf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_58d63
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_58d63.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vfprintf CMakeFiles/cmTC_58d63.dir/CheckFunctionExists.c.o -o cmTC_58d63  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_205a5
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_205a5.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vfprintf CMakeFiles/cmTC_205a5.dir/CheckFunctionExists.c.o -o cmTC_205a5  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1315,17 +1315,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function vsnprintf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_c700c/fast && /usr/bin/make  -f CMakeFiles/cmTC_c700c.dir/build.make CMakeFiles/cmTC_c700c.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_9127e/fast && /usr/bin/make  -f CMakeFiles/cmTC_9127e.dir/build.make CMakeFiles/cmTC_9127e.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_c700c.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vsnprintf -o CMakeFiles/cmTC_c700c.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_9127e.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vsnprintf -o CMakeFiles/cmTC_9127e.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘vsnprintf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_c700c
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c700c.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vsnprintf CMakeFiles/cmTC_c700c.dir/CheckFunctionExists.c.o -o cmTC_c700c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_9127e
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9127e.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vsnprintf CMakeFiles/cmTC_9127e.dir/CheckFunctionExists.c.o -o cmTC_9127e  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1333,17 +1333,17 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Determining if the function vsprintf exists passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_95253/fast && /usr/bin/make  -f CMakeFiles/cmTC_95253.dir/build.make CMakeFiles/cmTC_95253.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_cf426/fast && /usr/bin/make  -f CMakeFiles/cmTC_cf426.dir/build.make CMakeFiles/cmTC_cf426.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_95253.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vsprintf -o CMakeFiles/cmTC_95253.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Building C object CMakeFiles/cmTC_cf426.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=vsprintf -o CMakeFiles/cmTC_cf426.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
 <command-line>:0:23: warning: conflicting types for built-in function ‘vsprintf’ [-Wbuiltin-declaration-mismatch]
 /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
    CHECK_FUNCTION_EXISTS(void);
    ^~~~~~~~~~~~~~~~~~~~~
-Linking C executable cmTC_95253
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_95253.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vsprintf CMakeFiles/cmTC_95253.dir/CheckFunctionExists.c.o -o cmTC_95253  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Linking C executable cmTC_cf426
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cf426.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=vsprintf CMakeFiles/cmTC_cf426.dir/CheckFunctionExists.c.o -o cmTC_cf426  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1351,13 +1351,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Performing C SOURCE FILE Test ICONV_CONST_TEST succeeded with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_f5b20/fast && /usr/bin/make  -f CMakeFiles/cmTC_f5b20.dir/build.make CMakeFiles/cmTC_f5b20.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_6d348/fast && /usr/bin/make  -f CMakeFiles/cmTC_6d348.dir/build.make CMakeFiles/cmTC_6d348.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f5b20.dir/src.c.o
-/usr/bin/cc -DICONV_CONST_TEST   -o CMakeFiles/cmTC_f5b20.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_f5b20
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f5b20.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_f5b20.dir/src.c.o -o cmTC_f5b20  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_6d348.dir/src.c.o
+/usr/bin/cc -DICONV_CONST_TEST   -o CMakeFiles/cmTC_6d348.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_6d348
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d348.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_6d348.dir/src.c.o -o cmTC_6d348  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1379,13 +1379,13 @@ Source file was:
 Performing C SOURCE FILE Test SEND_ARG2_CAST_CONST succeeded with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_75587/fast && /usr/bin/make  -f CMakeFiles/cmTC_75587.dir/build.make CMakeFiles/cmTC_75587.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_7ace5/fast && /usr/bin/make  -f CMakeFiles/cmTC_7ace5.dir/build.make CMakeFiles/cmTC_7ace5.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_75587.dir/src.c.o
-/usr/bin/cc -DSEND_ARG2_CAST_CONST   -o CMakeFiles/cmTC_75587.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_75587
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_75587.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_75587.dir/src.c.o -o cmTC_75587  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_7ace5.dir/src.c.o
+/usr/bin/cc -DSEND_ARG2_CAST_CONST   -o CMakeFiles/cmTC_7ace5.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_7ace5
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7ace5.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_7ace5.dir/src.c.o -o cmTC_7ace5  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1398,13 +1398,13 @@ Source file was:
 Determining if files float.h;stdarg.h;stdlib.h;string.h exist passed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_58c47/fast && /usr/bin/make  -f CMakeFiles/cmTC_58c47.dir/build.make CMakeFiles/cmTC_58c47.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_6b93f/fast && /usr/bin/make  -f CMakeFiles/cmTC_6b93f.dir/build.make CMakeFiles/cmTC_6b93f.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_58c47.dir/STDC_HEADERS.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_58c47.dir/STDC_HEADERS.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/STDC_HEADERS.c
-Linking C executable cmTC_58c47
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_58c47.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_58c47.dir/STDC_HEADERS.c.o -o cmTC_58c47  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_6b93f.dir/STDC_HEADERS.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_6b93f.dir/STDC_HEADERS.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/STDC_HEADERS.c
+Linking C executable cmTC_6b93f
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6b93f.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_6b93f.dir/STDC_HEADERS.c.o -o cmTC_6b93f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 
@@ -1412,13 +1412,13 @@ make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_git
 Performing C SOURCE FILE Test XML_SOCKLEN_T_SOCKLEN_T succeeded with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_80a08/fast && /usr/bin/make  -f CMakeFiles/cmTC_80a08.dir/build.make CMakeFiles/cmTC_80a08.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_9df78/fast && /usr/bin/make  -f CMakeFiles/cmTC_9df78.dir/build.make CMakeFiles/cmTC_9df78.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_80a08.dir/src.c.o
-/usr/bin/cc -DXML_SOCKLEN_T_SOCKLEN_T   -o CMakeFiles/cmTC_80a08.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_80a08
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_80a08.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_80a08.dir/src.c.o -o cmTC_80a08  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_9df78.dir/src.c.o
+/usr/bin/cc -DXML_SOCKLEN_T_SOCKLEN_T   -o CMakeFiles/cmTC_9df78.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_9df78
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9df78.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_9df78.dir/src.c.o -o cmTC_9df78  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
 
 

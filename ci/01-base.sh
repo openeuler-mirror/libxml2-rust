@@ -21,6 +21,7 @@ cargo clean
 cargo check
 cargo clean
 
+cargo build
 cd ../
 cmake -DSTEP="link"
 make 
