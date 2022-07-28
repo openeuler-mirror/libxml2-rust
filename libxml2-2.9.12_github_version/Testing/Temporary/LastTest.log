@@ -1,10 +1,10 @@
-Start testing: Jul 22 13:24 UTC
+Start testing: Jul 28 06:27 UTC
 ----------------------------------------------------------
 1/6 Testing: testapi
 1/6 Test: testapi
 Command: "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/testapi"
 Directory: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version
-"testapi" start time: Jul 22 13:24 UTC
+"testapi" start time: Jul 28 06:27 UTC
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -51609,10 +51609,10 @@ Testing xpathInternals : 106 of 117 functions ...
 Testing xpointer : 17 of 21 functions ...
 Total: 1164 functions, 280912 tests, 0 errors
 <end of output>
-Test time =  11.63 sec
+Test time =  11.56 sec
 ----------------------------------------------------------
 Test Passed.
-"testapi" end time: Jul 22 13:25 UTC
+"testapi" end time: Jul 28 06:27 UTC
 "testapi" time elapsed: 00:00:11
 ----------------------------------------------------------
 
@@ -51620,7 +51620,7 @@ Test Passed.
 2/6 Test: testchar
 Command: "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/testchar"
 Directory: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version
-"testchar" start time: Jul 22 13:25 UTC
+"testchar" start time: Jul 28 06:27 UTC
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -51635,7 +51635,7 @@ testing 2 byte char in document: 1 2 3 4 done
 Test time =   1.80 sec
 ----------------------------------------------------------
 Test Passed.
-"testchar" end time: Jul 22 13:25 UTC
+"testchar" end time: Jul 28 06:27 UTC
 "testchar" time elapsed: 00:00:01
 ----------------------------------------------------------
 
@@ -51643,7 +51643,7 @@ Test Passed.
 3/6 Test: testdict
 Command: "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/testdict"
 Directory: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version
-"testdict" start time: Jul 22 13:25 UTC
+"testdict" start time: Jul 28 06:27 UTC
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -51656,7 +51656,7 @@ dictionary tests succeeded 20000 strings
 Test time =   0.02 sec
 ----------------------------------------------------------
 Test Passed.
-"testdict" end time: Jul 22 13:25 UTC
+"testdict" end time: Jul 28 06:27 UTC
 "testdict" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -51664,7 +51664,7 @@ Test Passed.
 4/6 Test: testrecurse
 Command: "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/testrecurse"
 Directory: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version
-"testrecurse" start time: Jul 22 13:25 UTC
+"testrecurse" start time: Jul 28 06:27 UTC
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -51677,10 +51677,10 @@ xmlXPathInit after
 ## Parsing non-recursive huge case
 Total 9 tests, no errors
 <end of output>
-Test time =  15.47 sec
+Test time =  15.57 sec
 ----------------------------------------------------------
 Test Passed.
-"testrecurse" end time: Jul 22 13:25 UTC
+"testrecurse" end time: Jul 28 06:27 UTC
 "testrecurse" time elapsed: 00:00:15
 ----------------------------------------------------------
 
@@ -51688,7 +51688,7 @@ Test Passed.
 5/6 Test: runtest
 Command: "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/runtest" "--out" "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version"
 Directory: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version
-"runtest" start time: Jul 22 13:25 UTC
+"runtest" start time: Jul 28 06:27 UTC
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -79619,160 +79619,29 @@ xmlXPathFreeObject_rust pre
 xmlXPathFreeObject_rust next
 xmlXPathNewContext_rust pre
 xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-xmlXPathNewContext_rust pre
-xmlXPathNewContext_rust next
-xmlXPathFreeObject_rust pre
-xmlXPathFreeObject_rust next
-## XML regression tests
-## XML regression tests on memory
-## XML entity subst regression tests
-## XML Namespaces regression tests
-## Error cases regression tests
-## Error cases regression tests with entity substitution
-## Error cases regression tests (old 1.0)
-## Error cases stream regression tests
-## Reader regression tests
-## Reader entities substitution regression tests
-## Reader on memory regression tests
-## Walker regression tests
-## SAX1 callbacks regression tests
-## SAX2 callbacks regression tests
-## SAX2 callbacks regression tests with entity substitution
-## XML push regression tests
-## HTML regression tests
-## Push HTML regression tests
-## HTML SAX regression tests
-## Valid documents regression tests
-## Validity checking regression tests
-## Streaming validity checking regression tests
-## Streaming validity error checking regression tests
-## General documents valid regression tests
-## XInclude regression tests
-## XInclude xmlReader regression tests
-## XInclude regression tests stripping include nodes
-## XInclude xmlReader regression tests stripping include nodes
-## XPath expressions regression tests
-## XPath document queries regression tests
-## XPointer document queries regression tests
-## xml:id regression tests
-## URI parsing tests
-## URI base composition tests
-## Path URI conversion tests
-## Schemas regression tests
-## Relax-NG regression tests
-## Relax-NG streaming regression tests
-## Pattern regression tests
-## C14N with comments regression tests
-## C14N without comments regression tests
-## C14N exclusive without comments regression tests
-## C14N 1.1 without comments regression tests
-## Catalog and Threads regression tests
-Total 3237 tests, 11 errors, 0 leaks
 <end of output>
-Test time =  10.86 sec
+Test time =   6.67 sec
 ----------------------------------------------------------
 Test Failed.
-"runtest" end time: Jul 22 13:25 UTC
-"runtest" time elapsed: 00:00:10
+"runtest" end time: Jul 28 06:27 UTC
+"runtest" time elapsed: 00:00:06
 ----------------------------------------------------------
 
 6/6 Testing: testThreads
 6/6 Test: testThreads
 Command: "/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/testThreads"
 Directory: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version
-"testThreads" start time: Jul 22 13:25 UTC
+"testThreads" start time: Jul 28 06:27 UTC
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
 fn htmlInitAutoClose ok
 <end of output>
-Test time =   1.73 sec
+Test time =   1.44 sec
 ----------------------------------------------------------
 Test Passed.
-"testThreads" end time: Jul 22 13:25 UTC
+"testThreads" end time: Jul 28 06:28 UTC
 "testThreads" time elapsed: 00:00:01
 ----------------------------------------------------------
 
-End testing: Jul 22 13:25 UTC
+End testing: Jul 28 06:28 UTC

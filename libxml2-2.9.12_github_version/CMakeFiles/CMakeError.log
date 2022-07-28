@@ -1,25 +1,25 @@
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_a7b5d/fast && /usr/bin/make  -f CMakeFiles/cmTC_a7b5d.dir/build.make CMakeFiles/cmTC_a7b5d.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_29181/fast && /usr/bin/make  -f CMakeFiles/cmTC_29181.dir/build.make CMakeFiles/cmTC_29181.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a7b5d.dir/src.c.o
-/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_a7b5d.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_a7b5d
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a7b5d.dir/link.txt --verbose=1
-/usr/bin/cc CMakeFiles/cmTC_a7b5d.dir/src.c.o -o cmTC_a7b5d 
-CMakeFiles/cmTC_a7b5d.dir/src.c.o: In function `main':
+Building C object CMakeFiles/cmTC_29181.dir/src.c.o
+/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_29181.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_29181
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_29181.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_29181.dir/src.c.o -o cmTC_29181 
+CMakeFiles/cmTC_29181.dir/src.c.o: In function `main':
 src.c:(.text+0x3e): undefined reference to `pthread_create'
 src.c:(.text+0x4a): undefined reference to `pthread_detach'
 src.c:(.text+0x56): undefined reference to `pthread_cancel'
 src.c:(.text+0x67): undefined reference to `pthread_join'
 src.c:(.text+0x7b): undefined reference to `pthread_atfork'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_a7b5d.dir/build.make:98: recipe for target 'cmTC_a7b5d' failed
-make[1]: *** [cmTC_a7b5d] Error 1
+CMakeFiles/cmTC_29181.dir/build.make:98: recipe for target 'cmTC_29181' failed
+make[1]: *** [cmTC_29181] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_a7b5d/fast' failed
-make: *** [cmTC_a7b5d/fast] Error 2
+Makefile:127: recipe for target 'cmTC_29181/fast' failed
+make: *** [cmTC_29181/fast] Error 2
 
 
 Source file was:
@@ -46,40 +46,40 @@ int main(void)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_6e100/fast && /usr/bin/make  -f CMakeFiles/cmTC_6e100.dir/build.make CMakeFiles/cmTC_6e100.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_b57ec/fast && /usr/bin/make  -f CMakeFiles/cmTC_b57ec.dir/build.make CMakeFiles/cmTC_b57ec.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_6e100.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_6e100.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_6e100
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6e100.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_6e100.dir/CheckFunctionExists.c.o -o cmTC_6e100  -lpthreads 
+Building C object CMakeFiles/cmTC_b57ec.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_b57ec.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b57ec
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b57ec.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_b57ec.dir/CheckFunctionExists.c.o -o cmTC_b57ec  -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_6e100.dir/build.make:98: recipe for target 'cmTC_6e100' failed
-make[1]: *** [cmTC_6e100] Error 1
+CMakeFiles/cmTC_b57ec.dir/build.make:98: recipe for target 'cmTC_b57ec' failed
+make[1]: *** [cmTC_b57ec] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_6e100/fast' failed
-make: *** [cmTC_6e100/fast] Error 2
+Makefile:127: recipe for target 'cmTC_b57ec/fast' failed
+make: *** [cmTC_b57ec/fast] Error 2
 
 
 
 Performing C SOURCE FILE Test HAVE_BROKEN_SS_FAMILY failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_a0775/fast && /usr/bin/make  -f CMakeFiles/cmTC_a0775.dir/build.make CMakeFiles/cmTC_a0775.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_52c21/fast && /usr/bin/make  -f CMakeFiles/cmTC_52c21.dir/build.make CMakeFiles/cmTC_52c21.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a0775.dir/src.c.o
-/usr/bin/cc -DHAVE_BROKEN_SS_FAMILY   -o CMakeFiles/cmTC_a0775.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Building C object CMakeFiles/cmTC_52c21.dir/src.c.o
+/usr/bin/cc -DHAVE_BROKEN_SS_FAMILY   -o CMakeFiles/cmTC_52c21.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c:7:48: error: ‘struct sockaddr_storage’ has no member named ‘__ss_family’; did you mean ‘ss_family’?
    (void)sizeof(((struct sockaddr_storage *)0)->__ss_family);
                                                 ^~~~~~~~~~~
                                                 ss_family
-CMakeFiles/cmTC_a0775.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_a0775.dir/src.c.o' failed
-make[1]: *** [CMakeFiles/cmTC_a0775.dir/src.c.o] Error 1
+CMakeFiles/cmTC_52c21.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_52c21.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_52c21.dir/src.c.o] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_a0775/fast' failed
-make: *** [cmTC_a0775/fast] Error 2
+Makefile:127: recipe for target 'cmTC_52c21/fast' failed
+make: *** [cmTC_52c21/fast] Error 2
 
 
 Source file was:
@@ -96,40 +96,40 @@ int main()
 Determining if the function class exists failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_5875b/fast && /usr/bin/make  -f CMakeFiles/cmTC_5875b.dir/build.make CMakeFiles/cmTC_5875b.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_78e52/fast && /usr/bin/make  -f CMakeFiles/cmTC_78e52.dir/build.make CMakeFiles/cmTC_78e52.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_5875b.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=class -o CMakeFiles/cmTC_5875b.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_5875b
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5875b.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=class CMakeFiles/cmTC_5875b.dir/CheckFunctionExists.c.o -o cmTC_5875b  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
-CMakeFiles/cmTC_5875b.dir/CheckFunctionExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_78e52.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=class -o CMakeFiles/cmTC_78e52.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_78e52
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_78e52.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=class CMakeFiles/cmTC_78e52.dir/CheckFunctionExists.c.o -o cmTC_78e52  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_78e52.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `class'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_5875b.dir/build.make:100: recipe for target 'cmTC_5875b' failed
-make[1]: *** [cmTC_5875b] Error 1
+CMakeFiles/cmTC_78e52.dir/build.make:100: recipe for target 'cmTC_78e52' failed
+make[1]: *** [cmTC_78e52] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_5875b/fast' failed
-make: *** [cmTC_5875b/fast] Error 2
+Makefile:127: recipe for target 'cmTC_78e52/fast' failed
+make: *** [cmTC_78e52/fast] Error 2
 
 
 
 Determining if files dl.h exist failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_e02b7/fast && /usr/bin/make  -f CMakeFiles/cmTC_e02b7.dir/build.make CMakeFiles/cmTC_e02b7.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_54866/fast && /usr/bin/make  -f CMakeFiles/cmTC_54866.dir/build.make CMakeFiles/cmTC_54866.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e02b7.dir/HAVE_DL_H.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_e02b7.dir/HAVE_DL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_DL_H.c
+Building C object CMakeFiles/cmTC_54866.dir/HAVE_DL_H.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_54866.dir/HAVE_DL_H.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_DL_H.c
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CheckIncludeFiles/HAVE_DL_H.c:2:10: fatal error: dl.h: No such file or directory
  #include <dl.h>
           ^~~~~~
 compilation terminated.
-CMakeFiles/cmTC_e02b7.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_e02b7.dir/HAVE_DL_H.c.o' failed
-make[1]: *** [CMakeFiles/cmTC_e02b7.dir/HAVE_DL_H.c.o] Error 1
+CMakeFiles/cmTC_54866.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_54866.dir/HAVE_DL_H.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_54866.dir/HAVE_DL_H.c.o] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_e02b7/fast' failed
-make: *** [cmTC_e02b7/fast] Error 2
+Makefile:127: recipe for target 'cmTC_54866/fast' failed
+make: *** [cmTC_54866/fast] Error 2
 
 
 Source:
@@ -142,122 +142,122 @@ int main(void){return 0;}
 Determining if the function fpclass exists failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_b02db/fast && /usr/bin/make  -f CMakeFiles/cmTC_b02db.dir/build.make CMakeFiles/cmTC_b02db.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_760e1/fast && /usr/bin/make  -f CMakeFiles/cmTC_760e1.dir/build.make CMakeFiles/cmTC_760e1.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_b02db.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fpclass -o CMakeFiles/cmTC_b02db.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_b02db
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b02db.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fpclass CMakeFiles/cmTC_b02db.dir/CheckFunctionExists.c.o -o cmTC_b02db  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
-CMakeFiles/cmTC_b02db.dir/CheckFunctionExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_760e1.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fpclass -o CMakeFiles/cmTC_760e1.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_760e1
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_760e1.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fpclass CMakeFiles/cmTC_760e1.dir/CheckFunctionExists.c.o -o cmTC_760e1  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_760e1.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `fpclass'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_b02db.dir/build.make:100: recipe for target 'cmTC_b02db' failed
-make[1]: *** [cmTC_b02db] Error 1
+CMakeFiles/cmTC_760e1.dir/build.make:100: recipe for target 'cmTC_760e1' failed
+make[1]: *** [cmTC_760e1] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_b02db/fast' failed
-make: *** [cmTC_b02db/fast] Error 2
+Makefile:127: recipe for target 'cmTC_760e1/fast' failed
+make: *** [cmTC_760e1/fast] Error 2
 
 
 
 Determining if the function fp_class exists failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_1c3f7/fast && /usr/bin/make  -f CMakeFiles/cmTC_1c3f7.dir/build.make CMakeFiles/cmTC_1c3f7.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4c0ce/fast && /usr/bin/make  -f CMakeFiles/cmTC_4c0ce.dir/build.make CMakeFiles/cmTC_4c0ce.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1c3f7.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fp_class -o CMakeFiles/cmTC_1c3f7.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_1c3f7
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1c3f7.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fp_class CMakeFiles/cmTC_1c3f7.dir/CheckFunctionExists.c.o -o cmTC_1c3f7  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
-CMakeFiles/cmTC_1c3f7.dir/CheckFunctionExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_4c0ce.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=fp_class -o CMakeFiles/cmTC_4c0ce.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_4c0ce
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c0ce.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=fp_class CMakeFiles/cmTC_4c0ce.dir/CheckFunctionExists.c.o -o cmTC_4c0ce  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_4c0ce.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `fp_class'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_1c3f7.dir/build.make:100: recipe for target 'cmTC_1c3f7' failed
-make[1]: *** [cmTC_1c3f7] Error 1
+CMakeFiles/cmTC_4c0ce.dir/build.make:100: recipe for target 'cmTC_4c0ce' failed
+make[1]: *** [cmTC_4c0ce] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_1c3f7/fast' failed
-make: *** [cmTC_1c3f7/fast] Error 2
+Makefile:127: recipe for target 'cmTC_4c0ce/fast' failed
+make: *** [cmTC_4c0ce/fast] Error 2
 
 
 
 Determining if the function isnand exists failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_b626a/fast && /usr/bin/make  -f CMakeFiles/cmTC_b626a.dir/build.make CMakeFiles/cmTC_b626a.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_09098/fast && /usr/bin/make  -f CMakeFiles/cmTC_09098.dir/build.make CMakeFiles/cmTC_09098.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_b626a.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isnand -o CMakeFiles/cmTC_b626a.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_b626a
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b626a.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isnand CMakeFiles/cmTC_b626a.dir/CheckFunctionExists.c.o -o cmTC_b626a  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
-CMakeFiles/cmTC_b626a.dir/CheckFunctionExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_09098.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=isnand -o CMakeFiles/cmTC_09098.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_09098
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_09098.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=isnand CMakeFiles/cmTC_09098.dir/CheckFunctionExists.c.o -o cmTC_09098  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_09098.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `isnand'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_b626a.dir/build.make:100: recipe for target 'cmTC_b626a' failed
-make[1]: *** [cmTC_b626a] Error 1
+CMakeFiles/cmTC_09098.dir/build.make:100: recipe for target 'cmTC_09098' failed
+make[1]: *** [cmTC_09098] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_b626a/fast' failed
-make: *** [cmTC_b626a/fast] Error 2
+Makefile:127: recipe for target 'cmTC_09098/fast' failed
+make: *** [cmTC_09098/fast] Error 2
 
 
 
 Determining if the function append_history exists in the history failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_9a69c/fast && /usr/bin/make  -f CMakeFiles/cmTC_9a69c.dir/build.make CMakeFiles/cmTC_9a69c.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d8c2c/fast && /usr/bin/make  -f CMakeFiles/cmTC_d8c2c.dir/build.make CMakeFiles/cmTC_d8c2c.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9a69c.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=append_history -o CMakeFiles/cmTC_9a69c.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_9a69c
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9a69c.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=append_history CMakeFiles/cmTC_9a69c.dir/CheckFunctionExists.c.o -o cmTC_9a69c  -lhistory /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_d8c2c.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=append_history -o CMakeFiles/cmTC_d8c2c.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d8c2c
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d8c2c.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=append_history CMakeFiles/cmTC_d8c2c.dir/CheckFunctionExists.c.o -o cmTC_d8c2c  -lhistory /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 /usr/bin/ld: cannot find -lhistory
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_9a69c.dir/build.make:100: recipe for target 'cmTC_9a69c' failed
-make[1]: *** [cmTC_9a69c] Error 1
+CMakeFiles/cmTC_d8c2c.dir/build.make:100: recipe for target 'cmTC_d8c2c' failed
+make[1]: *** [cmTC_d8c2c] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_9a69c/fast' failed
-make: *** [cmTC_9a69c/fast] Error 2
+Makefile:127: recipe for target 'cmTC_d8c2c/fast' failed
+make: *** [cmTC_d8c2c/fast] Error 2
 
 
 
 Determining if the function readline exists in the readline failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_334d3/fast && /usr/bin/make  -f CMakeFiles/cmTC_334d3.dir/build.make CMakeFiles/cmTC_334d3.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_19269/fast && /usr/bin/make  -f CMakeFiles/cmTC_19269.dir/build.make CMakeFiles/cmTC_19269.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_334d3.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=readline -o CMakeFiles/cmTC_334d3.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_334d3
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_334d3.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=readline CMakeFiles/cmTC_334d3.dir/CheckFunctionExists.c.o -o cmTC_334d3  -lreadline /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_19269.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=readline -o CMakeFiles/cmTC_19269.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_19269
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19269.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=readline CMakeFiles/cmTC_19269.dir/CheckFunctionExists.c.o -o cmTC_19269  -lreadline /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 /usr/bin/ld: cannot find -lreadline
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_334d3.dir/build.make:100: recipe for target 'cmTC_334d3' failed
-make[1]: *** [cmTC_334d3] Error 1
+CMakeFiles/cmTC_19269.dir/build.make:100: recipe for target 'cmTC_19269' failed
+make[1]: *** [cmTC_19269] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_334d3/fast' failed
-make: *** [cmTC_334d3/fast] Error 2
+Makefile:127: recipe for target 'cmTC_19269/fast' failed
+make: *** [cmTC_19269/fast] Error 2
 
 
 
 Determining if the DIR exist failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_9e3c9/fast && /usr/bin/make  -f CMakeFiles/cmTC_9e3c9.dir/build.make CMakeFiles/cmTC_9e3c9.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_965fb/fast && /usr/bin/make  -f CMakeFiles/cmTC_965fb.dir/build.make CMakeFiles/cmTC_965fb.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9e3c9.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_9e3c9.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Building C object CMakeFiles/cmTC_965fb.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_965fb.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: ndir.h: No such file or directory
  #include <ndir.h>
           ^~~~~~~~
 compilation terminated.
-CMakeFiles/cmTC_9e3c9.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_9e3c9.dir/CheckSymbolExists.c.o' failed
-make[1]: *** [CMakeFiles/cmTC_9e3c9.dir/CheckSymbolExists.c.o] Error 1
+CMakeFiles/cmTC_965fb.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_965fb.dir/CheckSymbolExists.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_965fb.dir/CheckSymbolExists.c.o] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_9e3c9/fast' failed
-make: *** [cmTC_9e3c9/fast] Error 2
+Makefile:127: recipe for target 'cmTC_965fb/fast' failed
+make: *** [cmTC_965fb/fast] Error 2
 
 
 File /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
@@ -277,39 +277,39 @@ int main(int argc, char** argv)
 Determining if the function shl_load exists in the dld failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_e9533/fast && /usr/bin/make  -f CMakeFiles/cmTC_e9533.dir/build.make CMakeFiles/cmTC_e9533.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0b675/fast && /usr/bin/make  -f CMakeFiles/cmTC_0b675.dir/build.make CMakeFiles/cmTC_0b675.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e9533.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=shl_load -o CMakeFiles/cmTC_e9533.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_e9533
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e9533.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=shl_load CMakeFiles/cmTC_e9533.dir/CheckFunctionExists.c.o -o cmTC_e9533  -ldld /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+Building C object CMakeFiles/cmTC_0b675.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=shl_load -o CMakeFiles/cmTC_0b675.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0b675
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0b675.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=shl_load CMakeFiles/cmTC_0b675.dir/CheckFunctionExists.c.o -o cmTC_0b675  -ldld /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
 /usr/bin/ld: cannot find -ldld
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_e9533.dir/build.make:100: recipe for target 'cmTC_e9533' failed
-make[1]: *** [cmTC_e9533] Error 1
+CMakeFiles/cmTC_0b675.dir/build.make:100: recipe for target 'cmTC_0b675' failed
+make[1]: *** [cmTC_0b675] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_e9533/fast' failed
-make: *** [cmTC_e9533/fast] Error 2
+Makefile:127: recipe for target 'cmTC_0b675/fast' failed
+make: *** [cmTC_0b675/fast] Error 2
 
 
 
 Determining if the DIR exist failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_0d8f1/fast && /usr/bin/make  -f CMakeFiles/cmTC_0d8f1.dir/build.make CMakeFiles/cmTC_0d8f1.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_671bd/fast && /usr/bin/make  -f CMakeFiles/cmTC_671bd.dir/build.make CMakeFiles/cmTC_671bd.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_0d8f1.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_0d8f1.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Building C object CMakeFiles/cmTC_671bd.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_671bd.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: expected expression before ‘DIR’
    return ((int*)(&DIR))[argc];
                    ^~~
-CMakeFiles/cmTC_0d8f1.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_0d8f1.dir/CheckSymbolExists.c.o' failed
-make[1]: *** [CMakeFiles/cmTC_0d8f1.dir/CheckSymbolExists.c.o] Error 1
+CMakeFiles/cmTC_671bd.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_671bd.dir/CheckSymbolExists.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_671bd.dir/CheckSymbolExists.c.o] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_0d8f1/fast' failed
-make: *** [cmTC_0d8f1/fast] Error 2
+Makefile:127: recipe for target 'cmTC_671bd/fast' failed
+make: *** [cmTC_671bd/fast] Error 2
 
 
 File /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
@@ -329,19 +329,19 @@ int main(int argc, char** argv)
 Determining if the DIR exist failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_3368a/fast && /usr/bin/make  -f CMakeFiles/cmTC_3368a.dir/build.make CMakeFiles/cmTC_3368a.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_451d6/fast && /usr/bin/make  -f CMakeFiles/cmTC_451d6.dir/build.make CMakeFiles/cmTC_451d6.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_3368a.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_3368a.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Building C object CMakeFiles/cmTC_451d6.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_451d6.dir/CheckSymbolExists.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: sys/ndir.h: No such file or directory
  #include <sys/ndir.h>
           ^~~~~~~~~~~~
 compilation terminated.
-CMakeFiles/cmTC_3368a.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_3368a.dir/CheckSymbolExists.c.o' failed
-make[1]: *** [CMakeFiles/cmTC_3368a.dir/CheckSymbolExists.c.o] Error 1
+CMakeFiles/cmTC_451d6.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_451d6.dir/CheckSymbolExists.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_451d6.dir/CheckSymbolExists.c.o] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_3368a/fast' failed
-make: *** [cmTC_3368a/fast] Error 2
+Makefile:127: recipe for target 'cmTC_451d6/fast' failed
+make: *** [cmTC_451d6/fast] Error 2
 
 
 File /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
@@ -361,61 +361,61 @@ int main(int argc, char** argv)
 Determining if the function va_copy exists failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_1ee43/fast && /usr/bin/make  -f CMakeFiles/cmTC_1ee43.dir/build.make CMakeFiles/cmTC_1ee43.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_6bc5e/fast && /usr/bin/make  -f CMakeFiles/cmTC_6bc5e.dir/build.make CMakeFiles/cmTC_6bc5e.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1ee43.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=va_copy -o CMakeFiles/cmTC_1ee43.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_1ee43
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1ee43.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=va_copy CMakeFiles/cmTC_1ee43.dir/CheckFunctionExists.c.o -o cmTC_1ee43  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
-CMakeFiles/cmTC_1ee43.dir/CheckFunctionExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_6bc5e.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=va_copy -o CMakeFiles/cmTC_6bc5e.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6bc5e
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6bc5e.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=va_copy CMakeFiles/cmTC_6bc5e.dir/CheckFunctionExists.c.o -o cmTC_6bc5e  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_6bc5e.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `va_copy'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_1ee43.dir/build.make:100: recipe for target 'cmTC_1ee43' failed
-make[1]: *** [cmTC_1ee43] Error 1
+CMakeFiles/cmTC_6bc5e.dir/build.make:100: recipe for target 'cmTC_6bc5e' failed
+make[1]: *** [cmTC_6bc5e] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_1ee43/fast' failed
-make: *** [cmTC_1ee43/fast] Error 2
+Makefile:127: recipe for target 'cmTC_6bc5e/fast' failed
+make: *** [cmTC_6bc5e/fast] Error 2
 
 
 
 Determining if the function __va_copy exists failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_4bef2/fast && /usr/bin/make  -f CMakeFiles/cmTC_4bef2.dir/build.make CMakeFiles/cmTC_4bef2.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0dc5e/fast && /usr/bin/make  -f CMakeFiles/cmTC_0dc5e.dir/build.make CMakeFiles/cmTC_0dc5e.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4bef2.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=__va_copy -o CMakeFiles/cmTC_4bef2.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
-Linking C executable cmTC_4bef2
-/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4bef2.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=__va_copy CMakeFiles/cmTC_4bef2.dir/CheckFunctionExists.c.o -o cmTC_4bef2  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
-CMakeFiles/cmTC_4bef2.dir/CheckFunctionExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_0dc5e.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=__va_copy -o CMakeFiles/cmTC_0dc5e.dir/CheckFunctionExists.c.o -c /snap/cmake/1088/share/cmake-3.23/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0dc5e
+/snap/cmake/1088/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0dc5e.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=__va_copy CMakeFiles/cmTC_0dc5e.dir/CheckFunctionExists.c.o -o cmTC_0dc5e  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+CMakeFiles/cmTC_0dc5e.dir/CheckFunctionExists.c.o: In function `main':
 CheckFunctionExists.c:(.text+0x10): undefined reference to `__va_copy'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_4bef2.dir/build.make:100: recipe for target 'cmTC_4bef2' failed
-make[1]: *** [cmTC_4bef2] Error 1
+CMakeFiles/cmTC_0dc5e.dir/build.make:100: recipe for target 'cmTC_0dc5e' failed
+make[1]: *** [cmTC_0dc5e] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_4bef2/fast' failed
-make: *** [cmTC_4bef2/fast] Error 2
+Makefile:127: recipe for target 'cmTC_0dc5e/fast' failed
+make: *** [cmTC_0dc5e/fast] Error 2
 
 
 
 Performing C SOURCE FILE Test VA_LIST_IS_ARRAY_TEST failed with the following output:
 Change Dir: /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make -f Makefile cmTC_731bc/fast && /usr/bin/make  -f CMakeFiles/cmTC_731bc.dir/build.make CMakeFiles/cmTC_731bc.dir/build
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_06f7e/fast && /usr/bin/make  -f CMakeFiles/cmTC_06f7e.dir/build.make CMakeFiles/cmTC_06f7e.dir/build
 make[1]: Entering directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_731bc.dir/src.c.o
-/usr/bin/cc -DVA_LIST_IS_ARRAY_TEST   -o CMakeFiles/cmTC_731bc.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
+Building C object CMakeFiles/cmTC_06f7e.dir/src.c.o
+/usr/bin/cc -DVA_LIST_IS_ARRAY_TEST   -o CMakeFiles/cmTC_06f7e.dir/src.c.o -c /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
 /root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp/src.c:4:49: error: cast specifies array type
    int main() { va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1; return 0; }
                                                  ^
-CMakeFiles/cmTC_731bc.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_731bc.dir/src.c.o' failed
-make[1]: *** [CMakeFiles/cmTC_731bc.dir/src.c.o] Error 1
+CMakeFiles/cmTC_06f7e.dir/build.make:77: recipe for target 'CMakeFiles/cmTC_06f7e.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_06f7e.dir/src.c.o] Error 1
 make[1]: Leaving directory '/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/CMakeFiles/CMakeTmp'
-Makefile:127: recipe for target 'cmTC_731bc/fast' failed
-make: *** [cmTC_731bc/fast] Error 2
+Makefile:127: recipe for target 'cmTC_06f7e/fast' failed
+make: *** [cmTC_06f7e/fast] Error 2
 
 
 Source file was:
