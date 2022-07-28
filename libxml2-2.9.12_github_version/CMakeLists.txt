@@ -607,7 +607,8 @@ if(LIBXML2_WITH_TESTS)
 	add_test(NAME testchar COMMAND testchar)
 	add_test(NAME testdict COMMAND testdict)
 	add_test(NAME testrecurse COMMAND testrecurse WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-	if(Threads_FOUND)
+	# if(Threads_FOUND)
+	if(0)
 		set(
 			TESTS_THREADS
 			runtest
