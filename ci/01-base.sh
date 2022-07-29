@@ -15,8 +15,8 @@ cargo fmt --all -- --check -v
 cargo clean
 
 #cargo clippy --all-targets --all-features --tests --benches -- -D warnings
-# cargo clippy --all-targets --all-features --tests --benches -- -v
-# cargo clean
+cargo clippy --all-targets --all-features --tests --benches -- -v
+cargo clean
 
 cargo check
 cargo clean
