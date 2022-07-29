@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ..
+# cd ..
 
 # cd ./libxml2-2.9.12_github_version
 rm -rf CMakeCache.txt
