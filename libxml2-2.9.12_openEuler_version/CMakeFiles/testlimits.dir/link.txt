@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/testlimits.dir/testlimits.c.o -o testlimits   -L/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust/target/debug  -Wl,-rpath,/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_openEuler_version/rust/target/debug libxml2.a -lrust_project -ldl -lm /usr/lib/x86_64-linux-gnu/liblzma.so -lpthread /usr/lib/x86_64-linux-gnu/libz.so 

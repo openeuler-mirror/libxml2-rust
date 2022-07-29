@@ -1,0 +1,1431 @@
+The system is: Linux - 4.15.0-167-generic - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/x86_64-linux-gnu-gcc-7 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/3.22.3/CompilerIdC/a.out"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_5a025/fast && /usr/bin/make  -f CMakeFiles/cmTC_5a025.dir/build.make CMakeFiles/cmTC_5a025.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -v -o CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CMakeCCompilerABI.c
+Using built-in specs.
+COLLECT_GCC=/usr/bin/x86_64-linux-gnu-gcc-7
+OFFLOAD_TARGET_NAMES=nvptx-none
+OFFLOAD_TARGET_DEFAULT=1
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.5.0-3ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/7/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/cmake/1035/share/cmake-3.22/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o -version -fstack-protector-strong -Wformat -Wformat-security -o /tmp/cckiW8UP.s
+GNU C11 (Ubuntu 7.5.0-3ubuntu1~18.04) version 7.5.0 (x86_64-linux-gnu)
+	compiled by GNU C version 7.5.0, GMP version 6.1.2, MPFR version 4.0.1, MPC version 1.1.0, isl version isl-0.19-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/lib/gcc/x86_64-linux-gnu/7/include
+ /usr/local/include
+ /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed
+ /usr/include/x86_64-linux-gnu
+ /usr/include
+End of search list.
+GNU C11 (Ubuntu 7.5.0-3ubuntu1~18.04) version 7.5.0 (x86_64-linux-gnu)
+	compiled by GNU C version 7.5.0, GMP version 6.1.2, MPFR version 4.0.1, MPC version 1.1.0, isl version isl-0.19-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: b62ed4a2880cd4159476ea8293b72fa8
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ as -v --64 -o CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o /tmp/cckiW8UP.s
+GNU assembler version 2.30 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.30
+COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+Linking C executable cmTC_5a025
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5a025.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -v CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o -o cmTC_5a025 
+Using built-in specs.
+COLLECT_GCC=/usr/bin/x86_64-linux-gnu-gcc-7
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper
+OFFLOAD_TARGET_NAMES=nvptx-none
+OFFLOAD_TARGET_DEFAULT=1
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.5.0-3ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) 
+COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_5a025' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccqE59iR.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_5a025 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_5a025' '-mtune=generic' '-march=x86-64'
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/usr/lib/gcc/x86_64-linux-gnu/7/include]
+    add: [/usr/local/include]
+    add: [/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed]
+    add: [/usr/include/x86_64-linux-gnu]
+    add: [/usr/include]
+  end of search list found
+  collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/7/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/7/include]
+  collapse include dir [/usr/local/include] ==> [/usr/local/include]
+  collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed] ==> [/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed]
+  collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+  collapse include dir [/usr/include] ==> [/usr/include]
+  implicit include dirs: [/usr/lib/gcc/x86_64-linux-gnu/7/include;/usr/local/include;/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed;/usr/include/x86_64-linux-gnu;/usr/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(x86_64-linux-gnu-ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/make -f Makefile cmTC_5a025/fast && /usr/bin/make  -f CMakeFiles/cmTC_5a025.dir/build.make CMakeFiles/cmTC_5a025.dir/build]
+  ignore line: [make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/x86_64-linux-gnu-gcc-7   -v -o CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CMakeCCompilerABI.c]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/x86_64-linux-gnu-gcc-7]
+  ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
+  ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+  ignore line: [Target: x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.5.0-3ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/7/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/cmake/1035/share/cmake-3.22/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o -version -fstack-protector-strong -Wformat -Wformat-security -o /tmp/cckiW8UP.s]
+  ignore line: [GNU C11 (Ubuntu 7.5.0-3ubuntu1~18.04) version 7.5.0 (x86_64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 7.5.0  GMP version 6.1.2  MPFR version 4.0.1  MPC version 1.1.0  isl version isl-0.19-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/7/include]
+  ignore line: [ /usr/local/include]
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed]
+  ignore line: [ /usr/include/x86_64-linux-gnu]
+  ignore line: [ /usr/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C11 (Ubuntu 7.5.0-3ubuntu1~18.04) version 7.5.0 (x86_64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 7.5.0  GMP version 6.1.2  MPFR version 4.0.1  MPC version 1.1.0  isl version isl-0.19-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: b62ed4a2880cd4159476ea8293b72fa8]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o /tmp/cckiW8UP.s]
+  ignore line: [GNU assembler version 2.30 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.30]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [Linking C executable cmTC_5a025]
+  ignore line: [/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5a025.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/x86_64-linux-gnu-gcc-7  -v CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o -o cmTC_5a025 ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/x86_64-linux-gnu-gcc-7]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper]
+  ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
+  ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+  ignore line: [Target: x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.5.0-3ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_5a025' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccqE59iR.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_5a025 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccqE59iR.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_5a025] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib]
+    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [-L/lib/../lib] ==> dir [/lib/../lib]
+    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..]
+    arg [CMakeFiles/cmTC_5a025.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--push-state] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--pop-state] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--push-state] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--pop-state] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
+  collapse obj [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
+  collapse obj [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
+  collapse obj [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o] ==> [/usr/lib/x86_64-linux-gnu/crtn.o]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7] ==> [/usr/lib/gcc/x86_64-linux-gnu/7]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/lib/../lib] ==> [/lib]
+  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> [/usr/lib]
+  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+  implicit objs: [/usr/lib/x86_64-linux-gnu/Scrt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o;/usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/7;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  implicit fwks: []
+
+
+Performing C SOURCE FILE Test Iconv_IS_BUILT_IN succeeded with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_8e585/fast && /usr/bin/make  -f CMakeFiles/cmTC_8e585.dir/build.make CMakeFiles/cmTC_8e585.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8e585.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7 -DIconv_IS_BUILT_IN   -o CMakeFiles/cmTC_8e585.dir/src.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_8e585
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8e585.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_8e585.dir/src.c.o -o cmTC_8e585 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+      #include <stddef.h>
+      #include <iconv.h>
+      int main() {
+        char *a, *b;
+        size_t i, j;
+        iconv_t ic;
+        ic = iconv_open("to", "from");
+        iconv(ic, &a, &i, &b, &j);
+        iconv_close(ic);
+      }
+      
+Determining if the function lzma_auto_decoder exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_11b37/fast && /usr/bin/make  -f CMakeFiles/cmTC_11b37.dir/build.make CMakeFiles/cmTC_11b37.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_11b37.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder -o CMakeFiles/cmTC_11b37.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_11b37
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_11b37.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder CMakeFiles/cmTC_11b37.dir/CheckFunctionExists.c.o -o cmTC_11b37  /usr/lib/x86_64-linux-gnu/liblzma.so 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function lzma_easy_encoder exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0fbe1/fast && /usr/bin/make  -f CMakeFiles/cmTC_0fbe1.dir/build.make CMakeFiles/cmTC_0fbe1.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0fbe1.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder -o CMakeFiles/cmTC_0fbe1.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0fbe1
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0fbe1.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder CMakeFiles/cmTC_0fbe1.dir/CheckFunctionExists.c.o -o cmTC_0fbe1  /usr/lib/x86_64-linux-gnu/liblzma.so 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function lzma_lzma_preset exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_bd07a/fast && /usr/bin/make  -f CMakeFiles/cmTC_bd07a.dir/build.make CMakeFiles/cmTC_bd07a.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bd07a.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset -o CMakeFiles/cmTC_bd07a.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_bd07a
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bd07a.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset CMakeFiles/cmTC_bd07a.dir/CheckFunctionExists.c.o -o cmTC_bd07a  /usr/lib/x86_64-linux-gnu/liblzma.so 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files unistd.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c6a6c/fast && /usr/bin/make  -f CMakeFiles/cmTC_c6a6c.dir/build.make CMakeFiles/cmTC_c6a6c.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c6a6c.dir/HAVE_UNISTD_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_c6a6c.dir/HAVE_UNISTD_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_UNISTD_H.c
+Linking C executable cmTC_c6a6c
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c6a6c.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_c6a6c.dir/HAVE_UNISTD_H.c.o -o cmTC_c6a6c 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the F_GETFL exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_2c7de/fast && /usr/bin/make  -f CMakeFiles/cmTC_2c7de.dir/build.make CMakeFiles/cmTC_2c7de.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2c7de.dir/CheckSymbolExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_2c7de.dir/CheckSymbolExists.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_2c7de
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c7de.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_2c7de.dir/CheckSymbolExists.c.o -o cmTC_2c7de 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+File /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef F_GETFL
+  return ((int*)(&F_GETFL))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_db276/fast && /usr/bin/make  -f CMakeFiles/cmTC_db276.dir/build.make CMakeFiles/cmTC_db276.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_db276.dir/CheckIncludeFile.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_db276.dir/CheckIncludeFile.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_db276
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_db276.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_db276.dir/CheckIncludeFile.c.o -o cmTC_db276 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c6640/fast && /usr/bin/make  -f CMakeFiles/cmTC_c6640.dir/build.make CMakeFiles/cmTC_c6640.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c6640.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_c6640.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c6640
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c6640.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_c6640.dir/CheckFunctionExists.c.o -o cmTC_c6640  -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test ATTRIBUTE_DESTRUCTOR succeeded with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_14cce/fast && /usr/bin/make  -f CMakeFiles/cmTC_14cce.dir/build.make CMakeFiles/cmTC_14cce.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_14cce.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7 -DATTRIBUTE_DESTRUCTOR   -o CMakeFiles/cmTC_14cce.dir/src.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_14cce
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_14cce.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_14cce.dir/src.c.o -o cmTC_14cce  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		void __attribute__((destructor))
+		f(void) {}
+		int main(void) { return 0; }
+	
+Performing C SOURCE FILE Test GETHOSTBYNAME_ARG_CAST_CONST succeeded with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_db3a1/fast && /usr/bin/make  -f CMakeFiles/cmTC_db3a1.dir/build.make CMakeFiles/cmTC_db3a1.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_db3a1.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7 -DGETHOSTBYNAME_ARG_CAST_CONST   -o CMakeFiles/cmTC_db3a1.dir/src.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_db3a1
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_db3a1.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_db3a1.dir/src.c.o -o cmTC_db3a1  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		#include <netdb.h>
+		int main() { (void) gethostbyname((const char*) ""); return 0; }
+	
+Determining if files arpa/inet.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_ef080/fast && /usr/bin/make  -f CMakeFiles/cmTC_ef080.dir/build.make CMakeFiles/cmTC_ef080.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ef080.dir/HAVE_ARPA_INET_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_ef080.dir/HAVE_ARPA_INET_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_ARPA_INET_H.c
+Linking C executable cmTC_ef080
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ef080.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_ef080.dir/HAVE_ARPA_INET_H.c.o -o cmTC_ef080  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files arpa/nameser.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0c1dc/fast && /usr/bin/make  -f CMakeFiles/cmTC_0c1dc.dir/build.make CMakeFiles/cmTC_0c1dc.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0c1dc.dir/HAVE_ARPA_NAMESER_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_0c1dc.dir/HAVE_ARPA_NAMESER_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_ARPA_NAMESER_H.c
+Linking C executable cmTC_0c1dc
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0c1dc.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_0c1dc.dir/HAVE_ARPA_NAMESER_H.c.o -o cmTC_0c1dc  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test HAVE_SS_FAMILY succeeded with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_e21c7/fast && /usr/bin/make  -f CMakeFiles/cmTC_e21c7.dir/build.make CMakeFiles/cmTC_e21c7.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e21c7.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7 -DHAVE_SS_FAMILY   -o CMakeFiles/cmTC_e21c7.dir/src.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_e21c7
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e21c7.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_e21c7.dir/src.c.o -o cmTC_e21c7  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+#include <sys/socket.h>
+#include <sys/types.h>
+
+int main()
+{
+  (void)sizeof(((struct sockaddr_storage *)0)->ss_family);
+  return 0;
+}
+
+Determining if files ctype.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_933cf/fast && /usr/bin/make  -f CMakeFiles/cmTC_933cf.dir/build.make CMakeFiles/cmTC_933cf.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_933cf.dir/HAVE_CTYPE_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_933cf.dir/HAVE_CTYPE_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_CTYPE_H.c
+Linking C executable cmTC_933cf
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_933cf.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_933cf.dir/HAVE_CTYPE_H.c.o -o cmTC_933cf  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files dirent.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_a9dcb/fast && /usr/bin/make  -f CMakeFiles/cmTC_a9dcb.dir/build.make CMakeFiles/cmTC_a9dcb.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a9dcb.dir/HAVE_DIRENT_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_a9dcb.dir/HAVE_DIRENT_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_DIRENT_H.c
+Linking C executable cmTC_a9dcb
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a9dcb.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_a9dcb.dir/HAVE_DIRENT_H.c.o -o cmTC_a9dcb  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files dlfcn.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_9e75c/fast && /usr/bin/make  -f CMakeFiles/cmTC_9e75c.dir/build.make CMakeFiles/cmTC_9e75c.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9e75c.dir/HAVE_DLFCN_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_9e75c.dir/HAVE_DLFCN_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_DLFCN_H.c
+Linking C executable cmTC_9e75c
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9e75c.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_9e75c.dir/HAVE_DLFCN_H.c.o -o cmTC_9e75c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function dlopen exists in the dl passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d5ff3/fast && /usr/bin/make  -f CMakeFiles/cmTC_d5ff3.dir/build.make CMakeFiles/cmTC_d5ff3.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d5ff3.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=dlopen -o CMakeFiles/cmTC_d5ff3.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d5ff3
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d5ff3.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=dlopen CMakeFiles/cmTC_d5ff3.dir/CheckFunctionExists.c.o -o cmTC_d5ff3  -ldl /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files errno.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_b9b96/fast && /usr/bin/make  -f CMakeFiles/cmTC_b9b96.dir/build.make CMakeFiles/cmTC_b9b96.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b9b96.dir/HAVE_ERRNO_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_b9b96.dir/HAVE_ERRNO_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_ERRNO_H.c
+Linking C executable cmTC_b9b96
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b9b96.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_b9b96.dir/HAVE_ERRNO_H.c.o -o cmTC_b9b96  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files fcntl.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_2c42d/fast && /usr/bin/make  -f CMakeFiles/cmTC_2c42d.dir/build.make CMakeFiles/cmTC_2c42d.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2c42d.dir/HAVE_FCNTL_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_2c42d.dir/HAVE_FCNTL_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_FCNTL_H.c
+Linking C executable cmTC_2c42d
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c42d.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_2c42d.dir/HAVE_FCNTL_H.c.o -o cmTC_2c42d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function finite exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_3e339/fast && /usr/bin/make  -f CMakeFiles/cmTC_3e339.dir/build.make CMakeFiles/cmTC_3e339.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3e339.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=finite -o CMakeFiles/cmTC_3e339.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘finite’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_3e339
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3e339.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=finite CMakeFiles/cmTC_3e339.dir/CheckFunctionExists.c.o -o cmTC_3e339  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files float.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_99ae7/fast && /usr/bin/make  -f CMakeFiles/cmTC_99ae7.dir/build.make CMakeFiles/cmTC_99ae7.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_99ae7.dir/HAVE_FLOAT_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_99ae7.dir/HAVE_FLOAT_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_FLOAT_H.c
+Linking C executable cmTC_99ae7
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_99ae7.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_99ae7.dir/HAVE_FLOAT_H.c.o -o cmTC_99ae7  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function fprintf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_7c6ad/fast && /usr/bin/make  -f CMakeFiles/cmTC_7c6ad.dir/build.make CMakeFiles/cmTC_7c6ad.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7c6ad.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=fprintf -o CMakeFiles/cmTC_7c6ad.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘fprintf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_7c6ad
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7c6ad.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=fprintf CMakeFiles/cmTC_7c6ad.dir/CheckFunctionExists.c.o -o cmTC_7c6ad  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function ftime exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_70bdf/fast && /usr/bin/make  -f CMakeFiles/cmTC_70bdf.dir/build.make CMakeFiles/cmTC_70bdf.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_70bdf.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=ftime -o CMakeFiles/cmTC_70bdf.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_70bdf
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_70bdf.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=ftime CMakeFiles/cmTC_70bdf.dir/CheckFunctionExists.c.o -o cmTC_70bdf  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function getaddrinfo exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_b9d99/fast && /usr/bin/make  -f CMakeFiles/cmTC_b9d99.dir/build.make CMakeFiles/cmTC_b9d99.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b9d99.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=getaddrinfo -o CMakeFiles/cmTC_b9d99.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b9d99
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b9d99.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=getaddrinfo CMakeFiles/cmTC_b9d99.dir/CheckFunctionExists.c.o -o cmTC_b9d99  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function gettimeofday exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_033fc/fast && /usr/bin/make  -f CMakeFiles/cmTC_033fc.dir/build.make CMakeFiles/cmTC_033fc.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_033fc.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=gettimeofday -o CMakeFiles/cmTC_033fc.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_033fc
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_033fc.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=gettimeofday CMakeFiles/cmTC_033fc.dir/CheckFunctionExists.c.o -o cmTC_033fc  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files inttypes.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_5546f/fast && /usr/bin/make  -f CMakeFiles/cmTC_5546f.dir/build.make CMakeFiles/cmTC_5546f.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5546f.dir/HAVE_INTTYPES_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_5546f.dir/HAVE_INTTYPES_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_INTTYPES_H.c
+Linking C executable cmTC_5546f
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5546f.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_5546f.dir/HAVE_INTTYPES_H.c.o -o cmTC_5546f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function isascii exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_bfd40/fast && /usr/bin/make  -f CMakeFiles/cmTC_bfd40.dir/build.make CMakeFiles/cmTC_bfd40.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bfd40.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=isascii -o CMakeFiles/cmTC_bfd40.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘isascii’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_bfd40
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bfd40.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=isascii CMakeFiles/cmTC_bfd40.dir/CheckFunctionExists.c.o -o cmTC_bfd40  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function isinf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4fa2d/fast && /usr/bin/make  -f CMakeFiles/cmTC_4fa2d.dir/build.make CMakeFiles/cmTC_4fa2d.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4fa2d.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=isinf -o CMakeFiles/cmTC_4fa2d.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘isinf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_4fa2d
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4fa2d.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=isinf CMakeFiles/cmTC_4fa2d.dir/CheckFunctionExists.c.o -o cmTC_4fa2d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function isnan exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_eeec3/fast && /usr/bin/make  -f CMakeFiles/cmTC_eeec3.dir/build.make CMakeFiles/cmTC_eeec3.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_eeec3.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=isnan -o CMakeFiles/cmTC_eeec3.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘isnan’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_eeec3
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eeec3.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=isnan CMakeFiles/cmTC_eeec3.dir/CheckFunctionExists.c.o -o cmTC_eeec3  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function lzma_code exists in the lzma passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_6a60b/fast && /usr/bin/make  -f CMakeFiles/cmTC_6a60b.dir/build.make CMakeFiles/cmTC_6a60b.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6a60b.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=lzma_code -o CMakeFiles/cmTC_6a60b.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6a60b
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6a60b.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=lzma_code CMakeFiles/cmTC_6a60b.dir/CheckFunctionExists.c.o -o cmTC_6a60b  -llzma /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function pthread_join exists in the pthread passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_6ebdb/fast && /usr/bin/make  -f CMakeFiles/cmTC_6ebdb.dir/build.make CMakeFiles/cmTC_6ebdb.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6ebdb.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=pthread_join -o CMakeFiles/cmTC_6ebdb.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6ebdb
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6ebdb.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=pthread_join CMakeFiles/cmTC_6ebdb.dir/CheckFunctionExists.c.o -o cmTC_6ebdb  -lpthread /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function gzread exists in the z passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0a1be/fast && /usr/bin/make  -f CMakeFiles/cmTC_0a1be.dir/build.make CMakeFiles/cmTC_0a1be.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0a1be.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=gzread -o CMakeFiles/cmTC_0a1be.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0a1be
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0a1be.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=gzread CMakeFiles/cmTC_0a1be.dir/CheckFunctionExists.c.o -o cmTC_0a1be  -lz /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files limits.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_80f98/fast && /usr/bin/make  -f CMakeFiles/cmTC_80f98.dir/build.make CMakeFiles/cmTC_80f98.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_80f98.dir/HAVE_LIMITS_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_80f98.dir/HAVE_LIMITS_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_LIMITS_H.c
+Linking C executable cmTC_80f98
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_80f98.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_80f98.dir/HAVE_LIMITS_H.c.o -o cmTC_80f98  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function localtime exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_8340c/fast && /usr/bin/make  -f CMakeFiles/cmTC_8340c.dir/build.make CMakeFiles/cmTC_8340c.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8340c.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=localtime -o CMakeFiles/cmTC_8340c.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_8340c
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8340c.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=localtime CMakeFiles/cmTC_8340c.dir/CheckFunctionExists.c.o -o cmTC_8340c  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files lzma.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0e8c6/fast && /usr/bin/make  -f CMakeFiles/cmTC_0e8c6.dir/build.make CMakeFiles/cmTC_0e8c6.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0e8c6.dir/HAVE_LZMA_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_0e8c6.dir/HAVE_LZMA_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_LZMA_H.c
+Linking C executable cmTC_0e8c6
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0e8c6.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_0e8c6.dir/HAVE_LZMA_H.c.o -o cmTC_0e8c6  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files malloc.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0a2c5/fast && /usr/bin/make  -f CMakeFiles/cmTC_0a2c5.dir/build.make CMakeFiles/cmTC_0a2c5.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0a2c5.dir/HAVE_MALLOC_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_0a2c5.dir/HAVE_MALLOC_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_MALLOC_H.c
+Linking C executable cmTC_0a2c5
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0a2c5.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_0a2c5.dir/HAVE_MALLOC_H.c.o -o cmTC_0a2c5  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files math.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_3af1f/fast && /usr/bin/make  -f CMakeFiles/cmTC_3af1f.dir/build.make CMakeFiles/cmTC_3af1f.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3af1f.dir/HAVE_MATH_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_3af1f.dir/HAVE_MATH_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_MATH_H.c
+Linking C executable cmTC_3af1f
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3af1f.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_3af1f.dir/HAVE_MATH_H.c.o -o cmTC_3af1f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files memory.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c59d3/fast && /usr/bin/make  -f CMakeFiles/cmTC_c59d3.dir/build.make CMakeFiles/cmTC_c59d3.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c59d3.dir/HAVE_MEMORY_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_c59d3.dir/HAVE_MEMORY_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_MEMORY_H.c
+Linking C executable cmTC_c59d3
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c59d3.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_c59d3.dir/HAVE_MEMORY_H.c.o -o cmTC_c59d3  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function mmap exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_2e510/fast && /usr/bin/make  -f CMakeFiles/cmTC_2e510.dir/build.make CMakeFiles/cmTC_2e510.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2e510.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=mmap -o CMakeFiles/cmTC_2e510.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_2e510
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2e510.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=mmap CMakeFiles/cmTC_2e510.dir/CheckFunctionExists.c.o -o cmTC_2e510  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function munmap exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0c8a6/fast && /usr/bin/make  -f CMakeFiles/cmTC_0c8a6.dir/build.make CMakeFiles/cmTC_0c8a6.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0c8a6.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=munmap -o CMakeFiles/cmTC_0c8a6.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0c8a6
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0c8a6.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=munmap CMakeFiles/cmTC_0c8a6.dir/CheckFunctionExists.c.o -o cmTC_0c8a6  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files netdb.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0cc7e/fast && /usr/bin/make  -f CMakeFiles/cmTC_0cc7e.dir/build.make CMakeFiles/cmTC_0cc7e.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0cc7e.dir/HAVE_NETDB_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_0cc7e.dir/HAVE_NETDB_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_NETDB_H.c
+Linking C executable cmTC_0cc7e
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0cc7e.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_0cc7e.dir/HAVE_NETDB_H.c.o -o cmTC_0cc7e  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files netinet/in.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_1468f/fast && /usr/bin/make  -f CMakeFiles/cmTC_1468f.dir/build.make CMakeFiles/cmTC_1468f.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1468f.dir/HAVE_NETINET_IN_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_1468f.dir/HAVE_NETINET_IN_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_NETINET_IN_H.c
+Linking C executable cmTC_1468f
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1468f.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_1468f.dir/HAVE_NETINET_IN_H.c.o -o cmTC_1468f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files poll.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_47325/fast && /usr/bin/make  -f CMakeFiles/cmTC_47325.dir/build.make CMakeFiles/cmTC_47325.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_47325.dir/HAVE_POLL_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_47325.dir/HAVE_POLL_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_POLL_H.c
+Linking C executable cmTC_47325
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_47325.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_47325.dir/HAVE_POLL_H.c.o -o cmTC_47325  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function printf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_790fa/fast && /usr/bin/make  -f CMakeFiles/cmTC_790fa.dir/build.make CMakeFiles/cmTC_790fa.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_790fa.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=printf -o CMakeFiles/cmTC_790fa.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘printf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_790fa
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_790fa.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=printf CMakeFiles/cmTC_790fa.dir/CheckFunctionExists.c.o -o cmTC_790fa  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files pthread.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c34dc/fast && /usr/bin/make  -f CMakeFiles/cmTC_c34dc.dir/build.make CMakeFiles/cmTC_c34dc.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c34dc.dir/HAVE_PTHREAD_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_c34dc.dir/HAVE_PTHREAD_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_PTHREAD_H.c
+Linking C executable cmTC_c34dc
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c34dc.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_c34dc.dir/HAVE_PTHREAD_H.c.o -o cmTC_c34dc  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function putenv exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_cda13/fast && /usr/bin/make  -f CMakeFiles/cmTC_cda13.dir/build.make CMakeFiles/cmTC_cda13.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cda13.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=putenv -o CMakeFiles/cmTC_cda13.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_cda13
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cda13.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=putenv CMakeFiles/cmTC_cda13.dir/CheckFunctionExists.c.o -o cmTC_cda13  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function rand exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_35eb8/fast && /usr/bin/make  -f CMakeFiles/cmTC_35eb8.dir/build.make CMakeFiles/cmTC_35eb8.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_35eb8.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=rand -o CMakeFiles/cmTC_35eb8.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_35eb8
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_35eb8.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=rand CMakeFiles/cmTC_35eb8.dir/CheckFunctionExists.c.o -o cmTC_35eb8  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function rand_r exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_a2190/fast && /usr/bin/make  -f CMakeFiles/cmTC_a2190.dir/build.make CMakeFiles/cmTC_a2190.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a2190.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=rand_r -o CMakeFiles/cmTC_a2190.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_a2190
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a2190.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=rand_r CMakeFiles/cmTC_a2190.dir/CheckFunctionExists.c.o -o cmTC_a2190  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files resolv.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_53ab1/fast && /usr/bin/make  -f CMakeFiles/cmTC_53ab1.dir/build.make CMakeFiles/cmTC_53ab1.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_53ab1.dir/HAVE_RESOLV_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_53ab1.dir/HAVE_RESOLV_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_RESOLV_H.c
+Linking C executable cmTC_53ab1
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_53ab1.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_53ab1.dir/HAVE_RESOLV_H.c.o -o cmTC_53ab1  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function signal exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_70bfa/fast && /usr/bin/make  -f CMakeFiles/cmTC_70bfa.dir/build.make CMakeFiles/cmTC_70bfa.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_70bfa.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=signal -o CMakeFiles/cmTC_70bfa.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_70bfa
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_70bfa.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=signal CMakeFiles/cmTC_70bfa.dir/CheckFunctionExists.c.o -o cmTC_70bfa  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files signal.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_cd98b/fast && /usr/bin/make  -f CMakeFiles/cmTC_cd98b.dir/build.make CMakeFiles/cmTC_cd98b.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cd98b.dir/HAVE_SIGNAL_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_cd98b.dir/HAVE_SIGNAL_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_SIGNAL_H.c
+Linking C executable cmTC_cd98b
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cd98b.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_cd98b.dir/HAVE_SIGNAL_H.c.o -o cmTC_cd98b  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function snprintf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_aa831/fast && /usr/bin/make  -f CMakeFiles/cmTC_aa831.dir/build.make CMakeFiles/cmTC_aa831.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_aa831.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=snprintf -o CMakeFiles/cmTC_aa831.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘snprintf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_aa831
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aa831.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=snprintf CMakeFiles/cmTC_aa831.dir/CheckFunctionExists.c.o -o cmTC_aa831  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function sprintf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_51be4/fast && /usr/bin/make  -f CMakeFiles/cmTC_51be4.dir/build.make CMakeFiles/cmTC_51be4.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_51be4.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=sprintf -o CMakeFiles/cmTC_51be4.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘sprintf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_51be4
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_51be4.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=sprintf CMakeFiles/cmTC_51be4.dir/CheckFunctionExists.c.o -o cmTC_51be4  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function srand exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_0c684/fast && /usr/bin/make  -f CMakeFiles/cmTC_0c684.dir/build.make CMakeFiles/cmTC_0c684.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0c684.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=srand -o CMakeFiles/cmTC_0c684.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0c684
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0c684.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=srand CMakeFiles/cmTC_0c684.dir/CheckFunctionExists.c.o -o cmTC_0c684  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function sscanf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_2c27d/fast && /usr/bin/make  -f CMakeFiles/cmTC_2c27d.dir/build.make CMakeFiles/cmTC_2c27d.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2c27d.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=sscanf -o CMakeFiles/cmTC_2c27d.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘sscanf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_2c27d
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c27d.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=sscanf CMakeFiles/cmTC_2c27d.dir/CheckFunctionExists.c.o -o cmTC_2c27d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function stat exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_edbc5/fast && /usr/bin/make  -f CMakeFiles/cmTC_edbc5.dir/build.make CMakeFiles/cmTC_edbc5.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_edbc5.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=stat -o CMakeFiles/cmTC_edbc5.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_edbc5
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_edbc5.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=stat CMakeFiles/cmTC_edbc5.dir/CheckFunctionExists.c.o -o cmTC_edbc5  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files stdarg.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_e8089/fast && /usr/bin/make  -f CMakeFiles/cmTC_e8089.dir/build.make CMakeFiles/cmTC_e8089.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e8089.dir/HAVE_STDARG_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_e8089.dir/HAVE_STDARG_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_STDARG_H.c
+Linking C executable cmTC_e8089
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e8089.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_e8089.dir/HAVE_STDARG_H.c.o -o cmTC_e8089  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files stdint.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_6ac3b/fast && /usr/bin/make  -f CMakeFiles/cmTC_6ac3b.dir/build.make CMakeFiles/cmTC_6ac3b.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6ac3b.dir/HAVE_STDINT_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_6ac3b.dir/HAVE_STDINT_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_STDINT_H.c
+Linking C executable cmTC_6ac3b
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6ac3b.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_6ac3b.dir/HAVE_STDINT_H.c.o -o cmTC_6ac3b  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files stdlib.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_bcb72/fast && /usr/bin/make  -f CMakeFiles/cmTC_bcb72.dir/build.make CMakeFiles/cmTC_bcb72.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bcb72.dir/HAVE_STDLIB_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_bcb72.dir/HAVE_STDLIB_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_STDLIB_H.c
+Linking C executable cmTC_bcb72
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bcb72.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_bcb72.dir/HAVE_STDLIB_H.c.o -o cmTC_bcb72  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function strftime exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_e0237/fast && /usr/bin/make  -f CMakeFiles/cmTC_e0237.dir/build.make CMakeFiles/cmTC_e0237.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e0237.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=strftime -o CMakeFiles/cmTC_e0237.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strftime’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_e0237
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e0237.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=strftime CMakeFiles/cmTC_e0237.dir/CheckFunctionExists.c.o -o cmTC_e0237  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files strings.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d2c28/fast && /usr/bin/make  -f CMakeFiles/cmTC_d2c28.dir/build.make CMakeFiles/cmTC_d2c28.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d2c28.dir/HAVE_STRINGS_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_d2c28.dir/HAVE_STRINGS_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_STRINGS_H.c
+Linking C executable cmTC_d2c28
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d2c28.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_d2c28.dir/HAVE_STRINGS_H.c.o -o cmTC_d2c28  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files string.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_bcccf/fast && /usr/bin/make  -f CMakeFiles/cmTC_bcccf.dir/build.make CMakeFiles/cmTC_bcccf.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bcccf.dir/HAVE_STRING_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_bcccf.dir/HAVE_STRING_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_STRING_H.c
+Linking C executable cmTC_bcccf
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bcccf.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_bcccf.dir/HAVE_STRING_H.c.o -o cmTC_bcccf  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/mman.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_e1426/fast && /usr/bin/make  -f CMakeFiles/cmTC_e1426.dir/build.make CMakeFiles/cmTC_e1426.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e1426.dir/HAVE_SYS_MMAN_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_e1426.dir/HAVE_SYS_MMAN_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_SYS_MMAN_H.c
+Linking C executable cmTC_e1426
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e1426.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_e1426.dir/HAVE_SYS_MMAN_H.c.o -o cmTC_e1426  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/select.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_53875/fast && /usr/bin/make  -f CMakeFiles/cmTC_53875.dir/build.make CMakeFiles/cmTC_53875.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_53875.dir/HAVE_SYS_SELECT_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_53875.dir/HAVE_SYS_SELECT_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_SYS_SELECT_H.c
+Linking C executable cmTC_53875
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_53875.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_53875.dir/HAVE_SYS_SELECT_H.c.o -o cmTC_53875  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/socket.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c8454/fast && /usr/bin/make  -f CMakeFiles/cmTC_c8454.dir/build.make CMakeFiles/cmTC_c8454.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c8454.dir/HAVE_SYS_SOCKET_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_c8454.dir/HAVE_SYS_SOCKET_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_SYS_SOCKET_H.c
+Linking C executable cmTC_c8454
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c8454.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_c8454.dir/HAVE_SYS_SOCKET_H.c.o -o cmTC_c8454  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/stat.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d402b/fast && /usr/bin/make  -f CMakeFiles/cmTC_d402b.dir/build.make CMakeFiles/cmTC_d402b.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d402b.dir/HAVE_SYS_STAT_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_d402b.dir/HAVE_SYS_STAT_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_SYS_STAT_H.c
+Linking C executable cmTC_d402b
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d402b.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_d402b.dir/HAVE_SYS_STAT_H.c.o -o cmTC_d402b  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/timeb.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_b08c3/fast && /usr/bin/make  -f CMakeFiles/cmTC_b08c3.dir/build.make CMakeFiles/cmTC_b08c3.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b08c3.dir/HAVE_SYS_TIMEB_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_b08c3.dir/HAVE_SYS_TIMEB_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TIMEB_H.c
+Linking C executable cmTC_b08c3
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b08c3.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_b08c3.dir/HAVE_SYS_TIMEB_H.c.o -o cmTC_b08c3  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/time.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_a0f2d/fast && /usr/bin/make  -f CMakeFiles/cmTC_a0f2d.dir/build.make CMakeFiles/cmTC_a0f2d.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a0f2d.dir/HAVE_SYS_TIME_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_a0f2d.dir/HAVE_SYS_TIME_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TIME_H.c
+Linking C executable cmTC_a0f2d
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a0f2d.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_a0f2d.dir/HAVE_SYS_TIME_H.c.o -o cmTC_a0f2d  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files sys/types.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_bb7de/fast && /usr/bin/make  -f CMakeFiles/cmTC_bb7de.dir/build.make CMakeFiles/cmTC_bb7de.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bb7de.dir/HAVE_SYS_TYPES_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_bb7de.dir/HAVE_SYS_TYPES_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_SYS_TYPES_H.c
+Linking C executable cmTC_bb7de
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bb7de.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_bb7de.dir/HAVE_SYS_TYPES_H.c.o -o cmTC_bb7de  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function time exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_1f8e3/fast && /usr/bin/make  -f CMakeFiles/cmTC_1f8e3.dir/build.make CMakeFiles/cmTC_1f8e3.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1f8e3.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=time -o CMakeFiles/cmTC_1f8e3.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1f8e3
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f8e3.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=time CMakeFiles/cmTC_1f8e3.dir/CheckFunctionExists.c.o -o cmTC_1f8e3  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if files time.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_9b732/fast && /usr/bin/make  -f CMakeFiles/cmTC_9b732.dir/build.make CMakeFiles/cmTC_9b732.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9b732.dir/HAVE_TIME_H.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_9b732.dir/HAVE_TIME_H.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/HAVE_TIME_H.c
+Linking C executable cmTC_9b732
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9b732.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_9b732.dir/HAVE_TIME_H.c.o -o cmTC_9b732  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function vfprintf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_ad7c6/fast && /usr/bin/make  -f CMakeFiles/cmTC_ad7c6.dir/build.make CMakeFiles/cmTC_ad7c6.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ad7c6.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=vfprintf -o CMakeFiles/cmTC_ad7c6.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘vfprintf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_ad7c6
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ad7c6.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=vfprintf CMakeFiles/cmTC_ad7c6.dir/CheckFunctionExists.c.o -o cmTC_ad7c6  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function vsnprintf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_cdca7/fast && /usr/bin/make  -f CMakeFiles/cmTC_cdca7.dir/build.make CMakeFiles/cmTC_cdca7.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cdca7.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=vsnprintf -o CMakeFiles/cmTC_cdca7.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘vsnprintf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_cdca7
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cdca7.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=vsnprintf CMakeFiles/cmTC_cdca7.dir/CheckFunctionExists.c.o -o cmTC_cdca7  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function vsprintf exists passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_9612f/fast && /usr/bin/make  -f CMakeFiles/cmTC_9612f.dir/build.make CMakeFiles/cmTC_9612f.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9612f.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=vsprintf -o CMakeFiles/cmTC_9612f.dir/CheckFunctionExists.c.o -c /snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘vsprintf’ [-Wbuiltin-declaration-mismatch]
+/snap/cmake/1035/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+   CHECK_FUNCTION_EXISTS(void);
+   ^~~~~~~~~~~~~~~~~~~~~
+Linking C executable cmTC_9612f
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9612f.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=vsprintf CMakeFiles/cmTC_9612f.dir/CheckFunctionExists.c.o -o cmTC_9612f  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test ICONV_CONST_TEST succeeded with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_3f0c9/fast && /usr/bin/make  -f CMakeFiles/cmTC_3f0c9.dir/build.make CMakeFiles/cmTC_3f0c9.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3f0c9.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7 -DICONV_CONST_TEST   -o CMakeFiles/cmTC_3f0c9.dir/src.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_3f0c9
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3f0c9.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_3f0c9.dir/src.c.o -o cmTC_3f0c9  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		#include <stdlib.h>
+		#include <iconv.h>
+		extern
+		#ifdef __cplusplus
+		"C"
+		#endif
+		#if defined(__STDC__) || defined(__cplusplus)
+		size_t iconv(iconv_t cd, char** inbuf, size_t* inbytesleft, char** outbuf, size_t* outbytesleft);
+		#else
+		size_t iconv();
+		#endif
+		int main() { return 0; }
+	
+Performing C SOURCE FILE Test SEND_ARG2_CAST_CONST succeeded with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_45d0e/fast && /usr/bin/make  -f CMakeFiles/cmTC_45d0e.dir/build.make CMakeFiles/cmTC_45d0e.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_45d0e.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7 -DSEND_ARG2_CAST_CONST   -o CMakeFiles/cmTC_45d0e.dir/src.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_45d0e
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_45d0e.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_45d0e.dir/src.c.o -o cmTC_45d0e  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		#include <sys/socket.h>
+		#include <sys/types.h>
+		int main() { (void) send(1, (const char*) "", 1, 1); return 0; }
+	
+Determining if files float.h;stdarg.h;stdlib.h;string.h exist passed with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_11dcc/fast && /usr/bin/make  -f CMakeFiles/cmTC_11dcc.dir/build.make CMakeFiles/cmTC_11dcc.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_11dcc.dir/STDC_HEADERS.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_11dcc.dir/STDC_HEADERS.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CheckIncludeFiles/STDC_HEADERS.c
+Linking C executable cmTC_11dcc
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_11dcc.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_11dcc.dir/STDC_HEADERS.c.o -o cmTC_11dcc  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test XML_SOCKLEN_T_SOCKLEN_T succeeded with the following output:
+Change Dir: /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_32c36/fast && /usr/bin/make  -f CMakeFiles/cmTC_32c36.dir/build.make CMakeFiles/cmTC_32c36.dir/build
+make[1]: Entering directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_32c36.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7 -DXML_SOCKLEN_T_SOCKLEN_T   -o CMakeFiles/cmTC_32c36.dir/src.c.o -c /root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_32c36
+/snap/cmake/1035/bin/cmake -E cmake_link_script CMakeFiles/cmTC_32c36.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 CMakeFiles/cmTC_32c36.dir/src.c.o -o cmTC_32c36  /usr/lib/x86_64-linux-gnu/liblzma.so /usr/lib/x86_64-linux-gnu/libz.so -lpthread 
+make[1]: Leaving directory '/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+		#include <stddef.h>
+		#include <sys/socket.h>
+		#include <sys/types.h>
+		int main() { (void) getsockopt(1, 1, 1, NULL, (socklen_t*) NULL); return 0; }
+	

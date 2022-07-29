@@ -1,9 +1,0 @@
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/LibXml2.dir
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/package.dir
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/package_source.dir
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/edit_cache.dir
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/rebuild_cache.dir
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/list_install_components.dir
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/install.dir
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/install/local.dir
-/root/codes/libxml2-nju-huawei/libxml2-2.9.12_new_version/build/CMakeFiles/install/strip.dir

@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/xmlcatalog.dir/xmlcatalog.c.o -o xmlcatalog  -Wl,-rpath,/home/code/libxml2-2.9.12/build: libxml2.so.2.9.10 
