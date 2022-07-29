@@ -60,6 +60,7 @@ pub struct _xmlBuf {
     pub error: libc::c_int,
 }
 
+
 /**
 *   dict.rs
  **/
@@ -109,6 +110,7 @@ pub type xmlDictEntry = _xmlDictEntry;
 static mut xmlDictInitialized: libc::c_int = 0 as libc::c_int;
 static mut rand_seed: libc::c_uint = 0 as libc::c_int as libc::c_uint;
 
+
 /**
  * hash.rs
 **/
@@ -133,11 +135,14 @@ pub struct _xmlHashEntry {
     pub valid: libc::c_int,
 }
 
-pub type xmlHashCopier =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> *mut libc::c_void>;
-pub type xmlHashScanner = Option<
-    unsafe extern "C" fn(_: *mut libc::c_void, _: *mut libc::c_void, _: *const xmlChar) -> (),
->;
+pub type xmlHashCopier
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar)
+                            -> *mut libc::c_void>;
+pub type xmlHashScanner
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *mut libc::c_void,
+                            _: *const xmlChar) -> ()>;
 
 pub type xmlHashEntry = _xmlHashEntry;
 
@@ -344,14 +349,11 @@ pub struct _xmlRegExecRollback {
     pub nextbranch: libc::c_int,
     pub counts: *mut libc::c_int,
 }
-pub type xmlRegExecCallbacks = Option<
-    unsafe extern "C" fn(
-        _: xmlRegExecCtxtPtr,
-        _: *const xmlChar,
-        _: *mut libc::c_void,
-        _: *mut libc::c_void,
-    ) -> (),
->;
+pub type xmlRegExecCallbacks
+=
+Option<unsafe extern "C" fn(_: xmlRegExecCtxtPtr, _: *const xmlChar,
+                            _: *mut libc::c_void, _: *mut libc::c_void)
+                            -> ()>;
 pub type xmlRegExecCtxtPtr = *mut xmlRegExecCtxt;
 pub type xmlRegExecCtxt = _xmlRegExecCtxt;
 pub type xmlRegParserCtxtPtr = *mut xmlRegParserCtxt;
@@ -378,6 +380,7 @@ pub struct _xmlAutomataState {
 /**
  * xmlregexp.rs
  **/
+
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -541,10 +544,16 @@ pub type xmlEntitiesTable = _xmlHashTable;
 pub type xmlChar = libc::c_uchar;
 pub type size_t = libc::c_ulong;
 pub type ptrdiff_t = libc::c_long;
-pub type xmlFreeFunc = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
-pub type xmlMallocFunc = Option<unsafe extern "C" fn(_: size_t) -> *mut libc::c_void>;
-pub type xmlReallocFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: size_t) -> *mut libc::c_void>;
+pub type xmlFreeFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
+pub type xmlMallocFunc
+=
+Option<unsafe extern "C" fn(_: size_t) -> *mut libc::c_void>;
+pub type xmlReallocFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: size_t)
+                            -> *mut libc::c_void>;
 /* LIBXML_OUTPUT_ENABLED */
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -564,6 +573,7 @@ pub type xmlBuf = _xmlBuf;
 pub type xmlCharEncodingHandlerPtr = *mut xmlCharEncodingHandler;
 pub type xmlCharEncodingHandler = _xmlCharEncodingHandler;
 
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlCharEncodingHandler {
@@ -574,28 +584,26 @@ pub struct _xmlCharEncodingHandler {
     pub iconv_out: iconv_t,
 }
 pub type iconv_t = *mut libc::c_void;
-pub type xmlCharEncodingOutputFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_uchar,
-        _: *mut libc::c_int,
-        _: *const libc::c_uchar,
-        _: *mut libc::c_int,
-    ) -> libc::c_int,
->;
-pub type xmlCharEncodingInputFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_uchar,
-        _: *mut libc::c_int,
-        _: *const libc::c_uchar,
-        _: *mut libc::c_int,
-    ) -> libc::c_int,
->;
+pub type xmlCharEncodingOutputFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_uchar, _: *mut libc::c_int,
+                            _: *const libc::c_uchar, _: *mut libc::c_int)
+                            -> libc::c_int>;
+pub type xmlCharEncodingInputFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_uchar, _: *mut libc::c_int,
+                            _: *const libc::c_uchar, _: *mut libc::c_int)
+                            -> libc::c_int>;
 
-pub type xmlInputCloseCallback = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
+pub type xmlInputCloseCallback
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
 
-pub type xmlInputReadCallback = Option<
-    unsafe extern "C" fn(_: *mut libc::c_void, _: *mut libc::c_char, _: libc::c_int) -> libc::c_int,
->;
+
+pub type xmlInputReadCallback
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *mut libc::c_char,
+                            _: libc::c_int) -> libc::c_int>;
 pub type xmlParserInputBuffer = _xmlParserInputBuffer;
 pub type xmlParserInputBufferPtr = *mut xmlParserInputBuffer;
 
@@ -619,7 +627,9 @@ pub struct _xmlParserInput {
     pub id: libc::c_int,
 }
 
-pub type xmlParserInputDeallocate = Option<unsafe extern "C" fn(_: *mut xmlChar) -> ()>;
+pub type xmlParserInputDeallocate
+=
+Option<unsafe extern "C" fn(_: *mut xmlChar) -> ()>;
 
 pub type xmlParserInput = _xmlParserInput;
 pub type xmlParserInputPtr = *mut xmlParserInput;
@@ -958,10 +968,14 @@ pub type xmlValidState = _xmlValidState;
 
 pub type xmlDocPtr = *mut xmlDoc;
 pub type xmlDoc = _xmlDoc;
-pub type xmlValidityWarningFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
-pub type xmlValidityErrorFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
+pub type xmlValidityWarningFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char,
+    _: ...) -> ()>;
+pub type xmlValidityErrorFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char,
+    _: ...) -> ()>;
 pub type xmlParserNodeInfoSeq = _xmlParserNodeInfoSeq;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1007,42 +1021,33 @@ pub struct _xmlSAXHandler {
     pub serror: xmlStructuredErrorFunc,
 }
 
-pub type xmlStructuredErrorFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: xmlErrorPtr) -> ()>;
+pub type xmlStructuredErrorFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: xmlErrorPtr) -> ()>;
 pub type xmlErrorPtr = *mut xmlError;
-pub type endElementNsSAX2Func = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> (),
->;
-pub type startElementNsSAX2Func = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: libc::c_int,
-        _: *mut *const xmlChar,
-        _: libc::c_int,
-        _: libc::c_int,
-        _: *mut *const xmlChar,
-    ) -> (),
->;
-pub type externalSubsetSAXFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> (),
->;
-pub type cdataBlockSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: libc::c_int) -> ()>;
-pub type getParameterEntitySAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> xmlEntityPtr>;
+pub type endElementNsSAX2Func
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar, _: *const xmlChar) -> ()>;
+pub type startElementNsSAX2Func
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar, _: *const xmlChar,
+                            _: libc::c_int, _: *mut *const xmlChar,
+                            _: libc::c_int, _: libc::c_int,
+                            _: *mut *const xmlChar) -> ()>;
+pub type externalSubsetSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar, _: *const xmlChar) -> ()>;
+pub type cdataBlockSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: libc::c_int) -> ()>;
+pub type getParameterEntitySAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar)
+                            -> xmlEntityPtr>;
 pub type xmlEntityPtr = *mut xmlEntity;
 pub type xmlEntity = _xmlEntity;
 
@@ -1076,58 +1081,80 @@ pub const XML_INTERNAL_PARAMETER_ENTITY: xmlEntityType = 4;
 pub const XML_EXTERNAL_GENERAL_UNPARSED_ENTITY: xmlEntityType = 3;
 pub const XML_EXTERNAL_GENERAL_PARSED_ENTITY: xmlEntityType = 2;
 pub const XML_INTERNAL_GENERAL_ENTITY: xmlEntityType = 1;
-pub type fatalErrorSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
-pub type errorSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
-pub type warningSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
-pub type commentSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> ()>;
-pub type processingInstructionSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: *const xmlChar) -> ()>;
-pub type ignorableWhitespaceSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: libc::c_int) -> ()>;
-pub type charactersSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: libc::c_int) -> ()>;
-pub type referenceSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> ()>;
-pub type endElementSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> ()>;
-pub type startElementSAXFunc = Option<
-    unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: *mut *const xmlChar) -> (),
->;
-pub type endDocumentSAXFunc = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
-pub type startDocumentSAXFunc = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
-pub type setDocumentLocatorSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: xmlSAXLocatorPtr) -> ()>;
+pub type fatalErrorSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char,
+    _: ...) -> ()>;
+pub type errorSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char,
+    _: ...) -> ()>;
+pub type warningSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char,
+    _: ...) -> ()>;
+pub type commentSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar)
+                            -> ()>;
+pub type processingInstructionSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar) -> ()>;
+pub type ignorableWhitespaceSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: libc::c_int) -> ()>;
+pub type charactersSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: libc::c_int) -> ()>;
+pub type referenceSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar)
+                            -> ()>;
+pub type endElementSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar)
+                            -> ()>;
+pub type startElementSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *mut *const xmlChar) -> ()>;
+pub type endDocumentSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
+pub type startDocumentSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
+pub type setDocumentLocatorSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: xmlSAXLocatorPtr)
+                            -> ()>;
 pub type xmlSAXLocatorPtr = *mut xmlSAXLocator;
 pub type xmlSAXLocator = _xmlSAXLocator;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlSAXLocator {
-    pub getPublicId: Option<unsafe extern "C" fn(_: *mut libc::c_void) -> *const xmlChar>,
-    pub getSystemId: Option<unsafe extern "C" fn(_: *mut libc::c_void) -> *const xmlChar>,
-    pub getLineNumber: Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>,
-    pub getColumnNumber: Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>,
+    pub getPublicId: Option<unsafe extern "C" fn(_: *mut libc::c_void)
+                                                 -> *const xmlChar>,
+    pub getSystemId: Option<unsafe extern "C" fn(_: *mut libc::c_void)
+                                                 -> *const xmlChar>,
+    pub getLineNumber: Option<unsafe extern "C" fn(_: *mut libc::c_void)
+                                                   -> libc::c_int>,
+    pub getColumnNumber: Option<unsafe extern "C" fn(_: *mut libc::c_void)
+                                                     -> libc::c_int>,
 }
-pub type unparsedEntityDeclSAXFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> (),
->;
-pub type elementDeclSAXFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: libc::c_int,
-        _: xmlElementContentPtr,
-    ) -> (),
->;
+pub type unparsedEntityDeclSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar, _: *const xmlChar,
+                            _: *const xmlChar) -> ()>;
+pub type elementDeclSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: libc::c_int, _: xmlElementContentPtr)
+                            -> ()>;
 pub type xmlElementContentPtr = *mut xmlElementContent;
 pub type xmlElementContent = _xmlElementContent;
 #[derive(Copy, Clone)]
@@ -1151,17 +1178,12 @@ pub const XML_ELEMENT_CONTENT_OR: xmlElementContentType = 4;
 pub const XML_ELEMENT_CONTENT_SEQ: xmlElementContentType = 3;
 pub const XML_ELEMENT_CONTENT_ELEMENT: xmlElementContentType = 2;
 pub const XML_ELEMENT_CONTENT_PCDATA: xmlElementContentType = 1;
-pub type attributeDeclSAXFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: libc::c_int,
-        _: libc::c_int,
-        _: *const xmlChar,
-        _: xmlEnumerationPtr,
-    ) -> (),
->;
+pub type attributeDeclSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar, _: libc::c_int,
+                            _: libc::c_int, _: *const xmlChar,
+                            _: xmlEnumerationPtr) -> ()>;
 pub type xmlEnumerationPtr = *mut xmlEnumeration;
 pub type xmlEnumeration = _xmlEnumeration;
 #[derive(Copy, Clone)]
@@ -1170,46 +1192,36 @@ pub struct _xmlEnumeration {
     pub next: *mut _xmlEnumeration,
     pub name: *const xmlChar,
 }
-pub type notationDeclSAXFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> (),
->;
-pub type entityDeclSAXFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: libc::c_int,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *mut xmlChar,
-    ) -> (),
->;
-pub type getEntitySAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> xmlEntityPtr>;
-pub type resolveEntitySAXFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> xmlParserInputPtr,
->;
-pub type hasExternalSubsetSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
-pub type hasInternalSubsetSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
-pub type isStandaloneSAXFunc = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
-pub type internalSubsetSAXFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> (),
->;
+pub type notationDeclSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar, _: *const xmlChar) -> ()>;
+pub type entityDeclSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: libc::c_int, _: *const xmlChar,
+                            _: *const xmlChar, _: *mut xmlChar) -> ()>;
+pub type getEntitySAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar)
+                            -> xmlEntityPtr>;
+pub type resolveEntitySAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar) -> xmlParserInputPtr>;
+pub type hasExternalSubsetSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
+pub type hasInternalSubsetSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
+pub type isStandaloneSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
+pub type internalSubsetSAXFunc
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                            _: *const xmlChar, _: *const xmlChar) -> ()>;
 pub type xmlParserCtxt = _xmlParserCtxt;
 pub type xmlParserCtxtPtr = *mut xmlParserCtxt;
 pub type xmlSAXHandler = _xmlSAXHandler;
@@ -1284,8 +1296,10 @@ pub const XML_DOC_WELLFORMED: C2RustUnnamed_1 = 1;
  *
  * Callback to free data from a hash.
  */
-pub type xmlHashDeallocator =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> ()>;
+pub type xmlHashDeallocator
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar)
+                            -> ()>;
 /* *
  * xmlHashScannerFull:
  * @payload:  the data in the hash
@@ -1296,15 +1310,11 @@ pub type xmlHashDeallocator =
  *
  * Callback when scanning data in a hash with the full scanner.
  */
-pub type xmlHashScannerFull = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> (),
->;
+pub type xmlHashScannerFull
+=
+Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *mut libc::c_void,
+                            _: *const xmlChar, _: *const xmlChar,
+                            _: *const xmlChar) -> ()>;
 pub type C2RustUnnamed_2 = libc::c_uint;
 pub const XML_FROM_URI: C2RustUnnamed_2 = 30;
 pub const XML_FROM_BUFFER: C2RustUnnamed_2 = 29;
@@ -1470,9 +1480,11 @@ pub const XML_SCHEMAP_COS_ST_RESTRICTS_1_1: xmlParserErrors = 3011;
 pub const XML_SCHEMAP_ST_PROPS_CORRECT_3: xmlParserErrors = 3010;
 pub const XML_SCHEMAP_ST_PROPS_CORRECT_2: xmlParserErrors = 3009;
 pub const XML_SCHEMAP_ST_PROPS_CORRECT_1: xmlParserErrors = 3008;
-pub const XML_SCHEMAP_SRC_UNION_MEMBERTYPES_OR_SIMPLETYPES: xmlParserErrors = 3007;
+pub const XML_SCHEMAP_SRC_UNION_MEMBERTYPES_OR_SIMPLETYPES: xmlParserErrors =
+    3007;
 pub const XML_SCHEMAP_SRC_LIST_ITEMTYPE_OR_SIMPLETYPE: xmlParserErrors = 3006;
-pub const XML_SCHEMAP_SRC_RESTRICTION_BASE_OR_SIMPLETYPE: xmlParserErrors = 3005;
+pub const XML_SCHEMAP_SRC_RESTRICTION_BASE_OR_SIMPLETYPE: xmlParserErrors =
+    3005;
 pub const XML_SCHEMAP_SRC_RESOLVE: xmlParserErrors = 3004;
 pub const XML_SCHEMAP_SRC_SIMPLE_TYPE_4: xmlParserErrors = 3003;
 pub const XML_SCHEMAP_SRC_SIMPLE_TYPE_3: xmlParserErrors = 3002;
@@ -2072,8 +2084,10 @@ pub const XML_ERR_DOCUMENT_START: xmlParserErrors = 3;
 pub const XML_ERR_NO_MEMORY: xmlParserErrors = 2;
 pub const XML_ERR_INTERNAL_ERROR: xmlParserErrors = 1;
 pub const XML_ERR_OK: xmlParserErrors = 0;
-pub type xmlGenericErrorFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
+pub type xmlGenericErrorFunc
+=
+Option<unsafe extern "C" fn(arg1: *mut libc::c_void, arg2: *const libc::c_char,
+    more_params: ...) -> ()>;
 pub type xmlValidCtxtPtr = *mut xmlValidCtxt;
 pub type xmlParserNodeInfoPtr = *mut xmlParserNodeInfo;
 pub type xmlParserNodeInfoSeqPtr = *mut xmlParserNodeInfoSeq;
@@ -2196,8 +2210,10 @@ pub struct _xmlChSRange {
     pub high: libc::c_ushort,
 }
 pub const XML_PARSE_OLDSAX: C2RustUnnamed_3 = 1048576;
-pub type xmlEntityReferenceFunc =
-    Option<unsafe extern "C" fn(_: xmlEntityPtr, _: xmlNodePtr, _: xmlNodePtr) -> ()>;
+pub type xmlEntityReferenceFunc
+=
+Option<unsafe extern "C" fn(_: xmlEntityPtr, _: xmlNodePtr, _: xmlNodePtr)
+                            -> ()>;
 pub const XML_PARSE_NSCLEAN: C2RustUnnamed_3 = 8192;
 pub type xmlDefAttrsPtr = *mut xmlDefAttrs;
 pub type xmlDefAttrs = _xmlDefAttrs;
@@ -2337,8 +2353,10 @@ pub struct htmlStartCloseEntry {
     pub oldTag: *const libc::c_char,
     pub newTag: *const libc::c_char,
 }
-pub type __compar_fn_t =
-    Option<unsafe extern "C" fn(_: *const libc::c_void, _: *const libc::c_void) -> libc::c_int>;
+pub type __compar_fn_t
+=
+Option<unsafe extern "C" fn(_: *const libc::c_void,
+                            _: *const libc::c_void) -> libc::c_int>;
 pub type htmlEntityDesc = _htmlEntityDesc;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2396,9 +2414,21 @@ pub const HTML_DEPRECATED: htmlStatus = 2;
 pub const HTML_INVALID: htmlStatus = 1;
 pub const HTML_NA: htmlStatus = 0;
 
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct uconv_t {}
+
+
+
+
+
+
+
+
+
+
+
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2464,13 +2494,10 @@ pub struct _xmlXPathContext {
  *
  * Returns the XPath function or NULL if not found.
  */
-pub type xmlXPathFuncLookupFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> xmlXPathFunction,
->;
+pub type xmlXPathFuncLookupFunc
+    =
+    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                                _: *const xmlChar) -> xmlXPathFunction>;
 /* the search function */
 /* *
  * xmlXPathFunction:
@@ -2481,8 +2508,10 @@ pub type xmlXPathFuncLookupFunc = Option<
  * The arguments (if any) are popped out from the context stack
  * and the result is pushed on the stack.
  */
-pub type xmlXPathFunction =
-    Option<unsafe extern "C" fn(_: xmlXPathParserContextPtr, _: libc::c_int) -> ()>;
+pub type xmlXPathFunction
+    =
+    Option<unsafe extern "C" fn(_: xmlXPathParserContextPtr, _: libc::c_int)
+               -> ()>;
 pub type xmlXPathParserContextPtr = *mut xmlXPathParserContext;
 pub type xmlXPathParserContext = _xmlXPathParserContext;
 /* *
@@ -2691,13 +2720,10 @@ pub type xmlXPathContext = _xmlXPathContext;
  *
  * Returns the XPath object value or NULL if not found.
  */
-pub type xmlXPathVariableLookupFunc = Option<
-    unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *const xmlChar,
-        _: *const xmlChar,
-    ) -> xmlXPathObjectPtr,
->;
+pub type xmlXPathVariableLookupFunc
+    =
+    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar,
+                                _: *const xmlChar) -> xmlXPathObjectPtr>;
 pub type xmlXPathAxisPtr = *mut xmlXPathAxis;
 /*
  * Extra axis: a name and an axis function.
@@ -2721,9 +2747,10 @@ pub struct _xmlXPathAxis {
  *
  * Returns the next node in that axis or NULL if at the end of the axis.
  */
-pub type xmlXPathAxisFunc = Option<
-    unsafe extern "C" fn(_: xmlXPathParserContextPtr, _: xmlXPathObjectPtr) -> xmlXPathObjectPtr,
->;
+pub type xmlXPathAxisFunc
+    =
+    Option<unsafe extern "C" fn(_: xmlXPathParserContextPtr,
+                                _: xmlXPathObjectPtr) -> xmlXPathObjectPtr>;
 pub type xmlXPathTypePtr = *mut xmlXPathType;
 /*
  * Extra type: a name and a conversion function.
@@ -2745,8 +2772,10 @@ pub struct _xmlXPathType {
  *
  * Returns -1 in case of error, 0 otherwise
  */
-pub type xmlXPathConvertFunc =
-    Option<unsafe extern "C" fn(_: xmlXPathObjectPtr, _: libc::c_int) -> libc::c_int>;
+pub type xmlXPathConvertFunc
+    =
+    Option<unsafe extern "C" fn(_: xmlXPathObjectPtr, _: libc::c_int)
+               -> libc::c_int>;
 pub const XPATH_RECURSION_LIMIT_EXCEEDED: C2RustUnnamed_1 = 26;
 pub const XPATH_OP_LIMIT_EXCEEDED: C2RustUnnamed_1 = 25;
 pub const XPATH_FORBID_VARIABLE_ERROR: C2RustUnnamed_1 = 24;
@@ -2885,8 +2914,10 @@ pub type xmlXPathStepOpPtr = *mut xmlXPathStepOp;
  * xmlXPathNodeSetMergeFunction:
  * Used for merging node sets in xmlXPathCollectAndTest().
  */
-pub type xmlXPathNodeSetMergeFunction =
-    Option<unsafe extern "C" fn(_: xmlNodeSetPtr, _: xmlNodeSetPtr) -> xmlNodeSetPtr>;
+pub type xmlXPathNodeSetMergeFunction
+    =
+    Option<unsafe extern "C" fn(_: xmlNodeSetPtr, _: xmlNodeSetPtr)
+               -> xmlNodeSetPtr>;
 pub const AXIS_NAMESPACE: xmlXPathAxisVal = 9;
 pub type xmlXPathAxisVal = libc::c_uint;
 pub const AXIS_SELF: xmlXPathAxisVal = 13;
@@ -2913,8 +2944,10 @@ pub const NODE_TYPE_NODE: xmlXPathTypeVal = 0;
 pub const NODE_TEST_TYPE: xmlXPathTestVal = 1;
 pub const NODE_TEST_NONE: xmlXPathTestVal = 0;
 pub type xmlXPathTestVal = libc::c_uint;
-pub type xmlXPathTraversalFunction =
-    Option<unsafe extern "C" fn(_: xmlXPathParserContextPtr, _: xmlNodePtr) -> xmlNodePtr>;
+pub type xmlXPathTraversalFunction
+    =
+    Option<unsafe extern "C" fn(_: xmlXPathParserContextPtr, _: xmlNodePtr)
+               -> xmlNodePtr>;
 pub type xmlStreamCtxtPtr = *mut xmlStreamCtxt;
 /* streaming interfaces */
 pub type xmlStreamCtxt = _xmlStreamCtxt;
@@ -2922,3 +2955,4 @@ pub const XML_PATTERN_XPATH: C2RustUnnamed_2 = 1;
 pub const XML_PATTERN_XSFIELD: C2RustUnnamed_2 = 4;
 pub const XML_PATTERN_XSSEL: C2RustUnnamed_2 = 2;
 pub const XML_PATTERN_DEFAULT: C2RustUnnamed_2 = 0;
+
