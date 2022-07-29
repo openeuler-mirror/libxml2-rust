@@ -89,7 +89,7 @@ fn xmlParserEntityCheck(
                         ),
                 ) as size_t as size_t
             };
-            i += 1;
+            i += 1
         }
         if (safe_ctxt).nbentities > consumed.wrapping_mul(10 as libc::c_int as libc::c_ulong) {
             unsafe {
@@ -1151,7 +1151,9 @@ fn xmlDetectSAX2(mut ctxt: xmlParserCtxtPtr) {
         || (safe_ctxt).str_xmlns.is_null()
         || (safe_ctxt).str_xml_ns.is_null()
     {
-        unsafe { xmlErrMemory(ctxt, 0 as *const libc::c_char) };
+        unsafe {
+            unsafe { xmlErrMemory(ctxt, 0 as *const libc::c_char) };
+        }
     };
 }
 /* array of localname/prefix/values/external */
@@ -1317,6 +1319,7 @@ fn xmlAddDefAttrs(
     } else {
         current_block = 13183875560443969876;
     }
+    //@todo 削减unsafe范围
     unsafe {
         match current_block {
             13183875560443969876 => {
@@ -1599,6 +1602,7 @@ fn xmlCleanSpecialAttr(mut ctxt: xmlParserCtxtPtr) {
  *
  * Returns 1 if correct 0 otherwise
  **/
+
 pub fn xmlCheckLanguageID(mut lang: *const xmlChar) -> libc::c_int {
     let mut current_block: u64;
     let mut cur: *const xmlChar = lang;
@@ -3562,6 +3566,7 @@ pub fn xmlStringLenDecodeEntities(
                             0 as libc::c_int as xmlChar,
                         )
                     };
+
                     (safe_ctxt).depth -= 1;
                     if rep.is_null() {
                         if unsafe { !(*ent).content.is_null() } {
@@ -4798,6 +4803,7 @@ fn xmlParseNCName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut e: *const xmlChar = 0 as *const xmlChar;
     let mut ret: *const xmlChar = 0 as *const xmlChar;
     let mut count: libc::c_int = 0 as libc::c_int;
+
     match () {
         #[cfg(HAVE_parser_DEBUG)]
         _ => {
@@ -4806,6 +4812,7 @@ fn xmlParseNCName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         #[cfg(not(HAVE_parser_DEBUG))]
         _ => {}
     };
+
     /*
      * Accelerator for simple ASCII names
      */
@@ -5103,6 +5110,7 @@ pub fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut c: libc::c_int = 0;
     let mut count: libc::c_int = 0 as libc::c_int;
     let mut safe_ctxt = unsafe { &mut *ctxt };
+
     match () {
         #[cfg(HAVE_parser_DEBUG)]
         _ => {
@@ -5487,7 +5495,12 @@ pub fn xmlParseEntityValue(
                                     || unsafe { *cur as libc::c_int != ';' as i32 }
                                 {
                                     unsafe {
-                                        xmlFatalErrMsgInt(ctxt, XML_ERR_ENTITY_CHAR_ERROR, b"EntityValue: \'%c\' forbidden except for entities references\n\x00" as *const u8 as *const libc::c_char, tmp_0 as libc::c_int);
+                                        xmlFatalErrMsgInt(ctxt,
+                                                          XML_ERR_ENTITY_CHAR_ERROR,
+                                                          b"EntityValue: \'%c\' forbidden except for entities references\n\x00"
+                                                              as *const u8 as
+                                                              *const libc::c_char,
+                                                          tmp_0 as libc::c_int);
                                     }
                                     current_block = 1624980031832806685;
                                     break;
@@ -7928,6 +7941,7 @@ pub fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
      */
     in_0 = unsafe { (*(*ctxt).input).cur };
     loop {
+        //@todo unsafe范围缩小
         unsafe {
             if *in_0 as libc::c_int == 0xa as libc::c_int {
                 loop {
@@ -8865,6 +8879,7 @@ pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut isParameter: libc::c_int = 0 as libc::c_int;
     let mut orig: *mut xmlChar = 0 as *mut xmlChar;
     /* GROW; done in the caller */
+    //@todo 削减unsafe范围
     unsafe {
         if *((*(*ctxt).input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
             as libc::c_int
@@ -9333,6 +9348,7 @@ pub fn xmlParseDefaultDecl(
 ) -> libc::c_int {
     let mut val: libc::c_int = 0;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
+    //@todo 削减unsafe范围
     unsafe {
         *value = 0 as *mut xmlChar;
         if *((*(*ctxt).input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
@@ -9683,6 +9699,7 @@ pub fn xmlParseEnumeratedType(
     mut ctxt: xmlParserCtxtPtr,
     mut tree: *mut xmlEnumerationPtr,
 ) -> libc::c_int {
+    //@todo 削减unsafe范围
     unsafe {
         if *((*(*ctxt).input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
             as libc::c_int
@@ -9785,6 +9802,7 @@ pub fn xmlParseAttributeType(
     mut ctxt: xmlParserCtxtPtr,
     mut tree: *mut xmlEnumerationPtr,
 ) -> libc::c_int {
+    //@todo 削减unsafe范围
     unsafe {
         if (*ctxt).progressive == 0 as libc::c_int
             && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as libc::c_long
@@ -10060,6 +10078,7 @@ pub fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut elemName: *const xmlChar = 0 as *const xmlChar;
     let mut attrName: *const xmlChar = 0 as *const xmlChar;
     let mut tree: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
+    //@todo 削减unsafe范围
     unsafe {
         if *((*(*ctxt).input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
             as libc::c_int
@@ -10202,7 +10221,11 @@ pub fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                                 }
                                 if *(*(*ctxt).input).cur as libc::c_int != '>' as i32 {
                                     if xmlSkipBlankChars(ctxt) == 0 as libc::c_int {
-                                        xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED, b"Space required after the attribute default value\n\x00" as *const u8 as *const libc::c_char);
+                                        xmlFatalErrMsg(ctxt,
+                                                       XML_ERR_SPACE_REQUIRED,
+                                                       b"Space required after the attribute default value\n\x00"
+                                                           as *const u8 as
+                                                           *const libc::c_char);
                                         if !defaultValue.is_null() {
                                             xmlFree_safe(defaultValue as *mut libc::c_void);
                                         }
@@ -10257,7 +10280,9 @@ pub fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
             }
             if *(*(*ctxt).input).cur as libc::c_int == '>' as i32 {
                 if inputid != (*(*ctxt).input).id {
-                    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY, b"Attribute list declaration doesn\'t start and stop in the same entity\n\x00" as *const u8 as *const libc::c_char);
+                    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
+                                   b"Attribute list declaration doesn\'t start and stop in the same entity\n\x00"
+                                       as *const u8 as *const libc::c_char);
                 }
                 xmlNextChar_safe(ctxt);
             }
@@ -10292,6 +10317,7 @@ pub fn xmlParseElementMixedContentDecl(
     let mut cur: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut n: xmlElementContentPtr = 0 as *mut xmlElementContent;
     let mut elem: *const xmlChar = 0 as *const xmlChar;
+    //@todo 削减unsafe范围
     unsafe {
         if (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -10337,7 +10363,9 @@ pub fn xmlParseElementMixedContentDecl(
             }
             if *(*(*ctxt).input).cur as libc::c_int == ')' as i32 {
                 if (*(*ctxt).input).id != inputchk {
-                    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY, b"Element content declaration doesn\'t start and stop in the same entity\n\x00" as *const u8 as *const libc::c_char);
+                    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
+                                   b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
+                                       as *const u8 as *const libc::c_char);
                 }
                 xmlNextChar_safe(ctxt);
                 ret = xmlNewDocElementContent_safe(
@@ -10448,7 +10476,9 @@ pub fn xmlParseElementMixedContentDecl(
                     (*ret).ocur = XML_ELEMENT_CONTENT_MULT
                 }
                 if (*(*ctxt).input).id != inputchk {
-                    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY, b"Element content declaration doesn\'t start and stop in the same entity\n\x00" as *const u8 as *const libc::c_char);
+                    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
+                                   b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
+                                       as *const u8 as *const libc::c_char);
                 }
                 (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as libc::c_int as isize);
                 (*(*ctxt).input).col += 2 as libc::c_int;
@@ -11089,6 +11119,7 @@ pub fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut ret: libc::c_int = -(1 as libc::c_int);
     let mut content: xmlElementContentPtr = 0 as xmlElementContentPtr;
     /* GROW; done in the caller */
+    //@todo 削减unsafe范围
     unsafe {
         if *((*(*ctxt).input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
             as libc::c_int
@@ -11277,6 +11308,7 @@ fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
     let mut depth: size_t = 0 as libc::c_int as size_t;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     's_11: while (safe_ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int {
+        //@todo 削减unsafe范围
         unsafe {
             if *(*(*ctxt).input).cur as libc::c_int == '<' as i32
                 && *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int
@@ -11325,7 +11357,10 @@ fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                         break;
                     } else {
                         if (*(*ctxt).input).id != id {
-                            xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY, b"All markup of the conditional section is not in the same entity\n\x00" as *const u8 as *const libc::c_char);
+                            xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
+                                           b"All markup of the conditional section is not in the same entity\n\x00"
+                                               as *const u8 as
+                                               *const libc::c_char);
                         }
                         xmlNextChar_safe(ctxt);
                         if inputIdsSize <= depth {
@@ -11385,7 +11420,10 @@ fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                         break;
                     } else {
                         if (*(*ctxt).input).id != id {
-                            xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY, b"All markup of the conditional section is not in the same entity\n\x00" as *const u8 as *const libc::c_char);
+                            xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
+                                           b"All markup of the conditional section is not in the same entity\n\x00"
+                                               as *const u8 as
+                                               *const libc::c_char);
                         }
                         xmlNextChar_safe(ctxt);
                         /*
@@ -11453,7 +11491,10 @@ fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                             break;
                         } else {
                             if (*(*ctxt).input).id != id {
-                                xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY, b"All markup of the conditional section is not in the same entity\n\x00" as *const u8 as *const libc::c_char);
+                                xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
+                                               b"All markup of the conditional section is not in the same entity\n\x00"
+                                                   as *const u8 as
+                                                   *const libc::c_char);
                             }
                             (*(*ctxt).input).cur =
                                 (*(*ctxt).input).cur.offset(3 as libc::c_int as isize);
@@ -11556,6 +11597,7 @@ pub fn xmlParseMarkupDecl(mut ctxt: xmlParserCtxtPtr) {
     {
         xmlGROW(ctxt);
     }
+    //@todo 削减unsafe范围
     unsafe {
         if *(*(*ctxt).input).cur as libc::c_int == '<' as i32 {
             if *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int == '!' as i32
@@ -11830,6 +11872,7 @@ pub fn xmlParseExternalSubset(
     (safe_ctxt).instate = XML_PARSER_DTD;
     (safe_ctxt).external = 1 as libc::c_int;
     xmlSkipBlankChars(ctxt);
+    //@todo 削减unsafe范围
     unsafe {
         while *(*(*ctxt).input).cur as libc::c_int == '<' as i32
             && *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int == '?' as i32
@@ -13459,6 +13502,7 @@ fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) ->
         }
         if c == 0 as libc::c_int {
             count = 0 as libc::c_int;
+
             if (safe_ctxt).progressive == 0 as libc::c_int
                 && unsafe {
                     ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -13781,6 +13825,7 @@ fn xmlParseInternalSubset(mut ctxt: xmlParserCtxtPtr) {
     /*
      * Is there any DTD definition ?
      */
+    //@todo 削减unsafe范围
     unsafe {
         if *(*(*ctxt).input).cur as libc::c_int == '[' as i32 {
             let mut baseInputNr: libc::c_int = (*ctxt).inputNr;
@@ -13970,7 +14015,10 @@ pub fn xmlParseAttribute(
             unsafe { *(*ctxt).space = 1 as libc::c_int }
         } else {
             unsafe {
-                xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE, b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00" as *const u8 as *const libc::c_char, val, 0 as *const xmlChar);
+                xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
+                              b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
+                                  as *const u8 as *const libc::c_char, val,
+                              0 as *const xmlChar);
             }
         }
     }
@@ -14280,6 +14328,7 @@ pub fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: libc::c_int) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
+    //@todo 削减unsafe范围
     unsafe {
         if (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -15167,7 +15216,10 @@ fn xmlParseAttribute2(
                 unsafe { *(*ctxt).space = 1 as libc::c_int }
             } else {
                 unsafe {
-                    xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE, b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00" as *const u8 as *const libc::c_char, internal_val, 0 as *const xmlChar);
+                    xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
+                                  b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
+                                      as *const u8 as *const libc::c_char,
+                                  internal_val, 0 as *const xmlChar);
                 }
             }
         }
@@ -15888,7 +15940,12 @@ fn xmlParseStartTag2(
                                             .is_null()
                                         }
                                     {
-                                        xmlValidityError(ctxt, XML_DTD_STANDALONE_DEFAULTED, b"standalone: attribute %s on %s defaulted from external subset\n\x00" as *const u8 as *const libc::c_char, attname, localname);
+                                        xmlValidityError(ctxt,
+                                                         XML_DTD_STANDALONE_DEFAULTED,
+                                                         b"standalone: attribute %s on %s defaulted from external subset\n\x00"
+                                                             as *const u8 as
+                                                             *const libc::c_char,
+                                                         attname, localname);
                                     }
                                     nbdef += 1
                                 }
@@ -16443,6 +16500,7 @@ pub fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
 fn xmlParseContentInternal(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     let mut nameNr: libc::c_int = (safe_ctxt).nameNr;
+    //@todo 削减unsafe范围
     unsafe {
         if (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -16756,6 +16814,7 @@ fn xmlParseElementStart(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     /*
      * Check for an Empty Element.
      */
+    //@todo 削减unsafe范围
     unsafe {
         if *(*(*ctxt).input).cur as libc::c_int == '/' as i32
             && *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int == '>' as i32
@@ -17004,6 +17063,7 @@ pub fn xmlParseVersionNum(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
 
 pub fn xmlParseVersionInfo(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut version: *mut xmlChar = 0 as *mut xmlChar;
+    //@todo 削减unsafe范围
     unsafe {
         if *((*(*ctxt).input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
             as libc::c_int
@@ -17358,6 +17418,7 @@ pub fn xmlParseEncodingDecl(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 pub fn xmlParseSDDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut standalone: libc::c_int = -(2 as libc::c_int);
     xmlSkipBlankChars(ctxt);
+    //@todo 削减unsafe范围
     unsafe {
         if *((*(*ctxt).input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
             as libc::c_int
@@ -17674,6 +17735,7 @@ pub fn xmlParseXMLDecl(mut ctxt: xmlParserCtxtPtr) {
  */
 
 pub fn xmlParseMisc(mut ctxt: xmlParserCtxtPtr) {
+    //@todo 削减unsafe范围
     unsafe {
         while (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int
             && (*(*(*ctxt).input).cur as libc::c_int == '<' as i32
@@ -18915,6 +18977,7 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
                                         == 0xd as libc::c_int)
                             {
                                 ret += 5 as libc::c_int;
+
                                 match () {
                                     #[cfg(HAVE_parser_DEBUG_PUSH)]
                                     _ => {
@@ -19161,6 +19224,7 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
                         /*
                          * Check for an Empty Element.
                          */
+                        //@todo 削减unsafe范围
                         unsafe {
                             if *(*(*ctxt).input).cur as libc::c_int == '/' as i32
                                 && *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize)
