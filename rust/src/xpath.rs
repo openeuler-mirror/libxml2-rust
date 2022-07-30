@@ -1,8 +1,6 @@
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn toupper_xpath(mut __c: libc::c_int) -> libc::c_int {
-    println!("toupper_xpath in rust begain");
     return if __c >= -(128 as libc::c_int) && __c < 256 as libc::c_int {
-        println!("toupper_xpath in rust unsafe before");
         unsafe { *(*__ctype_toupper_loc()).offset(__c as isize) }
     } else {
         __c
@@ -10,16 +8,13 @@ fn toupper_xpath(mut __c: libc::c_int) -> libc::c_int {
 }
 
 /*
- * TODO:
- * There are a few spots where some tests are done which depend upon ascii
+ * TODO: * There are a few spots where some tests are done which depend upon ascii
  * data.  These should be enhanced for full UTF8 support (see particularly
- * any use of the macros IS_ASCII_CHARACTER and IS_ASCII_DIGIT)
- */
+ * any use of the macros IS_ASCII_CHARACTER and IS_ASCII_DIGIT) */
 
 /* *
- * xmlXPathCmpNodesExt:
- * @node1:  the first node
- * @node2:  the second node
+ * xmlXPathCmpNodesExt: * @node1: the first node
+ * @node2: the second node
  *
  * Compare two nodes w.r.t document order.
  * This one is optimized for handling of non-element nodes.
@@ -29,7 +24,6 @@ fn toupper_xpath(mut __c: libc::c_int) -> libc::c_int {
  */
 #[cfg(XP_OPTIMIZED_NON_ELEM_COMPARISON)]
 fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_int {
-    println!("xmlXPathCmpNodesExt in rust begin");
     let mut current_block: u64;
     let mut depth1: libc::c_int = 0;
     let mut depth2: libc::c_int = 0;
@@ -231,8 +225,7 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_
                  *   <node2>
                  *     <node1>Text-1(precedence1 == 2)</node1>
                  *   </node2>
-                 *   Text-6(precedence2 == 3)
-                 * </foo>
+                 *   Text-6(precedence2 == 3) * </foo>
                  */
                 if precedence2 == 3 as libc::c_int && precedence1 > 1 as libc::c_int {
                     cur = unsafe { (*node1).parent };
@@ -279,11 +272,7 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_
         _ => {}
     }
 
-    // turtle_comparison:
-
-    if node1 == unsafe { (*node2).prev } {
-        return 1 as libc::c_int;
-    }
+    // turtle_comparison: if node1 == unsafe{(*node2).prev} { return 1 as libc::c_int }
     if node1 == unsafe { (*node2).next } {
         return -(1 as libc::c_int);
     }
@@ -383,8 +372,7 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_
  */
 #[cfg(WITH_TIM_SORT)]
 /* *
- * wrap_cmp:
- * @x: a node
+ * wrap_cmp: * @x: a node
  * @y: another node
  *
  * Comparison function for the Timsort implementation
@@ -417,25 +405,20 @@ fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> libc::c_int {
  * cross-platform compatibility.
  */
 /*
- * The MIT License (MIT)
- *
+ * The MIT License (MIT) *
  * Copyright (c) 2010-2017 Christopher Swenson.
  * Copyright (c) 2012 Vojtech Fried.
  * Copyright (c) 2012 Google Inc. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
+ * copy of this software and associated documentation files (the "Software"), * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions: *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
@@ -466,7 +449,6 @@ fn libxml_domnode_tim_sort_collapse(
     mut store: *mut TEMP_STORAGE_T,
     size: size_t,
 ) -> libc::c_int {
-    println!("libxml_domnode_tim_sort_collapse in rust begin");
     loop {
         let mut A: size_t = 0;
         let mut B: size_t = 0;
@@ -566,7 +548,6 @@ fn libxml_domnode_tim_sort_merge(
     stack_curr: libc::c_int,
     mut store: *mut TEMP_STORAGE_T,
 ) {
-    println!("libxml_domnode_tim_sort_merge in rust begin");
     let A: size_t = unsafe { (*stack.offset((stack_curr - 2 as libc::c_int) as isize)).length };
     let B: size_t = unsafe { (*stack.offset((stack_curr - 1 as libc::c_int) as isize)).length };
     let curr: size_t = unsafe { (*stack.offset((stack_curr - 2 as libc::c_int) as isize)).start };
@@ -659,7 +640,6 @@ fn libxml_domnode_tim_sort_merge(
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn libxml_domnode_tim_sort_resize(mut store: *mut TEMP_STORAGE_T, new_size: size_t) {
-    println!("libxml_domnode_tim_sort_resize in rust begin");
     let safe_store = unsafe { &mut *store };
     if safe_store.alloc < new_size {
         let mut tempstore: *mut xmlNodePtr = unsafe {
@@ -685,7 +665,6 @@ fn libxml_domnode_tim_sort_resize(mut store: *mut TEMP_STORAGE_T, new_size: size
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn libxml_domnode_count_run(mut dst: *mut xmlNodePtr, start: size_t, size: size_t) -> size_t {
-    println!("libxml_domnode_count_run in rust begin");
     let mut curr: size_t = 0;
     if size.wrapping_sub(start) == 1 as libc::c_int as libc::c_ulong {
         return 1 as libc::c_int as size_t;
@@ -756,7 +735,6 @@ fn libxml_domnode_count_run(mut dst: *mut xmlNodePtr, start: size_t, size: size_
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn libxml_domnode_binary_insertion_sort(mut dst: *mut xmlNodePtr, size: size_t) {
-    println!("libxml_domnode_binary_insertion_sort in rust begin");
     if size <= 1 as libc::c_int as libc::c_ulong {
         return;
     }
@@ -764,7 +742,6 @@ pub fn libxml_domnode_binary_insertion_sort(mut dst: *mut xmlNodePtr, size: size
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn compute_minrun(size: uint64_t) -> libc::c_int {
-    println!("compute_minrun in rust begin");
     let top_bit: libc::c_int =
         64 as libc::c_int - (size as libc::c_ulonglong).leading_zeros() as i32;
     let shift: libc::c_int = (if top_bit > 6 as libc::c_int {
@@ -785,7 +762,6 @@ fn libxml_domnode_check_invariant(
     mut stack: *mut TIM_SORT_RUN_T,
     stack_curr: libc::c_int,
 ) -> libc::c_int {
-    println!("libxml_domnode_check_invariant in rust begin");
     let mut A: size_t = 0;
     let mut B: size_t = 0;
     let mut C: size_t = 0;
@@ -816,7 +792,6 @@ fn libxml_domnode_binary_insertion_find(
     x: xmlNodePtr,
     size: size_t,
 ) -> size_t {
-    println!("libxml_domnode_binary_insertion_find in rust begin");
     let mut l: size_t = 0;
     let mut c: size_t = 0;
     let mut r: size_t = 0;
@@ -855,7 +830,6 @@ fn libxml_domnode_binary_insertion_sort_start(
     start: size_t,
     size: size_t,
 ) {
-    println!("libxml_domnode_binary_insertion_sort_start in rust begin");
     let mut i: size_t = 0;
     i = start;
     while i < size {
@@ -894,7 +868,6 @@ fn libxml_domnode_binary_insertion_sort_start(
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn libxml_domnode_reverse_elements(mut dst: *mut xmlNodePtr, mut start: size_t, mut end: size_t) {
-    println!("libxml_domnode_reverse_elements in rust begin");
     loop {
         if start >= end {
             return;
@@ -920,7 +893,6 @@ fn PUSH_NEXT(
     mut stack_curr: *mut size_t,
     mut curr: *mut size_t,
 ) -> libc::c_int {
-    println!("PUSH_NEXT in rust begin");
     let mut len: size_t = unsafe { libxml_domnode_count_run(dst, *curr, size) };
     let mut run: size_t = minrun;
     let safe_store = unsafe { &mut *store };
@@ -969,7 +941,6 @@ fn PUSH_NEXT(
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn libxml_domnode_tim_sort(mut dst: *mut xmlNodePtr, size: size_t) {
-    println!("libxml_domnode_tim_sort in rust begin");
     let mut minrun: size_t = 0;
     let mut _store: TEMP_STORAGE_T = TEMP_STORAGE_T {
         alloc: 0,
@@ -1080,14 +1051,12 @@ pub static mut xmlXPathNINF: libc::c_double = 0.;
 
 /* LIBXML_XPATH_ENABLED */
 /* *
- * xmlXPathInit:
- *
+ * xmlXPathInit: *
  * Initialize the XPath environment
  */
 #[cfg(LIBXML_XPATH_ENABLED_OR_LIBXML_SCHEMAS_ENABLED)]
 pub fn xmlXPathInit_xpath() {
     /* MSVC doesn't allow division by zero in constant expressions. */
-    println!("xmlXPathInit_xpath in rust begin");
     let mut zero: libc::c_double = 0.0f64;
     unsafe {
         xmlXPathNAN = 0.0f64 / zero;
@@ -1096,14 +1065,12 @@ pub fn xmlXPathInit_xpath() {
     };
 }
 /* *
- * xmlXPathIsNaN:
- * @val:  a double value
+ * xmlXPathIsNaN: * @val: a double value
  *
  * Returns 1 if the value is a NaN, 0 otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED_OR_LIBXML_SCHEMAS_ENABLED)]
 pub fn xmlXPathIsNaN(mut val: libc::c_double) -> libc::c_int {
-    println!("xmlXPathIsNaN in rust begin");
     match () {
         #[cfg(ISNAN)]
         _ => {
@@ -1130,14 +1097,12 @@ pub fn xmlXPathIsNaN(mut val: libc::c_double) -> libc::c_int {
     };
 }
 /* *
- * xmlXPathIsInf:
- * @val:  a double value
+ * xmlXPathIsInf: * @val: a double value
  *
  * Returns 1 if the value is +Infinite, -1 if -Infinite, 0 otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED_OR_LIBXML_SCHEMAS_ENABLED)]
 pub fn xmlXPathIsInf(mut val: libc::c_double) -> libc::c_int {
-    println!("xmlXPathIsInf in rust begin");
     match () {
         #[cfg(ISINF)]
         _ => {
@@ -1206,8 +1171,7 @@ static mut xmlXPathDisableOptimizer: libc::c_int = 0;
  *									*
  ************************************************************************/
 /* *
- * XP_ERRORNULL:
- * @X:  the error code
+ * XP_ERRORNULL: * @X: the error code
  *
  * Macro to raise an XPath error and return NULL.
  */
@@ -1246,15 +1210,13 @@ static mut xmlXPathErrorMessages: [*const libc::c_char; 28] = [
     b"?? Unknown error ??\n\x00" as *const u8 as *const libc::c_char,
 ];
 /* *
- * xmlXPathErrMemory:
- * @ctxt:  an XPath context
- * @extra:  extra information
+ * xmlXPathErrMemory: * @ctxt: an XPath context
+ * @extra: extra information
  *
  * Handle a redefinition of attribute error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathErrMemory(mut ctxt: xmlXPathContextPtr, mut extra: *const libc::c_char) {
-    println!("xmlXPathErrMemory in rust begin");
     if !ctxt.is_null() {
         let safe_ctxt = unsafe { &mut *ctxt };
         unsafe { xmlResetError(&mut (*ctxt).lastError) };
@@ -1334,15 +1296,13 @@ fn xmlXPathErrMemory(mut ctxt: xmlXPathContextPtr, mut extra: *const libc::c_cha
     };
 }
 /* *
- * xmlXPathPErrMemory:
- * @ctxt:  an XPath parser context
- * @extra:  extra information
+ * xmlXPathPErrMemory: * @ctxt: an XPath parser context
+ * @extra: extra information
  *
  * Handle a redefinition of attribute error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathPErrMemory(mut ctxt: xmlXPathParserContextPtr, mut extra: *const libc::c_char) {
-    println!("xmlXPathPErrMemory in rust begin");
     if ctxt.is_null() {
         unsafe { xmlXPathErrMemory(0 as xmlXPathContextPtr, extra) };
     } else {
@@ -1352,15 +1312,13 @@ fn xmlXPathPErrMemory(mut ctxt: xmlXPathParserContextPtr, mut extra: *const libc
     };
 }
 /* *
- * xmlXPathErr:
- * @ctxt:  a XPath parser context
- * @error:  the error code
+ * xmlXPathErr: * @ctxt: a XPath parser context
+ * @error: the error code
  *
  * Handle an XPath error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathErr(mut ctxt: xmlXPathParserContextPtr, mut error: libc::c_int) {
-    println!("xmlXPathErr in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if error < 0 as libc::c_int
         || error
@@ -1472,11 +1430,10 @@ pub fn xmlXPathErr(mut ctxt: xmlXPathParserContextPtr, mut error: libc::c_int) {
  * Error reporting.
  */
 /* *
- * xmlXPatherror:
- * @ctxt:  the XPath Parser context
- * @file:  the file name
- * @line:  the line number
- * @no:  the error number
+ * xmlXPatherror: * @ctxt: the XPath Parser context
+ * @file: the file name
+ * @line: the line number
+ * @no: the error number
  *
  * Formats an error message.
  */
@@ -1487,13 +1444,11 @@ pub fn xmlXPatherror(
     mut line: libc::c_int,
     mut no: libc::c_int,
 ) {
-    println!("xmlXPatherror in rust begin");
     unsafe { xmlXPathErr(ctxt, no) };
 }
 /* *
- * xmlXPathCheckOpLimit:
- * @ctxt:  the XPath Parser context
- * @opCount:  the number of operations to be added
+ * xmlXPathCheckOpLimit: * @ctxt: the XPath Parser context
+ * @opCount: the number of operations to be added
  *
  * Adds opCount to the running total of operations and returns -1 if the
  * operation limit is exceeded. Returns 0 otherwise.
@@ -1503,7 +1458,6 @@ fn xmlXPathCheckOpLimit(
     mut ctxt: xmlXPathParserContextPtr,
     mut opCount: libc::c_ulong,
 ) -> libc::c_int {
-    println!("xmlXPathCheckOpLimit in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut xpctxt: xmlXPathContextPtr = safe_ctxt.context;
     let safe_xpctxt = unsafe { &mut *xpctxt };
@@ -1527,7 +1481,6 @@ fn xmlPointerListAddSize(
     mut item: *mut libc::c_void,
     mut initialSize: libc::c_int,
 ) -> libc::c_int {
-    println!("xmlPointerListAddSize in rust begin");
     let safe_list = unsafe { &mut *list };
 
     if safe_list.items.is_null() {
@@ -1592,15 +1545,13 @@ fn xmlPointerListAddSize(
     return 0 as libc::c_int;
 }
 /* *
- * xsltPointerListCreate:
- *
+ * xsltPointerListCreate: *
  * Creates an xsltPointerList structure.
  *
  * Returns a xsltPointerList structure or NULL in case of an error.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlPointerListCreate(mut initialSize: libc::c_int) -> xmlPointerListPtr {
-    println!("xmlPointerListCreate in rust begin");
     let mut ret: xmlPointerListPtr = 0 as *mut xmlPointerList;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -1630,14 +1581,12 @@ fn xmlPointerListCreate(mut initialSize: libc::c_int) -> xmlPointerListPtr {
     return ret;
 }
 /* *
- * xsltPointerListFree:
- *
+ * xsltPointerListFree: *
  * Frees the xsltPointerList structure. This does not free
  * the content of the list.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlPointerListFree(mut list: xmlPointerListPtr) {
-    println!("xmlPointerListFree in rust begin");
     if list.is_null() {
         return;
     }
@@ -1653,15 +1602,13 @@ fn xmlPointerListFree(mut list: xmlPointerListPtr) {
  *									*
  ************************************************************************/
 /* *
- * xmlXPathNewCompExpr:
- *
+ * xmlXPathNewCompExpr: *
  * Create a new Xpath component
  *
  * Returns the newly allocated xmlXPathCompExprPtr or NULL in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathNewCompExpr() -> xmlXPathCompExprPtr {
-    println!("xmlXPathNewCompExpr in rust begin");
     let mut cur: xmlXPathCompExprPtr = 0 as *mut xmlXPathCompExpr;
     cur = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -1723,14 +1670,12 @@ fn xmlXPathNewCompExpr() -> xmlXPathCompExprPtr {
     return cur;
 }
 /* *
- * xmlXPathFreeCompExpr:
- * @comp:  an XPATH comp
+ * xmlXPathFreeCompExpr: * @comp: an XPATH comp
  *
  * Free up the memory allocated by @comp
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathFreeCompExpr(mut comp: xmlXPathCompExprPtr) {
-    println!("xmlXPathFreeCompExpr in rust begin");
     let mut op: xmlXPathStepOpPtr = 0 as *mut xmlXPathStepOp;
     let mut i: libc::c_int = 0;
     if comp.is_null() {
@@ -1799,16 +1744,15 @@ pub fn xmlXPathFreeCompExpr(mut comp: xmlXPathCompExprPtr) {
     unsafe { xmlFree.expect("non-null function pointer")(comp as *mut libc::c_void) };
 }
 /* *
- * xmlXPathCompExprAdd:
- * @comp:  the compiled expression
+ * xmlXPathCompExprAdd: * @comp: the compiled expression
  * @ch1: first child index
  * @ch2: second child index
- * @op:  an op
- * @value:  the first int value
- * @value2:  the second int value
- * @value3:  the third int value
- * @value4:  the first string value
- * @value5:  the second string value
+ * @op: an op
+ * @value: the first int value
+ * @value2: the second int value
+ * @value3: the third int value
+ * @value4: the first string value
+ * @value5: the second string value
  *
  * Add a step to an XPath Compiled Expression
  *
@@ -1826,7 +1770,6 @@ fn xmlXPathCompExprAdd(
     mut value4: *mut libc::c_void,
     mut value5: *mut libc::c_void,
 ) -> libc::c_int {
-    println!("xmlXPathCompExprAdd in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut comp: xmlXPathCompExprPtr = safe_ctxt.comp;
     let safe_comp = unsafe { &mut *comp };
@@ -1922,15 +1865,13 @@ fn xmlXPathCompExprAdd(
     return fresh29;
 }
 /* *
- * xmlXPathCompSwap:
- * @comp:  the compiled expression
+ * xmlXPathCompSwap: * @comp: the compiled expression
  * @op: operation index
  *
  * Swaps 2 operations in the compiled expression
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathCompSwap(mut op: xmlXPathStepOpPtr) {
-    println!("xmlXPathCompSwap in rust begin");
     let mut tmp: libc::c_int = 0;
     match () {
         #[cfg(not(LIBXML_THREAD_ENABLED))]
@@ -1955,7 +1896,6 @@ fn xmlXPathCompSwap(mut op: xmlXPathStepOpPtr) {
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathDebugDumpNode(mut output: *mut FILE, mut cur: xmlNodePtr, mut depth: libc::c_int) {
-    println!("xmlXPathDebugDumpNode in rust begin");
     let safe_cur = unsafe { &mut *cur };
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
@@ -2003,7 +1943,6 @@ fn xmlXPathDebugDumpNode(mut output: *mut FILE, mut cur: xmlNodePtr, mut depth: 
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathDebugDumpNodeList(mut output: *mut FILE, mut cur: xmlNodePtr, mut depth: libc::c_int) {
-    println!("xmlXPathDebugDumpNodeList in rust begin");
     let mut tmp: xmlNodePtr = 0 as *mut xmlNode;
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
@@ -2042,7 +1981,6 @@ fn xmlXPathDebugDumpNodeList(mut output: *mut FILE, mut cur: xmlNodePtr, mut dep
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathDebugDumpNodeSet(mut output: *mut FILE, mut cur: xmlNodeSetPtr, mut depth: libc::c_int) {
-    println!("xmlXPathDebugDumpNodeSet in rust begin");
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
     i = 0 as libc::c_int;
@@ -2108,7 +2046,6 @@ fn xmlXPathDebugDumpValueTree(
     mut cur: xmlNodeSetPtr,
     mut depth: libc::c_int,
 ) {
-    println!("xmlXPathDebugDumpValueTree in rust begin");
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
     let safe_cur = unsafe { &mut *cur };
@@ -2166,7 +2103,6 @@ fn xmlXPathDebugDumpLocationSet(
     mut cur: xmlLocationSetPtr,
     mut depth: libc::c_int,
 ) {
-    println!("xmlXPathDebugDumpLocationSet in rust begin");
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
     i = 0 as libc::c_int;
@@ -2218,10 +2154,9 @@ fn xmlXPathDebugDumpLocationSet(
 }
 /* LIBXML_XPTR_ENABLED */
 /* *
- * xmlXPathDebugDumpObject:
- * @output:  the FILE * to dump the output
- * @cur:  the object to inspect
- * @depth:  indentation level
+ * xmlXPathDebugDumpObject: * @output: the FILE * to dump the output
+ * @cur: the object to inspect
+ * @depth: indentation level
  *
  * Dump the content of the object for debugging purposes
  */
@@ -2231,7 +2166,6 @@ pub fn xmlXPathDebugDumpObject(
     mut cur: xmlXPathObjectPtr,
     mut depth: libc::c_int,
 ) {
-    println!("xmlXPathDebugDumpObject in rust begin");
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
     if output.is_null() {
@@ -2489,7 +2423,6 @@ fn xmlXPathDebugDumpStepOp(
     mut op: xmlXPathStepOpPtr,
     mut depth: libc::c_int,
 ) {
-    println!("xmlXPathDebugDumpStepOp in rust begin");
     let mut current_block: u64;
     let safe_op = unsafe { &mut *op };
     let mut i: libc::c_int = 0;
@@ -2910,10 +2843,9 @@ fn xmlXPathDebugDumpStepOp(
     };
 }
 /* *
- * xmlXPathDebugDumpCompExpr:
- * @output:  the FILE * for the output
- * @comp:  the precompiled XPath expression
- * @depth:  the indentation level.
+ * xmlXPathDebugDumpCompExpr: * @output: the FILE * for the output
+ * @comp: the precompiled XPath expression
+ * @depth: the indentation level.
  *
  * Dumps the tree of the compiled XPath expression.
  */
@@ -2923,7 +2855,6 @@ pub fn xmlXPathDebugDumpCompExpr(
     mut comp: xmlXPathCompExprPtr,
     mut depth: libc::c_int,
 ) {
-    println!("xmlXPathDebugDumpCompExpr in rust begin");
     let safe_comp = unsafe { &mut *comp };
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
@@ -3070,7 +3001,6 @@ static mut xmlXPathDebugObjMaxAll: libc::c_int = 0 as libc::c_int;
 #[cfg(XP_DEBUG_OBJ_USAGE)]
 #[cfg(LIBXML_XPATH_ENABLED)]
 extern "C" fn xmlXPathDebugObjUsageReset(mut ctxt: xmlXPathContextPtr) {
-    println!("xmlXPathDebugObjUsageReset in rust begin");
     if !ctxt.is_null() {
         let safe_ctxt = unsafe { &mut *ctxt };
         if !safe_ctxt.cache.is_null() {
@@ -3141,7 +3071,6 @@ extern "C" fn xmlXPathDebugObjUsageRequested(
     mut ctxt: xmlXPathContextPtr,
     mut objType: xmlXPathObjectType,
 ) {
-    println!("xmlXPathDebugObjUsageRequested in rust begin");
     let mut isCached: libc::c_int = 0 as libc::c_int;
     if !ctxt.is_null() {
         let safe_ctxt = unsafe { &mut *ctxt };
@@ -3273,7 +3202,6 @@ extern "C" fn xmlXPathDebugObjUsageReleased(
     mut ctxt: xmlXPathContextPtr,
     mut objType: xmlXPathObjectType,
 ) {
-    println!("xmlXPathDebugObjUsageReleased in rust begin");
     let mut isCached: libc::c_int = 0 as libc::c_int;
     if !ctxt.is_null() {
         let safe_ctxt = unsafe { &mut *ctxt };
@@ -3316,7 +3244,6 @@ extern "C" fn xmlXPathDebugObjUsageReleased(
 #[cfg(XP_DEBUG_OBJ_USAGE)]
 #[cfg(LIBXML_XPATH_ENABLED)]
 extern "C" fn xmlXPathDebugObjUsageDisplay(mut ctxt: xmlXPathContextPtr) {
-    println!("xmlXPathDebugObjUsageDisplay in rust begin");
     let mut reqAll: libc::c_int = 0;
     let mut reqNodeset: libc::c_int = 0;
     let mut reqString: libc::c_int = 0;
@@ -3434,15 +3361,13 @@ extern "C" fn xmlXPathDebugObjUsageDisplay(mut ctxt: xmlXPathContextPtr) {
  *									*
  ************************************************************************/
 /* *
- * xmlXPathNewCache:
- *
+ * xmlXPathNewCache: *
  * Create a new object cache
  *
  * Returns the xmlXPathCache just allocated.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathNewCache() -> xmlXPathContextCachePtr {
-    println!("xmlXPathNewCache in rust begin");
     let mut ret: xmlXPathContextCachePtr = 0 as *mut xmlXPathContextCache;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -3475,7 +3400,6 @@ fn xmlXPathNewCache() -> xmlXPathContextCachePtr {
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathCacheFreeObjectList(mut list: xmlPointerListPtr) {
-    println!("xmlXPathCacheFreeObjectList in rust begin");
     let mut i: libc::c_int = 0;
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if list.is_null() {
@@ -3517,7 +3441,6 @@ fn xmlXPathCacheFreeObjectList(mut list: xmlPointerListPtr) {
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathFreeCache(mut cache: xmlXPathContextCachePtr) {
-    println!("xmlXPathFreeCache in rust begin");
     if cache.is_null() {
         return;
     }
@@ -3540,20 +3463,15 @@ fn xmlXPathFreeCache(mut cache: xmlXPathContextCachePtr) {
     unsafe { xmlFree.expect("non-null function pointer")(cache as *mut libc::c_void) };
 }
 /* *
- * xmlXPathContextSetCache:
- *
- * @ctxt:  the XPath context
+ * xmlXPathContextSetCache: *
+ * @ctxt: the XPath context
  * @active: enables/disables (creates/frees) the cache
  * @value: a value with semantics dependent on @options
- * @options: options (currently only the value 0 is used)
- *
+ * @options: options (currently only the value 0 is used) *
  * Creates/frees an object cache on the XPath context.
  * If activates XPath objects (xmlXPathObject) will be cached internally
  * to be reused.
- * @options:
- *   0: This will set the XPath object caching:
- *      @value:
- *        This will set the maximum number of XPath objects
+ * @options: *   0: This will set the XPath object caching: *      @value: *        This will set the maximum number of XPath objects
  *        to be cached per slot
  *        There are 5 slots for: node-set, string, number, boolean, and
  *        misc objects. Use <0 for the default number (100).
@@ -3568,7 +3486,6 @@ pub fn xmlXPathContextSetCache(
     mut value: libc::c_int,
     mut options: libc::c_int,
 ) -> libc::c_int {
-    println!("xmlXPathContextSetCache in rust begin");
     if ctxt.is_null() {
         return -(1 as libc::c_int);
     }
@@ -3600,9 +3517,8 @@ pub fn xmlXPathContextSetCache(
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathCacheWrapNodeSet:
- * @ctxt: the XPath context
- * @val:  the NodePtr value
+ * xmlXPathCacheWrapNodeSet: * @ctxt: the XPath context
+ * @val: the NodePtr value
  *
  * This is the cached version of xmlXPathWrapNodeSet().
  * Wrap the Nodeset @val in a new xmlXPathObjectPtr
@@ -3614,7 +3530,6 @@ fn xmlXPathCacheWrapNodeSet(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlNodeSetPtr,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheWrapNodeSet in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3646,9 +3561,8 @@ fn xmlXPathCacheWrapNodeSet(
     return unsafe { xmlXPathWrapNodeSet(val) };
 }
 /* *
- * xmlXPathCacheWrapString:
- * @ctxt: the XPath context
- * @val:  the xmlChar * value
+ * xmlXPathCacheWrapString: * @ctxt: the XPath context
+ * @val: the xmlChar * value
  *
  * This is the cached version of xmlXPathWrapString().
  * Wraps the @val string into an XPath object.
@@ -3660,7 +3574,6 @@ fn xmlXPathCacheWrapString(
     mut ctxt: xmlXPathContextPtr,
     mut val: *mut xmlChar,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheWrapString in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3720,9 +3633,8 @@ fn xmlXPathCacheWrapString(
 }
 
 /* *
- * xmlXPathCacheNewNodeSet:
- * @ctxt: the XPath context
- * @val:  the NodePtr value
+ * xmlXPathCacheNewNodeSet: * @ctxt: the XPath context
+ * @val: the NodePtr value
  *
  * This is the cached version of xmlXPathNewNodeSet().
  * Acquire an xmlXPathObjectPtr of type NodeSet and initialize
@@ -3732,7 +3644,6 @@ fn xmlXPathCacheWrapString(
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathCacheNewNodeSet(mut ctxt: xmlXPathContextPtr, mut val: xmlNodePtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheNewNodeSet in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3816,9 +3727,8 @@ fn xmlXPathCacheNewNodeSet(mut ctxt: xmlXPathContextPtr, mut val: xmlNodePtr) ->
 }
 
 /* *
- * xmlXPathCacheNewCString:
- * @ctxt: the XPath context
- * @val:  the char * value
+ * xmlXPathCacheNewCString: * @ctxt: the XPath context
+ * @val: the char * value
  *
  * This is the cached version of xmlXPathNewCString().
  * Acquire an xmlXPathObjectPtr of type string and of value @val
@@ -3830,7 +3740,6 @@ fn xmlXPathCacheNewCString(
     mut ctxt: xmlXPathContextPtr,
     mut val: *const libc::c_char,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheNewCString in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3885,9 +3794,8 @@ fn xmlXPathCacheNewCString(
     return unsafe { xmlXPathNewCString(val) };
 }
 /* *
- * xmlXPathCacheNewString:
- * @ctxt: the XPath context
- * @val:  the xmlChar * value
+ * xmlXPathCacheNewString: * @ctxt: the XPath context
+ * @val: the xmlChar * value
  *
  * This is the cached version of xmlXPathNewString().
  * Acquire an xmlXPathObjectPtr of type string and of value @val
@@ -3899,7 +3807,6 @@ fn xmlXPathCacheNewString(
     mut ctxt: xmlXPathContextPtr,
     mut val: *const xmlChar,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheNewString in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3964,9 +3871,8 @@ fn xmlXPathCacheNewString(
     return unsafe { xmlXPathNewString(val) };
 }
 /* *
- * xmlXPathCacheNewBoolean:
- * @ctxt: the XPath context
- * @val:  the boolean value
+ * xmlXPathCacheNewBoolean: * @ctxt: the XPath context
+ * @val: the boolean value
  *
  * This is the cached version of xmlXPathNewBoolean().
  * Acquires an xmlXPathObjectPtr of type boolean and of value @val
@@ -3978,7 +3884,6 @@ fn xmlXPathCacheNewBoolean(
     mut ctxt: xmlXPathContextPtr,
     mut val: libc::c_int,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheNewBoolean in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -4033,9 +3938,8 @@ fn xmlXPathCacheNewBoolean(
     return unsafe { xmlXPathNewBoolean(val) };
 }
 /* *
- * xmlXPathCacheNewFloat:
- * @ctxt: the XPath context
- * @val:  the double value
+ * xmlXPathCacheNewFloat: * @ctxt: the XPath context
+ * @val: the double value
  *
  * This is the cached version of xmlXPathNewFloat().
  * Acquires an xmlXPathObjectPtr of type double and of value @val
@@ -4047,7 +3951,6 @@ fn xmlXPathCacheNewFloat(
     mut ctxt: xmlXPathContextPtr,
     mut val: libc::c_double,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheNewFloat in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -4102,22 +4005,18 @@ fn xmlXPathCacheNewFloat(
     return unsafe { xmlXPathNewFloat(val) };
 }
 /* *
- * xmlXPathCacheConvertString:
- * @ctxt: the XPath context
- * @val:  an XPath object
+ * xmlXPathCacheConvertString: * @ctxt: the XPath context
+ * @val: an XPath object
  *
  * This is the cached version of xmlXPathConvertString().
  * Converts an existing object to its string() equivalent
  *
- * Returns a created or reused object, the old one is freed (cached)
- *         (or the operation is done directly on @val)
- */
+ * Returns a created or reused object, the old one is freed (cached) *         (or the operation is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathCacheConvertString(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheConvertString in rust begin");
     let mut res: *mut xmlChar = 0 as *mut xmlChar;
     if val.is_null() {
         return unsafe {
@@ -4165,9 +4064,8 @@ fn xmlXPathCacheConvertString(
     return unsafe { xmlXPathCacheWrapString(ctxt, res) };
 }
 /* *
- * xmlXPathCacheObjectCopy:
- * @ctxt: the XPath context
- * @val:  the original object
+ * xmlXPathCacheObjectCopy: * @ctxt: the XPath context
+ * @val: the original object
  *
  * This is the cached version of xmlXPathObjectCopy().
  * Acquire a copy of a given object
@@ -4179,7 +4077,6 @@ fn xmlXPathCacheObjectCopy(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheObjectCopy in rust begin");
     if val.is_null() {
         return 0 as xmlXPathObjectPtr;
     }
@@ -4204,22 +4101,19 @@ fn xmlXPathCacheObjectCopy(
     return unsafe { xmlXPathObjectCopy(val) };
 }
 /* *
- * xmlXPathCacheConvertBoolean:
- * @ctxt: the XPath context
- * @val:  an XPath object
+ * xmlXPathCacheConvertBoolean: * @ctxt: the XPath context
+ * @val: an XPath object
  *
  * This is the cached version of xmlXPathConvertBoolean().
  * Converts an existing object to its boolean() equivalent
  *
  * Returns a created or reused object, the old one is freed (or the operation
- *         is done directly on @val)
- */
+ *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathCacheConvertBoolean(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheConvertBoolean in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return unsafe { xmlXPathCacheNewBoolean(ctxt, 0 as libc::c_int) };
@@ -4233,22 +4127,19 @@ fn xmlXPathCacheConvertBoolean(
     return ret;
 }
 /* *
- * xmlXPathCacheConvertNumber:
- * @ctxt: the XPath context
- * @val:  an XPath object
+ * xmlXPathCacheConvertNumber: * @ctxt: the XPath context
+ * @val: an XPath object
  *
  * This is the cached version of xmlXPathConvertNumber().
  * Converts an existing object to its number() equivalent
  *
  * Returns a created or reused object, the old one is freed (or the operation
- *         is done directly on @val)
- */
+ *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathCacheConvertNumber(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathCacheConvertNumber in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return unsafe { xmlXPathCacheNewFloat(ctxt, 0.0f64) };
@@ -4267,8 +4158,7 @@ fn xmlXPathCacheConvertNumber(
  *									*
  ************************************************************************/
 /* *
- * xmlXPathSetFrame:
- * @ctxt: an XPath parser context
+ * xmlXPathSetFrame: * @ctxt: an XPath parser context
  *
  * Set the callee evaluation frame
  *
@@ -4276,7 +4166,6 @@ fn xmlXPathCacheConvertNumber(
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathSetFrame(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
-    println!("xmlXPathSetFrame in rust begin");
     let mut ret: libc::c_int = 0;
     if ctxt.is_null() {
         return 0 as libc::c_int;
@@ -4287,15 +4176,13 @@ fn xmlXPathSetFrame(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
     return ret;
 }
 /* *
- * xmlXPathPopFrame:
- * @ctxt: an XPath parser context
+ * xmlXPathPopFrame: * @ctxt: an XPath parser context
  * @frame: the previous frame value
  *
  * Remove the callee evaluation frame
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathPopFrame(mut ctxt: xmlXPathParserContextPtr, mut frame: libc::c_int) {
-    println!("xmlXPathPopFrame in rust begin");
     if ctxt.is_null() {
         return;
     }
@@ -4314,8 +4201,7 @@ fn xmlXPathPopFrame(mut ctxt: xmlXPathParserContextPtr, mut frame: libc::c_int) 
 }
 /* TODO: remap to xmlXPathValuePop and Push. */
 /* *
- * valuePop:
- * @ctxt: an XPath evaluation context
+ * valuePop: * @ctxt: an XPath evaluation context
  *
  * Pops the top XPath object from the value stack
  *
@@ -4324,7 +4210,6 @@ fn xmlXPathPopFrame(mut ctxt: xmlXPathParserContextPtr, mut frame: libc::c_int) 
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn valuePop(mut ctxt: xmlXPathParserContextPtr) -> xmlXPathObjectPtr {
-    println!("valuePop in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.valueNr <= 0 as libc::c_int {
@@ -4359,27 +4244,23 @@ pub fn valuePop(mut ctxt: xmlXPathParserContextPtr) -> xmlXPathObjectPtr {
     }
 }
 /* *
- * valuePush:
- * @ctxt:  an XPath evaluation context
- * @value:  the XPath object
+ * valuePush: * @ctxt: an XPath evaluation context
+ * @value: the XPath object
  *
- * Pushes a new XPath object on top of the value stack. If value is NULL,
- * a memory error is recorded in the parser context.
+ * Pushes a new XPath object on top of the value stack. If value is NULL, * a memory error is recorded in the parser context.
  *
  * Returns the number of items on the value stack, or -1 in case of error.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn valuePush(mut ctxt: xmlXPathParserContextPtr, mut value: xmlXPathObjectPtr) -> libc::c_int {
-    println!("valuePush in rust begin");
     if ctxt.is_null() {
         return -(1 as libc::c_int);
     }
     let safe_ctxt = unsafe { &mut *ctxt };
     if value.is_null() {
         /*
-         * A NULL value typically indicates that a memory allocation failed,
-         * so we set ctxt->error here to propagate the error.
+         * A NULL value typically indicates that a memory allocation failed, * so we set ctxt->error here to propagate the error.
          */
         safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int;
         return -(1 as libc::c_int);
@@ -4443,59 +4324,51 @@ pub fn valuePush(mut ctxt: xmlXPathParserContextPtr, mut value: xmlXPathObjectPt
  * shouldn't be used in #ifdef's preprocessor instructions.
  */
 /* *
- * xmlXPathSetError:
- * @ctxt:  an XPath parser context
- * @err:  an xmlXPathError code
+ * xmlXPathSetError: * @ctxt: an XPath parser context
+ * @err: an xmlXPathError code
  *
  * Raises an error.
  */
 /* *
- * xmlXPathSetArityError:
- * @ctxt:  an XPath parser context
+ * xmlXPathSetArityError: * @ctxt: an XPath parser context
  *
  * Raises an XPATH_INVALID_ARITY error.
  */
 /* *
- * xmlXPathSetTypeError:
- * @ctxt:  an XPath parser context
+ * xmlXPathSetTypeError: * @ctxt: an XPath parser context
  *
  * Raises an XPATH_INVALID_TYPE error.
  */
 /* *
- * xmlXPathGetError:
- * @ctxt:  an XPath parser context
+ * xmlXPathGetError: * @ctxt: an XPath parser context
  *
  * Get the error code of an XPath context.
  *
  * Returns the context error.
  */
 /* *
- * xmlXPathCheckError:
- * @ctxt:  an XPath parser context
+ * xmlXPathCheckError: * @ctxt: an XPath parser context
  *
  * Check if an XPath error was raised.
  *
  * Returns true if an error has been raised, false otherwise.
  */
 /* *
- * xmlXPathGetDocument:
- * @ctxt:  an XPath parser context
+ * xmlXPathGetDocument: * @ctxt: an XPath parser context
  *
  * Get the document of an XPath context.
  *
  * Returns the context document.
  */
 /* *
- * xmlXPathGetContextNode:
- * @ctxt: an XPath parser context
+ * xmlXPathGetContextNode: * @ctxt: an XPath parser context
  *
  * Get the context node of an XPath context.
  *
  * Returns the context node.
  */
 /* *
- * xmlXPathPopBoolean:
- * @ctxt:  an XPath parser context
+ * xmlXPathPopBoolean: * @ctxt: an XPath parser context
  *
  * Pops a boolean from the stack, handling conversion if needed.
  * Check error with #xmlXPathCheckError.
@@ -4505,7 +4378,6 @@ pub fn valuePush(mut ctxt: xmlXPathParserContextPtr, mut value: xmlXPathObjectPt
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathPopBoolean(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
-    println!("xmlXPathPopBoolean in rust begin");
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: libc::c_int = 0;
     obj = valuePop(ctxt);
@@ -4534,8 +4406,7 @@ pub fn xmlXPathPopBoolean(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
     return ret;
 }
 /* *
- * xmlXPathPopNumber:
- * @ctxt:  an XPath parser context
+ * xmlXPathPopNumber: * @ctxt: an XPath parser context
  *
  * Pops a number from the stack, handling conversion if needed.
  * Check error with #xmlXPathCheckError.
@@ -4545,7 +4416,6 @@ pub fn xmlXPathPopBoolean(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathPopNumber(mut ctxt: xmlXPathParserContextPtr) -> libc::c_double {
-    println!("xmlXPathPopNumber in rust begin");
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: libc::c_double = 0.;
     obj = unsafe { valuePop(ctxt) };
@@ -4574,8 +4444,7 @@ pub fn xmlXPathPopNumber(mut ctxt: xmlXPathParserContextPtr) -> libc::c_double {
     return ret;
 }
 /* *
- * xmlXPathPopString:
- * @ctxt:  an XPath parser context
+ * xmlXPathPopString: * @ctxt: an XPath parser context
  *
  * Pops a string from the stack, handling conversion if needed.
  * Check error with #xmlXPathCheckError.
@@ -4585,7 +4454,6 @@ pub fn xmlXPathPopNumber(mut ctxt: xmlXPathParserContextPtr) -> libc::c_double {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathPopString(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
-    println!("xmlXPathPopString in rust begin");
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject; /* this does required strdup */
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     obj = valuePop(ctxt);
@@ -4614,8 +4482,7 @@ pub fn xmlXPathPopString(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     return ret;
 }
 /* *
- * xmlXPathPopNodeSet:
- * @ctxt:  an XPath parser context
+ * xmlXPathPopNodeSet: * @ctxt: an XPath parser context
  *
  * Pops a node-set from the stack, handling conversion if needed.
  * Check error with #xmlXPathCheckError.
@@ -4625,7 +4492,6 @@ pub fn xmlXPathPopString(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeSetPtr {
-    println!("xmlXPathPopNodeSet in rust begin");
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     if ctxt.is_null() {
@@ -4674,8 +4540,7 @@ pub fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeSetPtr {
     return ret;
 }
 /* *
- * xmlXPathPopExternal:
- * @ctxt:  an XPath parser context
+ * xmlXPathPopExternal: * @ctxt: an XPath parser context
  *
  * Pops an external object from the stack, handling conversion if needed.
  * Check error with #xmlXPathCheckError.
@@ -4685,7 +4550,6 @@ pub fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeSetPtr {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathPopExternal(mut ctxt: xmlXPathParserContextPtr) -> *mut libc::c_void {
-    println!("xmlXPathPopExternal in rust begin");
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: *mut libc::c_void = 0 as *mut libc::c_void;
     let safe_ctxt = unsafe { &mut *ctxt };
@@ -4727,9 +4591,8 @@ pub fn xmlXPathPopExternal(mut ctxt: xmlXPathParserContextPtr) -> *mut libc::c_v
     return ret;
 }
 /* *
- * xmlXPathFormatNumber:
- * @number:     number to format
- * @buffer:     output buffer
+ * xmlXPathFormatNumber: * @number: number to format
+ * @buffer: output buffer
  * @buffersize: size of output buffer
  *
  * Convert the number into a string representation.
@@ -4740,7 +4603,6 @@ fn xmlXPathFormatNumber(
     mut buffer: *mut libc::c_char,
     mut buffersize: libc::c_int,
 ) {
-    println!("xmlXPathFormatNumber in rust begin");
     match unsafe { xmlXPathIsInf(number) } {
         1 => {
             if buffersize
@@ -4983,21 +4845,18 @@ fn xmlXPathFormatNumber(
  *									*
  ************************************************************************/
 /* *
- * xmlXPathOrderDocElems:
- * @doc:  an input document
+ * xmlXPathOrderDocElems: * @doc: an input document
  *
  * Call this routine to speed up XPath computation on static documents.
  * This stamps all the element nodes with the document order
  * Like for line information, the order is kept in the element->content
- * field, the value stored is actually - the node number (starting at -1)
- * to be able to differentiate from line numbers.
+ * field, the value stored is actually - the node number (starting at -1) * to be able to differentiate from line numbers.
  *
  * Returns the number of elements found in the document or -1 in case
  *    of error.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathOrderDocElems(mut doc: xmlDocPtr) -> libc::c_long {
-    println!("xmlXPathOrderDocElems in rust begin");
     let mut count: ptrdiff_t = 0 as libc::c_int as ptrdiff_t;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     if doc.is_null() {
@@ -5038,9 +4897,8 @@ pub fn xmlXPathOrderDocElems(mut doc: xmlDocPtr) -> libc::c_long {
     return count;
 }
 /* *
- * xmlXPathCmpNodes:
- * @node1:  the first node
- * @node2:  the second node
+ * xmlXPathCmpNodes: * @node1: the first node
+ * @node2: the second node
  *
  * Compare two nodes w.r.t document order
  *
@@ -5050,7 +4908,6 @@ pub fn xmlXPathOrderDocElems(mut doc: xmlDocPtr) -> libc::c_long {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_int {
-    println!("xmlXPathCmpNodes in rust begin");
     let mut depth1: libc::c_int = 0;
     let mut depth2: libc::c_int = 0;
     let mut attr1: libc::c_int = 0 as libc::c_int;
@@ -5228,15 +5085,13 @@ pub fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c
     /* assume there is no sibling list corruption */
 }
 /* *
- * xmlXPathNodeSetSort:
- * @set:  the node set
+ * xmlXPathNodeSetSort: * @set: the node set
  *
  * Sort the node set in document order
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeSetSort(mut set: xmlNodeSetPtr) {
-    println!("xmlXPathNodeSetSort in rust begin");
     // #ifndef WITH_TIM_SORT
     let safe_set = unsafe { &mut *set };
     match () {
@@ -5318,9 +5173,8 @@ pub fn xmlXPathNodeSetSort(mut set: xmlNodeSetPtr) {
     // #endif /* WITH_TIM_SORT */
 }
 /* *
- * xmlXPathNodeSetDupNs:
- * @node:  the parent node of the namespace XPath node
- * @ns:  the libxml namespace declaration node.
+ * xmlXPathNodeSetDupNs: * @node: the parent node of the namespace XPath node
+ * @ns: the libxml namespace declaration node.
  *
  * Namespace node in libxml don't match the XPath semantic. In a node set
  * the namespace nodes are duplicated and the next pointer is set to the
@@ -5330,7 +5184,6 @@ pub fn xmlXPathNodeSetSort(mut set: xmlNodeSetPtr) {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathNodeSetDupNs(mut node: xmlNodePtr, mut ns: xmlNsPtr) -> xmlNodePtr {
-    println!("xmlXPathNodeSetDupNs in rust begin");
     let safe_node = unsafe { &mut *node };
     let safe_ns = unsafe { &mut *ns };
     let mut cur: xmlNsPtr = 0 as *mut xmlNs;
@@ -5385,8 +5238,7 @@ fn xmlXPathNodeSetDupNs(mut node: xmlNodePtr, mut ns: xmlNsPtr) -> xmlNodePtr {
  * Really internal functions
  */
 /* *
- * xmlXPathNodeSetFreeNs:
- * @ns:  the XPath namespace node found in a nodeset.
+ * xmlXPathNodeSetFreeNs: * @ns: the XPath namespace node found in a nodeset.
  *
  * Namespace nodes in libxml don't match the XPath semantic. In a node set
  * the namespace nodes are duplicated and the next pointer is set to the
@@ -5395,7 +5247,6 @@ fn xmlXPathNodeSetDupNs(mut node: xmlNodePtr, mut ns: xmlNsPtr) -> xmlNodePtr {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeSetFreeNs(mut ns: xmlNsPtr) {
-    println!("xmlXPathNodeSetFreeNs in rust begin");
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null()
         || safe_ns.type_0 as libc::c_uint != XML_NAMESPACE_DECL as libc::c_int as libc::c_uint
@@ -5425,8 +5276,7 @@ pub fn xmlXPathNodeSetFreeNs(mut ns: xmlNsPtr) {
     };
 }
 /* *
- * xmlXPathNodeSetCreate:
- * @val:  an initial xmlNodePtr, or NULL
+ * xmlXPathNodeSetCreate: * @val: an initial xmlNodePtr, or NULL
  *
  * Create a new xmlNodeSetPtr of type double and of value @val
  *
@@ -5435,7 +5285,6 @@ pub fn xmlXPathNodeSetFreeNs(mut ns: xmlNsPtr) {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeSetCreate(mut val: xmlNodePtr) -> xmlNodeSetPtr {
-    println!("xmlXPathNodeSetCreate in rust begin");
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -5509,9 +5358,8 @@ pub fn xmlXPathNodeSetCreate(mut val: xmlNodePtr) -> xmlNodeSetPtr {
  * NodeSet handling.
  */
 /* *
- * xmlXPathNodeSetContains:
- * @cur:  the node-set
- * @val:  the node
+ * xmlXPathNodeSetContains: * @cur: the node-set
+ * @val: the node
  *
  * checks whether @cur contains @val
  *
@@ -5520,7 +5368,6 @@ pub fn xmlXPathNodeSetCreate(mut val: xmlNodePtr) -> xmlNodeSetPtr {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeSetContains(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> libc::c_int {
-    println!("xmlXPathNodeSetContains in rust begin");
     let mut i: libc::c_int = 0;
     if cur.is_null() || val.is_null() {
         return 0 as libc::c_int;
@@ -5564,10 +5411,9 @@ pub fn xmlXPathNodeSetContains(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> l
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathNodeSetAddNs:
- * @cur:  the initial node set
- * @node:  the hosting node
- * @ns:  a the namespace node
+ * xmlXPathNodeSetAddNs: * @cur: the initial node set
+ * @node: the hosting node
+ * @ns: a the namespace node
  *
  * add a new namespace node to an existing NodeSet
  *
@@ -5580,7 +5426,6 @@ pub fn xmlXPathNodeSetAddNs(
     mut node: xmlNodePtr,
     mut ns: xmlNsPtr,
 ) -> libc::c_int {
-    println!("xmlXPathNodeSetAddNs in rust begin");
     let mut i: libc::c_int = 0;
     let safe_ns = unsafe { &mut *ns };
     let safe_node = unsafe { &mut *node };
@@ -5683,9 +5528,8 @@ pub fn xmlXPathNodeSetAddNs(
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathNodeSetAdd:
- * @cur:  the initial node set
- * @val:  a new xmlNodePtr
+ * xmlXPathNodeSetAdd: * @cur: the initial node set
+ * @val: a new xmlNodePtr
  *
  * add a new xmlNodePtr to an existing NodeSet
  *
@@ -5693,7 +5537,6 @@ pub fn xmlXPathNodeSetAddNs(
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeSetAdd(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> libc::c_int {
-    println!("xmlXPathNodeSetAdd in rust begin");
     let mut i: libc::c_int = 0;
     if cur.is_null() || val.is_null() {
         return -(1 as libc::c_int);
@@ -5791,9 +5634,8 @@ pub fn xmlXPathNodeSetAdd(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> libc::
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathNodeSetAddUnique:
- * @cur:  the initial node set
- * @val:  a new xmlNodePtr
+ * xmlXPathNodeSetAddUnique: * @cur: the initial node set
+ * @val: a new xmlNodePtr
  *
  * add a new xmlNodePtr to an existing NodeSet, optimized version
  * when we are sure the node is not already in the set.
@@ -5805,7 +5647,6 @@ pub extern "C" fn xmlXPathNodeSetAddUnique(
     mut cur: xmlNodeSetPtr,
     mut val: xmlNodePtr,
 ) -> libc::c_int {
-    println!("xmlXPathNodeSetAddUnique in rust begin");
     if cur.is_null() || val.is_null() {
         return -(1 as libc::c_int);
     }
@@ -5892,9 +5733,8 @@ pub extern "C" fn xmlXPathNodeSetAddUnique(
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathNodeSetMerge:
- * @val1:  the first NodeSet or NULL
- * @val2:  the second NodeSet
+ * xmlXPathNodeSetMerge: * @val1: the first NodeSet or NULL
+ * @val2: the second NodeSet
  *
  * Merges two nodesets, all nodes from @val2 are added to @val1
  * if @val1 is NULL, a new set is created and copied from @val2
@@ -5903,7 +5743,6 @@ pub extern "C" fn xmlXPathNodeSetAddUnique(
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, mut val2: xmlNodeSetPtr) -> xmlNodeSetPtr {
-    println!("xmlXPathNodeSetMerge in rust begin");
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut initNr: libc::c_int = 0;
@@ -6046,9 +5885,8 @@ pub fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, mut val2: xmlNodeSetPtr) ->
     return val1;
 }
 /* *
- * xmlXPathNodeSetMergeAndClear:
- * @set1:  the first NodeSet or NULL
- * @set2:  the second NodeSet
+ * xmlXPathNodeSetMergeAndClear: * @set1: the first NodeSet or NULL
+ * @set2: the second NodeSet
  *
  * Merges two nodesets, all nodes from @set2 are added to @set1.
  * Checks for duplicate nodes. Clears set2.
@@ -6060,7 +5898,6 @@ extern "C" fn xmlXPathNodeSetMergeAndClear(
     mut set1: xmlNodeSetPtr,
     mut set2: xmlNodeSetPtr,
 ) -> xmlNodeSetPtr {
-    println!("xmlXPathNodeSetMergeAndClear in rust begin");
     let mut current_block: u64;
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
@@ -6189,9 +6026,8 @@ extern "C" fn xmlXPathNodeSetMergeAndClear(
     return set1;
 }
 /* *
- * xmlXPathNodeSetMergeAndClearNoDupls:
- * @set1:  the first NodeSet or NULL
- * @set2:  the second NodeSet
+ * xmlXPathNodeSetMergeAndClearNoDupls: * @set1: the first NodeSet or NULL
+ * @set2: the second NodeSet
  *
  * Merges two nodesets, all nodes from @set2 are added to @set1.
  * Doesn't check for duplicate nodes. Clears set2.
@@ -6203,7 +6039,6 @@ extern "C" fn xmlXPathNodeSetMergeAndClearNoDupls(
     mut set1: xmlNodeSetPtr,
     mut set2: xmlNodeSetPtr,
 ) -> xmlNodeSetPtr {
-    println!("xmlXPathNodeSetMergeAndClearNoDupls in rust begin");
     let mut i: libc::c_int = 0;
     let mut n2: xmlNodePtr = 0 as *mut xmlNode;
     let safe_set1 = unsafe { &mut *set1 };
@@ -6280,15 +6115,13 @@ extern "C" fn xmlXPathNodeSetMergeAndClearNoDupls(
     return set1;
 }
 /* *
- * xmlXPathNodeSetDel:
- * @cur:  the initial node set
- * @val:  an xmlNodePtr
+ * xmlXPathNodeSetDel: * @cur: the initial node set
+ * @val: an xmlNodePtr
  *
  * Removes an xmlNodePtr from an existing NodeSet
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeSetDel(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) {
-    println!("xmlXPathNodeSetDel in rust begin");
     let mut i: libc::c_int = 0;
     if cur.is_null() {
         return;
@@ -6348,15 +6181,13 @@ pub fn xmlXPathNodeSetDel(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) {
     }
 }
 /* *
- * xmlXPathNodeSetRemove:
- * @cur:  the initial node set
- * @val:  the index to remove
+ * xmlXPathNodeSetRemove: * @cur: the initial node set
+ * @val: the index to remove
  *
  * Removes an entry from an existing NodeSet list.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeSetRemove(mut cur: xmlNodeSetPtr, mut val: libc::c_int) {
-    println!("xmlXPathNodeSetRemove in rust begin");
     if cur.is_null() {
         return;
     }
@@ -6385,14 +6216,12 @@ pub fn xmlXPathNodeSetRemove(mut cur: xmlNodeSetPtr, mut val: libc::c_int) {
     }
 }
 /* *
- * xmlXPathFreeNodeSet:
- * @obj:  the xmlNodeSetPtr to free
+ * xmlXPathFreeNodeSet: * @obj: the xmlNodeSetPtr to free
  *
  * Free the NodeSet compound (not the actual nodes !).
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathFreeNodeSet(mut obj: xmlNodeSetPtr) {
-    println!("xmlXPathFreeNodeSet in rust begin");
     if obj.is_null() {
         return;
     }
@@ -6416,8 +6245,7 @@ pub fn xmlXPathFreeNodeSet(mut obj: xmlNodeSetPtr) {
     unsafe { xmlFree.expect("non-null function pointer")(obj as *mut libc::c_void) };
 }
 /* *
- * xmlXPathNodeSetClearFromPos:
- * @set: the node set to be cleared
+ * xmlXPathNodeSetClearFromPos: * @set: the node set to be cleared
  * @pos: the start position to clear from
  *
  * Clears the list from temporary XPath objects (e.g. namespace nodes
@@ -6430,7 +6258,6 @@ fn xmlXPathNodeSetClearFromPos(
     mut pos: libc::c_int,
     mut hasNsNodes: libc::c_int,
 ) {
-    println!("xmlXPathNodeSetClearFromPos in rust begin");
     let safe_set = unsafe { &mut *set };
     if set.is_null() || pos >= safe_set.nodeNr {
         return;
@@ -6455,8 +6282,7 @@ fn xmlXPathNodeSetClearFromPos(
     unsafe { (*set).nodeNr = pos };
 }
 /* *
- * xmlXPathNodeSetClear:
- * @set:  the node set to clear
+ * xmlXPathNodeSetClear: * @set: the node set to clear
  *
  * Clears the list from all temporary XPath objects (e.g. namespace nodes
  * are feed), but does *not* free the list itself. Sets the length of the
@@ -6464,12 +6290,10 @@ fn xmlXPathNodeSetClearFromPos(
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathNodeSetClear(mut set: xmlNodeSetPtr, mut hasNsNodes: libc::c_int) {
-    println!("xmlXPathNodeSetClear in rust begin");
     unsafe { xmlXPathNodeSetClearFromPos(set, 0 as libc::c_int, hasNsNodes) };
 }
 /* *
- * xmlXPathNodeSetKeepLast:
- * @set: the node set to be cleared
+ * xmlXPathNodeSetKeepLast: * @set: the node set to be cleared
  *
  * Move the last node to the first position and clear temporary XPath objects
  * (e.g. namespace nodes) from all other nodes. Sets the length of the list
@@ -6477,7 +6301,6 @@ fn xmlXPathNodeSetClear(mut set: xmlNodeSetPtr, mut hasNsNodes: libc::c_int) {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathNodeSetKeepLast(mut set: xmlNodeSetPtr) {
-    println!("xmlXPathNodeSetKeepLast in rust begin");
     let mut i: libc::c_int = 0;
     let mut node: xmlNodePtr = 0 as *mut xmlNode;
     let safe_set = unsafe { &mut *set };
@@ -6510,15 +6333,12 @@ fn xmlXPathNodeSetKeepLast(mut set: xmlNodeSetPtr) {
  *									*
  ************************************************************************/
 /* *
- * xmlXPathFreeValueTree:
- * @obj:  the xmlNodeSetPtr to free
+ * xmlXPathFreeValueTree: * @obj: the xmlNodeSetPtr to free
  *
  * Free the NodeSet compound and the actual tree, this is different
- * from xmlXPathFreeNodeSet()
- */
+ * from xmlXPathFreeNodeSet() */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathFreeValueTree(mut obj: xmlNodeSetPtr) {
-    println!("xmlXPathFreeValueTree in rust begin");
     let mut i: libc::c_int = 0;
     if obj.is_null() {
         return;
@@ -6547,16 +6367,14 @@ fn xmlXPathFreeValueTree(mut obj: xmlNodeSetPtr) {
 }
 
 /* *
- * xmlGenericErrorContextNodeSet:
- * @output:  a FILE * for the output
- * @obj:  the xmlNodeSetPtr to display
+ * xmlGenericErrorContextNodeSet: * @output: a FILE * for the output
+ * @obj: the xmlNodeSetPtr to display
  *
  * Quick display of a NodeSet
  */
 #[cfg(DEBUG_OR_DEBUG_STEP)]
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub extern "C" fn xmlGenericErrorContextNodeSet(mut output: *mut FILE, mut obj: xmlNodeSetPtr) {
-    println!("xmlGenericErrorContextNodeSet in rust begin");
     let mut i: libc::c_int = 0;
     let safe_obj = unsafe { &mut *obj };
     if output.is_null() {
@@ -6619,8 +6437,7 @@ pub extern "C" fn xmlGenericErrorContextNodeSet(mut output: *mut FILE, mut obj: 
 }
 
 /* *
- * xmlXPathNewNodeSet:
- * @val:  the NodePtr value
+ * xmlXPathNewNodeSet: * @val: the NodePtr value
  *
  * Create a new xmlXPathObjectPtr of type NodeSet and initialize
  * it with the single Node @val
@@ -6629,7 +6446,6 @@ pub extern "C" fn xmlGenericErrorContextNodeSet(mut output: *mut FILE, mut obj: 
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewNodeSet in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -6670,8 +6486,7 @@ pub fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathNewValueTree:
- * @val:  the NodePtr value
+ * xmlXPathNewValueTree: * @val: the NodePtr value
  *
  * Create a new xmlXPathObjectPtr of type Value Tree (XSLT) and initialize
  * it with the tree root @val
@@ -6680,7 +6495,6 @@ pub fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewValueTree in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -6719,8 +6533,7 @@ pub fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathNewNodeSetList:
- * @val:  an existing NodeSet
+ * xmlXPathNewNodeSetList: * @val: an existing NodeSet
  *
  * Create a new xmlXPathObjectPtr of type NodeSet and initialize
  * it with the Nodeset @val
@@ -6729,7 +6542,6 @@ pub fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNewNodeSetList(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewNodeSetList in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut i: libc::c_int = 0;
     let safe_val = unsafe { &mut *val };
@@ -6756,8 +6568,7 @@ pub fn xmlXPathNewNodeSetList(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathWrapNodeSet:
- * @val:  the NodePtr value
+ * xmlXPathWrapNodeSet: * @val: the NodePtr value
  *
  * Wrap the Nodeset @val in a new xmlXPathObjectPtr
  *
@@ -6765,7 +6576,6 @@ pub fn xmlXPathNewNodeSetList(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathWrapNodeSet(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathWrapNodeSet in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -6801,15 +6611,13 @@ pub fn xmlXPathWrapNodeSet(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathFreeNodeSetList:
- * @obj:  an existing NodeSetList object
+ * xmlXPathFreeNodeSetList: * @obj: an existing NodeSetList object
  *
  * Free up the xmlXPathObjectPtr @obj but don't deallocate the objects in
  * the list contrary to xmlXPathFreeObject().
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathFreeNodeSetList(mut obj: xmlXPathObjectPtr) {
-    println!("xmlXPathFreeNodeSetList in rust begin");
     if obj.is_null() {
         return;
     }
@@ -6829,19 +6637,15 @@ pub fn xmlXPathFreeNodeSetList(mut obj: xmlXPathObjectPtr) {
     unsafe { xmlFree.expect("non-null function pointer")(obj as *mut libc::c_void) };
 }
 /* *
- * xmlXPathDifference:
- * @nodes1:  a node-set
- * @nodes2:  a node-set
+ * xmlXPathDifference: * @nodes1: a node-set
+ * @nodes2: a node-set
  *
- * Implements the EXSLT - Sets difference() function:
- *    node-set set:difference (node-set, node-set)
- *
+ * Implements the EXSLT - Sets difference() function: *    node-set set:difference (node-set, node-set) *
  * Returns the difference between the two node sets, or nodes1 if
  *         nodes2 is empty
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathDifference(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
-    println!("xmlXPathDifference in rust begin");
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut i: libc::c_int = 0;
     let mut l1: libc::c_int = 0;
@@ -6879,19 +6683,15 @@ pub fn xmlXPathDifference(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) 
     return ret;
 }
 /* *
- * xmlXPathIntersection:
- * @nodes1:  a node-set
- * @nodes2:  a node-set
+ * xmlXPathIntersection: * @nodes1: a node-set
+ * @nodes2: a node-set
  *
- * Implements the EXSLT - Sets intersection() function:
- *    node-set set:intersection (node-set, node-set)
- *
+ * Implements the EXSLT - Sets intersection() function: *    node-set set:intersection (node-set, node-set) *
  * Returns a node set comprising the nodes that are within both the
  *         node sets passed as arguments
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathIntersection(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
-    println!("xmlXPathIntersection in rust begin");
     let mut ret: xmlNodeSetPtr = unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
     let mut i: libc::c_int = 0;
     let mut l1: libc::c_int = 0;
@@ -6930,18 +6730,14 @@ pub fn xmlXPathIntersection(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr
     return ret;
 }
 /* *
- * xmlXPathDistinctSorted:
- * @nodes:  a node-set, sorted by document order
+ * xmlXPathDistinctSorted: * @nodes: a node-set, sorted by document order
  *
- * Implements the EXSLT - Sets distinct() function:
- *    node-set set:distinct (node-set)
- *
+ * Implements the EXSLT - Sets distinct() function: *    node-set set:distinct (node-set) *
  * Returns a subset of the nodes contained in @nodes, or @nodes if
  *         it is empty
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathDistinctSorted(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
-    println!("xmlXPathDistinctSorted in rust begin");
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut hash: xmlHashTablePtr = 0 as *mut xmlHashTable;
     let mut i: libc::c_int = 0;
@@ -6993,12 +6789,9 @@ pub fn xmlXPathDistinctSorted(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
     return ret;
 }
 /* *
- * xmlXPathDistinct:
- * @nodes:  a node-set
+ * xmlXPathDistinct: * @nodes: a node-set
  *
- * Implements the EXSLT - Sets distinct() function:
- *    node-set set:distinct (node-set)
- * @nodes is sorted by document order, then #exslSetsDistinctSorted
+ * Implements the EXSLT - Sets distinct() function: *    node-set set:distinct (node-set) * @nodes is sorted by document order, then #exslSetsDistinctSorted
  * is called with the sorted node-set
  *
  * Returns a subset of the nodes contained in @nodes, or @nodes if
@@ -7006,7 +6799,6 @@ pub fn xmlXPathDistinctSorted(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathDistinct(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
-    println!("xmlXPathDistinct in rust begin");
     let safe_nodes = unsafe { &mut *nodes };
     if nodes.is_null() || safe_nodes.nodeNr == 0 as libc::c_int || safe_nodes.nodeTab.is_null() {
         return nodes;
@@ -7015,19 +6807,14 @@ pub fn xmlXPathDistinct(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
     return unsafe { xmlXPathDistinctSorted(nodes) };
 }
 /* *
- * xmlXPathHasSameNodes:
- * @nodes1:  a node-set
- * @nodes2:  a node-set
+ * xmlXPathHasSameNodes: * @nodes1: a node-set
+ * @nodes2: a node-set
  *
- * Implements the EXSLT - Sets has-same-nodes function:
- *    boolean set:has-same-node(node-set, node-set)
- *
- * Returns true (1) if @nodes1 shares any node with @nodes2, false (0)
- *         otherwise
+ * Implements the EXSLT - Sets has-same-nodes function: *    boolean set:has-same-node(node-set, node-set) *
+ * Returns true (1) if @nodes1 shares any node with @nodes2, false (0) *         otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathHasSameNodes(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> libc::c_int {
-    println!("xmlXPathHasSameNodes in rust begin");
     let mut i: libc::c_int = 0;
     let mut l: libc::c_int = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
@@ -7062,20 +6849,15 @@ pub fn xmlXPathHasSameNodes(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathNodeLeadingSorted:
- * @nodes: a node-set, sorted by document order
+ * xmlXPathNodeLeadingSorted: * @nodes: a node-set, sorted by document order
  * @node: a node
  *
- * Implements the EXSLT - Sets leading() function:
- *    node-set set:leading (node-set, node-set)
- *
- * Returns the nodes in @nodes that precede @node in document order,
- *         @nodes if @node is NULL or an empty node-set if @nodes
+ * Implements the EXSLT - Sets leading() function: *    node-set set:leading (node-set, node-set) *
+ * Returns the nodes in @nodes that precede @node in document order, *         @nodes if @node is NULL or an empty node-set if @nodes
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeLeadingSorted(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
-    println!("xmlXPathNodeLeadingSorted in rust begin");
     let mut i: libc::c_int = 0;
     let mut l: libc::c_int = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
@@ -7119,33 +6901,25 @@ pub fn xmlXPathNodeLeadingSorted(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr)
     return ret;
 }
 /* *
- * xmlXPathNodeLeading:
- * @nodes:  a node-set
- * @node:  a node
+ * xmlXPathNodeLeading: * @nodes: a node-set
+ * @node: a node
  *
- * Implements the EXSLT - Sets leading() function:
- *    node-set set:leading (node-set, node-set)
- * @nodes is sorted by document order, then #exslSetsNodeLeadingSorted
+ * Implements the EXSLT - Sets leading() function: *    node-set set:leading (node-set, node-set) * @nodes is sorted by document order, then #exslSetsNodeLeadingSorted
  * is called.
  *
- * Returns the nodes in @nodes that precede @node in document order,
- *         @nodes if @node is NULL or an empty node-set if @nodes
+ * Returns the nodes in @nodes that precede @node in document order, *         @nodes if @node is NULL or an empty node-set if @nodes
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeLeading(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
-    println!("xmlXPathNodeLeading in rust begin");
     unsafe { xmlXPathNodeSetSort(nodes) };
     return unsafe { xmlXPathNodeLeadingSorted(nodes, node) };
 }
 /* *
- * xmlXPathLeadingSorted:
- * @nodes1:  a node-set, sorted by document order
- * @nodes2:  a node-set, sorted by document order
+ * xmlXPathLeadingSorted: * @nodes1: a node-set, sorted by document order
+ * @nodes2: a node-set, sorted by document order
  *
- * Implements the EXSLT - Sets leading() function:
- *    node-set set:leading (node-set, node-set)
- *
+ * Implements the EXSLT - Sets leading() function: *    node-set set:leading (node-set, node-set) *
  * Returns the nodes in @nodes1 that precede the first node in @nodes2
  *         in document order, @nodes1 if @nodes2 is NULL or empty or
  *         an empty node-set if @nodes1 doesn't contain @nodes2
@@ -7155,7 +6929,6 @@ pub fn xmlXPathLeadingSorted(
     mut nodes1: xmlNodeSetPtr,
     mut nodes2: xmlNodeSetPtr,
 ) -> xmlNodeSetPtr {
-    println!("xmlXPathLeadingSorted in rust begin");
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if nodes2.is_null() || safe_nodes2.nodeNr == 0 as libc::c_int || safe_nodes2.nodeTab.is_null() {
@@ -7176,13 +6949,10 @@ pub fn xmlXPathLeadingSorted(
     };
 }
 /* *
- * xmlXPathLeading:
- * @nodes1:  a node-set
- * @nodes2:  a node-set
+ * xmlXPathLeading: * @nodes1: a node-set
+ * @nodes2: a node-set
  *
- * Implements the EXSLT - Sets leading() function:
- *    node-set set:leading (node-set, node-set)
- * @nodes1 and @nodes2 are sorted by document order, then
+ * Implements the EXSLT - Sets leading() function: *    node-set set:leading (node-set, node-set) * @nodes1 and @nodes2 are sorted by document order, then
  * #exslSetsLeadingSorted is called.
  *
  * Returns the nodes in @nodes1 that precede the first node in @nodes2
@@ -7191,7 +6961,6 @@ pub fn xmlXPathLeadingSorted(
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathLeading(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
-    println!("xmlXPathLeading in rust begin");
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if nodes2.is_null() || safe_nodes2.nodeNr == 0 as libc::c_int || safe_nodes2.nodeTab.is_null() {
@@ -7217,20 +6986,15 @@ pub fn xmlXPathLeading(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> 
     };
 }
 /* *
- * xmlXPathNodeTrailingSorted:
- * @nodes: a node-set, sorted by document order
+ * xmlXPathNodeTrailingSorted: * @nodes: a node-set, sorted by document order
  * @node: a node
  *
- * Implements the EXSLT - Sets trailing() function:
- *    node-set set:trailing (node-set, node-set)
- *
- * Returns the nodes in @nodes that follow @node in document order,
- *         @nodes if @node is NULL or an empty node-set if @nodes
+ * Implements the EXSLT - Sets trailing() function: *    node-set set:trailing (node-set, node-set) *
+ * Returns the nodes in @nodes that follow @node in document order, *         @nodes if @node is NULL or an empty node-set if @nodes
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeTrailingSorted(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
-    println!("xmlXPathNodeTrailingSorted in rust begin");
     let mut i: libc::c_int = 0;
     let mut l: libc::c_int = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
@@ -7275,33 +7039,25 @@ pub fn xmlXPathNodeTrailingSorted(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr
     return ret;
 }
 /* *
- * xmlXPathNodeTrailing:
- * @nodes:  a node-set
- * @node:  a node
+ * xmlXPathNodeTrailing: * @nodes: a node-set
+ * @node: a node
  *
- * Implements the EXSLT - Sets trailing() function:
- *    node-set set:trailing (node-set, node-set)
- * @nodes is sorted by document order, then #xmlXPathNodeTrailingSorted
+ * Implements the EXSLT - Sets trailing() function: *    node-set set:trailing (node-set, node-set) * @nodes is sorted by document order, then #xmlXPathNodeTrailingSorted
  * is called.
  *
- * Returns the nodes in @nodes that follow @node in document order,
- *         @nodes if @node is NULL or an empty node-set if @nodes
+ * Returns the nodes in @nodes that follow @node in document order, *         @nodes if @node is NULL or an empty node-set if @nodes
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNodeTrailing(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
-    println!("xmlXPathNodeTrailing in rust begin");
     unsafe { xmlXPathNodeSetSort(nodes) };
     return unsafe { xmlXPathNodeTrailingSorted(nodes, node) };
 }
 /* *
- * xmlXPathTrailingSorted:
- * @nodes1:  a node-set, sorted by document order
- * @nodes2:  a node-set, sorted by document order
+ * xmlXPathTrailingSorted: * @nodes1: a node-set, sorted by document order
+ * @nodes2: a node-set, sorted by document order
  *
- * Implements the EXSLT - Sets trailing() function:
- *    node-set set:trailing (node-set, node-set)
- *
+ * Implements the EXSLT - Sets trailing() function: *    node-set set:trailing (node-set, node-set) *
  * Returns the nodes in @nodes1 that follow the first node in @nodes2
  *         in document order, @nodes1 if @nodes2 is NULL or empty or
  *         an empty node-set if @nodes1 doesn't contain @nodes2
@@ -7311,7 +7067,6 @@ pub fn xmlXPathTrailingSorted(
     mut nodes1: xmlNodeSetPtr,
     mut nodes2: xmlNodeSetPtr,
 ) -> xmlNodeSetPtr {
-    println!("xmlXPathTrailingSorted in rust begin");
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if nodes2.is_null() || safe_nodes2.nodeNr == 0 as libc::c_int || safe_nodes2.nodeTab.is_null() {
         return nodes1;
@@ -7331,13 +7086,10 @@ pub fn xmlXPathTrailingSorted(
     };
 }
 /* *
- * xmlXPathTrailing:
- * @nodes1:  a node-set
- * @nodes2:  a node-set
+ * xmlXPathTrailing: * @nodes1: a node-set
+ * @nodes2: a node-set
  *
- * Implements the EXSLT - Sets trailing() function:
- *    node-set set:trailing (node-set, node-set)
- * @nodes1 and @nodes2 are sorted by document order, then
+ * Implements the EXSLT - Sets trailing() function: *    node-set set:trailing (node-set, node-set) * @nodes1 and @nodes2 are sorted by document order, then
  * #xmlXPathTrailingSorted is called.
  *
  * Returns the nodes in @nodes1 that follow the first node in @nodes2
@@ -7346,7 +7098,6 @@ pub fn xmlXPathTrailingSorted(
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathTrailing(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
-    println!("xmlXPathTrailing in rust begin");
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if nodes2.is_null() || safe_nodes2.nodeNr == 0 as libc::c_int || safe_nodes2.nodeTab.is_null() {
@@ -7377,10 +7128,9 @@ pub fn xmlXPathTrailing(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) ->
  *									*
  ************************************************************************/
 /* *
- * xmlXPathRegisterFunc:
- * @ctxt:  the XPath context
- * @name:  the function name
- * @f:  the function implementation or NULL
+ * xmlXPathRegisterFunc: * @ctxt: the XPath context
+ * @name: the function name
+ * @f: the function implementation or NULL
  *
  * Register a new function. If @f is NULL it unregisters the function
  *
@@ -7392,15 +7142,13 @@ pub fn xmlXPathRegisterFunc(
     mut name: *const xmlChar,
     mut f: xmlXPathFunction,
 ) -> libc::c_int {
-    println!("xmlXPathRegisterFunc in rust begin");
     return unsafe { xmlXPathRegisterFuncNS(ctxt, name, 0 as *const xmlChar, f) };
 }
 /* *
- * xmlXPathRegisterFuncNS:
- * @ctxt:  the XPath context
- * @name:  the function name
- * @ns_uri:  the function namespace URI
- * @f:  the function implementation or NULL
+ * xmlXPathRegisterFuncNS: * @ctxt: the XPath context
+ * @name: the function name
+ * @ns_uri: the function namespace URI
+ * @f: the function implementation or NULL
  *
  * Register a new function. If @f is NULL it unregisters the function
  *
@@ -7413,7 +7161,6 @@ pub fn xmlXPathRegisterFuncNS(
     mut ns_uri: *const xmlChar,
     mut f: xmlXPathFunction,
 ) -> libc::c_int {
-    println!("xmlXPathRegisterFuncNS in rust begin");
     if ctxt.is_null() {
         return -(1 as libc::c_int);
     }
@@ -7443,10 +7190,9 @@ pub fn xmlXPathRegisterFuncNS(
  * Function Lookup forwarding.
  */
 /* *
- * xmlXPathRegisterFuncLookup:
- * @ctxt:  the XPath context
- * @f:  the lookup function
- * @funcCtxt:  the lookup data
+ * xmlXPathRegisterFuncLookup: * @ctxt: the XPath context
+ * @f: the lookup function
+ * @funcCtxt: the lookup data
  *
  * Registers an external mechanism to do function lookup.
  */
@@ -7456,7 +7202,6 @@ pub fn xmlXPathRegisterFuncLookup(
     mut f: xmlXPathFuncLookupFunc,
     mut funcCtxt: *mut libc::c_void,
 ) {
-    println!("xmlXPathRegisterFuncLookup in rust begin");
     if ctxt.is_null() {
         return;
     }
@@ -7466,9 +7211,8 @@ pub fn xmlXPathRegisterFuncLookup(
     }
 }
 /* *
- * xmlXPathFunctionLookup:
- * @ctxt:  the XPath context
- * @name:  the function name
+ * xmlXPathFunctionLookup: * @ctxt: the XPath context
+ * @name: the function name
  *
  * Search in the Function array of the context for the given
  * function.
@@ -7480,7 +7224,6 @@ pub fn xmlXPathFunctionLookup(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
 ) -> xmlXPathFunction {
-    println!("xmlXPathFunctionLookup in rust begin");
     if ctxt.is_null() {
         return None;
     }
@@ -7499,10 +7242,9 @@ pub fn xmlXPathFunctionLookup(
     return unsafe { xmlXPathFunctionLookupNS(ctxt, name, 0 as *const xmlChar) };
 }
 /* *
- * xmlXPathFunctionLookupNS:
- * @ctxt:  the XPath context
- * @name:  the function name
- * @ns_uri:  the function namespace URI
+ * xmlXPathFunctionLookupNS: * @ctxt: the XPath context
+ * @name: the function name
+ * @ns_uri: the function namespace URI
  *
  * Search in the Function array of the context for the given
  * function.
@@ -7515,7 +7257,6 @@ pub fn xmlXPathFunctionLookupNS(
     mut name: *const xmlChar,
     mut ns_uri: *const xmlChar,
 ) -> xmlXPathFunction {
-    println!("xmlXPathFunctionLookupNS in rust begin");
     let mut ret: xmlXPathFunction = None;
     if ctxt.is_null() {
         return None;
@@ -7551,7 +7292,6 @@ pub fn xmlXPathFunctionLookupNS(
 #[cfg(LIBXML_XPATH_ENABLED)]
 #[cfg(DEBUG_STEP)]
 pub extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mut nbNodes: libc::c_int) {
-    println!("xmlXPathDebugDumpStepAxis in rust begin");
     let safe_op = unsafe { &mut *op };
     unsafe {
         (*__xmlGenericError()).expect("non-null function pointer")(
@@ -7746,14 +7486,12 @@ pub extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mut nbNod
 }
 
 /* *
- * xmlXPathRegisteredFuncsCleanup:
- * @ctxt:  the XPath context
+ * xmlXPathRegisteredFuncsCleanup: * @ctxt: the XPath context
  *
  * Cleanup the XPath context data associated to registered functions
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathRegisteredFuncsCleanup(mut ctxt: xmlXPathContextPtr) {
-    println!("xmlXPathRegisteredFuncsCleanup in rust begin");
     if ctxt.is_null() {
         return;
     }
@@ -7768,10 +7506,9 @@ pub fn xmlXPathRegisteredFuncsCleanup(mut ctxt: xmlXPathContextPtr) {
  *									*
  ************************************************************************/
 /* *
- * xmlXPathRegisterVariable:
- * @ctxt:  the XPath context
- * @name:  the variable name
- * @value:  the variable value or NULL
+ * xmlXPathRegisterVariable: * @ctxt: the XPath context
+ * @name: the variable name
+ * @value: the variable value or NULL
  *
  * Register a new variable value. If @value is NULL it unregisters
  * the variable
@@ -7784,15 +7521,13 @@ pub fn xmlXPathRegisterVariable(
     mut name: *const xmlChar,
     mut value: xmlXPathObjectPtr,
 ) -> libc::c_int {
-    println!("xmlXPathRegisterVariable in rust begin");
     return unsafe { xmlXPathRegisterVariableNS(ctxt, name, 0 as *const xmlChar, value) };
 }
 /* *
- * xmlXPathRegisterVariableNS:
- * @ctxt:  the XPath context
- * @name:  the variable name
- * @ns_uri:  the variable namespace URI
- * @value:  the variable value or NULL
+ * xmlXPathRegisterVariableNS: * @ctxt: the XPath context
+ * @name: the variable name
+ * @ns_uri: the variable namespace URI
+ * @value: the variable value or NULL
  *
  * Register a new variable value. If @value is NULL it unregisters
  * the variable
@@ -7806,7 +7541,6 @@ pub fn xmlXPathRegisterVariableNS(
     mut ns_uri: *const xmlChar,
     mut value: xmlXPathObjectPtr,
 ) -> libc::c_int {
-    println!("xmlXPathRegisterVariableNS in rust begin");
     if ctxt.is_null() {
         return -(1 as libc::c_int);
     }
@@ -7847,8 +7581,7 @@ pub fn xmlXPathRegisterVariableNS(
     };
 }
 /* *
- * xmlXPathStackIsExternal:
- * @ctxt: an XPath parser context
+ * xmlXPathStackIsExternal: * @ctxt: an XPath parser context
  *
  * Checks if the current value on the XPath stack is an external
  * object.
@@ -7857,76 +7590,64 @@ pub fn xmlXPathRegisterVariableNS(
  * object.
  */
 /* *
- * xmlXPathEmptyNodeSet:
- * @ns:  a node-set
+ * xmlXPathEmptyNodeSet: * @ns: a node-set
  *
  * Empties a node-set.
  */
 /* *
- * CHECK_ERROR:
- *
+ * CHECK_ERROR: *
  * Macro to return from the function if an XPath error was detected.
  */
 /* *
- * CHECK_ERROR0:
- *
+ * CHECK_ERROR0: *
  * Macro to return 0 from the function if an XPath error was detected.
  */
 /* *
- * XP_ERROR:
- * @X:  the error code
+ * XP_ERROR: * @X: the error code
  *
  * Macro to raise an XPath error and return.
  */
 /* *
- * XP_ERROR0:
- * @X:  the error code
+ * XP_ERROR0: * @X: the error code
  *
  * Macro to raise an XPath error and return 0.
  */
 /* *
- * CHECK_TYPE:
- * @typeval:  the XPath type
+ * CHECK_TYPE: * @typeval: the XPath type
  *
  * Macro to check that the value on top of the XPath stack is of a given
  * type.
  */
 /* *
- * CHECK_TYPE0:
- * @typeval:  the XPath type
+ * CHECK_TYPE0: * @typeval: the XPath type
  *
  * Macro to check that the value on top of the XPath stack is of a given
  * type. Return(0) in case of failure
  */
 /* *
- * CHECK_ARITY:
- * @x:  the number of expected args
+ * CHECK_ARITY: * @x: the number of expected args
  *
  * Macro to check that the number of args passed to an XPath function matches.
  */
 /* *
- * CAST_TO_STRING:
- *
+ * CAST_TO_STRING: *
  * Macro to try to cast the value on the top of the XPath stack to a string.
  */
 /* *
- * CAST_TO_NUMBER:
- *
+ * CAST_TO_NUMBER: *
  * Macro to try to cast the value on the top of the XPath stack to a number.
  */
 /* *
- * CAST_TO_BOOLEAN:
- *
+ * CAST_TO_BOOLEAN: *
  * Macro to try to cast the value on the top of the XPath stack to a boolean.
  */
 /*
  * Variable Lookup forwarding.
  */
 /* *
- * xmlXPathRegisterVariableLookup:
- * @ctxt:  the XPath context
- * @f:  the lookup function
- * @data:  the lookup data
+ * xmlXPathRegisterVariableLookup: * @ctxt: the XPath context
+ * @f: the lookup function
+ * @data: the lookup data
  *
  * register an external mechanism to do variable lookup
  */
@@ -7936,7 +7657,6 @@ pub fn xmlXPathRegisterVariableLookup(
     mut f: xmlXPathVariableLookupFunc,
     mut data: *mut libc::c_void,
 ) {
-    println!("xmlXPathRegisterVariableLookup in rust begin");
     if ctxt.is_null() {
         return;
     }
@@ -7946,9 +7666,8 @@ pub fn xmlXPathRegisterVariableLookup(
     }
 }
 /* *
- * xmlXPathVariableLookup:
- * @ctxt:  the XPath context
- * @name:  the variable name
+ * xmlXPathVariableLookup: * @ctxt: the XPath context
+ * @name: the variable name
  *
  * Search in the Variable array of the context for the given
  * variable value.
@@ -7960,7 +7679,6 @@ pub fn xmlXPathVariableLookup(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathVariableLookup in rust begin");
     if ctxt.is_null() {
         return 0 as xmlXPathObjectPtr;
     }
@@ -7979,10 +7697,9 @@ pub fn xmlXPathVariableLookup(
     return unsafe { xmlXPathVariableLookupNS(ctxt, name, 0 as *const xmlChar) };
 }
 /* *
- * xmlXPathVariableLookupNS:
- * @ctxt:  the XPath context
- * @name:  the variable name
- * @ns_uri:  the variable namespace URI
+ * xmlXPathVariableLookupNS: * @ctxt: the XPath context
+ * @name: the variable name
+ * @ns_uri: the variable namespace URI
  *
  * Search in the Variable array of the context for the given
  * variable value.
@@ -7995,7 +7712,6 @@ pub fn xmlXPathVariableLookupNS(
     mut name: *const xmlChar,
     mut ns_uri: *const xmlChar,
 ) -> xmlXPathObjectPtr {
-    println!("xmlXPathVariableLookupNS in rust begin");
     if ctxt.is_null() {
         return 0 as xmlXPathObjectPtr;
     }
@@ -8027,14 +7743,12 @@ pub fn xmlXPathVariableLookupNS(
     };
 }
 /* *
- * xmlXPathRegisteredVariablesCleanup:
- * @ctxt:  the XPath context
+ * xmlXPathRegisteredVariablesCleanup: * @ctxt: the XPath context
  *
  * Cleanup the XPath context data associated to registered variables
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathRegisteredVariablesCleanup(mut ctxt: xmlXPathContextPtr) {
-    println!("xmlXPathRegisteredVariablesCleanup in rust begin");
     if ctxt.is_null() {
         return;
     }
@@ -8053,10 +7767,9 @@ pub fn xmlXPathRegisteredVariablesCleanup(mut ctxt: xmlXPathContextPtr) {
  * Extending a context.
  */
 /* *
- * xmlXPathRegisterNs:
- * @ctxt:  the XPath context
- * @prefix:  the namespace prefix cannot be NULL or empty string
- * @ns_uri:  the namespace name
+ * xmlXPathRegisterNs: * @ctxt: the XPath context
+ * @prefix: the namespace prefix cannot be NULL or empty string
+ * @ns_uri: the namespace name
  *
  * Register a new namespace. If @ns_uri is NULL it unregisters
  * the namespace
@@ -8069,7 +7782,6 @@ pub fn xmlXPathRegisterNs(
     mut prefix: *const xmlChar,
     mut ns_uri: *const xmlChar,
 ) -> libc::c_int {
-    println!("xmlXPathRegisterNs in rust begin");
     if ctxt.is_null() {
         return -(1 as libc::c_int);
     }
@@ -8111,9 +7823,8 @@ pub fn xmlXPathRegisterNs(
     };
 }
 /* *
- * xmlXPathNsLookup:
- * @ctxt:  the XPath context
- * @prefix:  the namespace prefix value
+ * xmlXPathNsLookup: * @ctxt: the XPath context
+ * @prefix: the namespace prefix value
  *
  * Search in the namespace declaration array of the context for the given
  * namespace name associated to the given prefix
@@ -8125,7 +7836,6 @@ pub fn xmlXPathNsLookup(
     mut ctxt: xmlXPathContextPtr,
     mut prefix: *const xmlChar,
 ) -> *const xmlChar {
-    println!("xmlXPathNsLookup in rust begin");
     if ctxt.is_null() {
         return 0 as *const xmlChar;
     }
@@ -8168,14 +7878,12 @@ pub fn xmlXPathNsLookup(
     return unsafe { xmlHashLookup((*ctxt).nsHash, prefix) as *const xmlChar };
 }
 /* *
- * xmlXPathRegisteredNsCleanup:
- * @ctxt:  the XPath context
+ * xmlXPathRegisteredNsCleanup: * @ctxt: the XPath context
  *
  * Cleanup the XPath context data associated to registered variables
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathRegisteredNsCleanup(mut ctxt: xmlXPathContextPtr) {
-    println!("xmlXPathRegisteredNsCleanup in rust begin");
     if ctxt.is_null() {
         return;
     }
@@ -8197,8 +7905,7 @@ pub fn xmlXPathRegisteredNsCleanup(mut ctxt: xmlXPathContextPtr) {
  ************************************************************************/
 /* Allocations are terrible, one needs to optimize all this !!! */
 /* *
- * xmlXPathNewFloat:
- * @val:  the double value
+ * xmlXPathNewFloat: * @val: the double value
  *
  * Create a new xmlXPathObjectPtr of type double and of value @val
  *
@@ -8206,7 +7913,6 @@ pub fn xmlXPathRegisteredNsCleanup(mut ctxt: xmlXPathContextPtr) {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNewFloat(mut val: libc::c_double) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewFloat in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8243,8 +7949,7 @@ pub fn xmlXPathNewFloat(mut val: libc::c_double) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathNewBoolean:
- * @val:  the boolean value
+ * xmlXPathNewBoolean: * @val: the boolean value
  *
  * Create a new xmlXPathObjectPtr of type boolean and of value @val
  *
@@ -8252,7 +7957,6 @@ pub fn xmlXPathNewFloat(mut val: libc::c_double) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNewBoolean(mut val: libc::c_int) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewBoolean in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8288,8 +7992,7 @@ pub fn xmlXPathNewBoolean(mut val: libc::c_int) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathNewString:
- * @val:  the xmlChar * value
+ * xmlXPathNewString: * @val: the xmlChar * value
  *
  * Create a new xmlXPathObjectPtr of type string and of value @val
  *
@@ -8297,7 +8000,6 @@ pub fn xmlXPathNewBoolean(mut val: libc::c_int) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNewString(mut val: *const xmlChar) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewString in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8341,8 +8043,7 @@ pub fn xmlXPathNewString(mut val: *const xmlChar) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathWrapString:
- * @val:  the xmlChar * value
+ * xmlXPathWrapString: * @val: the xmlChar * value
  *
  * Wraps the @val string into an XPath object.
  *
@@ -8350,7 +8051,6 @@ pub fn xmlXPathNewString(mut val: *const xmlChar) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathWrapString(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
-    println!("xmlXPathWrapString in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8386,8 +8086,7 @@ pub fn xmlXPathWrapString(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathNewCString:
- * @val:  the char * value
+ * xmlXPathNewCString: * @val: the char * value
  *
  * Create a new xmlXPathObjectPtr of type string and of value @val
  *
@@ -8395,7 +8094,6 @@ pub fn xmlXPathWrapString(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNewCString(mut val: *const libc::c_char) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewCString in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8431,8 +8129,7 @@ pub fn xmlXPathNewCString(mut val: *const libc::c_char) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathWrapCString:
- * @val:  the char * value
+ * xmlXPathWrapCString: * @val: the char * value
  *
  * Wraps a string into an XPath object.
  *
@@ -8440,12 +8137,10 @@ pub fn xmlXPathNewCString(mut val: *const libc::c_char) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathWrapCString(mut val: *mut libc::c_char) -> xmlXPathObjectPtr {
-    println!("xmlXPathWrapCString in rust begin");
     return unsafe { xmlXPathWrapString(val as *mut xmlChar) };
 }
 /* *
- * xmlXPathWrapExternal:
- * @val:  the user data
+ * xmlXPathWrapExternal: * @val: the user data
  *
  * Wraps the @val data into an XPath object.
  *
@@ -8453,7 +8148,6 @@ pub fn xmlXPathWrapCString(mut val: *mut libc::c_char) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathWrapExternal(mut val: *mut libc::c_void) -> xmlXPathObjectPtr {
-    println!("xmlXPathWrapExternal in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8489,8 +8183,7 @@ pub fn xmlXPathWrapExternal(mut val: *mut libc::c_void) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathObjectCopy:
- * @val:  the original object
+ * xmlXPathObjectCopy: * @val: the original object
  *
  * allocate a new copy of a given object
  *
@@ -8498,7 +8191,6 @@ pub fn xmlXPathWrapExternal(mut val: *mut libc::c_void) -> xmlXPathObjectPtr {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathObjectCopy in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return 0 as xmlXPathObjectPtr;
@@ -8578,14 +8270,12 @@ pub fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     return ret;
 }
 /* *
- * xmlXPathFreeObject:
- * @obj:  the object to free
+ * xmlXPathFreeObject: * @obj: the object to free
  *
  * Free up an xmlXPathObjectPtr object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathFreeObject(mut obj: xmlXPathObjectPtr) {
-    println!("xmlXPathFreeObject in rust begin");
     if obj.is_null() {
         return;
     } /* TODO: Just for debugging. */
@@ -8637,19 +8327,16 @@ pub fn xmlXPathFreeObject(mut obj: xmlXPathObjectPtr) {
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 extern "C" fn xmlXPathFreeObjectEntry(mut obj: *mut libc::c_void, mut name: *const xmlChar) {
-    println!("xmlXPathFreeObjectEntry in rust begin");
     unsafe { xmlXPathFreeObject(obj as xmlXPathObjectPtr) };
 }
 /* *
- * xmlXPathReleaseObject:
- * @obj:  the xmlXPathObjectPtr to free or to cache
+ * xmlXPathReleaseObject: * @obj: the xmlXPathObjectPtr to free or to cache
  *
  * Depending on the state of the cache this frees the given
  * XPath object or stores it in the cache.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathObjectPtr) {
-    println!("xmlXPathReleaseObject in rust begin");
     let mut current_block: u64;
     if obj.is_null() {
         return;
@@ -8960,8 +8647,7 @@ fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathObjectPt
  *									*
  ************************************************************************/
 /* *
- * xmlXPathCastBooleanToString:
- * @val:  a boolean
+ * xmlXPathCastBooleanToString: * @val: a boolean
  *
  * Converts a boolean to its string value.
  *
@@ -8969,7 +8655,6 @@ fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathObjectPt
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastBooleanToString(mut val: libc::c_int) -> *mut xmlChar {
-    println!("xmlXPathCastBooleanToString in rust begin");
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if val != 0 {
         ret =
@@ -8981,8 +8666,7 @@ pub fn xmlXPathCastBooleanToString(mut val: libc::c_int) -> *mut xmlChar {
     return ret;
 }
 /* *
- * xmlXPathCastNumberToString:
- * @val:  a number
+ * xmlXPathCastNumberToString: * @val: a number
  *
  * Converts a number to its string value.
  *
@@ -8990,7 +8674,6 @@ pub fn xmlXPathCastBooleanToString(mut val: libc::c_int) -> *mut xmlChar {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlChar {
-    println!("xmlXPathCastNumberToString in rust begin");
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     match unsafe { xmlXPathIsInf(val) } {
         1 => {
@@ -9025,8 +8708,7 @@ pub fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlChar {
     return ret;
 }
 /* *
- * xmlXPathCastNodeToString:
- * @node:  a node
+ * xmlXPathCastNodeToString: * @node: a node
  *
  * Converts a node to its string value.
  *
@@ -9034,7 +8716,6 @@ pub fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlChar {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastNodeToString(mut node: xmlNodePtr) -> *mut xmlChar {
-    println!("xmlXPathCastNodeToString in rust begin");
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     ret = unsafe { xmlNodeGetContent(node as *const xmlNode) };
     if ret.is_null() {
@@ -9043,8 +8724,7 @@ pub fn xmlXPathCastNodeToString(mut node: xmlNodePtr) -> *mut xmlChar {
     return ret;
 }
 /* *
- * xmlXPathCastNodeSetToString:
- * @ns:  a node-set
+ * xmlXPathCastNodeSetToString: * @ns: a node-set
  *
  * Converts a node-set to its string value.
  *
@@ -9052,7 +8732,6 @@ pub fn xmlXPathCastNodeToString(mut node: xmlNodePtr) -> *mut xmlChar {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastNodeSetToString(mut ns: xmlNodeSetPtr) -> *mut xmlChar {
-    println!("xmlXPathCastNodeSetToString in rust begin");
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null() || safe_ns.nodeNr == 0 as libc::c_int || safe_ns.nodeTab.is_null() {
         return unsafe { xmlStrdup(b"\x00" as *const u8 as *const libc::c_char as *const xmlChar) };
@@ -9063,8 +8742,7 @@ pub fn xmlXPathCastNodeSetToString(mut ns: xmlNodeSetPtr) -> *mut xmlChar {
     return unsafe { xmlXPathCastNodeToString(*(*ns).nodeTab.offset(0 as libc::c_int as isize)) };
 }
 /* *
- * xmlXPathCastToString:
- * @val:  an XPath object
+ * xmlXPathCastToString: * @val: an XPath object
  *
  * Converts an existing object to its string() equivalent
  *
@@ -9073,7 +8751,6 @@ pub fn xmlXPathCastNodeSetToString(mut ns: xmlNodeSetPtr) -> *mut xmlChar {
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastToString(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
-    println!("xmlXPathCastToString in rust begin");
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if val.is_null() {
         return unsafe { xmlStrdup(b"\x00" as *const u8 as *const libc::c_char as *const xmlChar) };
@@ -9118,17 +8795,14 @@ pub fn xmlXPathCastToString(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
     return ret;
 }
 /* *
- * xmlXPathConvertString:
- * @val:  an XPath object
+ * xmlXPathConvertString: * @val: an XPath object
  *
  * Converts an existing object to its string() equivalent
  *
  * Returns the new object, the old one is freed (or the operation
- *         is done directly on @val)
- */
+ *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathConvertString in rust begin");
     let mut res: *mut xmlChar = 0 as *mut xmlChar;
     if val.is_null() {
         return unsafe { xmlXPathNewCString(b"\x00" as *const u8 as *const libc::c_char) };
@@ -9172,8 +8846,7 @@ pub fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     return unsafe { xmlXPathWrapString(res) };
 }
 /* *
- * xmlXPathCastBooleanToNumber:
- * @val:  a boolean
+ * xmlXPathCastBooleanToNumber: * @val: a boolean
  *
  * Converts a boolean to its number value
  *
@@ -9182,15 +8855,13 @@ pub fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastBooleanToNumber(mut val: libc::c_int) -> libc::c_double {
-    println!("xmlXPathCastBooleanToNumber in rust begin");
     if val != 0 {
         return 1.0f64;
     }
     return 0.0f64;
 }
 /* *
- * xmlXPathCastStringToNumber:
- * @val:  a string
+ * xmlXPathCastStringToNumber: * @val: a string
  *
  * Converts a string to its number value
  *
@@ -9199,12 +8870,10 @@ pub fn xmlXPathCastBooleanToNumber(mut val: libc::c_int) -> libc::c_double {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastStringToNumber(mut val: *const xmlChar) -> libc::c_double {
-    println!("xmlXPathCastStringToNumber in rust begin");
     return unsafe { xmlXPathStringEvalNumber(val) };
 }
 /* *
- * xmlXPathCastNodeToNumber:
- * @node:  a node
+ * xmlXPathCastNodeToNumber: * @node: a node
  *
  * Converts a node to its number value
  *
@@ -9213,7 +8882,6 @@ pub fn xmlXPathCastStringToNumber(mut val: *const xmlChar) -> libc::c_double {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastNodeToNumber(mut node: xmlNodePtr) -> libc::c_double {
-    println!("xmlXPathCastNodeToNumber in rust begin");
     let mut strval: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: libc::c_double = 0.;
     if node.is_null() {
@@ -9228,8 +8896,7 @@ pub fn xmlXPathCastNodeToNumber(mut node: xmlNodePtr) -> libc::c_double {
     return ret;
 }
 /* *
- * xmlXPathCastNodeSetToNumber:
- * @ns:  a node-set
+ * xmlXPathCastNodeSetToNumber: * @ns: a node-set
  *
  * Converts a node-set to its number value
  *
@@ -9238,7 +8905,6 @@ pub fn xmlXPathCastNodeToNumber(mut node: xmlNodePtr) -> libc::c_double {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastNodeSetToNumber(mut ns: xmlNodeSetPtr) -> libc::c_double {
-    println!("xmlXPathCastNodeSetToNumber in rust begin");
     let mut str: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: libc::c_double = 0.;
     if ns.is_null() {
@@ -9250,8 +8916,7 @@ pub fn xmlXPathCastNodeSetToNumber(mut ns: xmlNodeSetPtr) -> libc::c_double {
     return ret;
 }
 /* *
- * xmlXPathCastToNumber:
- * @val:  an XPath object
+ * xmlXPathCastToNumber: * @val: an XPath object
  *
  * Converts an XPath object to its number value
  *
@@ -9259,7 +8924,6 @@ pub fn xmlXPathCastNodeSetToNumber(mut ns: xmlNodeSetPtr) -> libc::c_double {
  */
 
 pub fn xmlXPathCastToNumber(mut val: xmlXPathObjectPtr) -> libc::c_double {
-    println!("xmlXPathCastToNumber in rust begin");
     let mut ret: libc::c_double = 0.0f64;
     if val.is_null() {
         return unsafe { xmlXPathNAN };
@@ -9302,18 +8966,15 @@ pub fn xmlXPathCastToNumber(mut val: xmlXPathObjectPtr) -> libc::c_double {
     return ret;
 }
 /* *
- * xmlXPathConvertNumber:
- * @val:  an XPath object
+ * xmlXPathConvertNumber: * @val: an XPath object
  *
  * Converts an existing object to its number() equivalent
  *
  * Returns the new object, the old one is freed (or the operation
- *         is done directly on @val)
- */
+ *         is done directly on @val) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathConvertNumber in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return xmlXPathNewFloat(0.0f64);
@@ -9330,8 +8991,7 @@ pub fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
  * Conversion functions to basic types.
  */
 /* *
- * xmlXPathCastNumberToBoolean:
- * @val:  a number
+ * xmlXPathCastNumberToBoolean: * @val: a number
  *
  * Converts a number to its boolean value
  *
@@ -9340,15 +9000,13 @@ pub fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastNumberToBoolean(mut val: libc::c_double) -> libc::c_int {
-    println!("xmlXPathCastNumberToBoolean in rust begin");
     if unsafe { xmlXPathIsNaN(val) } != 0 || val == 0.0f64 {
         return 0 as libc::c_int;
     }
     return 1 as libc::c_int;
 }
 /* *
- * xmlXPathCastStringToBoolean:
- * @val:  a string
+ * xmlXPathCastStringToBoolean: * @val: a string
  *
  * Converts a string to its boolean value
  *
@@ -9357,15 +9015,13 @@ pub fn xmlXPathCastNumberToBoolean(mut val: libc::c_double) -> libc::c_int {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastStringToBoolean(mut val: *const xmlChar) -> libc::c_int {
-    println!("xmlXPathCastStringToBoolean in rust begin");
     if val.is_null() || unsafe { xmlStrlen(val) } == 0 as libc::c_int {
         return 0 as libc::c_int;
     }
     return 1 as libc::c_int;
 }
 /* *
- * xmlXPathCastNodeSetToBoolean:
- * @ns:  a node-set
+ * xmlXPathCastNodeSetToBoolean: * @ns: a node-set
  *
  * Converts a node-set to its boolean value
  *
@@ -9374,7 +9030,6 @@ pub fn xmlXPathCastStringToBoolean(mut val: *const xmlChar) -> libc::c_int {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathCastNodeSetToBoolean(mut ns: xmlNodeSetPtr) -> libc::c_int {
-    println!("xmlXPathCastNodeSetToBoolean in rust begin");
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null() || safe_ns.nodeNr == 0 as libc::c_int {
         return 0 as libc::c_int;
@@ -9382,8 +9037,7 @@ pub fn xmlXPathCastNodeSetToBoolean(mut ns: xmlNodeSetPtr) -> libc::c_int {
     return 1 as libc::c_int;
 }
 /* *
- * xmlXPathCastToBoolean:
- * @val:  an XPath object
+ * xmlXPathCastToBoolean: * @val: an XPath object
  *
  * Converts an XPath object to its boolean value
  *
@@ -9391,7 +9045,6 @@ pub fn xmlXPathCastNodeSetToBoolean(mut ns: xmlNodeSetPtr) -> libc::c_int {
  */
 
 pub fn xmlXPathCastToBoolean(mut val: xmlXPathObjectPtr) -> libc::c_int {
-    println!("xmlXPathCastToBoolean in rust begin");
     let mut ret: libc::c_int = 0 as libc::c_int;
     if val.is_null() {
         return 0 as libc::c_int;
@@ -9434,18 +9087,15 @@ pub fn xmlXPathCastToBoolean(mut val: xmlXPathObjectPtr) -> libc::c_int {
     return ret;
 }
 /* *
- * xmlXPathConvertBoolean:
- * @val:  an XPath object
+ * xmlXPathConvertBoolean: * @val: an XPath object
  *
  * Converts an existing object to its boolean() equivalent
  *
  * Returns the new object, the old one is freed (or the operation
- *         is done directly on @val)
- */
+ *         is done directly on @val) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathConvertBoolean(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathConvertBoolean in rust begin");
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return unsafe { xmlXPathNewBoolean(0 as libc::c_int) };
@@ -9467,8 +9117,7 @@ pub fn xmlXPathConvertBoolean(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
  *									*
  ************************************************************************/
 /* *
- * xmlXPathNewContext:
- * @doc:  the XML document
+ * xmlXPathNewContext: * @doc: the XML document
  *
  * Create a new xmlXPathContext
  *
@@ -9476,7 +9125,6 @@ pub fn xmlXPathConvertBoolean(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
  */
 
 pub fn xmlXPathNewContext(mut doc: xmlDocPtr) -> xmlXPathContextPtr {
-    println!("xmlXPathNewContext in rust begin");
     let mut ret: xmlXPathContextPtr = 0 as *mut xmlXPathContext;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -9528,15 +9176,13 @@ pub fn xmlXPathNewContext(mut doc: xmlDocPtr) -> xmlXPathContextPtr {
     return ret;
 }
 /* *
- * xmlXPathFreeContext:
- * @ctxt:  the context to free
+ * xmlXPathFreeContext: * @ctxt: the context to free
  *
  * Free up an xmlXPathContext
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathFreeContext(mut ctxt: xmlXPathContextPtr) {
-    println!("xmlXPathFreeContext in rust begin");
     if ctxt.is_null() {
         return;
     }
@@ -9561,9 +9207,8 @@ pub fn xmlXPathFreeContext(mut ctxt: xmlXPathContextPtr) {
  *									*
  ************************************************************************/
 /* *
- * xmlXPathNewParserContext:
- * @str:  the XPath expression
- * @ctxt:  the XPath context
+ * xmlXPathNewParserContext: * @str: the XPath expression
+ * @ctxt: the XPath context
  *
  * Create a new xmlXPathParserContext
  *
@@ -9575,7 +9220,6 @@ pub fn xmlXPathNewParserContext(
     mut str: *const xmlChar,
     mut ctxt: xmlXPathContextPtr,
 ) -> xmlXPathParserContextPtr {
-    println!("xmlXPathNewParserContext in rust begin");
     let mut ret: xmlXPathParserContextPtr = 0 as *mut xmlXPathParserContext;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -9620,9 +9264,8 @@ pub fn xmlXPathNewParserContext(
     return ret;
 }
 /* *
- * xmlXPathCompParserContext:
- * @comp:  the XPath compiled expression
- * @ctxt:  the XPath context
+ * xmlXPathCompParserContext: * @comp: the XPath compiled expression
+ * @ctxt: the XPath context
  *
  * Create a new xmlXPathParserContext when processing a compiled expression
  *
@@ -9633,7 +9276,6 @@ fn xmlXPathCompParserContext(
     mut comp: xmlXPathCompExprPtr,
     mut ctxt: xmlXPathContextPtr,
 ) -> xmlXPathParserContextPtr {
-    println!("xmlXPathCompParserContext in rust begin");
     let mut ret: xmlXPathParserContextPtr = 0 as *mut xmlXPathParserContext;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -9684,15 +9326,13 @@ fn xmlXPathCompParserContext(
     return ret;
 }
 /* *
- * xmlXPathFreeParserContext:
- * @ctxt:  the context to free
+ * xmlXPathFreeParserContext: * @ctxt: the context to free
  *
  * Free up an xmlXPathParserContext
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathFreeParserContext(mut ctxt: xmlXPathParserContextPtr) {
-    println!("xmlXPathFreeParserContext in rust begin");
     let mut i: libc::c_int = 0;
     let safe_ctxt = unsafe { &mut *ctxt };
     if !safe_ctxt.valueTab.is_null() {
@@ -9735,17 +9375,14 @@ pub fn xmlXPathFreeParserContext(mut ctxt: xmlXPathParserContextPtr) {
  *									*
  ************************************************************************/
 /* *
- * xmlXPathNodeValHash:
- * @node:  a node pointer
+ * xmlXPathNodeValHash: * @node: a node pointer
  *
- * Function computing the beginning of the string value of the node,
- * used to speed up comparisons
+ * Function computing the beginning of the string value of the node, * used to speed up comparisons
  *
  * Returns an int usable as a hash
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathNodeValHash(mut node: xmlNodePtr) -> libc::c_uint {
-    println!("xmlXPathNodeValHash in rust begin");
     let mut len: libc::c_int = 2 as libc::c_int;
     let mut string: *const xmlChar = 0 as *const xmlChar;
     let mut tmp: xmlNodePtr = 0 as xmlNodePtr;
@@ -9874,17 +9511,14 @@ fn xmlXPathNodeValHash(mut node: xmlNodePtr) -> libc::c_uint {
     return ret;
 }
 /* *
- * xmlXPathStringHash:
- * @string:  a string
+ * xmlXPathStringHash: * @string: a string
  *
- * Function computing the beginning of the string value of the node,
- * used to speed up comparisons
+ * Function computing the beginning of the string value of the node, * used to speed up comparisons
  *
  * Returns an int usable as a hash
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathStringHash(mut string: *const xmlChar) -> libc::c_uint {
-    println!("xmlXPathStringHash in rust begin");
     if string.is_null() {
         return 0 as libc::c_int as libc::c_uint;
     }
@@ -9898,12 +9532,10 @@ fn xmlXPathStringHash(mut string: *const xmlChar) -> libc::c_uint {
     };
 }
 /* *
- * xmlXPathCompareNodeSetFloat:
- * @ctxt:  the XPath Parser context
- * @inf:  less than (1) or greater than (0)
- * @strict:  is the comparison strict
- * @arg:  the node set
- * @f:  the value
+ * xmlXPathCompareNodeSetFloat: * @ctxt: the XPath Parser context
+ * @inf: less than (1) or greater than (0) * @strict: is the comparison strict
+ * @arg: the node set
+ * @f: the value
  *
  * Implement the compare operation between a nodeset and a number
  *     @ns < @val    (1, 1, ...
@@ -9911,8 +9543,7 @@ fn xmlXPathStringHash(mut string: *const xmlChar) -> libc::c_uint {
  *     @ns > @val    (0, 1, ...
  *     @ns >= @val   (0, 0, ...
  *
- * If one object to be compared is a node-set and the other is a number,
- * then the comparison will be true if and only if there is a node in the
+ * If one object to be compared is a node-set and the other is a number, * then the comparison will be true if and only if there is a node in the
  * node-set such that the result of performing the comparison on the number
  * to be compared and on the result of converting the string-value of that
  * node to a number using the number function is true.
@@ -9927,7 +9558,6 @@ fn xmlXPathCompareNodeSetFloat(
     mut arg: xmlXPathObjectPtr,
     mut f: xmlXPathObjectPtr,
 ) -> libc::c_int {
-    println!("xmlXPathCompareNodeSetFloat in rust begin");
     let mut i: libc::c_int = 0;
     let mut ret: libc::c_int = 0 as libc::c_int;
     let mut ns: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
@@ -9971,12 +9601,10 @@ fn xmlXPathCompareNodeSetFloat(
     return ret;
 }
 /* *
- * xmlXPathCompareNodeSetString:
- * @ctxt:  the XPath Parser context
- * @inf:  less than (1) or greater than (0)
- * @strict:  is the comparison strict
- * @arg:  the node set
- * @s:  the value
+ * xmlXPathCompareNodeSetString: * @ctxt: the XPath Parser context
+ * @inf: less than (1) or greater than (0) * @strict: is the comparison strict
+ * @arg: the node set
+ * @s: the value
  *
  * Implement the compare operation between a nodeset and a string
  *     @ns < @val    (1, 1, ...
@@ -9984,8 +9612,7 @@ fn xmlXPathCompareNodeSetFloat(
  *     @ns > @val    (0, 1, ...
  *     @ns >= @val   (0, 0, ...
  *
- * If one object to be compared is a node-set and the other is a string,
- * then the comparison will be true if and only if there is a node in
+ * If one object to be compared is a node-set and the other is a string, * then the comparison will be true if and only if there is a node in
  * the node-set such that the result of performing the comparison on the
  * string-value of the node and the other string is true.
  *
@@ -9999,7 +9626,6 @@ fn xmlXPathCompareNodeSetString(
     mut arg: xmlXPathObjectPtr,
     mut s: xmlXPathObjectPtr,
 ) -> libc::c_int {
-    println!("xmlXPathCompareNodeSetString in rust begin");
     let mut i: libc::c_int = 0;
     let mut ret: libc::c_int = 0 as libc::c_int;
     let mut ns: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
@@ -10042,14 +9668,11 @@ fn xmlXPathCompareNodeSetString(
     return ret;
 }
 /* *
- * xmlXPathCompareNodeSets:
- * @inf:  less than (1) or greater than (0)
- * @strict:  is the comparison strict
- * @arg1:  the first node set object
- * @arg2:  the second node set object
+ * xmlXPathCompareNodeSets: * @inf: less than (1) or greater than (0) * @strict: is the comparison strict
+ * @arg1: the first node set object
+ * @arg2: the second node set object
  *
- * Implement the compare operation on nodesets:
- *
+ * Implement the compare operation on nodesets: *
  * If both objects to be compared are node-sets, then the comparison
  * will be true if and only if there is a node in the first node-set
  * and a node in the second node-set such that the result of performing
@@ -10059,8 +9682,7 @@ fn xmlXPathCompareNodeSetString(
  * is <=, <, >= or >, then the objects are compared by converting both
  * objects to numbers and comparing the numbers according to IEEE 754.
  * ....
- * The number function converts its argument to a number as follows:
- *  - a string that consists of optional whitespace followed by an
+ * The number function converts its argument to a number as follows: *  - a string that consists of optional whitespace followed by an
  *    optional minus sign followed by a Number followed by whitespace
  *    is converted to the IEEE 754 number that is nearest (according
  *    to the IEEE 754 round-to-nearest rule) to the mathematical value
@@ -10076,7 +9698,6 @@ fn xmlXPathCompareNodeSets(
     mut arg1: xmlXPathObjectPtr,
     mut arg2: xmlXPathObjectPtr,
 ) -> libc::c_int {
-    println!("xmlXPathCompareNodeSets in rust begin");
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut init: libc::c_int = 0 as libc::c_int;
@@ -10183,12 +9804,10 @@ fn xmlXPathCompareNodeSets(
     return ret;
 }
 /* *
- * xmlXPathCompareNodeSetValue:
- * @ctxt:  the XPath Parser context
- * @inf:  less than (1) or greater than (0)
- * @strict:  is the comparison strict
- * @arg:  the node set
- * @val:  the value
+ * xmlXPathCompareNodeSetValue: * @ctxt: the XPath Parser context
+ * @inf: less than (1) or greater than (0) * @strict: is the comparison strict
+ * @arg: the node set
+ * @val: the value
  *
  * Implement the compare operation between a nodeset and a value
  *     @ns < @val    (1, 1, ...
@@ -10196,8 +9815,7 @@ fn xmlXPathCompareNodeSets(
  *     @ns > @val    (0, 1, ...
  *     @ns >= @val   (0, 0, ...
  *
- * If one object to be compared is a node-set and the other is a boolean,
- * then the comparison will be true if and only if the result of performing
+ * If one object to be compared is a node-set and the other is a boolean, * then the comparison will be true if and only if the result of performing
  * the comparison on the boolean and on the result of converting
  * the node-set to a boolean using the boolean function is true.
  *
@@ -10211,7 +9829,6 @@ fn xmlXPathCompareNodeSetValue(
     mut arg: xmlXPathObjectPtr,
     mut val: xmlXPathObjectPtr,
 ) -> libc::c_int {
-    println!("xmlXPathCompareNodeSetValue in rust begin");
     let safe_arg = unsafe { &mut *arg };
     let safe_val = unsafe { &mut *val };
     if val.is_null()
@@ -10235,15 +9852,10 @@ fn xmlXPathCompareNodeSetValue(
         }
         _ => {
             unsafe {
-                (*__xmlGenericError()).expect("non-null function pointer")(*__xmlGenericErrorContext(),
-                                                                       b"xmlXPathCompareNodeSetValue: Can\'t compare node set and object of type %d\n\x00"
-                                                                           as
-                                                                           *const u8
-                                                                           as
-                                                                           *const libc::c_char,
-                                                                       (*val).type_0
-                                                                           as
-                                                                           libc::c_uint);
+                (*__xmlGenericError()).expect("non-null function pointer")(*__xmlGenericErrorContext(), b"xmlXPathCompareNodeSetValue: Can\'t compare node set and object of type %d\n\x00"
+                                                                           as *const u8
+                                                                           as *const libc::c_char, (*val).type_0
+                                                                           as libc::c_uint);
                 xmlXPathReleaseObject((*ctxt).context, arg);
                 xmlXPathReleaseObject((*ctxt).context, val);
                 xmlXPathErr(ctxt, XPATH_INVALID_TYPE as libc::c_int)
@@ -10253,14 +9865,11 @@ fn xmlXPathCompareNodeSetValue(
     };
 }
 /* *
- * xmlXPathEqualNodeSetString:
- * @arg:  the nodeset object argument
- * @str:  the string to compare to.
- * @neq:  flag to show whether for '=' (0) or '!=' (1)
- *
+ * xmlXPathEqualNodeSetString: * @arg: the nodeset object argument
+ * @str: the string to compare to.
+ * @neq: flag to show whether for '=' (0) or '!=' (1) *
  * Implement the equal operation on XPath objects content: @arg1 == @arg2
- * If one object to be compared is a node-set and the other is a string,
- * then the comparison will be true if and only if there is a node in
+ * If one object to be compared is a node-set and the other is a string, * then the comparison will be true if and only if there is a node in
  * the node-set such that the result of performing the comparison on the
  * string-value of the node and the other string is true.
  *
@@ -10272,7 +9881,6 @@ fn xmlXPathEqualNodeSetString(
     mut str: *const xmlChar,
     mut neq: libc::c_int,
 ) -> libc::c_int {
-    println!("xmlXPathEqualNodeSetString in rust begin");
     let mut i: libc::c_int = 0;
     let mut ns: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut str2: *mut xmlChar = 0 as *mut xmlChar;
@@ -10288,8 +9896,7 @@ fn xmlXPathEqualNodeSetString(
     ns = safe_arg.nodesetval;
     /*
      * A NULL nodeset compared with a string is always false
-     * (since there is no node equal, and no node not equal)
-     */
+     * (since there is no node equal, and no node not equal) */
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null() || safe_ns.nodeNr <= 0 as libc::c_int {
         return 0 as libc::c_int;
@@ -10339,14 +9946,11 @@ fn xmlXPathEqualNodeSetString(
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathEqualNodeSetFloat:
- * @arg:  the nodeset object argument
- * @f:  the float to compare to
- * @neq:  flag to show whether to compare '=' (0) or '!=' (1)
- *
+ * xmlXPathEqualNodeSetFloat: * @arg: the nodeset object argument
+ * @f: the float to compare to
+ * @neq: flag to show whether to compare '=' (0) or '!=' (1) *
  * Implement the equal operation on XPath objects content: @arg1 == @arg2
- * If one object to be compared is a node-set and the other is a number,
- * then the comparison will be true if and only if there is a node in
+ * If one object to be compared is a node-set and the other is a number, * then the comparison will be true if and only if there is a node in
  * the node-set such that the result of performing the comparison on the
  * number to be compared and on the result of converting the string-value
  * of that node to a number using the number function is true.
@@ -10360,7 +9964,6 @@ fn xmlXPathEqualNodeSetFloat(
     mut f: libc::c_double,
     mut neq: libc::c_int,
 ) -> libc::c_int {
-    println!("xmlXPathEqualNodeSetFloat in rust begin");
     let mut i: libc::c_int = 0; /* NaN is unequal to any value */
     let mut ret: libc::c_int = 0 as libc::c_int;
     let mut ns: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
@@ -10407,20 +10010,16 @@ fn xmlXPathEqualNodeSetFloat(
     return ret;
 }
 /* *
- * xmlXPathEqualNodeSets:
- * @arg1:  first nodeset object argument
- * @arg2:  second nodeset object argument
- * @neq:   flag to show whether to test '=' (0) or '!=' (1)
- *
- * Implement the equal / not equal operation on XPath nodesets:
- * @arg1 == @arg2  or  @arg1 != @arg2
+ * xmlXPathEqualNodeSets: * @arg1: first nodeset object argument
+ * @arg2: second nodeset object argument
+ * @neq: flag to show whether to test '=' (0) or '!=' (1) *
+ * Implement the equal / not equal operation on XPath nodesets: * @arg1 == @arg2  or  @arg1 != @arg2
  * If both objects to be compared are node-sets, then the comparison
  * will be true if and only if there is a node in the first node-set and
  * a node in the second node-set such that the result of performing the
  * comparison on the string-values of the two nodes is true.
  *
- * (needless to say, this is a costly operation)
- *
+ * (needless to say, this is a costly operation) *
  * Returns 0 or 1 depending on the results of the test.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -10429,7 +10028,6 @@ fn xmlXPathEqualNodeSets(
     mut arg2: xmlXPathObjectPtr,
     mut neq: libc::c_int,
 ) -> libc::c_int {
-    println!("xmlXPathEqualNodeSets in rust begin");
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut hashs1: *mut libc::c_uint = 0 as *mut libc::c_uint;
@@ -10650,7 +10248,6 @@ fn xmlXPathEqualValuesCommon(
     mut arg1: xmlXPathObjectPtr,
     mut arg2: xmlXPathObjectPtr,
 ) -> libc::c_int {
-    println!("xmlXPathEqualValuesCommon in rust begin");
     let mut ret: libc::c_int = 0 as libc::c_int;
     /*
      *At this point we are assured neither arg1 nor arg2
@@ -10895,8 +10492,7 @@ fn xmlXPathEqualValuesCommon(
     return ret;
 }
 /* *
- * xmlXPathEqualValues:
- * @ctxt:  the XPath Parser context
+ * xmlXPathEqualValues: * @ctxt: the XPath Parser context
  *
  * Implement the equal operation on XPath objects content: @arg1 == @arg2
  *
@@ -10905,7 +10501,6 @@ fn xmlXPathEqualValuesCommon(
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
-    println!("xmlXPathEqualValues in rust begin");
     let mut arg1: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut arg2: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut argtmp: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
@@ -11020,8 +10615,7 @@ pub fn xmlXPathEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
     return unsafe { xmlXPathEqualValuesCommon(ctxt, arg1, arg2) };
 }
 /* *
- * xmlXPathNotEqualValues:
- * @ctxt:  the XPath Parser context
+ * xmlXPathNotEqualValues: * @ctxt: the XPath Parser context
  *
  * Implement the equal operation on XPath objects content: @arg1 == @arg2
  *
@@ -11030,7 +10624,6 @@ pub fn xmlXPathEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathNotEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
-    println!("xmlXPathNotEqualValues in rust begin");
     let mut arg1: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut arg2: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut argtmp: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
@@ -11144,13 +10737,10 @@ pub fn xmlXPathNotEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int
     return unsafe { (xmlXPathEqualValuesCommon(ctxt, arg1, arg2) == 0) as libc::c_int };
 }
 /* *
- * xmlXPathCompareValues:
- * @ctxt:  the XPath Parser context
- * @inf:  less than (1) or greater than (0)
- * @strict:  is the comparison strict
+ * xmlXPathCompareValues: * @ctxt: the XPath Parser context
+ * @inf: less than (1) or greater than (0) * @strict: is the comparison strict
  *
- * Implement the compare operation on XPath objects:
- *     @arg1 < @arg2    (1, 1, ...
+ * Implement the compare operation on XPath objects: *     @arg1 < @arg2    (1, 1, ...
  *     @arg1 <= @arg2   (1, 0, ...
  *     @arg1 > @arg2    (0, 1, ...
  *     @arg1 >= @arg2   (0, 0, ...
@@ -11174,7 +10764,6 @@ pub fn xmlXPathCompareValues(
     mut inf: libc::c_int,
     mut strict: libc::c_int,
 ) -> libc::c_int {
-    println!("xmlXPathCompareValues in rust begin");
     let mut ret: libc::c_int = 0 as libc::c_int;
     let mut arg1i: libc::c_int = 0 as libc::c_int;
     let mut arg2i: libc::c_int = 0 as libc::c_int;
@@ -11310,8 +10899,7 @@ pub fn xmlXPathCompareValues(
     return ret;
 }
 /* *
- * xmlXPathValueFlipSign:
- * @ctxt:  the XPath Parser context
+ * xmlXPathValueFlipSign: * @ctxt: the XPath Parser context
  *
  * Implement the unary - operation on an XPath object
  * The numeric operators convert their operands to numbers as if
@@ -11320,7 +10908,6 @@ pub fn xmlXPathCompareValues(
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathValueFlipSign(mut ctxt: xmlXPathParserContextPtr) {
-    println!("xmlXPathValueFlipSign in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.context.is_null() {
         return;
@@ -11343,17 +10930,14 @@ pub fn xmlXPathValueFlipSign(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { (*(*ctxt).value).floatval = -(*(*ctxt).value).floatval };
 }
 /* *
- * xmlXPathAddValues:
- * @ctxt:  the XPath Parser context
+ * xmlXPathAddValues: * @ctxt: the XPath Parser context
  *
- * Implement the add operation on XPath objects:
- * The numeric operators convert their operands to numbers as if
+ * Implement the add operation on XPath objects: * The numeric operators convert their operands to numbers as if
  * by calling the number function.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathAddValues(mut ctxt: xmlXPathParserContextPtr) {
-    println!("xmlXPathAddValues in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut val: libc::c_double = 0.;
@@ -11384,17 +10968,14 @@ pub fn xmlXPathAddValues(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { (*(*ctxt).value).floatval += val };
 }
 /* *
- * xmlXPathSubValues:
- * @ctxt:  the XPath Parser context
+ * xmlXPathSubValues: * @ctxt: the XPath Parser context
  *
- * Implement the subtraction operation on XPath objects:
- * The numeric operators convert their operands to numbers as if
+ * Implement the subtraction operation on XPath objects: * The numeric operators convert their operands to numbers as if
  * by calling the number function.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathSubValues(mut ctxt: xmlXPathParserContextPtr) {
-    println!("xmlXPathSubValues in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut val: libc::c_double = 0.;
@@ -11425,17 +11006,14 @@ pub fn xmlXPathSubValues(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { (*(*ctxt).value).floatval -= val };
 }
 /* *
- * xmlXPathMultValues:
- * @ctxt:  the XPath Parser context
+ * xmlXPathMultValues: * @ctxt: the XPath Parser context
  *
- * Implement the multiply operation on XPath objects:
- * The numeric operators convert their operands to numbers as if
+ * Implement the multiply operation on XPath objects: * The numeric operators convert their operands to numbers as if
  * by calling the number function.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathMultValues(mut ctxt: xmlXPathParserContextPtr) {
-    println!("xmlXPathMultValues in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut val: libc::c_double = 0.;
@@ -11466,17 +11044,14 @@ pub fn xmlXPathMultValues(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { (*(*ctxt).value).floatval *= val };
 }
 /* *
- * xmlXPathDivValues:
- * @ctxt:  the XPath Parser context
+ * xmlXPathDivValues: * @ctxt: the XPath Parser context
  *
- * Implement the div operation on XPath objects @arg1 / @arg2:
- * The numeric operators convert their operands to numbers as if
+ * Implement the div operation on XPath objects @arg1 / @arg2: * The numeric operators convert their operands to numbers as if
  * by calling the number function.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathDivValues(mut ctxt: xmlXPathParserContextPtr) {
-    println!("xmlXPathDivValues in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut val: libc::c_double = 0.;
@@ -11507,8 +11082,7 @@ pub fn xmlXPathDivValues(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { (*(*ctxt).value).floatval /= val };
 }
 /* *
- * xmlXPathModValues:
- * @ctxt:  the XPath Parser context
+ * xmlXPathModValues: * @ctxt: the XPath Parser context
  *
  * Implement the mod operation on XPath objects: @arg1 / @arg2
  * The numeric operators convert their operands to numbers as if
@@ -11517,7 +11091,6 @@ pub fn xmlXPathDivValues(mut ctxt: xmlXPathParserContextPtr) {
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathModValues(mut ctxt: xmlXPathParserContextPtr) {
-    println!("xmlXPathModValues in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut arg1: libc::c_double = 0.;
@@ -11557,9 +11130,8 @@ pub fn xmlXPathModValues(mut ctxt: xmlXPathParserContextPtr) {
  * Some of the axis navigation routines.
  */
 /* *
- * xmlXPathNextSelf:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextSelf: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "self" direction
  * The self axis contains just the context node itself
@@ -11572,7 +11144,6 @@ pub extern "C" fn xmlXPathNextSelf(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
-    println!("xmlXPathNextSelf in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.context.is_null() {
         return 0 as xmlNodePtr;
@@ -11583,9 +11154,8 @@ pub extern "C" fn xmlXPathNextSelf(
     return 0 as xmlNodePtr;
 }
 /* *
- * xmlXPathNextChild:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextChild: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "child" direction
  * The child axis contains the children of the context node in document order.
@@ -11598,7 +11168,6 @@ pub extern "C" fn xmlXPathNextChild(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
-    println!("xmlXPathNextChild in rust begin");
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.context.is_null() {
         return 0 as xmlNodePtr;
@@ -11642,9 +11211,8 @@ pub extern "C" fn xmlXPathNextChild(
     return safe_cur.next;
 }
 /* *
- * xmlXPathNextChildElement:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextChildElement: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "child" direction and nodes of type element.
  * The child axis contains the children of the context node in document order.
@@ -11765,9 +11333,8 @@ extern "C" fn xmlXPathNextChildElement(
     return 0 as xmlNodePtr;
 }
 /* *
- * xmlXPathNextDescendant:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextDescendant: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "descendant" direction
  * the descendant axis contains the descendants of the context node in document
@@ -11855,9 +11422,8 @@ pub extern "C" fn xmlXPathNextDescendant(
     return cur;
 }
 /* *
- * xmlXPathNextDescendantOrSelf:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextDescendantOrSelf: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "descendant-or-self" direction
  * the descendant-or-self axis contains the context node and the descendants
@@ -11893,9 +11459,8 @@ pub extern "C" fn xmlXPathNextDescendantOrSelf(
     return unsafe { xmlXPathNextDescendant(ctxt, cur) };
 }
 /* *
- * xmlXPathNextParent:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextParent: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "parent" direction
  * The parent axis contains the parent of the context node, if there is one.
@@ -11965,9 +11530,8 @@ pub extern "C" fn xmlXPathNextParent(
     return 0 as xmlNodePtr;
 }
 /* *
- * xmlXPathNextAncestor:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextAncestor: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "ancestor" direction
  * the ancestor axis contains the ancestors of the context node; the ancestors
@@ -12091,9 +11655,8 @@ pub extern "C" fn xmlXPathNextAncestor(
     return 0 as xmlNodePtr;
 }
 /* *
- * xmlXPathNextAncestorOrSelf:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextAncestorOrSelf: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "ancestor-or-self" direction
  * he ancestor-or-self axis contains the context node and ancestors of
@@ -12119,9 +11682,8 @@ pub extern "C" fn xmlXPathNextAncestorOrSelf(
     return unsafe { xmlXPathNextAncestor(ctxt, cur) };
 }
 /* *
- * xmlXPathNextFollowingSibling:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextFollowingSibling: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "following-sibling" direction
  * The following-sibling axis contains the following siblings of the context
@@ -12155,9 +11717,8 @@ pub extern "C" fn xmlXPathNextFollowingSibling(
     return unsafe { (*cur).next };
 }
 /* *
- * xmlXPathNextPrecedingSibling:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextPrecedingSibling: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "preceding-sibling" direction
  * The preceding-sibling axis contains the preceding siblings of the context
@@ -12201,9 +11762,8 @@ pub extern "C" fn xmlXPathNextPrecedingSibling(
     return unsafe { (*cur).prev };
 }
 /* *
- * xmlXPathNextFollowing:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextFollowing: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "following" direction
  * The following axis contains all nodes in the same document as the context
@@ -12277,9 +11837,8 @@ pub extern "C" fn xmlXPathNextFollowing(
     return cur;
 }
 /*
- * xmlXPathIsAncestor:
- * @ancestor:  the ancestor node
- * @node:  the current node
+ * xmlXPathIsAncestor: * @ancestor: the ancestor node
+ * @node: the current node
  *
  * Check that @ancestor is a @node's ancestor
  *
@@ -12319,9 +11878,8 @@ fn xmlXPathIsAncestor(mut ancestor: xmlNodePtr, mut node: xmlNodePtr) -> libc::c
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathNextPreceding:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextPreceding: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "preceding" direction
  * the preceding axis contains all nodes in the same document as the context
@@ -12394,9 +11952,8 @@ pub fn xmlXPathNextPreceding(
     return cur;
 }
 /* *
- * xmlXPathNextPrecedingInternal:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
+ * xmlXPathNextPrecedingInternal: * @ctxt: the XPath Parser context
+ * @cur: the current node in the traversal
  *
  * Traversal function for the "preceding" direction
  * the preceding axis contains all nodes in the same document as the context
@@ -12472,9 +12029,8 @@ extern "C" fn xmlXPathNextPrecedingInternal(
     return cur;
 }
 /* *
- * xmlXPathNextNamespace:
- * @ctxt:  the XPath Parser context
- * @cur:  the current attribute in the traversal
+ * xmlXPathNextNamespace: * @ctxt: the XPath Parser context
+ * @cur: the current attribute in the traversal
  *
  * Traversal function for the "namespace" direction
  * the namespace axis contains the namespace nodes of the context node;
@@ -12547,9 +12103,8 @@ pub extern "C" fn xmlXPathNextNamespace(
     };
 }
 /* *
- * xmlXPathNextAttribute:
- * @ctxt:  the XPath Parser context
- * @cur:  the current attribute in the traversal
+ * xmlXPathNextAttribute: * @ctxt: the XPath Parser context
+ * @cur: the current attribute in the traversal
  *
  * Traversal function for the "attribute" direction
  * TODO: support DTD inherited default attributes
@@ -12594,8 +12149,7 @@ pub extern "C" fn xmlXPathNextAttribute(
  *									*
  ************************************************************************/
 /* *
- * xmlXPathRoot:
- * @ctxt:  the XPath Parser context
+ * xmlXPathRoot: * @ctxt: the XPath Parser context
  *
  * Initialize the context to the root of the document
  */
@@ -12624,13 +12178,11 @@ pub fn xmlXPathRoot(mut ctxt: xmlXPathParserContextPtr) {
  *									*
  ************************************************************************/
 /* *
- * xmlXPathLastFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathLastFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the last() XPath function
- *    number last()
- * The last function returns the number of nodes in the context node list.
+ *    number last() * The last function returns the number of nodes in the context node list.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -12677,13 +12229,11 @@ pub extern "C" fn xmlXPathLastFunction(mut ctxt: xmlXPathParserContextPtr, mut n
     };
 }
 /* *
- * xmlXPathPositionFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathPositionFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the position() XPath function
- *    number position()
- * The position function returns the position of the context node in the
+ *    number position() * The position function returns the position of the context node in the
  * context node list. The first position is 1, and so the last position
  * will be equal to last().
  */
@@ -12735,13 +12285,11 @@ pub extern "C" fn xmlXPathPositionFunction(
     };
 }
 /* *
- * xmlXPathCountFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathCountFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the count() XPath function
- *    number count(node-set)
- */
+ *    number count(node-set) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub extern "C" fn xmlXPathCountFunction(
@@ -12792,9 +12340,8 @@ pub extern "C" fn xmlXPathCountFunction(
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, cur) };
 }
 /* *
- * xmlXPathGetElementsByIds:
- * @doc:  the document
- * @ids:  a whitespace separated list of IDs
+ * xmlXPathGetElementsByIds: * @doc: the document
+ * @ids: a whitespace separated list of IDs
  *
  * Selects elements by their unique ID.
  *
@@ -12875,15 +12422,12 @@ fn xmlXPathGetElementsByIds(mut doc: xmlDocPtr, mut ids: *const xmlChar) -> xmlN
     return ret;
 }
 /* *
- * xmlXPathIdFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathIdFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the id() XPath function
- *    node-set id(object)
- * The id function selects elements by their unique ID
- * (see [5.2.1 Unique IDs]). When the argument to id is of type node-set,
- * then the result is the union of the result of applying id to the
+ *    node-set id(object) * The id function selects elements by their unique ID
+ * (see [5.2.1 Unique IDs]). When the argument to id is of type node-set, * then the result is the union of the result of applying id to the
  * string value of each of the nodes in the argument node-set. When the
  * argument to id is of any other type, the argument is converted to a
  * string as if by a call to the string function; the string is split
@@ -12954,13 +12498,11 @@ pub extern "C" fn xmlXPathIdFunction(mut ctxt: xmlXPathParserContextPtr, mut nar
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, obj) };
 }
 /* *
- * xmlXPathLocalNameFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathLocalNameFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the local-name() XPath function
- *    string local-name(node-set?)
- * The local-name function returns a string containing the local part
+ *    string local-name(node-set?) * The local-name function returns a string containing the local part
  * of the name of the node in the argument node-set that is first in
  * document order. If the node-set is empty or the first node has no
  * name, an empty string is returned. If the argument is omitted it
@@ -13079,16 +12621,13 @@ pub extern "C" fn xmlXPathLocalNameFunction(
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, cur) };
 }
 /* *
- * xmlXPathNamespaceURIFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathNamespaceURIFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the namespace-uri() XPath function
- *    string namespace-uri(node-set?)
- * The namespace-uri function returns a string containing the
+ *    string namespace-uri(node-set?) * The namespace-uri function returns a string containing the
  * namespace URI of the expanded name of the node in the argument
- * node-set that is first in document order. If the node-set is empty,
- * the first node has no name, or the expanded name has no namespace
+ * node-set that is first in document order. If the node-set is empty, * the first node has no name, or the expanded name has no namespace
  * URI, an empty string is returned. If the argument is omitted it
  * defaults to the context node.
  */
@@ -13193,13 +12732,11 @@ pub extern "C" fn xmlXPathNamespaceURIFunction(
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, cur) };
 }
 /* *
- * xmlXPathNameFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathNameFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the name() XPath function
- *    string name(node-set?)
- * The name function returns a string containing a QName representing
+ *    string name(node-set?) * The name function returns a string containing a QName representing
  * the name of the node in the argument node-set that is first in document
  * order. The QName must represent the name with respect to the namespace
  * declarations in effect on the node whose name is being represented.
@@ -13345,14 +12882,11 @@ extern "C" fn xmlXPathNameFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, cur) };
 }
 /* *
- * xmlXPathStringFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathStringFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the string() XPath function
- *    string string(object?)
- * The string function converts an object to a string as follows:
- *    - A node-set is converted to a string by returning the value of
+ *    string string(object?) * The string function converts an object to a string as follows: *    - A node-set is converted to a string by returning the value of
  *      the node in the node-set that is first in document order.
  *      If the node-set is empty, an empty string is returned.
  *    - A number is converted to a string as follows
@@ -13371,8 +12905,7 @@ extern "C" fn xmlXPathNameFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs
  *        is negative; there must be no leading zeros before the decimal
  *        point apart possibly from the one required digit immediately
  *        before the decimal point; beyond the one required digit
- *        after the decimal point there must be as many, but only as
- *        many, more digits as are needed to uniquely distinguish the
+ *        after the decimal point there must be as many, but only as *        many, more digits as are needed to uniquely distinguish the
  *        number from all other IEEE 754 numeric values.
  *    - The boolean false value is converted to the string false.
  *      The boolean true value is converted to the string true.
@@ -13422,13 +12955,11 @@ pub extern "C" fn xmlXPathStringFunction(
     unsafe { valuePush(ctxt, xmlXPathCacheConvertString(safe_ctxt.context, cur)) };
 }
 /* *
- * xmlXPathStringLengthFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathStringLengthFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the string-length() XPath function
- *    number string-length(string?)
- * The string-length returns the number of characters in the string
+ *    number string-length(string?) * The string-length returns the number of characters in the string
  * (see [3.6 Strings]). If the argument is omitted, it defaults to
  * the context node converted to a string, in other words the value
  * of the context node.
@@ -13505,13 +13036,11 @@ pub extern "C" fn xmlXPathStringLengthFunction(
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, cur) };
 }
 /* *
- * xmlXPathConcatFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathConcatFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the concat() XPath function
- *    string concat(string, string, string*)
- * The concat function returns the concatenation of its arguments.
+ *    string concat(string, string, string*) * The concat function returns the concatenation of its arguments.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -13586,13 +13115,11 @@ pub extern "C" fn xmlXPathConcatFunction(
     }
 }
 /* *
- * xmlXPathContainsFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathContainsFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the contains() XPath function
- *    boolean contains(string, string)
- * The contains function returns true if the first argument string
+ *    boolean contains(string, string) * The contains function returns true if the first argument string
  * contains the second argument string, and otherwise returns false.
  */
 
@@ -13665,13 +13192,11 @@ pub extern "C" fn xmlXPathContainsFunction(
     }
 }
 /* *
- * xmlXPathStartsWithFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathStartsWithFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the starts-with() XPath function
- *    boolean starts-with(string, string)
- * The starts-with function returns true if the first argument string
+ *    boolean starts-with(string, string) * The starts-with function returns true if the first argument string
  * starts with the second argument string, and otherwise returns false.
  */
 
@@ -13746,16 +13271,13 @@ pub extern "C" fn xmlXPathStartsWithFunction(
     }
 }
 /* *
- * xmlXPathSubstringFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathSubstringFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the substring() XPath function
- *    string substring(string, number, number?)
- * The substring function returns the substring of the first argument
+ *    string substring(string, number, number?) * The substring function returns the substring of the first argument
  * starting at the position specified in the second argument with
- * length specified in the third argument. For example,
- * substring("12345",2,3) returns "234". If the third argument is not
+ * length specified in the third argument. For example, * substring("12345",2,3) returns "234". If the third argument is not
  * specified, it returns the substring starting at the position specified
  * in the second argument and continuing to the end of the string. For
  * example, substring("12345",2) returns "2345".  More precisely, each
@@ -13763,10 +13285,8 @@ pub extern "C" fn xmlXPathStartsWithFunction(
  * numeric position: the position of the first character is 1, the position
  * of the second character is 2 and so on. The returned substring contains
  * those characters for which the position of the character is greater than
- * or equal to the second argument and, if the third argument is specified,
- * less than the sum of the second and third arguments; the comparisons
- * and addition used for the above follow the standard IEEE 754 rules. Thus:
- *  - substring("12345", 1.5, 2.6) returns "234"
+ * or equal to the second argument and, if the third argument is specified, * less than the sum of the second and third arguments; the comparisons
+ * and addition used for the above follow the standard IEEE 754 rules. Thus: *  - substring("12345", 1.5, 2.6) returns "234"
  *  - substring("12345", 0, 3) returns "12"
  *  - substring("12345", 0 div 0, 3) returns ""
  *  - substring("12345", 1, 0 div 0) returns ""
@@ -13914,13 +13434,11 @@ pub extern "C" fn xmlXPathSubstringFunction(
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, str) };
 }
 /* *
- * xmlXPathSubstringBeforeFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathSubstringBeforeFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the substring-before() XPath function
- *    string substring-before(string, string)
- * The substring-before function returns the substring of the first
+ *    string substring-before(string, string) * The substring-before function returns the substring of the first
  * argument string that precedes the first occurrence of the second
  * argument string in the first argument string, or the empty string
  * if the first argument string does not contain the second argument
@@ -13982,18 +13500,15 @@ pub extern "C" fn xmlXPathSubstringBeforeFunction(
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, find) };
 }
 /* *
- * xmlXPathSubstringAfterFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathSubstringAfterFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the substring-after() XPath function
- *    string substring-after(string, string)
- * The substring-after function returns the substring of the first
+ *    string substring-after(string, string) * The substring-after function returns the substring of the first
  * argument string that follows the first occurrence of the second
  * argument string in the first argument string, or the empty stringi
  * if the first argument string does not contain the second argument
- * string. For example, substring-after("1999/04/01","/") returns 04/01,
- * and substring-after("1999/04/01","19") returns 99/04/01.
+ * string. For example, substring-after("1999/04/01","/") returns 04/01, * and substring-after("1999/04/01","19") returns 99/04/01.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -14060,13 +13575,11 @@ pub extern "C" fn xmlXPathSubstringAfterFunction(
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, find) };
 }
 /* *
- * xmlXPathNormalizeFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathNormalizeFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the normalize-space() XPath function
- *    string normalize-space(string?)
- * The normalize-space function returns the argument string with white
+ *    string normalize-space(string?) * The normalize-space function returns the argument string with white
  * space normalized by stripping leading and trailing whitespace
  * and replacing sequences of whitespace characters by a single
  * space. Whitespace characters are the same allowed by the S production
@@ -14167,13 +13680,11 @@ pub extern "C" fn xmlXPathNormalizeFunction(
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, obj) };
 }
 /* *
- * xmlXPathTranslateFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathTranslateFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the translate() XPath function
- *    string translate(string, string, string)
- * The translate function returns the first argument string with
+ *    string translate(string, string, string) * The translate function returns the first argument string with
  * occurrences of characters in the second argument string replaced
  * by the character at the corresponding position in the third argument
  * string. For example, translate("bar","abc","ABC") returns the string
@@ -14181,8 +13692,7 @@ pub extern "C" fn xmlXPathNormalizeFunction(
  * character at a corresponding position in the third argument string
  * (because the second argument string is longer than the third argument
  * string), then occurrences of that character in the first argument
- * string are removed. For example, translate("--aaa--","abc-","ABC")
- * returns "AAA". If a character occurs more than once in second
+ * string are removed. For example, translate("--aaa--","abc-","ABC") * returns "AAA". If a character occurs more than once in second
  * argument string, then the first occurrence determines the replacement
  * character. If the third argument string is longer than the second
  * argument string, then excess characters are ignored.
@@ -14319,14 +13829,11 @@ pub extern "C" fn xmlXPathTranslateFunction(
     }
 }
 /* *
- * xmlXPathBooleanFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathBooleanFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the boolean() XPath function
- *    boolean boolean(object)
- * The boolean function converts its argument to a boolean as follows:
- *    - a number is true if and only if it is neither positive or
+ *    boolean boolean(object) * The boolean function converts its argument to a boolean as follows: *    - a number is true if and only if it is neither positive or
  *      negative zero nor NaN
  *    - a node-set is true if and only if it is non-empty
  *    - a string is true if and only if its length is non-zero
@@ -14359,14 +13866,11 @@ pub extern "C" fn xmlXPathBooleanFunction(
     unsafe { valuePush(ctxt, cur) };
 }
 /* *
- * xmlXPathNotFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathNotFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the not() XPath function
- *    boolean not(boolean)
- * The not function returns true if its argument is false,
- * and false otherwise.
+ *    boolean not(boolean) * The not function returns true if its argument is false, * and false otherwise.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -14399,13 +13903,11 @@ pub extern "C" fn xmlXPathNotFunction(mut ctxt: xmlXPathParserContextPtr, mut na
     unsafe { (*safe_ctxt.value).boolval = ((*safe_ctxt.value).boolval == 0) as libc::c_int };
 }
 /* *
- * xmlXPathTrueFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathTrueFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the true() XPath function
- *    boolean true()
- */
+ *    boolean true() */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub extern "C" fn xmlXPathTrueFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
@@ -14429,13 +13931,11 @@ pub extern "C" fn xmlXPathTrueFunction(mut ctxt: xmlXPathParserContextPtr, mut n
     };
 }
 /* *
- * xmlXPathFalseFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathFalseFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the false() XPath function
- *    boolean false()
- */
+ *    boolean false() */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub extern "C" fn xmlXPathFalseFunction(
@@ -14462,13 +13962,11 @@ pub extern "C" fn xmlXPathFalseFunction(
     };
 }
 /* *
- * xmlXPathLangFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathLangFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the lang() XPath function
- *    boolean lang(string)
- * The lang function returns true or false depending on whether the
+ *    boolean lang(string) * The lang function returns true or false depending on whether the
  * language of the context node as specified by xml:lang attributes
  * is the same as or is a sublanguage of the language specified by
  * the argument string. The language of the context node is determined
@@ -14477,8 +13975,7 @@ pub extern "C" fn xmlXPathFalseFunction(
  * xml:lang attribute on the nearest ancestor of the context node that
  * has an xml:lang attribute. If there is no such attribute, then lang
  * returns false. If there is such an attribute, then lang returns
- * true if the attribute value is equal to the argument ignoring case,
- * or if there is some suffix starting with - such that the attribute
+ * true if the attribute value is equal to the argument ignoring case, * or if there is some suffix starting with - such that the attribute
  * value is equal to the argument ignoring that suffix of the attribute
  * value and ignoring case.
  */
@@ -14596,13 +14093,11 @@ pub extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut n
     unsafe { valuePush(ctxt, xmlXPathCacheNewBoolean(safe_ctxt.context, ret)) };
 }
 /* *
- * xmlXPathNumberFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathNumberFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the number() XPath function
- *    number number(object?)
- */
+ *    number number(object?) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub extern "C" fn xmlXPathNumberFunction(
@@ -14642,13 +14137,11 @@ pub extern "C" fn xmlXPathNumberFunction(
     unsafe { valuePush(ctxt, xmlXPathCacheConvertNumber(safe_ctxt.context, cur)) };
 }
 /* *
- * xmlXPathSumFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathSumFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the sum() XPath function
- *    number sum(node-set)
- * The sum function returns the sum of the values of the nodes in
+ *    number sum(node-set) * The sum function returns the sum of the values of the nodes in
  * the argument node-set.
  */
 
@@ -14694,14 +14187,11 @@ pub extern "C" fn xmlXPathSumFunction(mut ctxt: xmlXPathParserContextPtr, mut na
     unsafe { xmlXPathReleaseObject(safe_ctxt.context, cur) };
 }
 /* *
- * xmlXPathFloorFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathFloorFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the floor() XPath function
- *    number floor(number)
- * The floor function returns the largest (closest to positive infinity)
- * number that is not greater than the argument and that is an integer.
+ *    number floor(number) * The floor function returns the largest (closest to positive infinity) * number that is not greater than the argument and that is an integer.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -14739,14 +14229,11 @@ pub extern "C" fn xmlXPathFloorFunction(
     }
 }
 /* *
- * xmlXPathCeilingFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathCeilingFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the ceiling() XPath function
- *    number ceiling(number)
- * The ceiling function returns the smallest (closest to negative infinity)
- * number that is not less than the argument and that is an integer.
+ *    number ceiling(number) * The ceiling function returns the smallest (closest to negative infinity) * number that is not less than the argument and that is an integer.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -14792,15 +14279,12 @@ pub extern "C" fn xmlXPathCeilingFunction(
     };
 }
 /* *
- * xmlXPathRoundFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathRoundFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the round() XPath function
- *    number round(number)
- * The round function returns the number that is closest to the
- * argument and that is an integer. If there are two such numbers,
- * then the one that is closest to positive infinity is returned.
+ *    number round(number) * The round function returns the number that is closest to the
+ * argument and that is an integer. If there are two such numbers, * then the one that is closest to positive infinity is returned.
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -14847,10 +14331,9 @@ pub extern "C" fn xmlXPathRoundFunction(
     };
 }
 /* *
- * xmlXPathCurrentChar:
- * @ctxt:  the XPath parser context
- * @cur:  pointer to the beginning of the char
- * @len:  pointer to the length of the char read
+ * xmlXPathCurrentChar: * @ctxt: the XPath parser context
+ * @cur: pointer to the beginning of the char
+ * @len: pointer to the length of the char read
  *
  * The current char value, if using UTF-8 this may actually span multiple
  * bytes in the input buffer.
@@ -14873,10 +14356,8 @@ fn xmlXPathCurrentChar(
     cur = safe_ctxt.cur;
     /*
      * We are supposed to handle UTF8, check it's valid
-     * From rfc2044: encoding of the Unicode values on UTF-8:
-     *
-     * UCS-4 range (hex.)           UTF-8 octet sequence (binary)
-     * 0000 0000-0000 007F   0xxxxxxx
+     * From rfc2044: encoding of the Unicode values on UTF-8: *
+     * UCS-4 range (hex.) UTF-8 octet sequence (binary) * 0000 0000-0000 007F   0xxxxxxx
      * 0000 0080-0000 07FF   110xxxxx 10xxxxxx
      * 0000 0800-0000 FFFF   1110xxxx 10xxxxxx 10xxxxxx
      *
@@ -14989,8 +14470,7 @@ fn xmlXPathCurrentChar(
          * input encoding didn't get properly advertised in the
          * declaration header. Report the error and switch the encoding
          * to ISO-Latin-1 (if you don't like this policy, just declare the
-         * encoding !)
-         */
+         * encoding !) */
         unsafe { *len = 0 as libc::c_int };
         unsafe { xmlXPathErr(ctxt, XPATH_ENCODING_ERROR as libc::c_int) };
         return 0 as libc::c_int;
@@ -15001,8 +14481,7 @@ fn xmlXPathCurrentChar(
     };
 }
 /* *
- * xmlXPathParseNCName:
- * @ctxt:  the XPath Parser context
+ * xmlXPathParseNCName: * @ctxt: the XPath Parser context
  *
  * parse an XML namespace non qualified name.
  *
@@ -15069,9 +14548,8 @@ pub fn xmlXPathParseNCName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     return xmlXPathParseNameComplex(ctxt, 0 as libc::c_int);
 }
 /* *
- * xmlXPathParseQName:
- * @ctxt:  the XPath Parser context
- * @prefix:  a xmlChar **
+ * xmlXPathParseQName: * @ctxt: the XPath Parser context
+ * @prefix: a xmlChar **
  *
  * parse an XML qualified name
  *
@@ -15106,8 +14584,7 @@ fn xmlXPathParseQName(
     return ret;
 }
 /* *
- * xmlXPathParseName:
- * @ctxt:  the XPath Parser context
+ * xmlXPathParseName: * @ctxt: the XPath Parser context
  *
  * parse an XML name
  *
@@ -15375,15 +14852,13 @@ fn xmlXPathParseNameComplex(
  * Existing functions.
  */
 /* *
- * xmlXPathStringEvalNumber:
- * @str:  A string to scan
+ * xmlXPathStringEvalNumber: * @str: A string to scan
  *
  *  [30a]  Float  ::= Number ('e' Digits?)?
  *
- *  [30]   Number ::=   Digits ('.' Digits?)?
+ *  [30]   Number ::= Digits ('.' Digits?)?
  *                    | '.' Digits
- *  [31]   Digits ::=   [0-9]+
- *
+ *  [31]   Digits ::= [0-9]+ *
  * Compile a Number in the string
  * In complement of the Number expression, this function also handles
  * negative values : '-' Number.
@@ -15531,13 +15006,11 @@ pub fn xmlXPathStringEvalNumber(mut str: *const xmlChar) -> libc::c_double {
     return ret;
 }
 /* *
- * xmlXPathCompNumber:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompNumber: * @ctxt: the XPath Parser context
  *
- *  [30]   Number ::=   Digits ('.' Digits?)?
+ *  [30]   Number ::= Digits ('.' Digits?)?
  *                    | '.' Digits
- *  [31]   Digits ::=   [0-9]+
- *
+ *  [31]   Digits ::= [0-9]+ *
  * Compile a Number, then push it on the stack
  *
  */
@@ -15687,12 +15160,11 @@ fn xmlXPathCompNumber(mut ctxt: xmlXPathParserContextPtr) {
     };
 }
 /* *
- * xmlXPathParseLiteral:
- * @ctxt:  the XPath Parser context
+ * xmlXPathParseLiteral: * @ctxt: the XPath Parser context
  *
  * Parse a Literal
  *
- *  [29]   Literal ::=   '"' [^"]* '"'
+ *  [29]   Literal ::= '"' [^"]* '"'
  *                    | "'" [^']* "'"
  *
  * Returns the value found or NULL in case of error
@@ -15785,12 +15257,11 @@ fn xmlXPathParseLiteral(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     return ret;
 }
 /* *
- * xmlXPathCompLiteral:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompLiteral: * @ctxt: the XPath Parser context
  *
  * Parse a Literal and push it on the stack.
  *
- *  [29]   Literal ::=   '"' [^"]* '"'
+ *  [29]   Literal ::= '"' [^"]* '"'
  *                    | "'" [^']* "'"
  *
  * TODO: xmlXPathCompLiteral memory allocation could be improved.
@@ -15905,21 +15376,18 @@ fn xmlXPathCompLiteral(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { xmlFree.expect("non-null function pointer")(ret as *mut libc::c_void) };
 }
 /* *
- * xmlXPathCompVariableReference:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompVariableReference: * @ctxt: the XPath Parser context
  *
  * Parse a VariableReference, evaluate it and push it on the stack.
  *
  * The variable bindings consist of a mapping from variable names
  * to variable values. The value of a variable is an object, which can be
- * of any of the types that are possible for the value of an expression,
- * and may also be of additional types not specified here.
+ * of any of the types that are possible for the value of an expression, * and may also be of additional types not specified here.
  *
- * Early evaluation is possible since:
- * The variable bindings [...] used to evaluate a subexpression are
+ * Early evaluation is possible since: * The variable bindings [...] used to evaluate a subexpression are
  * always the same as those used to evaluate the containing expression.
  *
- *  [36]   VariableReference ::=   '$' QName
+ *  [36]   VariableReference ::= '$' QName
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathCompVariableReference(mut ctxt: xmlXPathParserContextPtr) {
@@ -15987,12 +15455,11 @@ fn xmlXPathCompVariableReference(mut ctxt: xmlXPathParserContextPtr) {
     };
 }
 /* *
- * xmlXPathIsNodeType:
- * @name:  a name string
+ * xmlXPathIsNodeType: * @name: a name string
  *
  * Is the name given a NodeType one.
  *
- *  [38]   NodeType ::=   'comment'
+ *  [38]   NodeType ::= 'comment'
  *                    | 'text'
  *                    | 'processing-instruction'
  *                    | 'node'
@@ -16040,11 +15507,10 @@ pub fn xmlXPathIsNodeType(mut name: *const xmlChar) -> libc::c_int {
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathCompFunctionCall:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompFunctionCall: * @ctxt: the XPath Parser context
  *
- *  [16]   FunctionCall ::=   FunctionName '(' ( Argument ( ',' Argument)*)? ')'
- *  [17]   Argument ::=   Expr
+ *  [16]   FunctionCall ::= FunctionName '(' ( Argument ( ',' Argument)*)? ')'
+ *  [17]   Argument ::= Expr
  *
  * Compile a function call, the evaluation of all arguments are
  * pushed on the stack
@@ -16193,10 +15659,9 @@ fn xmlXPathCompFunctionCall(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompPrimaryExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompPrimaryExpr: * @ctxt: the XPath Parser context
  *
- *  [15]   PrimaryExpr ::=   VariableReference
+ *  [15]   PrimaryExpr ::= VariableReference
  *                | '(' Expr ')'
  *                | Literal
  *                | Number
@@ -16289,10 +15754,9 @@ fn xmlXPathCompPrimaryExpr(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompFilterExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompFilterExpr: * @ctxt: the XPath Parser context
  *
- *  [20]   FilterExpr ::=   PrimaryExpr
+ *  [20]   FilterExpr ::= PrimaryExpr
  *               | FilterExpr Predicate
  *
  * Compile a filter expression.
@@ -16336,8 +15800,7 @@ fn xmlXPathCompFilterExpr(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathScanName:
- * @ctxt:  the XPath Parser context
+ * xmlXPathScanName: * @ctxt: the XPath Parser context
  *
  * Trickery: parse an XML name but without consuming the input flow
  * Needed to avoid insanity in the parser state.
@@ -16440,10 +15903,9 @@ fn xmlXPathScanName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     return ret;
 }
 /* *
- * xmlXPathCompPathExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompPathExpr: * @ctxt: the XPath Parser context
  *
- *  [19]   PathExpr ::=   LocationPath
+ *  [19]   PathExpr ::= LocationPath
  *               | FilterExpr
  *               | FilterExpr '/' RelativeLocationPath
  *               | FilterExpr '//' RelativeLocationPath
@@ -16686,10 +16148,9 @@ fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompUnionExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompUnionExpr: * @ctxt: the XPath Parser context
  *
- *  [18]   UnionExpr ::=   PathExpr
+ *  [18]   UnionExpr ::= PathExpr
  *               | UnionExpr '|' PathExpr
  *
  * Compile an union expression.
@@ -16770,10 +16231,9 @@ fn xmlXPathCompUnionExpr(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompUnaryExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompUnaryExpr: * @ctxt: the XPath Parser context
  *
- *  [27]   UnaryExpr ::=   UnionExpr
+ *  [27]   UnaryExpr ::= UnionExpr
  *                   | '-' UnaryExpr
  *
  * Compile an unary expression.
@@ -16850,14 +16310,13 @@ fn xmlXPathCompUnaryExpr(mut ctxt: xmlXPathParserContextPtr) {
     };
 }
 /* *
- * xmlXPathCompMultiplicativeExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompMultiplicativeExpr: * @ctxt: the XPath Parser context
  *
- *  [26]   MultiplicativeExpr ::=   UnaryExpr
+ *  [26]   MultiplicativeExpr ::= UnaryExpr
  *                   | MultiplicativeExpr MultiplyOperator UnaryExpr
  *                   | MultiplicativeExpr 'div' UnaryExpr
  *                   | MultiplicativeExpr 'mod' UnaryExpr
- *  [34]   MultiplyOperator ::=   '*'
+ *  [34]   MultiplyOperator ::= '*'
  *
  * Compile an Additive expression.
  */
@@ -16945,10 +16404,9 @@ fn xmlXPathCompMultiplicativeExpr(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompAdditiveExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompAdditiveExpr: * @ctxt: the XPath Parser context
  *
- *  [25]   AdditiveExpr ::=   MultiplicativeExpr
+ *  [25]   AdditiveExpr ::= MultiplicativeExpr
  *                   | AdditiveExpr '+' MultiplicativeExpr
  *                   | AdditiveExpr '-' MultiplicativeExpr
  *
@@ -17028,10 +16486,9 @@ fn xmlXPathCompAdditiveExpr(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompRelationalExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompRelationalExpr: * @ctxt: the XPath Parser context
  *
- *  [24]   RelationalExpr ::=   AdditiveExpr
+ *  [24]   RelationalExpr ::= AdditiveExpr
  *                 | RelationalExpr '<' AdditiveExpr
  *                 | RelationalExpr '>' AdditiveExpr
  *                 | RelationalExpr '<=' AdditiveExpr
@@ -17131,10 +16588,9 @@ fn xmlXPathCompRelationalExpr(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompEqualityExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompEqualityExpr: * @ctxt: the XPath Parser context
  *
- *  [23]   EqualityExpr ::=   RelationalExpr
+ *  [23]   EqualityExpr ::= RelationalExpr
  *                 | EqualityExpr '=' RelationalExpr
  *                 | EqualityExpr '!=' RelationalExpr
  *
@@ -17228,10 +16684,9 @@ fn xmlXPathCompEqualityExpr(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompAndExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompAndExpr: * @ctxt: the XPath Parser context
  *
- *  [22]   AndExpr ::=   EqualityExpr
+ *  [22]   AndExpr ::= EqualityExpr
  *                 | AndExpr 'and' EqualityExpr
  *
  * Compile an AND expression.
@@ -17315,11 +16770,10 @@ fn xmlXPathCompAndExpr(mut ctxt: xmlXPathParserContextPtr) {
  * implementation.
  */
 /* *
- * xmlXPathCompileExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompileExpr: * @ctxt: the XPath Parser context
  *
- *  [14]   Expr ::=   OrExpr
- *  [21]   OrExpr ::=   AndExpr
+ *  [14]   Expr ::= OrExpr
+ *  [21]   OrExpr ::= AndExpr
  *                 | OrExpr 'or' AndExpr
  *
  * Parse and compile an expression
@@ -17436,12 +16890,11 @@ fn xmlXPathCompileExpr(mut ctxt: xmlXPathParserContextPtr, mut sort: libc::c_int
     };
 }
 /* *
- * xmlXPathCompPredicate:
- * @ctxt:  the XPath Parser context
- * @filter:  act as a filter
+ * xmlXPathCompPredicate: * @ctxt: the XPath Parser context
+ * @filter: act as a filter
  *
- *  [8]   Predicate ::=   '[' PredicateExpr ']'
- *  [9]   PredicateExpr ::=   Expr
+ *  [8]   Predicate ::= '[' PredicateExpr ']'
+ *  [9]   PredicateExpr ::= Expr
  *
  * Compile a predicate expression
  */
@@ -17485,9 +16938,7 @@ fn xmlXPathCompPredicate(mut ctxt: xmlXPathParserContextPtr, mut filter: libc::c
      * of the predicate result.
      * TODO: Sorting is still activated for filters, since I'm not
      *  sure if needed. Normally sorting should not be needed, since
-     *  a filter can only diminish the number of items in a sequence,
-     *  but won't change its order; so if the initial sequence is sorted,
-     *  subsequent sorting is not needed.
+     *  a filter can only diminish the number of items in a sequence, *  but won't change its order; so if the initial sequence is sorted, *  subsequent sorting is not needed.
      */
     if filter == 0 {
         unsafe { xmlXPathCompileExpr(ctxt, 0 as libc::c_int) };
@@ -17547,17 +16998,16 @@ fn xmlXPathCompPredicate(mut ctxt: xmlXPathParserContextPtr, mut filter: libc::c
     }
 }
 /* *
- * xmlXPathCompNodeTest:
- * @ctxt:  the XPath Parser context
- * @test:  pointer to a xmlXPathTestVal
- * @type:  pointer to a xmlXPathTypeVal
- * @prefix:  placeholder for a possible name prefix
+ * xmlXPathCompNodeTest: * @ctxt: the XPath Parser context
+ * @test: pointer to a xmlXPathTestVal
+ * @type: pointer to a xmlXPathTypeVal
+ * @prefix: placeholder for a possible name prefix
  *
- * [7] NodeTest ::=   NameTest
+ * [7] NodeTest ::= NameTest
  *		    | NodeType '(' ')'
  *		    | 'processing-instruction' '(' Literal ')'
  *
- * [37] NameTest ::=  '*'
+ * [37] NameTest ::= '*'
  *		    | NCName ':' '*'
  *		    | QName
  * [38] NodeType ::= 'comment'
@@ -17780,10 +17230,9 @@ fn xmlXPathCompNodeTest(
     return name;
 }
 /* *
- * xmlXPathIsAxisName:
- * @name:  a preparsed name token
+ * xmlXPathIsAxisName: * @name: a preparsed name token
  *
- * [6] AxisName ::=   'ancestor'
+ * [6] AxisName ::= 'ancestor'
  *                  | 'ancestor-or-self'
  *                  | 'attribute'
  *                  | 'child'
@@ -17926,21 +17375,19 @@ fn xmlXPathIsAxisName(mut name: *const xmlChar) -> xmlXPathAxisVal {
     return ret;
 }
 /* *
- * xmlXPathCompStep:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompStep: * @ctxt: the XPath Parser context
  *
- * [4] Step ::=   AxisSpecifier NodeTest Predicate*
+ * [4] Step ::= AxisSpecifier NodeTest Predicate*
  *                  | AbbreviatedStep
  *
- * [12] AbbreviatedStep ::=   '.' | '..'
+ * [12] AbbreviatedStep ::= '.' | '..'
  *
  * [5] AxisSpecifier ::= AxisName '::'
  *                  | AbbreviatedAxisSpecifier
  *
  * [13] AbbreviatedAxisSpecifier ::= '@'?
  *
- * Modified for XPtr range support as:
- *
+ * Modified for XPtr range support as: *
  *  [4xptr] Step ::= AxisSpecifier NodeTest Predicate*
  *                     | AbbreviatedStep
  *                     | 'range-to' '(' Expr ')' Predicate*
@@ -18217,13 +17664,12 @@ unsafe fn xmlXPathCompStep(mut ctxt: xmlXPathParserContextPtr) {
     };
 }
 /* *
- * xmlXPathCompRelativeLocationPath:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompRelativeLocationPath: * @ctxt: the XPath Parser context
  *
- *  [3]   RelativeLocationPath ::=   Step
+ *  [3]   RelativeLocationPath ::= Step
  *                     | RelativeLocationPath '/' Step
  *                     | AbbreviatedRelativeLocationPath
- *  [11]  AbbreviatedRelativeLocationPath ::=   RelativeLocationPath '//' Step
+ *  [11]  AbbreviatedRelativeLocationPath ::= RelativeLocationPath '//' Step
  *
  * Compile a relative location path.
  */
@@ -18365,20 +17811,17 @@ fn xmlXPathCompRelativeLocationPath(mut ctxt: xmlXPathParserContextPtr) {
     }
 }
 /* *
- * xmlXPathCompLocationPath:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompLocationPath: * @ctxt: the XPath Parser context
  *
- *  [1]   LocationPath ::=   RelativeLocationPath
+ *  [1]   LocationPath ::= RelativeLocationPath
  *                     | AbsoluteLocationPath
- *  [2]   AbsoluteLocationPath ::=   '/' RelativeLocationPath?
+ *  [2]   AbsoluteLocationPath ::= '/' RelativeLocationPath?
  *                     | AbbreviatedAbsoluteLocationPath
- *  [10]   AbbreviatedAbsoluteLocationPath ::=
- *                           '//' RelativeLocationPath
+ *  [10]   AbbreviatedAbsoluteLocationPath ::= *                           '//' RelativeLocationPath
  *
  * Compile a location path
  *
- * // is short for /descendant-or-self::node()/. For example,
- * //para is short for /descendant-or-self::node()/child::para and
+ * // is short for /descendant-or-self::node()/. For example, * //para is short for /descendant-or-self::node()/child::para and
  * so will select any para element in the document (even a para element
  * that is a document element will be selected by //para since the
  * document element node is a child of the root node); div//para is
@@ -18468,13 +17911,10 @@ fn xmlXPathCompLocationPath(mut ctxt: xmlXPathParserContextPtr) {
 }
 /* DEBUG_STEP */
 /* *
- * xmlXPathNodeSetFilter:
- * @ctxt:  the XPath Parser context
+ * xmlXPathNodeSetFilter: * @ctxt: the XPath Parser context
  * @set: the node set to filter
  * @filterOpIndex: the index of the predicate/filter op
- * @minPos: minimum position in the filtered set (1-based)
- * @maxPos: maximum position in the filtered set (1-based)
- * @hasNsNodes: true if the node set may contain namespace nodes
+ * @minPos: minimum position in the filtered set (1-based) * @maxPos: maximum position in the filtered set (1-based) * @hasNsNodes: true if the node set may contain namespace nodes
  *
  * Filter a node set, keeping only nodes for which the predicate expression
  * matches. Afterwards, keep only nodes between minPos and maxPos in the
@@ -18631,13 +18071,10 @@ fn xmlXPathNodeSetFilter(
     safe_xpctxt.proximityPosition = oldpp;
 }
 /* *
- * xmlXPathLocationSetFilter:
- * @ctxt:  the XPath Parser context
+ * xmlXPathLocationSetFilter: * @ctxt: the XPath Parser context
  * @locset: the location set to filter
  * @filterOpIndex: the index of the predicate/filter op
- * @minPos: minimum position in the filtered set (1-based)
- * @maxPos: maximum position in the filtered set (1-based)
- *
+ * @minPos: minimum position in the filtered set (1-based) * @maxPos: maximum position in the filtered set (1-based) *
  * Filter a location set, keeping only nodes for which the predicate
  * expression matches. Afterwards, keep only nodes between minPos and maxPos
  * in the filtered result.
@@ -18786,13 +18223,10 @@ fn xmlXPathLocationSetFilter(
 }
 /* LIBXML_XPTR_ENABLED */
 /* *
- * xmlXPathCompOpEvalPredicate:
- * @ctxt:  the XPath Parser context
+ * xmlXPathCompOpEvalPredicate: * @ctxt: the XPath Parser context
  * @op: the predicate op
  * @set: the node set to filter
- * @minPos: minimum position in the filtered set (1-based)
- * @maxPos: maximum position in the filtered set (1-based)
- * @hasNsNodes: true if the node set may contain namespace nodes
+ * @minPos: minimum position in the filtered set (1-based) * @maxPos: maximum position in the filtered set (1-based) * @hasNsNodes: true if the node set may contain namespace nodes
  *
  * Filter a node set, keeping only nodes for which the sequence of predicate
  * expressions matches. Afterwards, keep only nodes between minPos and maxPos
@@ -18864,11 +18298,8 @@ fn xmlXPathIsPositionalPredicate(
      * BIG NOTE: This is not intended for XPATH_OP_FILTER yet!
      */
     /*
-     * If not -1, then ch1 will point to:
-     * 1) For predicates (XPATH_OP_PREDICATE):
-     *    - an inner predicate operator
-     * 2) For filters (XPATH_OP_FILTER):
-     *    - an inner filter operator OR
+     * If not -1, then ch1 will point to: * 1) For predicates (XPATH_OP_PREDICATE): *    - an inner predicate operator
+     * 2) For filters (XPATH_OP_FILTER): *    - an inner filter operator OR
      *    - an expression selecting the node set.
      *      E.g. "key('a', 'b')" or "(//foo | //bar)".
      */
@@ -18982,8 +18413,7 @@ fn xmlXPathNodeCollectAndTest(
     /*
      * Setup axis.
      *
-     * MAYBE FUTURE TODO: merging optimizations:
-     * - If the nodes to be traversed wrt to the initial nodes and
+     * MAYBE FUTURE TODO: merging optimizations: * - If the nodes to be traversed wrt to the initial nodes and
      *   the current axis cannot overlap, then we could avoid searching
      *   for duplicates during the merge.
      *   But the question is how/when to evaluate if they cannot overlap.
@@ -19237,17 +18667,12 @@ fn xmlXPathNodeCollectAndTest(
         return 0 as libc::c_int;
     }
     /*
-     * Predicate optimization ---------------------------------------------
-     * If this step has a last predicate, which contains a position(),
-     * then we'll optimize (although not exactly "position()", but only
+     * Predicate optimization --------------------------------------------- * If this step has a last predicate, which contains a position(), * then we'll optimize (although not exactly "position()", but only
      * the  short-hand form, i.e., "[n]".
      *
-     * Example - expression "/foo[parent::bar][1]":
-     *
-     * COLLECT 'child' 'name' 'node' foo    -- op (we are here)
-     *   ROOT                               -- op->ch1
-     *   PREDICATE                          -- op->ch2 (predOp)
-     *     PREDICATE                          -- predOp->ch1 = [parent::bar]
+     * Example - expression "/foo[parent::bar][1]": *
+     * COLLECT 'child' 'name' 'node' foo    -- op (we are here) *   ROOT                               -- op->ch1
+     *   PREDICATE                          -- op->ch2 (predOp) *     PREDICATE                          -- predOp->ch1 = [parent::bar]
      *       SORT
      *         COLLECT  'parent' 'name' 'node' bar
      *           NODE
@@ -19291,8 +18716,7 @@ fn xmlXPathNodeCollectAndTest(
         0 as libc::c_int
     };
     /*
-     * Axis traversal -----------------------------------------------------
-     */
+     * Axis traversal ----------------------------------------------------- */
     /*
      * 2.3 Node Tests
      *  - For the attribute axis, the principal node type is attribute.
@@ -20613,8 +20037,7 @@ fn xmlXPathNodeCollectAndTest(
                         /*
                          * QUESTION TODO: The old predicate evaluation took into
                          *  account location-sets.
-                         *  (E.g. ctxt->value->type == XPATH_LOCATIONSET)
-                         *  Do we expect such a set here?
+                         *  (E.g. ctxt->value->type == XPATH_LOCATIONSET) *  Do we expect such a set here?
                          *  All what I learned now from the evaluation semantics
                          *  does not indicate that a location-set will be processed
                          *  here, so this looks OK.
@@ -20624,10 +20047,8 @@ fn xmlXPathNodeCollectAndTest(
                          * predicate.
                          * TODO: Problem: we cannot execute the inner predicates first
                          *  since we cannot go back *up* the operator tree!
-                         *  Options we have:
-                         *  1) Use of recursive functions (like is it currently done
-                         *     via xmlXPathCompOpEval())
-                         *  2) Add a predicate evaluation information stack to the
+                         *  Options we have: *  1) Use of recursive functions (like is it currently done
+                         *     via xmlXPathCompOpEval()) *  2) Add a predicate evaluation information stack to the
                          *     context struct
                          *  3) Change the way the operators are linked; we need a
                          *     "parent" field on xmlXPathStepOp
@@ -20744,10 +20165,9 @@ fn xmlXPathNodeCollectAndTest(
     return total;
 }
 /* *
- * xmlXPathCompOpEvalFirst:
- * @ctxt:  the XPath parser context with the compiled expression
- * @op:  an XPath compiled operation
- * @first:  the first elem found so far
+ * xmlXPathCompOpEvalFirst: * @ctxt: the XPath parser context with the compiled expression
+ * @op: an XPath compiled operation
+ * @first: the first elem found so far
  *
  * Evaluate the Precompiled XPath operation searching only the first
  * element in document order
@@ -20960,18 +20380,17 @@ fn xmlXPathCompOpEvalFirst(
                 #[cfg(not(XP_OPTIMIZED_FILTER_FIRST))]
                 _ => {}
             };
-            // total += xmlXPathCompOpEvalFilterFirst(ctxt, op, first)
         }
+        // total += xmlXPathCompOpEvalFilterFirst(ctxt, op, first) }
         _ => total += xmlXPathCompOpEval(ctxt, op),
     }
     unsafe { (*safe_ctxt.context).depth -= 1 as libc::c_int };
     return total;
 }
 /* *
- * xmlXPathCompOpEvalLast:
- * @ctxt:  the XPath parser context with the compiled expression
- * @op:  an XPath compiled operation
- * @last:  the last elem found so far
+ * xmlXPathCompOpEvalLast: * @ctxt: the XPath parser context with the compiled expression
+ * @op: an XPath compiled operation
+ * @last: the last elem found so far
  *
  * Evaluate the Precompiled XPath operation searching only the last
  * element in document order
@@ -21365,9 +20784,8 @@ fn xmlXPathCompOpEvalFilterFirst(
  ************************************************************************/
 
 /* *
- * xmlXPathCompOpEval:
- * @ctxt:  the XPath parser context with the compiled expression
- * @op:  an XPath compiled operation
+ * xmlXPathCompOpEval: * @ctxt: the XPath parser context with the compiled expression
+ * @op: an XPath compiled operation
  *
  * Evaluate the Precompiled XPath operation
  * Returns the number of nodes traversed
@@ -21790,18 +21208,11 @@ fn xmlXPathCompOpEval(
                                 };
                                 if URI_0.is_null() {
                                     unsafe {
-                                        (*__xmlGenericError()).expect("non-null function pointer")(*__xmlGenericErrorContext(),
-                                                                                               b"xmlXPathCompOpEval: function %s bound to undefined prefix %s\n\x00"
-                                                                                                   as
-                                                                                                   *const u8
-                                                                                                   as
-                                                                                                   *const libc::c_char,
-                                                                                               safe_op.value4
-                                                                                                   as
-                                                                                                   *mut libc::c_char,
-                                                                                               safe_op.value5
-                                                                                                   as
-                                                                                                   *mut libc::c_char)
+                                        (*__xmlGenericError()).expect("non-null function pointer")(*__xmlGenericErrorContext(), b"xmlXPathCompOpEval: function %s bound to undefined prefix %s\n\x00"
+                                                                                                   as *const u8
+                                                                                                   as *const libc::c_char, safe_op.value4
+                                                                                                   as *mut libc::c_char, safe_op.value5
+                                                                                                   as *mut libc::c_char)
                                     };
                                     unsafe { xmlXPathPopFrame(ctxt, frame) };
                                     safe_ctxt.error = XPATH_UNDEF_PREFIX_ERROR as libc::c_int;
@@ -21953,8 +21364,7 @@ fn xmlXPathCompOpEval(
                         return 0 as libc::c_int;
                     }
                     /*
-                     * The nodeset should be in document order,
-                     * Keep only the first value
+                     * The nodeset should be in document order, * Keep only the first value
                      */
                     if !safe_ctxt.value.is_null()
                         && unsafe {
@@ -22024,8 +21434,7 @@ fn xmlXPathCompOpEval(
                                 return 0 as libc::c_int;
                             }
                             /*
-                             * The nodeset should be in document order,
-                             * Keep only the last value
+                             * The nodeset should be in document order, * Keep only the last value
                              */
                             if !safe_ctxt.value.is_null()
                                 && unsafe { (*safe_ctxt.value).type_0 as libc::c_uint }
@@ -22397,8 +21806,7 @@ fn xmlXPathCompOpEval(
     return total;
 }
 /* *
- * xmlXPathCompOpEvalToBoolean:
- * @ctxt:  the XPath parser context
+ * xmlXPathCompOpEvalToBoolean: * @ctxt: the XPath parser context
  *
  * Evaluates if the expression evaluates to true.
  *
@@ -22509,8 +21917,7 @@ fn xmlXPathCompOpEvalToBoolean(
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathRunStreamEval:
- * @ctxt:  the XPath parser context with the compiled expression
+ * xmlXPathRunStreamEval: * @ctxt: the XPath parser context with the compiled expression
  *
  * Evaluate the Precompiled Streamable XPath expression in the given context.
  */
@@ -22838,9 +22245,8 @@ fn xmlXPathRunStreamEval(
 }
 /* XPATH_STREAMING */
 /* *
- * xmlXPathRunEval:
- * @ctxt:  the XPath parser context with the compiled expression
- * @toBool:  evaluate to a boolean result
+ * xmlXPathRunEval: * @ctxt: the XPath parser context with the compiled expression
+ * @toBool: evaluate to a boolean result
  *
  * Evaluate the Precompiled XPath expression in the given context.
  */
@@ -22959,9 +22365,8 @@ fn xmlXPathRunEval(mut ctxt: xmlXPathParserContextPtr, mut toBool: libc::c_int) 
  *									*
  ************************************************************************/
 /* *
- * xmlXPathEvalPredicate:
- * @ctxt:  the XPath context
- * @res:  the Predicate Expression evaluation result
+ * xmlXPathEvalPredicate: * @ctxt: the XPath context
+ * @res: the Predicate Expression evaluation result
  *
  * Evaluate a predicate result for the current node.
  * A PredicateExpr is evaluated by evaluating the Expr and converting
@@ -23016,9 +22421,8 @@ pub fn xmlXPathEvalPredicate(
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathEvaluatePredicateResult:
- * @ctxt:  the XPath Parser context
- * @res:  the Predicate Expression evaluation result
+ * xmlXPathEvaluatePredicateResult: * @ctxt: the XPath Parser context
+ * @res: the Predicate Expression evaluation result
  *
  * Evaluate a predicate result for the current node.
  * A PredicateExpr is evaluated by evaluating the Expr and converting
@@ -23102,9 +22506,8 @@ pub fn xmlXPathEvaluatePredicateResult(
     return 0 as libc::c_int;
 }
 /* *
- * xmlXPathTryStreamCompile:
- * @ctxt: an XPath context
- * @str:  the XPath expression
+ * xmlXPathTryStreamCompile: * @ctxt: an XPath context
+ * @str: the XPath expression
  *
  * Try to compile the XPath expression as a streamable subset.
  *
@@ -23317,9 +22720,8 @@ fn xmlXPathOptimizeExpression(mut pctxt: xmlXPathParserContextPtr, mut op: xmlXP
     };
 }
 /* *
- * xmlXPathCtxtCompile:
- * @ctxt: an XPath context
- * @str:  the XPath expression
+ * xmlXPathCtxtCompile: * @ctxt: an XPath context
+ * @str: the XPath expression
  *
  * Compile an XPath expression
  *
@@ -23413,8 +22815,7 @@ pub fn xmlXPathCtxtCompile(
  * Separate compilation/evaluation entry points.
  */
 /* *
- * xmlXPathCompile:
- * @str:  the XPath expression
+ * xmlXPathCompile: * @str: the XPath expression
  *
  * Compile an XPath expression
  *
@@ -23427,9 +22828,8 @@ pub fn xmlXPathCompile(mut str: *const xmlChar) -> xmlXPathCompExprPtr {
     return unsafe { xmlXPathCtxtCompile(0 as xmlXPathContextPtr, str) };
 }
 /* *
- * xmlXPathCompiledEvalInternal:
- * @comp:  the compiled XPath expression
- * @ctxt:  the XPath context
+ * xmlXPathCompiledEvalInternal: * @comp: the compiled XPath expression
+ * @ctxt: the XPath context
  * @resObj: the resulting XPath object or NULL
  * @toBool: 1 if only a boolean result is requested
  *
@@ -23570,9 +22970,8 @@ fn xmlXPathCompiledEvalInternal(
 }
 
 /* *
- * xmlXPathCompiledEval:
- * @comp:  the compiled XPath expression
- * @ctx:  the XPath context
+ * xmlXPathCompiledEval: * @comp: the compiled XPath expression
+ * @ctx: the XPath context
  *
  * Evaluate the Precompiled XPath expression in the given context.
  *
@@ -23590,9 +22989,8 @@ pub fn xmlXPathCompiledEval(
     return res;
 }
 /* *
- * xmlXPathCompiledEvalToBoolean:
- * @comp:  the compiled XPath expression
- * @ctxt:  the XPath context
+ * xmlXPathCompiledEvalToBoolean: * @comp: the compiled XPath expression
+ * @ctxt: the XPath context
  *
  * Applies the XPath boolean() function on the result of the given
  * compiled expression.
@@ -23611,11 +23009,9 @@ pub fn xmlXPathCompiledEvalToBoolean(
     };
 }
 /* *
- * xmlXPathEvalExpr:
- * @ctxt:  the XPath Parser context
+ * xmlXPathEvalExpr: * @ctxt: the XPath Parser context
  *
- * Parse and evaluate an XPath expression in the given context,
- * then push the result on the context stack
+ * Parse and evaluate an XPath expression in the given context, * then push the result on the context stack
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub fn xmlXPathEvalExpr(mut ctxt: xmlXPathParserContextPtr) {
@@ -23705,9 +23101,8 @@ pub fn xmlXPathEvalExpr(mut ctxt: xmlXPathParserContextPtr) {
     xmlXPathRunEval(ctxt, 0 as libc::c_int);
 }
 /* *
- * xmlXPathEval:
- * @str:  the XPath expression
- * @ctx:  the XPath context
+ * xmlXPathEval: * @str: the XPath expression
+ * @ctx: the XPath context
  *
  * Evaluate the XPath Location Path in the given context.
  *
@@ -23780,9 +23175,8 @@ pub fn xmlXPathEval(mut str: *const xmlChar, mut ctx: xmlXPathContextPtr) -> xml
     return res;
 }
 /* *
- * xmlXPathSetContextNode:
- * @node: the node to to use as the context node
- * @ctx:  the XPath context
+ * xmlXPathSetContextNode: * @node: the node to to use as the context node
+ * @ctx: the XPath context
  *
  * Sets 'node' as the context node. The node must be in the same
  * document as that associated with the context.
@@ -23804,10 +23198,9 @@ pub fn xmlXPathSetContextNode(mut node: xmlNodePtr, mut ctx: xmlXPathContextPtr)
     return -(1 as libc::c_int);
 }
 /* *
- * xmlXPathNodeEval:
- * @node: the node to to use as the context node
- * @str:  the XPath expression
- * @ctx:  the XPath context
+ * xmlXPathNodeEval: * @node: the node to to use as the context node
+ * @str: the XPath expression
+ * @ctx: the XPath context
  *
  * Evaluate the XPath Location Path in the given context. The node 'node'
  * is set as the context node. The context node is not restored.
@@ -23831,9 +23224,8 @@ pub fn xmlXPathNodeEval(
     return xmlXPathEval(str, ctx);
 }
 /* *
- * xmlXPathEvalExpression:
- * @str:  the XPath expression
- * @ctxt:  the XPath context
+ * xmlXPathEvalExpression: * @str: the XPath expression
+ * @ctxt: the XPath context
  *
  * Alias for xmlXPathEval().
  *
@@ -23854,18 +23246,15 @@ pub fn xmlXPathEvalExpression(
  *									*
  ************************************************************************/
 /* *
- * xmlXPathEscapeUriFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
+ * xmlXPathEscapeUriFunction: * @ctxt: the XPath Parser context
+ * @nargs: the number of arguments
  *
  * Implement the escape-uri() XPath function
- *    string escape-uri(string $str, bool $escape-reserved)
- *
+ *    string escape-uri(string $str, bool $escape-reserved) *
  * This function applies the URI escaping rules defined in section 2 of [RFC
  * 2396] to the string supplied as $uri-part, which typically represents all
  * or part of a URI. The effect of the function is to replace any special
- * character in the string by an escape sequence of the form %xx%yy...,
- * where xxyy... is the hexadecimal representation of the octets used to
+ * character in the string by an escape sequence of the form %xx%yy..., * where xxyy... is the hexadecimal representation of the octets used to
  * represent the character in UTF-8.
  *
  * The set of characters that are escaped depends on the setting of the
@@ -23895,10 +23284,8 @@ pub fn xmlXPathEvalExpression(
  * utf-8 and then converted according to RFC 2396.
  *
  * Examples
- *  xf:escape-uri ("gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles#ocean"), true())
- *  returns "gopher%3A%2F%2Fspinaltap.micro.umn.edu%2F00%2FWeather%2FCalifornia%2FLos%20Angeles%23ocean"
- *  xf:escape-uri ("gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles#ocean"), false())
- *  returns "gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles%23ocean"
+ *  xf:escape-uri ("gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles#ocean"), true()) *  returns "gopher%3A%2F%2Fspinaltap.micro.umn.edu%2F00%2FWeather%2FCalifornia%2FLos%20Angeles%23ocean"
+ *  xf:escape-uri ("gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles#ocean"), false()) *  returns "gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles%23ocean"
  *
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
@@ -24045,8 +23432,7 @@ extern "C" fn xmlXPathEscapeUriFunction(
 }
 
 /* *
- * xmlXPathRegisterAllFunctions:
- * @ctxt:  the XPath context
+ * xmlXPathRegisterAllFunctions: * @ctxt: the XPath context
  *
  * Registers all default XPath functions in this context
  */
