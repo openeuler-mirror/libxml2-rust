@@ -1,10 +1,10 @@
-Start testing: Jul 31 05:18 CST
+Start testing: Jul 31 06:34 CST
 ----------------------------------------------------------
 1/6 Testing: testapi
 1/6 Test: testapi
 Command: "/root/code/01/01/libxml2-rust/testapi"
 Directory: /root/code/01/01/libxml2-rust
-"testapi" start time: Jul 31 05:18 CST
+"testapi" start time: Jul 31 06:34 CST
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -51609,10 +51609,10 @@ Testing xpathInternals : 106 of 117 functions ...
 Testing xpointer : 17 of 21 functions ...
 Total: 1164 functions, 280912 tests, 0 errors
 <end of output>
-Test time =  10.81 sec
+Test time =  10.77 sec
 ----------------------------------------------------------
 Test Passed.
-"testapi" end time: Jul 31 05:18 CST
+"testapi" end time: Jul 31 06:34 CST
 "testapi" time elapsed: 00:00:10
 ----------------------------------------------------------
 
@@ -51620,7 +51620,7 @@ Test Passed.
 2/6 Test: testchar
 Command: "/root/code/01/01/libxml2-rust/testchar"
 Directory: /root/code/01/01/libxml2-rust
-"testchar" start time: Jul 31 05:18 CST
+"testchar" start time: Jul 31 06:34 CST
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -51632,10 +51632,10 @@ testing char range: 1 2 3 4 done
 testing 1 byte char in document: 1 2 3 4 done
 testing 2 byte char in document: 1 2 3 4 done
 <end of output>
-Test time =   1.40 sec
+Test time =   1.41 sec
 ----------------------------------------------------------
 Test Passed.
-"testchar" end time: Jul 31 05:18 CST
+"testchar" end time: Jul 31 06:34 CST
 "testchar" time elapsed: 00:00:01
 ----------------------------------------------------------
 
@@ -51643,7 +51643,7 @@ Test Passed.
 3/6 Test: testdict
 Command: "/root/code/01/01/libxml2-rust/testdict"
 Directory: /root/code/01/01/libxml2-rust
-"testdict" start time: Jul 31 05:18 CST
+"testdict" start time: Jul 31 06:34 CST
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -51656,7 +51656,7 @@ dictionary tests succeeded 20000 strings
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"testdict" end time: Jul 31 05:18 CST
+"testdict" end time: Jul 31 06:34 CST
 "testdict" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -51664,7 +51664,7 @@ Test Passed.
 4/6 Test: testrecurse
 Command: "/root/code/01/01/libxml2-rust/testrecurse"
 Directory: /root/code/01/01/libxml2-rust
-"testrecurse" start time: Jul 31 05:18 CST
+"testrecurse" start time: Jul 31 06:34 CST
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -51677,10 +51677,10 @@ xmlXPathInit after
 ## Parsing non-recursive huge case
 Total 9 tests, no errors
 <end of output>
-Test time =  13.00 sec
+Test time =  12.98 sec
 ----------------------------------------------------------
 Test Passed.
-"testrecurse" end time: Jul 31 05:18 CST
+"testrecurse" end time: Jul 31 06:34 CST
 "testrecurse" time elapsed: 00:00:12
 ----------------------------------------------------------
 
@@ -51688,7 +51688,7 @@ Test Passed.
 5/6 Test: runtest
 Command: "/root/code/01/01/libxml2-rust/runtest" "--out" "/root/code/01/01/libxml2-rust"
 Directory: /root/code/01/01/libxml2-rust
-"runtest" start time: Jul 31 05:18 CST
+"runtest" start time: Jul 31 06:34 CST
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -79733,10 +79733,10 @@ xmlXPathFreeObject_rust next
 ## Catalog and Threads regression tests
 Total 3237 tests, no errors
 <end of output>
-Test time =   5.16 sec
+Test time =   5.15 sec
 ----------------------------------------------------------
 Test Passed.
-"runtest" end time: Jul 31 05:18 CST
+"runtest" end time: Jul 31 06:34 CST
 "runtest" time elapsed: 00:00:05
 ----------------------------------------------------------
 
@@ -79744,7 +79744,7 @@ Test Passed.
 6/6 Test: testThreads
 Command: "/root/code/01/01/libxml2-rust/testThreads"
 Directory: /root/code/01/01/libxml2-rust
-"testThreads" start time: Jul 31 05:18 CST
+"testThreads" start time: Jul 31 06:34 CST
 Output:
 ----------------------------------------------------------
 fn htmlInitAutoClose begin
@@ -79753,8 +79753,8 @@ fn htmlInitAutoClose ok
 Test time =   0.79 sec
 ----------------------------------------------------------
 Test Passed.
-"testThreads" end time: Jul 31 05:18 CST
+"testThreads" end time: Jul 31 06:34 CST
 "testThreads" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Jul 31 05:18 CST
+End testing: Jul 31 06:34 CST

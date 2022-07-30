@@ -1,2219 +1,16 @@
-fn xmlParserEntityCheck(
-    mut ctxt: xmlParserCtxtPtr,
-    mut size: size_t,
-    mut ent: xmlEntityPtr,
-    mut replacement: size_t,
-) -> libc::c_int {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut safe_ent = unsafe { &mut *ent };
-
-    let mut consumed: size_t = 0 as libc::c_int as size_t;
-    let mut i: libc::c_int = 0;
-    if ctxt.is_null() || (safe_ctxt).options & XML_PARSE_HUGE as libc::c_int != 0 {
-        return 0 as libc::c_int;
-    }
-    if (safe_ctxt).lastError.code == XML_ERR_ENTITY_LOOP as libc::c_int {
-        return 1 as libc::c_int;
-    }
-    /*
-     * This may look absurd but is needed to detect
-     * entities problems
-     */
-    if !ent.is_null()
-        && (safe_ent).etype as libc::c_uint
-            != XML_INTERNAL_PREDEFINED_ENTITY as libc::c_int as libc::c_uint
-        && !(safe_ent).content.is_null()
-        && (safe_ent).checked == 0 as libc::c_int
-        && (safe_ctxt).errNo != XML_ERR_ENTITY_LOOP as libc::c_int
-    {
-        let mut oldnbent: libc::c_ulong = (safe_ctxt).nbentities;
-        let mut diff: libc::c_ulong = 0;
-        let mut rep: *mut xmlChar = 0 as *mut xmlChar;
-        (safe_ent).checked = 1 as libc::c_int;
-        (safe_ctxt).depth += 1;
-        unsafe {
-            rep = xmlStringDecodeEntities(
-                ctxt,
-                (safe_ent).content,
-                1 as libc::c_int,
-                0 as libc::c_int as xmlChar,
-                0 as libc::c_int as xmlChar,
-                0 as libc::c_int as xmlChar,
-            );
-        }
-        (safe_ctxt).depth -= 1;
-        if rep.is_null() || (safe_ctxt).errNo == XML_ERR_ENTITY_LOOP as libc::c_int {
-            unsafe {
-                *(safe_ent).content.offset(0 as libc::c_int as isize) = 0 as libc::c_int as xmlChar;
-            }
-        }
-        diff = (safe_ctxt)
-            .nbentities
-            .wrapping_sub(oldnbent)
-            .wrapping_add(1 as libc::c_int as libc::c_ulong);
-        if diff > (2147483647 as libc::c_int / 2 as libc::c_int) as libc::c_ulong {
-            diff = (2147483647 as libc::c_int / 2 as libc::c_int) as libc::c_ulong
-        }
-        (safe_ent).checked = diff.wrapping_mul(2 as libc::c_int as libc::c_ulong) as libc::c_int;
-        if !rep.is_null() {
-            if !xmlStrchr_safe(rep, '<' as i32 as xmlChar).is_null() {
-                (safe_ent).checked |= 1 as libc::c_int
-            }
-            xmlFree_safe(rep as *mut libc::c_void);
-            rep = 0 as *mut xmlChar
-        }
-    }
-    /*
-     * Prevent entity exponential check, not just replacement while
-     * parsing the DTD
-     * The check is potentially costly so do that only once in a thousand
-     */
-    if (safe_ctxt).instate as libc::c_int == XML_PARSER_DTD as libc::c_int
-        && (safe_ctxt).nbentities > 10000 as libc::c_int as libc::c_ulong
-        && (safe_ctxt)
-            .nbentities
-            .wrapping_rem(1024 as libc::c_int as libc::c_ulong)
-            == 0 as libc::c_int as libc::c_ulong
-    {
-        i = 0 as libc::c_int;
-        while i < (safe_ctxt).inputNr {
-            consumed = unsafe {
-                (consumed as libc::c_ulong).wrapping_add(
-                    (**(safe_ctxt).inputTab.offset(i as isize))
-                        .consumed
-                        .wrapping_add(
-                            (**(safe_ctxt).inputTab.offset(i as isize))
-                                .cur
-                                .offset_from((**(safe_ctxt).inputTab.offset(i as isize)).base)
-                                as libc::c_long as libc::c_ulong,
-                        ),
-                ) as size_t as size_t
-            };
-            i += 1
-        }
-        if (safe_ctxt).nbentities > consumed.wrapping_mul(10 as libc::c_int as libc::c_ulong) {
-            unsafe {
-                xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, 0 as *const libc::c_char);
-            }
-            (safe_ctxt).instate = XML_PARSER_EOF;
-            return 1 as libc::c_int;
-        }
-        consumed = 0 as libc::c_int as size_t
-    }
-    if replacement != 0 as libc::c_int as libc::c_ulong {
-        if replacement < 10000000 as libc::c_int as libc::c_ulong {
-            return 0 as libc::c_int;
-        }
-        /*
-         * If the volume of entity copy reaches 10 times the
-         * amount of parsed data and over the large text threshold
-         * then that's very likely to be an abuse.
-         */
-        if !(safe_ctxt).input.is_null() {
-            consumed = unsafe {
-                (*(safe_ctxt).input).consumed.wrapping_add(
-                    (*(safe_ctxt).input)
-                        .cur
-                        .offset_from((*(safe_ctxt).input).base) as libc::c_long
-                        as libc::c_ulong,
-                )
-            }
-        }
-        consumed =
-            (consumed as libc::c_ulong).wrapping_add((safe_ctxt).sizeentities) as size_t as size_t;
-        if replacement < (10 as libc::c_int as libc::c_ulong).wrapping_mul(consumed) {
-            return 0 as libc::c_int;
-        }
-    } else if size != 0 as libc::c_int as libc::c_ulong {
-        /*
-         * Do the check based on the replacement size of the entity
-         */
-        if size < 1000 as libc::c_int as libc::c_ulong {
-            return 0 as libc::c_int;
-        }
-        /*
-         * A limit on the amount of text data reasonably used
-         */
-        if !(safe_ctxt).input.is_null() {
-            consumed = unsafe {
-                (*(safe_ctxt).input).consumed.wrapping_add(
-                    (*(safe_ctxt).input)
-                        .cur
-                        .offset_from((*(safe_ctxt).input).base) as libc::c_long
-                        as libc::c_ulong,
-                )
-            }
-        }
-        consumed =
-            (consumed as libc::c_ulong).wrapping_add((safe_ctxt).sizeentities) as size_t as size_t;
-        if size < (10 as libc::c_int as libc::c_ulong).wrapping_mul(consumed)
-            && (safe_ctxt)
-                .nbentities
-                .wrapping_mul(3 as libc::c_int as libc::c_ulong)
-                < (10 as libc::c_int as libc::c_ulong).wrapping_mul(consumed)
-        {
-            return 0 as libc::c_int;
-        }
-    } else if !ent.is_null() {
-        /*
-         * use the number of parsed entities in the replacement
-         */
-        size = ((safe_ent).checked / 2 as libc::c_int) as size_t;
-        /*
-         * The amount of data parsed counting entities size only once
-         */
-        if !(safe_ctxt).input.is_null() {
-            consumed = unsafe {
-                (*(safe_ctxt).input).consumed.wrapping_add(
-                    (*(safe_ctxt).input)
-                        .cur
-                        .offset_from((*(safe_ctxt).input).base) as libc::c_long
-                        as libc::c_ulong,
-                )
-            }
-        }
-        consumed =
-            (consumed as libc::c_ulong).wrapping_add((safe_ctxt).sizeentities) as size_t as size_t;
-        /*
-         * Check the density of entities for the amount of data
-         * knowing an entity reference will take at least 3 bytes
-         */
-        if size.wrapping_mul(3 as libc::c_int as libc::c_ulong)
-            < consumed.wrapping_mul(10 as libc::c_int as libc::c_ulong)
-        {
-            return 0 as libc::c_int;
-        }
-    } else if (safe_ctxt).lastError.code != XML_ERR_UNDECLARED_ENTITY as libc::c_int
-        && (safe_ctxt).lastError.code != XML_WAR_UNDECLARED_ENTITY as libc::c_int
-        || (safe_ctxt).nbentities <= 10000 as libc::c_int as libc::c_ulong
-    {
-        return 0 as libc::c_int;
-    }
-    unsafe {
-        xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, 0 as *const libc::c_char);
-    }
-    return 1 as libc::c_int;
-}
-
-pub static mut xmlParserMaxDepth: libc::c_uint = 256 as libc::c_int as libc::c_uint;
-/*
- * List of XML prefixed PI allowed by W3C specs
- */
-static mut xmlW3CPIs: [*const libc::c_char; 3] = [
-    b"xml-stylesheet\x00" as *const u8 as *const libc::c_char,
-    b"xml-model\x00" as *const u8 as *const libc::c_char,
-    0 as *const libc::c_char,
-];
-/* ***********************************************************************
- *									*
- *		Some factorized error routines				*
- *									*
- ************************************************************************/
 /* *
- * xmlErrAttributeDup:
- * @ctxt:  an XML parser context
- * @prefix:  the attribute prefix
- * @localname:  the attribute localname
- *
- * Handle a redefinition of attribute error
- */
-fn xmlErrAttributeDup(
-    mut ctxt: xmlParserCtxtPtr,
-    mut prefix: *const xmlChar,
-    mut localname: *const xmlChar,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = XML_ERR_ATTRIBUTE_REDEFINED as libc::c_int
-    }
-    if prefix.is_null() {
-        unsafe {
-            __xmlRaiseError(
-                None,
-                None,
-                0 as *mut libc::c_void,
-                ctxt as *mut libc::c_void,
-                0 as *mut libc::c_void,
-                XML_FROM_PARSER as libc::c_int,
-                XML_ERR_ATTRIBUTE_REDEFINED as libc::c_int,
-                XML_ERR_FATAL,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                localname as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                0 as libc::c_int,
-                b"Attribute %s redefined\n\x00" as *const u8 as *const libc::c_char,
-                localname,
-            );
-        }
-    } else {
-        unsafe {
-            __xmlRaiseError(
-                None,
-                None,
-                0 as *mut libc::c_void,
-                ctxt as *mut libc::c_void,
-                0 as *mut libc::c_void,
-                XML_FROM_PARSER as libc::c_int,
-                XML_ERR_ATTRIBUTE_REDEFINED as libc::c_int,
-                XML_ERR_FATAL,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                prefix as *const libc::c_char,
-                localname as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                0 as libc::c_int,
-                b"Attribute %s:%s redefined\n\x00" as *const u8 as *const libc::c_char,
-                prefix,
-                localname,
-            );
-        }
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).wellFormed = 0 as libc::c_int;
-        if (safe_ctxt).recovery == 0 as libc::c_int {
-            (safe_ctxt).disableSAX = 1 as libc::c_int
-        }
-    };
-}
-/* *
- * xmlFatalErr:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @extra:  extra information string
- *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
- */
-fn xmlFatalErr(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut info: *const libc::c_char,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-
-    let mut errmsg: *const libc::c_char = 0 as *const libc::c_char;
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    match error as libc::c_uint {
-        6 => errmsg = b"CharRef: invalid hexadecimal value\x00" as *const u8 as *const libc::c_char,
-        7 => errmsg = b"CharRef: invalid decimal value\x00" as *const u8 as *const libc::c_char,
-        8 => errmsg = b"CharRef: invalid value\x00" as *const u8 as *const libc::c_char,
-        1 => errmsg = b"internal error\x00" as *const u8 as *const libc::c_char,
-        18 => errmsg = b"PEReference at end of document\x00" as *const u8 as *const libc::c_char,
-        19 => errmsg = b"PEReference in prolog\x00" as *const u8 as *const libc::c_char,
-        20 => errmsg = b"PEReference in epilog\x00" as *const u8 as *const libc::c_char,
-        24 => errmsg = b"PEReference: no name\x00" as *const u8 as *const libc::c_char,
-        25 => errmsg = b"PEReference: expecting \';\'\x00" as *const u8 as *const libc::c_char,
-        89 => errmsg = b"Detected an entity reference loop\x00" as *const u8 as *const libc::c_char,
-        36 => errmsg = b"EntityValue: \" or \' expected\x00" as *const u8 as *const libc::c_char,
-        88 => {
-            errmsg =
-                b"PEReferences forbidden in internal subset\x00" as *const u8 as *const libc::c_char
-        }
-        37 => errmsg = b"EntityValue: \" or \' expected\x00" as *const u8 as *const libc::c_char,
-        39 => errmsg = b"AttValue: \" or \' expected\x00" as *const u8 as *const libc::c_char,
-        38 => {
-            errmsg = b"Unescaped \'<\' not allowed in attributes values\x00" as *const u8
-                as *const libc::c_char
-        }
-        43 => errmsg = b"SystemLiteral \" or \' expected\x00" as *const u8 as *const libc::c_char,
-        44 => {
-            errmsg = b"Unfinished System or Public ID \" or \' expected\x00" as *const u8
-                as *const libc::c_char
-        }
-        62 => {
-            errmsg =
-                b"Sequence \']]>\' not allowed in content\x00" as *const u8 as *const libc::c_char
-        }
-        70 => {
-            errmsg = b"SYSTEM or PUBLIC, the URI is missing\x00" as *const u8 as *const libc::c_char
-        }
-        71 => {
-            errmsg =
-                b"PUBLIC, the Public Identifier is missing\x00" as *const u8 as *const libc::c_char
-        }
-        80 => {
-            errmsg = b"Comment must not contain \'--\' (double-hyphen)\x00" as *const u8
-                as *const libc::c_char
-        }
-        46 => errmsg = b"xmlParsePI : no target name\x00" as *const u8 as *const libc::c_char,
-        64 => errmsg = b"Invalid PI name\x00" as *const u8 as *const libc::c_char,
-        48 => errmsg = b"NOTATION: Name expected here\x00" as *const u8 as *const libc::c_char,
-        49 => {
-            errmsg = b"\'>\' required to close NOTATION declaration\x00" as *const u8
-                as *const libc::c_char
-        }
-        84 => errmsg = b"Entity value required\x00" as *const u8 as *const libc::c_char,
-        92 => errmsg = b"Fragment not allowed\x00" as *const u8 as *const libc::c_char,
-        50 => {
-            errmsg = b"\'(\' required to start ATTLIST enumeration\x00" as *const u8
-                as *const libc::c_char
-        }
-        67 => {
-            errmsg =
-                b"NmToken expected in ATTLIST enumeration\x00" as *const u8 as *const libc::c_char
-        }
-        51 => {
-            errmsg = b"\')\' required to finish ATTLIST enumeration\x00" as *const u8
-                as *const libc::c_char
-        }
-        52 => {
-            errmsg = b"MixedContentDecl : \'|\' or \')*\' expected\x00" as *const u8
-                as *const libc::c_char
-        }
-        69 => {
-            errmsg =
-                b"MixedContentDecl : \'#PCDATA\' expected\x00" as *const u8 as *const libc::c_char
-        }
-        54 => {
-            errmsg = b"ContentDecl : Name or \'(\' expected\x00" as *const u8 as *const libc::c_char
-        }
-        55 => {
-            errmsg = b"ContentDecl : \',\' \'|\' or \')\' expected\x00" as *const u8
-                as *const libc::c_char
-        }
-        21 => {
-            errmsg = b"PEReference: forbidden within markup decl in internal subset\x00"
-                as *const u8 as *const libc::c_char
-        }
-        73 => errmsg = b"expected \'>\'\x00" as *const u8 as *const libc::c_char,
-        83 => {
-            errmsg =
-                b"XML conditional section \'[\' expected\x00" as *const u8 as *const libc::c_char
-        }
-        60 => {
-            errmsg = b"Content error in the external subset\x00" as *const u8 as *const libc::c_char
-        }
-        95 => {
-            errmsg = b"conditional section INCLUDE or IGNORE keyword expected\x00" as *const u8
-                as *const libc::c_char
-        }
-        59 => {
-            errmsg = b"XML conditional section not closed\x00" as *const u8 as *const libc::c_char
-        }
-        56 => {
-            errmsg = b"Text declaration \'<?xml\' required\x00" as *const u8 as *const libc::c_char
-        }
-        57 => {
-            errmsg =
-                b"parsing XML declaration: \'?>\' expected\x00" as *const u8 as *const libc::c_char
-        }
-        82 => {
-            errmsg = b"external parsed entities cannot be standalone\x00" as *const u8
-                as *const libc::c_char
-        }
-        23 => errmsg = b"EntityRef: expecting \';\'\x00" as *const u8 as *const libc::c_char,
-        61 => errmsg = b"DOCTYPE improperly terminated\x00" as *const u8 as *const libc::c_char,
-        74 => errmsg = b"EndTag: \'</\' not found\x00" as *const u8 as *const libc::c_char,
-        75 => errmsg = b"expected \'=\'\x00" as *const u8 as *const libc::c_char,
-        34 => {
-            errmsg = b"String not closed expecting \" or \'\x00" as *const u8 as *const libc::c_char
-        }
-        33 => {
-            errmsg =
-                b"String not started expecting \' or \"\x00" as *const u8 as *const libc::c_char
-        }
-        79 => errmsg = b"Invalid XML encoding name\x00" as *const u8 as *const libc::c_char,
-        78 => {
-            errmsg =
-                b"standalone accepts only \'yes\' or \'no\'\x00" as *const u8 as *const libc::c_char
-        }
-        4 => errmsg = b"Document is empty\x00" as *const u8 as *const libc::c_char,
-        5 => {
-            errmsg =
-                b"Extra content at the end of the document\x00" as *const u8 as *const libc::c_char
-        }
-        85 => errmsg = b"chunk is not well balanced\x00" as *const u8 as *const libc::c_char,
-        86 => {
-            errmsg = b"extra content at the end of well balanced chunk\x00" as *const u8
-                as *const libc::c_char
-        }
-        96 => {
-            errmsg =
-                b"Malformed declaration expecting version\x00" as *const u8 as *const libc::c_char
-        }
-        110 => {
-            errmsg =
-                b"Name too long use XML_PARSE_HUGE option\x00" as *const u8 as *const libc::c_char
-        }
-        _ => errmsg = b"Unregistered error message\x00" as *const u8 as *const libc::c_char,
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = error as libc::c_int
-    }
-    if info.is_null() {
-        unsafe {
-            __xmlRaiseError(
-                None,
-                None,
-                0 as *mut libc::c_void,
-                ctxt as *mut libc::c_void,
-                0 as *mut libc::c_void,
-                XML_FROM_PARSER as libc::c_int,
-                error as libc::c_int,
-                XML_ERR_FATAL,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                info,
-                0 as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                0 as libc::c_int,
-                b"%s\n\x00" as *const u8 as *const libc::c_char,
-                errmsg,
-            );
-        }
-    } else {
-        unsafe {
-            __xmlRaiseError(
-                None,
-                None,
-                0 as *mut libc::c_void,
-                ctxt as *mut libc::c_void,
-                0 as *mut libc::c_void,
-                XML_FROM_PARSER as libc::c_int,
-                error as libc::c_int,
-                XML_ERR_FATAL,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                info,
-                0 as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                0 as libc::c_int,
-                b"%s: %s\n\x00" as *const u8 as *const libc::c_char,
-                errmsg,
-                info,
-            );
-        }
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).wellFormed = 0 as libc::c_int;
-        if (safe_ctxt).recovery == 0 as libc::c_int {
-            (safe_ctxt).disableSAX = 1 as libc::c_int
-        }
-    };
-}
-/* *
- * xmlFatalErrMsg:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
- */
-fn xmlFatalErrMsg(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = error as libc::c_int
-    }
-    unsafe {
-        __xmlRaiseError(
-            None,
-            None,
-            0 as *mut libc::c_void,
-            ctxt as *mut libc::c_void,
-            0 as *mut libc::c_void,
-            XML_FROM_PARSER as libc::c_int,
-            error as libc::c_int,
-            XML_ERR_FATAL,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            0 as *const libc::c_char,
-            0 as *const libc::c_char,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            0 as libc::c_int,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            msg,
-        );
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).wellFormed = 0 as libc::c_int;
-        if (safe_ctxt).recovery == 0 as libc::c_int {
-            (safe_ctxt).disableSAX = 1 as libc::c_int
-        }
-    };
-}
-/* *
- * xmlWarningMsg:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  extra data
- * @str2:  extra data
- *
- * Handle a warning.
- */
-fn xmlWarningMsg(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut str1: *const xmlChar,
-    mut str2: *const xmlChar,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut schannel: xmlStructuredErrorFunc = None;
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null()
-        && !(safe_ctxt).sax.is_null()
-        && unsafe { (*(safe_ctxt).sax).initialized == 0xdeedbeaf as libc::c_uint }
-    {
-        schannel = unsafe { (*(safe_ctxt).sax).serror };
-    }
-    if !ctxt.is_null() {
-        unsafe {
-            __xmlRaiseError(
-                schannel,
-                if !(safe_ctxt).sax.is_null() {
-                    (*(safe_ctxt).sax).warning
-                } else {
-                    None
-                },
-                (safe_ctxt).userData,
-                ctxt as *mut libc::c_void,
-                0 as *mut libc::c_void,
-                XML_FROM_PARSER as libc::c_int,
-                error as libc::c_int,
-                XML_ERR_WARNING,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                str1 as *const libc::c_char,
-                str2 as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                0 as libc::c_int,
-                msg,
-                str1 as *const libc::c_char,
-                str2 as *const libc::c_char,
-            );
-        }
-    } else {
-        unsafe {
-            __xmlRaiseError(
-                schannel,
-                None,
-                0 as *mut libc::c_void,
-                ctxt as *mut libc::c_void,
-                0 as *mut libc::c_void,
-                XML_FROM_PARSER as libc::c_int,
-                error as libc::c_int,
-                XML_ERR_WARNING,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                str1 as *const libc::c_char,
-                str2 as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                0 as libc::c_int,
-                msg,
-                str1 as *const libc::c_char,
-                str2 as *const libc::c_char,
-            );
-        }
-    };
-}
-/* *
- * xmlValidityError:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  extra data
- *
- * Handle a validity error.
- */
-fn xmlValidityError(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut str1: *const xmlChar,
-    mut str2: *const xmlChar,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut schannel: xmlStructuredErrorFunc = None;
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = error as libc::c_int;
-        if !(safe_ctxt).sax.is_null()
-            && unsafe { (*(safe_ctxt).sax).initialized == 0xdeedbeaf as libc::c_uint }
-        {
-            schannel = unsafe { (*(safe_ctxt).sax).serror };
-        }
-    }
-    if !ctxt.is_null() {
-        unsafe {
-            __xmlRaiseError(
-                schannel,
-                (safe_ctxt).vctxt.error,
-                (safe_ctxt).vctxt.userData,
-                ctxt as *mut libc::c_void,
-                0 as *mut libc::c_void,
-                XML_FROM_DTD as libc::c_int,
-                error as libc::c_int,
-                XML_ERR_ERROR,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                str1 as *const libc::c_char,
-                str2 as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                0 as libc::c_int,
-                msg,
-                str1 as *const libc::c_char,
-                str2 as *const libc::c_char,
-            );
-        }
-        (safe_ctxt).valid = 0 as libc::c_int
-    } else {
-        unsafe {
-            __xmlRaiseError(
-                schannel,
-                None,
-                0 as *mut libc::c_void,
-                ctxt as *mut libc::c_void,
-                0 as *mut libc::c_void,
-                XML_FROM_DTD as libc::c_int,
-                error as libc::c_int,
-                XML_ERR_ERROR,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                str1 as *const libc::c_char,
-                str2 as *const libc::c_char,
-                0 as *const libc::c_char,
-                0 as libc::c_int,
-                0 as libc::c_int,
-                msg,
-                str1 as *const libc::c_char,
-                str2 as *const libc::c_char,
-            );
-        }
-    };
-}
-/* *
- * xmlFatalErrMsgInt:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @val:  an integer value
- *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
- */
-fn xmlFatalErrMsgInt(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut val: libc::c_int,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = error as libc::c_int
-    }
-    unsafe {
-        __xmlRaiseError(
-            None,
-            None,
-            0 as *mut libc::c_void,
-            ctxt as *mut libc::c_void,
-            0 as *mut libc::c_void,
-            XML_FROM_PARSER as libc::c_int,
-            error as libc::c_int,
-            XML_ERR_FATAL,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            0 as *const libc::c_char,
-            0 as *const libc::c_char,
-            0 as *const libc::c_char,
-            val,
-            0 as libc::c_int,
-            msg,
-            val,
-        );
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).wellFormed = 0 as libc::c_int;
-        if (safe_ctxt).recovery == 0 as libc::c_int {
-            (safe_ctxt).disableSAX = 1 as libc::c_int
-        }
-    };
-}
-/* *
- * xmlFatalErrMsgStrIntStr:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  an string info
- * @val:  an integer value
- * @str2:  an string info
- *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
- */
-fn xmlFatalErrMsgStrIntStr(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut str1: *const xmlChar,
-    mut val: libc::c_int,
-    mut str2: *const xmlChar,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = error as libc::c_int
-    }
-    unsafe {
-        __xmlRaiseError(
-            None,
-            None,
-            0 as *mut libc::c_void,
-            ctxt as *mut libc::c_void,
-            0 as *mut libc::c_void,
-            XML_FROM_PARSER as libc::c_int,
-            error as libc::c_int,
-            XML_ERR_FATAL,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            str1 as *const libc::c_char,
-            str2 as *const libc::c_char,
-            0 as *const libc::c_char,
-            val,
-            0 as libc::c_int,
-            msg,
-            str1,
-            val,
-            str2,
-        );
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).wellFormed = 0 as libc::c_int;
-        if (safe_ctxt).recovery == 0 as libc::c_int {
-            (safe_ctxt).disableSAX = 1 as libc::c_int
-        }
-    };
-}
-/* *
- * xmlFatalErrMsgStr:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @val:  a string value
- *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
- */
-fn xmlFatalErrMsgStr(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut val: *const xmlChar,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = error as libc::c_int
-    }
-    unsafe {
-        __xmlRaiseError(
-            None,
-            None,
-            0 as *mut libc::c_void,
-            ctxt as *mut libc::c_void,
-            0 as *mut libc::c_void,
-            XML_FROM_PARSER as libc::c_int,
-            error as libc::c_int,
-            XML_ERR_FATAL,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            val as *const libc::c_char,
-            0 as *const libc::c_char,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            0 as libc::c_int,
-            msg,
-            val,
-        );
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).wellFormed = 0 as libc::c_int;
-        if (safe_ctxt).recovery == 0 as libc::c_int {
-            (safe_ctxt).disableSAX = 1 as libc::c_int
-        }
-    };
-}
-/* *
- * xmlErrMsgStr:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @val:  a string value
- *
- * Handle a non fatal parser error
- */
-fn xmlErrMsgStr(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut val: *const xmlChar,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = error as libc::c_int
-    }
-    unsafe {
-        __xmlRaiseError(
-            None,
-            None,
-            0 as *mut libc::c_void,
-            ctxt as *mut libc::c_void,
-            0 as *mut libc::c_void,
-            XML_FROM_PARSER as libc::c_int,
-            error as libc::c_int,
-            XML_ERR_ERROR,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            val as *const libc::c_char,
-            0 as *const libc::c_char,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            0 as libc::c_int,
-            msg,
-            val,
-        );
-    }
-}
-/* *
- * xmlNsErr:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the message
- * @info1:  extra information string
- * @info2:  extra information string
- *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
- */
-fn xmlNsErr(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut info1: *const xmlChar,
-    mut info2: *const xmlChar,
-    mut info3: *const xmlChar,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).errNo = error as libc::c_int
-    }
-    unsafe {
-        __xmlRaiseError(
-            None,
-            None,
-            0 as *mut libc::c_void,
-            ctxt as *mut libc::c_void,
-            0 as *mut libc::c_void,
-            XML_FROM_NAMESPACE as libc::c_int,
-            error as libc::c_int,
-            XML_ERR_ERROR,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            info1 as *const libc::c_char,
-            info2 as *const libc::c_char,
-            info3 as *const libc::c_char,
-            0 as libc::c_int,
-            0 as libc::c_int,
-            msg,
-            info1,
-            info2,
-            info3,
-        );
-    }
-    if !ctxt.is_null() {
-        (safe_ctxt).nsWellFormed = 0 as libc::c_int
-    };
-}
-/* *
- * xmlNsWarn
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the message
- * @info1:  extra information string
- * @info2:  extra information string
- *
- * Handle a namespace warning error
- */
-fn xmlNsWarn(
-    mut ctxt: xmlParserCtxtPtr,
-    mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut info1: *const xmlChar,
-    mut info2: *const xmlChar,
-    mut info3: *const xmlChar,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && (safe_ctxt).disableSAX != 0 as libc::c_int
-        && (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
-    {
-        return;
-    }
-    unsafe {
-        __xmlRaiseError(
-            None,
-            None,
-            0 as *mut libc::c_void,
-            ctxt as *mut libc::c_void,
-            0 as *mut libc::c_void,
-            XML_FROM_NAMESPACE as libc::c_int,
-            error as libc::c_int,
-            XML_ERR_WARNING,
-            0 as *const libc::c_char,
-            0 as libc::c_int,
-            info1 as *const libc::c_char,
-            info2 as *const libc::c_char,
-            info3 as *const libc::c_char,
-            0 as libc::c_int,
-            0 as libc::c_int,
-            msg,
-            info1,
-            info2,
-            info3,
-        );
-    }
-}
-/* ***********************************************************************
- *									*
- *		Library wide options					*
- *									*
- ************************************************************************/
-/* *
- * xmlHasFeature:
- * @feature: the feature to be examined
- *
- * Examines if the library has been compiled with a given feature.
- *
- * Returns a non-zero value if the feature exist, otherwise zero.
- * Returns zero (0) if the feature does not exist or an unknown
- * unknown feature is requested, non-zero otherwise.
- */
-
-pub fn xmlHasFeature(mut feature: xmlFeature) -> libc::c_int {
-    match feature as libc::c_uint {
-        1 => return 1 as libc::c_int,
-        2 => return 1 as libc::c_int,
-        3 => return 1 as libc::c_int,
-        4 => return 1 as libc::c_int,
-        5 => return 1 as libc::c_int,
-        6 => return 1 as libc::c_int,
-        7 => return 1 as libc::c_int,
-        8 => return 1 as libc::c_int,
-        9 => return 1 as libc::c_int,
-        10 => return 1 as libc::c_int,
-        11 => return 1 as libc::c_int,
-        12 => return 1 as libc::c_int,
-        13 => return 1 as libc::c_int,
-        14 => return 1 as libc::c_int,
-        15 => return 1 as libc::c_int,
-        16 => return 1 as libc::c_int,
-        17 => return 1 as libc::c_int,
-        18 => return 1 as libc::c_int,
-        19 => return 1 as libc::c_int,
-        20 => return 1 as libc::c_int,
-        21 => return 1 as libc::c_int,
-        22 => return 1 as libc::c_int,
-        23 => return 1 as libc::c_int,
-        24 => return 0 as libc::c_int,
-        25 => return 1 as libc::c_int,
-        26 => return 1 as libc::c_int,
-        27 => return 1 as libc::c_int,
-        28 => return 1 as libc::c_int,
-        29 => return 0 as libc::c_int,
-        30 => return 0 as libc::c_int,
-        31 => return 1 as libc::c_int,
-        33 => return 1 as libc::c_int,
-        32 => return 0 as libc::c_int,
-        _ => {}
-    }
-    return 0 as libc::c_int;
-}
-/* ***********************************************************************
- *									*
- *		SAX2 defaulted attributes handling			*
- *									*
- ************************************************************************/
-/* *
- * xmlDetectSAX2:
- * @ctxt:  an XML parser context
- *
- * Do the SAX2 detection and specific initialization
- */
-fn xmlDetectSAX2(mut ctxt: xmlParserCtxtPtr) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut sax: xmlSAXHandlerPtr = 0 as *mut xmlSAXHandler;
-    if ctxt.is_null() {
-        return;
-    }
-    sax = (safe_ctxt).sax;
-    let mut safe_sax = unsafe { &mut *sax };
-    match () {
-        #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
-        _ => {
-            if !sax.is_null()
-                && (safe_sax).initialized == 0xdeedbeaf as libc::c_uint
-                && ((safe_sax).startElementNs.is_some()
-                    || (safe_sax).endElementNs.is_some()
-                    || (safe_sax).startElement.is_none() && (safe_sax).endElement.is_none())
-            {
-                (safe_ctxt).sax2 = 1 as libc::c_int;
-            }
-        }
-        #[cfg(not(HAVE_parser_LIBXML_SAX1_ENABLED))]
-        _ => {
-            (safe_ctxt).sax2 = 1 as libc::c_int;
-        }
-    };
-
-    /* LIBXML_SAX1_ENABLED */
-    (safe_ctxt).str_xml = xmlDictLookup_safe(
-        (safe_ctxt).dict,
-        b"xml\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
-        3 as libc::c_int,
-    );
-    (safe_ctxt).str_xmlns = xmlDictLookup_safe(
-        (safe_ctxt).dict,
-        b"xmlns\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
-        5 as libc::c_int,
-    );
-    (safe_ctxt).str_xml_ns = xmlDictLookup_safe(
-        (safe_ctxt).dict,
-        b"http://www.w3.org/XML/1998/namespace\x00" as *const u8 as *const libc::c_char
-            as *const xmlChar,
-        36 as libc::c_int,
-    );
-    if (safe_ctxt).str_xml.is_null()
-        || (safe_ctxt).str_xmlns.is_null()
-        || (safe_ctxt).str_xml_ns.is_null()
-    {
-        unsafe {
-            unsafe { xmlErrMemory(ctxt, 0 as *const libc::c_char) };
-        }
-    };
-}
-/* array of localname/prefix/values/external */
-/* *
- * xmlAttrNormalizeSpace:
- * @src: the source string
- * @dst: the target string
- *
- * Normalize the space in non CDATA attribute values:
- * If the attribute type is not CDATA, then the XML processor MUST further
- * process the normalized attribute value by discarding any leading and
- * trailing space (#x20) characters, and by replacing sequences of space
- * (#x20) characters by a single space (#x20) character.
- * Note that the size of dst need to be at least src, and if one doesn't need
- * to preserve dst (and it doesn't come from a dictionary or read-only) then
- * passing src as dst is just fine.
- *
- * Returns a pointer to the normalized value (dst) or NULL if no conversion
- *         is needed.
- */
-fn xmlAttrNormalizeSpace(mut src: *const xmlChar, mut dst: *mut xmlChar) -> *mut xmlChar {
-    if src.is_null() || dst.is_null() {
-        return 0 as *mut xmlChar;
-    }
-    while unsafe { *src } as libc::c_int == 0x20 as libc::c_int {
-        src = unsafe { src.offset(1) }
-    }
-    while unsafe { *src } as libc::c_int != 0 as libc::c_int {
-        if unsafe { *src } as libc::c_int == 0x20 as libc::c_int {
-            while unsafe { *src } as libc::c_int == 0x20 as libc::c_int {
-                src = unsafe { src.offset(1) }
-            }
-            if unsafe { *src } as libc::c_int != 0 as libc::c_int {
-                let fresh0 = dst;
-                dst = unsafe { dst.offset(1) };
-                unsafe { *fresh0 = 0x20 as libc::c_int as xmlChar };
-            }
-        } else {
-            let fresh1 = src;
-            src = unsafe { src.offset(1) };
-            let fresh2 = dst;
-            dst = unsafe { dst.offset(1) };
-            unsafe { *fresh2 = *fresh1 };
-        }
-    }
-    unsafe { *dst = 0 as libc::c_int as xmlChar };
-    if dst == src as *mut xmlChar {
-        return 0 as *mut xmlChar;
-    }
-    return dst;
-}
-/* *
- * xmlAttrNormalizeSpace2:
- * @src: the source string
- *
- * Normalize the space in non CDATA attribute values, a slightly more complex
- * front end to avoid allocation problems when running on attribute values
- * coming from the input.
- *
- * Returns a pointer to the normalized value (dst) or NULL if no conversion
- *         is needed.
- */
-fn xmlAttrNormalizeSpace2(
-    mut ctxt: xmlParserCtxtPtr,
-    mut src: *mut xmlChar,
-    mut len: *mut libc::c_int,
-) -> *const xmlChar {
-    let mut i: libc::c_int = 0;
-    let mut remove_head: libc::c_int = 0 as libc::c_int;
-    let mut need_realloc: libc::c_int = 0 as libc::c_int;
-    let mut cur: *const xmlChar = 0 as *const xmlChar;
-    if ctxt.is_null() || src.is_null() || len.is_null() {
-        return 0 as *const xmlChar;
-    }
-    i = unsafe { *len };
-    if i <= 0 as libc::c_int {
-        return 0 as *const xmlChar;
-    }
-    cur = src;
-    while unsafe { *cur } as libc::c_int == 0x20 as libc::c_int {
-        cur = unsafe { cur.offset(1) };
-        remove_head += 1
-    }
-    while unsafe { *cur } as libc::c_int != 0 as libc::c_int {
-        if unsafe { *cur } as libc::c_int == 0x20 as libc::c_int {
-            cur = unsafe { cur.offset(1) };
-            if !(unsafe { *cur } as libc::c_int == 0x20 as libc::c_int
-                || unsafe { *cur } as libc::c_int == 0 as libc::c_int)
-            {
-                continue;
-            }
-            need_realloc = 1 as libc::c_int;
-            break;
-        } else {
-            cur = unsafe { cur.offset(1) }
-        }
-    }
-    if need_realloc != 0 {
-        let mut ret: *mut xmlChar = 0 as *mut xmlChar;
-        ret = unsafe {
-            xmlStrndup_safe(
-                src.offset(remove_head as isize),
-                i - remove_head + 1 as libc::c_int,
-            )
-        };
-        if ret.is_null() {
-            unsafe { xmlErrMemory(ctxt, 0 as *const libc::c_char) };
-            return 0 as *const xmlChar;
-        }
-        xmlAttrNormalizeSpace(ret, ret);
-        unsafe { *len = strlen_safe(ret as *const libc::c_char) as libc::c_int };
-        return ret;
-    } else {
-        if remove_head != 0 {
-            unsafe { *len -= remove_head };
-            unsafe {
-                memmove_safe(
-                    src as *mut libc::c_void,
-                    src.offset(remove_head as isize) as *const libc::c_void,
-                    (1 as libc::c_int + *len) as libc::c_ulong,
-                );
-            }
-            return src;
-        }
-    }
-    return 0 as *const xmlChar;
-}
-/* *
- * xmlAddDefAttrs:
- * @ctxt:  an XML parser context
- * @fullname:  the element fullname
- * @fullattr:  the attribute fullname
- * @value:  the attribute value
- *
- * Add a defaulted attribute for an element
- */
-fn xmlAddDefAttrs(
-    mut ctxt: xmlParserCtxtPtr,
-    mut fullname: *const xmlChar,
-    mut fullattr: *const xmlChar,
-    mut value: *const xmlChar,
-) {
-    let mut current_block: u64;
-    let mut defaults: xmlDefAttrsPtr = 0 as *mut xmlDefAttrs;
-    let mut len: libc::c_int = 0;
-    let mut name: *const xmlChar = 0 as *const xmlChar;
-    let mut prefix: *const xmlChar = 0 as *const xmlChar;
-    /*
-     * Allows to detect attribute redefinitions
-     */
-    if unsafe { !(*ctxt).attsSpecial.is_null() } {
-        if !xmlHashLookup2_safe(unsafe { (*ctxt).attsSpecial }, fullname, fullattr).is_null() {
-            return;
-        }
-    }
-    if unsafe { (*ctxt).attsDefault.is_null() } {
-        unsafe { (*ctxt).attsDefault = xmlHashCreateDict_safe(10 as libc::c_int, (*ctxt).dict) };
-        if unsafe { (*ctxt).attsDefault.is_null() } {
-            current_block = 2968889880470072775;
-        } else {
-            current_block = 13183875560443969876;
-        }
-    } else {
-        current_block = 13183875560443969876;
-    }
-    //@todo 削减unsafe范围
-    unsafe {
-        match current_block {
-            13183875560443969876 => {
-                /*
-                 * split the element name into prefix:localname , the string found
-                 * are within the DTD and then not associated to namespace names.
-                 */
-                name = xmlSplitQName3(fullname, &mut len);
-                if name.is_null() {
-                    name = xmlDictLookup_safe((*ctxt).dict, fullname, -(1 as libc::c_int));
-                    prefix = 0 as *const xmlChar
-                } else {
-                    name = xmlDictLookup_safe((*ctxt).dict, name, -(1 as libc::c_int));
-                    prefix = xmlDictLookup_safe((*ctxt).dict, fullname, len)
-                }
-                /*
-                 * make sure there is some storage
-                 */
-                defaults = xmlHashLookup2_safe((*ctxt).attsDefault, name, prefix) as xmlDefAttrsPtr;
-                if defaults.is_null() {
-                    defaults = xmlMalloc_safe(
-                        (::std::mem::size_of::<xmlDefAttrs>() as libc::c_ulong).wrapping_add(
-                            ((4 as libc::c_int * 5 as libc::c_int) as libc::c_ulong).wrapping_mul(
-                                ::std::mem::size_of::<*const xmlChar>() as libc::c_ulong,
-                            ),
-                        ),
-                    ) as xmlDefAttrsPtr;
-                    if defaults.is_null() {
-                        current_block = 2968889880470072775;
-                    } else {
-                        (*defaults).nbAttrs = 0 as libc::c_int;
-                        (*defaults).maxAttrs = 4 as libc::c_int;
-                        if xmlHashUpdateEntry2(
-                            (*ctxt).attsDefault,
-                            name,
-                            prefix,
-                            defaults as *mut libc::c_void,
-                            None,
-                        ) < 0 as libc::c_int
-                        {
-                            xmlFree_safe(defaults as *mut libc::c_void);
-                            current_block = 2968889880470072775;
-                        } else {
-                            current_block = 8704759739624374314;
-                        }
-                    }
-                } else if (*defaults).nbAttrs >= (*defaults).maxAttrs {
-                    let mut temp: xmlDefAttrsPtr = 0 as *mut xmlDefAttrs;
-                    temp = xmlRealloc_safe(
-                        defaults as *mut libc::c_void,
-                        (::std::mem::size_of::<xmlDefAttrs>() as libc::c_ulong).wrapping_add(
-                            ((2 as libc::c_int * (*defaults).maxAttrs * 5 as libc::c_int)
-                                as libc::c_ulong)
-                                .wrapping_mul(
-                                    ::std::mem::size_of::<*const xmlChar>() as libc::c_ulong
-                                ),
-                        ),
-                    ) as xmlDefAttrsPtr;
-                    if temp.is_null() {
-                        current_block = 2968889880470072775;
-                    } else {
-                        defaults = temp;
-                        (*defaults).maxAttrs *= 2 as libc::c_int;
-                        if xmlHashUpdateEntry2(
-                            (*ctxt).attsDefault,
-                            name,
-                            prefix,
-                            defaults as *mut libc::c_void,
-                            None,
-                        ) < 0 as libc::c_int
-                        {
-                            xmlFree_safe(defaults as *mut libc::c_void);
-                            current_block = 2968889880470072775;
-                        } else {
-                            current_block = 8704759739624374314;
-                        }
-                    }
-                } else {
-                    current_block = 8704759739624374314;
-                }
-                match current_block {
-                    2968889880470072775 => {}
-                    _ => {
-                        /*
-                         * Split the element name into prefix:localname , the string found
-                         * are within the DTD and hen not associated to namespace names.
-                         */
-                        name = xmlSplitQName3(fullattr, &mut len);
-                        if name.is_null() {
-                            name = xmlDictLookup_safe((*ctxt).dict, fullattr, -(1 as libc::c_int));
-                            prefix = 0 as *const xmlChar
-                        } else {
-                            name = xmlDictLookup_safe((*ctxt).dict, name, -(1 as libc::c_int));
-                            prefix = xmlDictLookup_safe((*ctxt).dict, fullattr, len)
-                        }
-                        let ref mut fresh3 = *(*defaults)
-                            .values
-                            .as_mut_ptr()
-                            .offset((5 as libc::c_int * (*defaults).nbAttrs) as isize);
-                        *fresh3 = name;
-                        let ref mut fresh4 = *(*defaults).values.as_mut_ptr().offset(
-                            (5 as libc::c_int * (*defaults).nbAttrs + 1 as libc::c_int) as isize,
-                        );
-                        *fresh4 = prefix;
-                        /* intern the string and precompute the end */
-                        len = xmlStrlen_safe(value);
-                        value = xmlDictLookup_safe((*ctxt).dict, value, len);
-                        let ref mut fresh5 = *(*defaults).values.as_mut_ptr().offset(
-                            (5 as libc::c_int * (*defaults).nbAttrs + 2 as libc::c_int) as isize,
-                        );
-                        *fresh5 = value;
-                        let ref mut fresh6 = *(*defaults).values.as_mut_ptr().offset(
-                            (5 as libc::c_int * (*defaults).nbAttrs + 3 as libc::c_int) as isize,
-                        );
-                        *fresh6 = value.offset(len as isize);
-                        if (*ctxt).external != 0 {
-                            let ref mut fresh7 = *(*defaults).values.as_mut_ptr().offset(
-                                (5 as libc::c_int * (*defaults).nbAttrs + 4 as libc::c_int)
-                                    as isize,
-                            );
-                            *fresh7 =
-                                b"external\x00" as *const u8 as *const libc::c_char as *mut xmlChar
-                        } else {
-                            let ref mut fresh8 = *(*defaults).values.as_mut_ptr().offset(
-                                (5 as libc::c_int * (*defaults).nbAttrs + 4 as libc::c_int)
-                                    as isize,
-                            );
-                            *fresh8 = 0 as *const xmlChar
-                        }
-                        (*defaults).nbAttrs += 1;
-                        return;
-                    }
-                }
-            }
-            _ => {}
-        }
-    }
-    unsafe { xmlErrMemory(ctxt, 0 as *const libc::c_char) };
-}
-/* *
- * xmlAddSpecialAttr:
- * @ctxt:  an XML parser context
- * @fullname:  the element fullname
- * @fullattr:  the attribute fullname
- * @type:  the attribute type
- *
- * Register this attribute type
- */
-fn xmlAddSpecialAttr(
-    mut ctxt: xmlParserCtxtPtr,
-    mut fullname: *const xmlChar,
-    mut fullattr: *const xmlChar,
-    mut type_0: libc::c_int,
-) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).attsSpecial.is_null() {
-        (safe_ctxt).attsSpecial = xmlHashCreateDict_safe(10 as libc::c_int, (safe_ctxt).dict);
-        if (safe_ctxt).attsSpecial.is_null() {
-            unsafe {
-                xmlErrMemory(ctxt, 0 as *const libc::c_char);
-            }
-            return;
-        }
-    }
-    if !xmlHashLookup2_safe(unsafe { (*ctxt).attsSpecial }, fullname, fullattr).is_null() {
-        return;
-    }
-    xmlHashAddEntry2_safe(
-        unsafe { (*ctxt).attsSpecial },
-        fullname,
-        fullattr,
-        type_0 as ptrdiff_t as *mut libc::c_void,
-    );
-}
-/* *
- * xmlCleanSpecialAttrCallback:
- *
- * Removes CDATA attributes from the special attribute table
- */
-extern "C" fn xmlCleanSpecialAttrCallback(
-    mut payload: *mut libc::c_void,
-    mut data: *mut libc::c_void,
-    mut fullname: *const xmlChar,
-    mut fullattr: *const xmlChar,
-    mut unused: *const xmlChar,
-) {
-    let mut ctxt: xmlParserCtxtPtr = data as xmlParserCtxtPtr;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if payload as ptrdiff_t == XML_ATTRIBUTE_CDATA as libc::c_int as libc::c_long {
-        xmlHashRemoveEntry2_safe((safe_ctxt).attsSpecial, fullname, fullattr, None);
-    };
-}
-/* *
- * xmlCleanSpecialAttr:
- * @ctxt:  an XML parser context
- *
- * Trim the list of attributes defined to remove all those of type
- * CDATA as they are not special. This call should be done when finishing
- * to parse the DTD and before starting to parse the document root.
- */
-fn xmlCleanSpecialAttr(mut ctxt: xmlParserCtxtPtr) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).attsSpecial.is_null() {
-        return;
-    }
-    xmlHashScanFull_safe(
-        (safe_ctxt).attsSpecial,
-        Some(
-            xmlCleanSpecialAttrCallback
-                as extern "C" fn(
-                    _: *mut libc::c_void,
-                    _: *mut libc::c_void,
-                    _: *const xmlChar,
-                    _: *const xmlChar,
-                    _: *const xmlChar,
-                ) -> (),
-        ),
-        ctxt as *mut libc::c_void,
-    );
-    if xmlHashSize_safe((safe_ctxt).attsSpecial) == 0 as libc::c_int {
-        xmlHashFree_safe((safe_ctxt).attsSpecial, None);
-        (safe_ctxt).attsSpecial = 0 as xmlHashTablePtr;
-    };
-}
-/* *
- * xmlCheckLanguageID:
- * @lang:  pointer to the string value
- *
- * Checks that the value conforms to the LanguageID production:
- *
- * NOTE: this is somewhat deprecated, those productions were removed from
- *       the XML Second edition.
- *
- * [33] LanguageID ::= Langcode ('-' Subcode)*
- * [34] Langcode ::= ISO639Code |  IanaCode |  UserCode
- * [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z])
- * [36] IanaCode ::= ('i' | 'I') '-' ([a-z] | [A-Z])+
- * [37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+
- * [38] Subcode ::= ([a-z] | [A-Z])+
- *
- * The current REC reference the successors of RFC 1766, currently 5646
- *
- * http://www.rfc-editor.org/rfc/rfc5646.txt
- * langtag       = language
- *                 ["-" script]
- *                 ["-" region]
- *                 *("-" variant)
- *                 *("-" extension)
- *                 ["-" privateuse]
- * language      = 2*3ALPHA            ; shortest ISO 639 code
- *                 ["-" extlang]       ; sometimes followed by
- *                                     ; extended language subtags
- *               / 4ALPHA              ; or reserved for future use
- *               / 5*8ALPHA            ; or registered language subtag
- *
- * extlang       = 3ALPHA              ; selected ISO 639 codes
- *                 *2("-" 3ALPHA)      ; permanently reserved
- *
- * script        = 4ALPHA              ; ISO 15924 code
- *
- * region        = 2ALPHA              ; ISO 3166-1 code
- *               / 3DIGIT              ; UN M.49 code
- *
- * variant       = 5*8alphanum         ; registered variants
- *               / (DIGIT 3alphanum)
- *
- * extension     = singleton 1*("-" (2*8alphanum))
- *
- *                                     ; Single alphanumerics
- *                                     ; "x" reserved for private use
- * singleton     = DIGIT               ; 0 - 9
- *               / %x41-57             ; A - W
- *               / %x59-5A             ; Y - Z
- *               / %x61-77             ; a - w
- *               / %x79-7A             ; y - z
- *
- * it sounds right to still allow Irregular i-xxx IANA and user codes too
- * The parser below doesn't try to cope with extension or privateuse
- * that could be added but that's not interoperable anyway
- *
- * Returns 1 if correct 0 otherwise
- **/
-
-pub fn xmlCheckLanguageID(mut lang: *const xmlChar) -> libc::c_int {
-    let mut current_block: u64;
-    let mut cur: *const xmlChar = lang;
-    let mut nxt: *const xmlChar = 0 as *const xmlChar;
-    if cur.is_null() {
-        return 0 as libc::c_int;
-    }
-    if unsafe {
-        *cur.offset(0 as libc::c_int as isize) as libc::c_int == 'i' as i32
-            && *cur.offset(1 as libc::c_int as isize) as libc::c_int == '-' as i32
-            || *cur.offset(0 as libc::c_int as isize) as libc::c_int == 'I' as i32
-                && *cur.offset(1 as libc::c_int as isize) as libc::c_int == '-' as i32
-            || *cur.offset(0 as libc::c_int as isize) as libc::c_int == 'x' as i32
-                && *cur.offset(1 as libc::c_int as isize) as libc::c_int == '-' as i32
-            || *cur.offset(0 as libc::c_int as isize) as libc::c_int == 'X' as i32
-                && *cur.offset(1 as libc::c_int as isize) as libc::c_int == '-' as i32
-    } {
-        /*
-         * Still allow IANA code and user code which were coming
-         * from the previous version of the XML-1.0 specification
-         * it's deprecated but we should not fail
-         */
-        cur = unsafe { cur.offset(2 as libc::c_int as isize) };
-        while unsafe {
-            *cur.offset(0 as libc::c_int as isize) as libc::c_int >= 'A' as i32
-                && *cur.offset(0 as libc::c_int as isize) as libc::c_int <= 'Z' as i32
-                || *cur.offset(0 as libc::c_int as isize) as libc::c_int >= 'a' as i32
-                    && *cur.offset(0 as libc::c_int as isize) as libc::c_int <= 'z' as i32
-        } {
-            cur = unsafe { cur.offset(1) };
-        }
-        return unsafe {
-            (*cur.offset(0 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int)
-                as libc::c_int
-        };
-    }
-    nxt = cur;
-    while unsafe {
-        *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'A' as i32
-            && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'Z' as i32
-            || *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'a' as i32
-                && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'z' as i32
-    } {
-        nxt = unsafe { nxt.offset(1) };
-    }
-    if unsafe { nxt.offset_from(cur) as libc::c_long >= 4 as libc::c_int as libc::c_long } {
-        /*
-         * Reserved
-         */
-        if unsafe {
-            nxt.offset_from(cur) as libc::c_long > 8 as libc::c_int as libc::c_long
-                || *nxt.offset(0 as libc::c_int as isize) as libc::c_int != 0 as libc::c_int
-        } {
-            return 0 as libc::c_int;
-        }
-        return 1 as libc::c_int;
-    }
-    if unsafe { (nxt.offset_from(cur) as libc::c_long) < 2 as libc::c_int as libc::c_long } {
-        return 0 as libc::c_int;
-    }
-    /* we got an ISO 639 code */
-    if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int } {
-        return 1 as libc::c_int;
-    }
-    if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int != '-' as i32 } {
-        return 0 as libc::c_int;
-    }
-    nxt = unsafe { nxt.offset(1) };
-    cur = nxt;
-    /* now we can have extlang or script or region or variant */
-    if unsafe {
-        *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= '0' as i32
-            && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= '9' as i32
-    } {
-        current_block = 13163178004963364532;
-    } else {
-        while unsafe {
-            *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'A' as i32
-                && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'Z' as i32
-                || *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'a' as i32
-                    && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'z' as i32
-        } {
-            nxt = unsafe { nxt.offset(1) };
-        }
-        if unsafe { nxt.offset_from(cur) as libc::c_long == 4 as libc::c_int as libc::c_long } {
-            current_block = 14921549473310263854;
-        } else if unsafe {
-            nxt.offset_from(cur) as libc::c_long == 2 as libc::c_int as libc::c_long
-        } {
-            current_block = 15970415187932728765;
-        } else if unsafe {
-            nxt.offset_from(cur) as libc::c_long >= 5 as libc::c_int as libc::c_long
-                && nxt.offset_from(cur) as libc::c_long <= 8 as libc::c_int as libc::c_long
-        } {
-            current_block = 6166658882887268861;
-        } else {
-            if unsafe { nxt.offset_from(cur) as libc::c_long != 3 as libc::c_int as libc::c_long } {
-                return 0 as libc::c_int;
-            }
-            /* we parsed an extlang */
-            if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int }
-            {
-                return 1 as libc::c_int;
-            }
-            if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int != '-' as i32 } {
-                return 0 as libc::c_int;
-            }
-            nxt = unsafe { nxt.offset(1) };
-            cur = nxt;
-            /* now we can have script or region or variant */
-            if unsafe {
-                *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= '0' as i32
-                    && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= '9' as i32
-            } {
-                current_block = 13163178004963364532;
-            } else {
-                while unsafe {
-                    *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'A' as i32
-                        && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'Z' as i32
-                        || *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'a' as i32
-                            && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'z' as i32
-                } {
-                    nxt = unsafe { nxt.offset(1) };
-                }
-                if unsafe {
-                    nxt.offset_from(cur) as libc::c_long == 2 as libc::c_int as libc::c_long
-                } {
-                    current_block = 15970415187932728765;
-                } else if unsafe {
-                    nxt.offset_from(cur) as libc::c_long >= 5 as libc::c_int as libc::c_long
-                        && nxt.offset_from(cur) as libc::c_long <= 8 as libc::c_int as libc::c_long
-                } {
-                    current_block = 6166658882887268861;
-                } else {
-                    if unsafe {
-                        nxt.offset_from(cur) as libc::c_long != 4 as libc::c_int as libc::c_long
-                    } {
-                        return 0 as libc::c_int;
-                    }
-                    current_block = 14921549473310263854;
-                }
-            }
-        }
-        match current_block {
-            15970415187932728765 => {}
-            6166658882887268861 => {}
-            13163178004963364532 => {}
-            _ =>
-            /* we parsed a script */
-            {
-                if unsafe {
-                    *nxt.offset(0 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int
-                } {
-                    return 1 as libc::c_int;
-                }
-                if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int != '-' as i32 } {
-                    return 0 as libc::c_int;
-                }
-                nxt = unsafe { nxt.offset(1) };
-                cur = nxt;
-                /* now we can have region or variant */
-                if unsafe {
-                    *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= '0' as i32
-                        && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= '9' as i32
-                } {
-                    current_block = 13163178004963364532;
-                } else {
-                    while unsafe {
-                        *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'A' as i32
-                            && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'Z' as i32
-                            || *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'a' as i32
-                                && *nxt.offset(0 as libc::c_int as isize) as libc::c_int
-                                    <= 'z' as i32
-                    } {
-                        nxt = unsafe { nxt.offset(1) };
-                    }
-                    if unsafe {
-                        nxt.offset_from(cur) as libc::c_long >= 5 as libc::c_int as libc::c_long
-                            && nxt.offset_from(cur) as libc::c_long
-                                <= 8 as libc::c_int as libc::c_long
-                    } {
-                        current_block = 6166658882887268861;
-                    } else {
-                        if unsafe {
-                            nxt.offset_from(cur) as libc::c_long != 2 as libc::c_int as libc::c_long
-                        } {
-                            return 0 as libc::c_int;
-                        }
-                        current_block = 15970415187932728765;
-                    }
-                }
-            }
-        }
-    }
-    match current_block {
-        13163178004963364532 => {
-            if unsafe {
-                *nxt.offset(1 as libc::c_int as isize) as libc::c_int >= '0' as i32
-                    && *nxt.offset(1 as libc::c_int as isize) as libc::c_int <= '9' as i32
-                    && (*nxt.offset(2 as libc::c_int as isize) as libc::c_int >= '0' as i32
-                        && *nxt.offset(2 as libc::c_int as isize) as libc::c_int <= '9' as i32)
-            } {
-                nxt = unsafe { nxt.offset(3 as libc::c_int as isize) }
-            } else {
-                return 0 as libc::c_int;
-            }
-            current_block = 15970415187932728765;
-        }
-        _ => {}
-    }
-    match current_block {
-        15970415187932728765 =>
-        /* we parsed a region */
-        {
-            if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int }
-            {
-                return 1 as libc::c_int;
-            }
-            if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int != '-' as i32 } {
-                return 0 as libc::c_int;
-            }
-            nxt = unsafe { nxt.offset(1) };
-            cur = nxt;
-            /* now we can just have a variant */
-            while unsafe {
-                *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'A' as i32
-                    && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'Z' as i32
-                    || *nxt.offset(0 as libc::c_int as isize) as libc::c_int >= 'a' as i32
-                        && *nxt.offset(0 as libc::c_int as isize) as libc::c_int <= 'z' as i32
-            } {
-                nxt = unsafe { nxt.offset(1) };
-            }
-            if unsafe {
-                (nxt.offset_from(cur) as libc::c_long) < 5 as libc::c_int as libc::c_long
-                    || nxt.offset_from(cur) as libc::c_long > 8 as libc::c_int as libc::c_long
-            } {
-                return 0 as libc::c_int;
-            }
-        }
-        _ => {}
-    }
-    /* we parsed a variant */
-    if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int } {
-        return 1 as libc::c_int;
-    }
-    if unsafe { *nxt.offset(0 as libc::c_int as isize) as libc::c_int != '-' as i32 } {
-        return 0 as libc::c_int;
-    }
-    /* extensions and private use subtags not checked */
-    return 1 as libc::c_int;
-}
-/* *
- * nsPush:
- * @ctxt:  an XML parser context
- * @prefix:  the namespace prefix or NULL
- * @URL:  the namespace name
- *
- * Pushes a new parser namespace on top of the ns stack
- *
- * Returns -1 in case of error, -2 if the namespace should be discarded
- *	   and the index in the stack otherwise.
- */
-#[cfg(HAVE_parser_SAX2)]
-fn nsPush(
-    mut ctxt: xmlParserCtxtPtr,
-    mut prefix: *const xmlChar,
-    mut URL: *const xmlChar,
-) -> libc::c_int {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).options & XML_PARSE_NSCLEAN as libc::c_int != 0 {
-        let mut i: libc::c_int = 0;
-        i = (safe_ctxt).nsNr - 2 as libc::c_int;
-        while i >= 0 as libc::c_int {
-            if unsafe { *(*ctxt).nsTab.offset(i as isize) == prefix } {
-                /* in scope */
-                if unsafe { *(*ctxt).nsTab.offset((i + 1 as libc::c_int) as isize) == URL } {
-                    return -(2 as libc::c_int);
-                }
-                break;
-            } else {
-                i -= 2 as libc::c_int
-            }
-        }
-    }
-    if (safe_ctxt).nsMax == 0 as libc::c_int || (safe_ctxt).nsTab.is_null() {
-        (safe_ctxt).nsMax = 10 as libc::c_int;
-        (safe_ctxt).nsNr = 0 as libc::c_int;
-        (safe_ctxt).nsTab = xmlMalloc_safe(
-            ((safe_ctxt).nsMax as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<*mut xmlChar>() as libc::c_ulong),
-        ) as *mut *const xmlChar;
-        if (safe_ctxt).nsTab.is_null() {
-            unsafe {
-                xmlErrMemory(ctxt, 0 as *const libc::c_char);
-            }
-            (safe_ctxt).nsMax = 0 as libc::c_int;
-            return -(1 as libc::c_int);
-        }
-    } else if (safe_ctxt).nsNr >= (safe_ctxt).nsMax {
-        let mut tmp: *mut *const xmlChar = 0 as *mut *const xmlChar;
-        (safe_ctxt).nsMax *= 2 as libc::c_int;
-        tmp = xmlRealloc_safe(
-            (safe_ctxt).nsTab as *mut libc::c_char as *mut libc::c_void,
-            ((safe_ctxt).nsMax as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as libc::c_ulong),
-        ) as *mut *const xmlChar;
-        if tmp.is_null() {
-            unsafe {
-                xmlErrMemory(ctxt, 0 as *const libc::c_char);
-            }
-            (safe_ctxt).nsMax /= 2 as libc::c_int;
-            return -(1 as libc::c_int);
-        }
-        (safe_ctxt).nsTab = tmp
-    }
-    let fresh9 = (safe_ctxt).nsNr;
-    (safe_ctxt).nsNr = (safe_ctxt).nsNr + 1;
-    unsafe {
-        let ref mut fresh10 = *(*ctxt).nsTab.offset(fresh9 as isize);
-        *fresh10 = prefix;
-        let fresh11 = (safe_ctxt).nsNr;
-        (safe_ctxt).nsNr = (safe_ctxt).nsNr + 1;
-        let ref mut fresh12 = *(*ctxt).nsTab.offset(fresh11 as isize);
-        *fresh12 = URL;
-    };
-    return (safe_ctxt).nsNr;
-}
-/* *
- * nsPop:
- * @ctxt: an XML parser context
- * @nr:  the number to pop
- *
- * Pops the top @nr parser prefix/namespace from the ns stack
- *
- * Returns the number of namespaces removed
- */
-#[cfg(HAVE_parser_SAX2)]
-fn nsPop(mut ctxt: xmlParserCtxtPtr, mut nr: libc::c_int) -> libc::c_int {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut i: libc::c_int = 0; /* allow for 10 attrs by default */
-    if (safe_ctxt).nsTab.is_null() {
-        return 0 as libc::c_int;
-    }
-    if (safe_ctxt).nsNr < nr {
-        unsafe {
-            (*__xmlGenericError()).expect("non-null function pointer")(
-                *__xmlGenericErrorContext(),
-                b"Pbm popping %d NS\n\x00" as *const u8 as *const libc::c_char,
-                nr,
-            );
-        }
-        nr = (safe_ctxt).nsNr
-    }
-    if (safe_ctxt).nsNr <= 0 as libc::c_int {
-        return 0 as libc::c_int;
-    }
-    i = 0 as libc::c_int;
-    while i < nr {
-        (safe_ctxt).nsNr -= 1;
-        unsafe {
-            let ref mut fresh13 = *(*ctxt).nsTab.offset((safe_ctxt).nsNr as isize);
-            *fresh13 = 0 as *const xmlChar;
-        }
-        i += 1
-    }
-    return nr;
-}
-fn xmlCtxtGrowAttrs(mut ctxt: xmlParserCtxtPtr, mut nr: libc::c_int) -> libc::c_int {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut current_block: u64;
-    let mut atts: *mut *const xmlChar = 0 as *mut *const xmlChar;
-    let mut attallocs: *mut libc::c_int = 0 as *mut libc::c_int;
-    let mut maxatts: libc::c_int = 0;
-    if (safe_ctxt).atts.is_null() {
-        maxatts = 55 as libc::c_int;
-        atts = xmlMalloc_safe(
-            (maxatts as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<*mut xmlChar>() as libc::c_ulong),
-        ) as *mut *const xmlChar;
-        if atts.is_null() {
-            current_block = 1220566974040888119;
-        } else {
-            (safe_ctxt).atts = atts;
-            attallocs = xmlMalloc_safe(
-                ((maxatts / 5 as libc::c_int) as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
-            ) as *mut libc::c_int;
-            if attallocs.is_null() {
-                current_block = 1220566974040888119;
-            } else {
-                (safe_ctxt).attallocs = attallocs;
-                (safe_ctxt).maxatts = maxatts;
-                current_block = 13242334135786603907;
-            }
-        }
-    } else if nr + 5 as libc::c_int > (safe_ctxt).maxatts {
-        maxatts = (nr + 5 as libc::c_int) * 2 as libc::c_int;
-        atts = xmlRealloc_safe(
-            (safe_ctxt).atts as *mut libc::c_void,
-            (maxatts as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as libc::c_ulong),
-        ) as *mut *const xmlChar;
-        if atts.is_null() {
-            current_block = 1220566974040888119;
-        } else {
-            (safe_ctxt).atts = atts;
-            attallocs = xmlRealloc_safe(
-                (safe_ctxt).attallocs as *mut libc::c_void,
-                ((maxatts / 5 as libc::c_int) as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
-            ) as *mut libc::c_int;
-            if attallocs.is_null() {
-                current_block = 1220566974040888119;
-            } else {
-                (safe_ctxt).attallocs = attallocs;
-                (safe_ctxt).maxatts = maxatts;
-                current_block = 13242334135786603907;
-            }
-        }
-    } else {
-        current_block = 13242334135786603907;
-    }
-    match current_block {
-        13242334135786603907 => return (safe_ctxt).maxatts,
-        _ => {
-            unsafe {
-                xmlErrMemory(ctxt, 0 as *const libc::c_char);
-            }
-            return -(1 as libc::c_int);
-        }
-    };
-}
-/* *
- * inputPush:
- * @ctxt:  an XML parser context
- * @value:  the parser input
- *
- * Pushes a new parser input on top of the input stack
- *
- * Returns -1 in case of error, the index in the stack otherwise
- */
-
-pub fn inputPush_parser(mut ctxt: xmlParserCtxtPtr, mut value: xmlParserInputPtr) -> libc::c_int {
-    if ctxt.is_null() || value.is_null() {
-        return -(1 as libc::c_int);
-    }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).inputNr >= (safe_ctxt).inputMax {
-        (safe_ctxt).inputMax *= 2 as libc::c_int;
-        (safe_ctxt).inputTab = xmlRealloc_safe(
-            (safe_ctxt).inputTab as *mut libc::c_void,
-            ((safe_ctxt).inputMax as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<xmlParserInputPtr>() as libc::c_ulong),
-        ) as *mut xmlParserInputPtr;
-        if (safe_ctxt).inputTab.is_null() {
-            unsafe {
-                xmlErrMemory(ctxt, 0 as *const libc::c_char);
-            }
-            xmlFreeInputStream_safe(value);
-            (safe_ctxt).inputMax /= 2 as libc::c_int;
-            value = 0 as xmlParserInputPtr;
-            return -(1 as libc::c_int);
-        }
-    }
-    unsafe {
-        let ref mut fresh14 = *(*ctxt).inputTab.offset((safe_ctxt).inputNr as isize);
-        *fresh14 = value;
-    }
-    (safe_ctxt).input = value;
-    let fresh15 = (safe_ctxt).inputNr;
-    (safe_ctxt).inputNr = (safe_ctxt).inputNr + 1;
-    return fresh15;
-}
-/* *
- * inputPop:
- * @ctxt: an XML parser context
- *
- * Pops the top parser input from the input stack
- *
- * Returns the input just removed
- */
-
-pub fn inputPop_parser(mut ctxt: xmlParserCtxtPtr) -> xmlParserInputPtr {
-    let mut ret: xmlParserInputPtr = 0 as *mut xmlParserInput;
-    if ctxt.is_null() {
-        return 0 as xmlParserInputPtr;
-    }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).inputNr <= 0 as libc::c_int {
-        return 0 as xmlParserInputPtr;
-    }
-    (safe_ctxt).inputNr -= 1;
-    if (safe_ctxt).inputNr > 0 as libc::c_int {
-        (safe_ctxt).input = unsafe {
-            *(*ctxt)
-                .inputTab
-                .offset(((safe_ctxt).inputNr - 1 as libc::c_int) as isize)
-        };
-    } else {
-        (safe_ctxt).input = 0 as xmlParserInputPtr
-    }
-    unsafe {
-        ret = *(*ctxt).inputTab.offset((safe_ctxt).inputNr as isize);
-        let ref mut fresh16 = *(*ctxt).inputTab.offset((safe_ctxt).inputNr as isize);
-        *fresh16 = 0 as xmlParserInputPtr;
-    }
-    return ret;
-}
-/* *
- * nodePush:
- * @ctxt:  an XML parser context
- * @value:  the element node
- *
- * Pushes a new element node on top of the node stack
- *
- * Returns -1 in case of error, the index in the stack otherwise
- */
-
-pub fn nodePush(mut ctxt: xmlParserCtxtPtr, mut value: xmlNodePtr) -> libc::c_int {
-    if ctxt.is_null() {
-        return 0 as libc::c_int;
-    }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).nodeNr >= (safe_ctxt).nodeMax {
-        let mut tmp: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
-        tmp = xmlRealloc_safe(
-            (safe_ctxt).nodeTab as *mut libc::c_void,
-            (((safe_ctxt).nodeMax * 2 as libc::c_int) as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<xmlNodePtr>() as libc::c_ulong),
-        ) as *mut xmlNodePtr;
-        if tmp.is_null() {
-            unsafe {
-                xmlErrMemory(ctxt, 0 as *const libc::c_char);
-            }
-            return -(1 as libc::c_int);
-        }
-        (safe_ctxt).nodeTab = tmp;
-        (safe_ctxt).nodeMax *= 2 as libc::c_int
-    }
-    if (safe_ctxt).nodeNr as libc::c_uint > unsafe { xmlParserMaxDepth }
-        && (safe_ctxt).options & XML_PARSE_HUGE as libc::c_int == 0 as libc::c_int
-    {
-        unsafe {
-            xmlFatalErrMsgInt(
-                ctxt,
-                XML_ERR_INTERNAL_ERROR,
-                b"Excessive depth in document: %d use XML_PARSE_HUGE option\n\x00" as *const u8
-                    as *const libc::c_char,
-                xmlParserMaxDepth as libc::c_int,
-            );
-            xmlHaltParser(ctxt);
-        }
-        return -(1 as libc::c_int);
-    }
-    unsafe {
-        let ref mut fresh17 = *(*ctxt).nodeTab.offset((safe_ctxt).nodeNr as isize);
-        *fresh17 = value;
-    }
-    (safe_ctxt).node = value;
-    let fresh18 = (safe_ctxt).nodeNr;
-    (safe_ctxt).nodeNr = (safe_ctxt).nodeNr + 1;
-    return fresh18;
-}
-/* *
- * nodePop:
- * @ctxt: an XML parser context
- *
- * Pops the top element node from the node stack
- *
- * Returns the node just removed
- */
-
-pub fn nodePop_parser(mut ctxt: xmlParserCtxtPtr) -> xmlNodePtr {
-    let mut ret: xmlNodePtr = 0 as *mut xmlNode;
-    if ctxt.is_null() {
-        return 0 as xmlNodePtr;
-    }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).nodeNr <= 0 as libc::c_int {
-        return 0 as xmlNodePtr;
-    }
-    (safe_ctxt).nodeNr -= 1;
-    if (safe_ctxt).nodeNr > 0 as libc::c_int {
-        (safe_ctxt).node = unsafe {
-            *(*ctxt)
-                .nodeTab
-                .offset(((safe_ctxt).nodeNr - 1 as libc::c_int) as isize)
-        };
-    } else {
-        (safe_ctxt).node = 0 as xmlNodePtr
-    }
-    unsafe {
-        ret = *(*ctxt).nodeTab.offset((safe_ctxt).nodeNr as isize);
-        let ref mut fresh19 = *(*ctxt).nodeTab.offset((safe_ctxt).nodeNr as isize);
-        *fresh19 = 0 as xmlNodePtr;
-    }
-    return ret;
-}
-/* *
- * nameNsPush:
- * @ctxt:  an XML parser context
- * @value:  the element name
- * @prefix:  the element prefix
- * @URI:  the element namespace name
- * @line:  the current line number for error messages
- * @nsNr:  the number of namespaces pushed on the namespace table
- *
- * Pushes a new element name/prefix/URL on top of the name stack
- *
- * Returns -1 in case of error, the index in the stack otherwise
- */
+* nameNsPush:
+* @ctxt:  an XML parser context
+* @value:  the element name
+* @prefix:  the element prefix
+* @URI:  the element namespace name
+* @line:  the current line number for error messages
+* @nsNr:  the number of namespaces pushed on the namespace table
+*
+* Pushes a new element name/prefix/URL on top of the name stack
+*
+* Returns -1 in case of error, the index in the stack otherwise
+*/
 fn nameNsPush(
     mut ctxt: xmlParserCtxtPtr,
     mut value: *const xmlChar,
@@ -2290,13 +87,13 @@ fn nameNsPush(
     };
 }
 /* *
- * nameNsPop:
- * @ctxt: an XML parser context
- *
- * Pops the top element/prefix/URI name from the name stack
- *
- * Returns the name just removed
- */
+* nameNsPop:
+* @ctxt: an XML parser context
+*
+* Pops the top element/prefix/URI name from the name stack
+*
+* Returns the name just removed
+*/
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
 fn nameNsPop(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut ret: *const xmlChar = 0 as *const xmlChar;
@@ -2323,14 +120,14 @@ fn nameNsPop(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 }
 /* LIBXML_PUSH_ENABLED */
 /* *
- * namePush:
- * @ctxt:  an XML parser context
- * @value:  the element name
- *
- * Pushes a new element name on top of the name stack
- *
- * Returns -1 in case of error, the index in the stack otherwise
- */
+* namePush:
+* @ctxt:  an XML parser context
+* @value:  the element name
+*
+* Pushes a new element name on top of the name stack
+*
+* Returns -1 in case of error, the index in the stack otherwise
+*/
 
 pub fn namePush(mut ctxt: xmlParserCtxtPtr, mut value: *const xmlChar) -> libc::c_int {
     if ctxt.is_null() {
@@ -2364,13 +161,13 @@ pub fn namePush(mut ctxt: xmlParserCtxtPtr, mut value: *const xmlChar) -> libc::
     return fresh24;
 }
 /* *
- * namePop:
- * @ctxt: an XML parser context
- *
- * Pops the top element name from the name stack
- *
- * Returns the name just removed
- */
+* namePop:
+* @ctxt: an XML parser context
+*
+* Pops the top element name from the name stack
+*
+* Returns the name just removed
+*/
 
 pub fn namePop(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut ret: *const xmlChar = 0 as *const xmlChar;
@@ -2507,27 +304,27 @@ fn xmlGROW(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlSkipBlankChars:
- * @ctxt:  the XML parser context
- *
- * skip all blanks character found at that point in the input streams.
- * It pops up finished entities in the process if allowable at that point.
- *
- * Returns the number of space chars skipped
- */
+* xmlSkipBlankChars:
+* @ctxt:  the XML parser context
+*
+* skip all blanks character found at that point in the input streams.
+* It pops up finished entities in the process if allowable at that point.
+*
+* Returns the number of space chars skipped
+*/
 
 pub fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut res: libc::c_int = 0 as libc::c_int;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     /*
-     * It's Okay to use CUR/NEXT here since all the blanks are on
-     * the ASCII range.
-     */
+    * It's Okay to use CUR/NEXT here since all the blanks are on
+    * the ASCII range.
+    */
     if (safe_ctxt).instate as libc::c_int != XML_PARSER_DTD as libc::c_int {
         let mut cur: *const xmlChar = 0 as *const xmlChar;
         /*
-         * if we are in the document content, go really fast
-         */
+        * if we are in the document content, go really fast
+        */
         cur = unsafe { (*(*ctxt).input).cur };
         while unsafe { *cur } as libc::c_int == 0x20 as libc::c_int
             || 0x9 as libc::c_int <= unsafe { *cur } as libc::c_int
@@ -2570,8 +367,8 @@ pub fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                 xmlNextChar_safe(ctxt);
             } else if unsafe { *(*(*ctxt).input).cur as libc::c_int == '%' as i32 } {
                 /*
-                 * Need to handle support of entities branching here
-                 */
+                * Need to handle support of entities branching here
+                */
                 if expandPE == 0 as libc::c_int
                     || unsafe {
                         (*(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int
@@ -2605,31 +402,31 @@ pub fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                 xmlPopInput_safe(ctxt);
             }
             /*
-             * Also increase the counter when entering or exiting a PERef.
-             * The spec says: "When a parameter-entity reference is recognized
-             * in the DTD and included, its replacement text MUST be enlarged
-             * by the attachment of one leading and one following space (#x20)
-             * character."
-             */
+            * Also increase the counter when entering or exiting a PERef.
+            * The spec says: "When a parameter-entity reference is recognized
+            * in the DTD and included, its replacement text MUST be enlarged
+            * by the attachment of one leading and one following space (#x20)
+            * character."
+            */
             res += 1
         }
     }
     return res;
 }
 /* ***********************************************************************
- *									*
- *		Commodity functions to handle entities			*
- *									*
- ************************************************************************/
+*									*
+*		Commodity functions to handle entities			*
+*									*
+************************************************************************/
 /* *
- * xmlPopInput:
- * @ctxt:  an XML parser context
- *
- * xmlPopInput: the current input pointed by ctxt->input came to an end
- *          pop it and return the next char.
- *
- * Returns the current xmlChar in the parser context
- */
+* xmlPopInput:
+* @ctxt:  an XML parser context
+*
+* xmlPopInput: the current input pointed by ctxt->input came to an end
+*          pop it and return the next char.
+*
+* Returns the current xmlChar in the parser context
+*/
 
 pub fn xmlPopInput_parser(mut ctxt: xmlParserCtxtPtr) -> xmlChar {
     if ctxt.is_null() || unsafe { (*ctxt).inputNr <= 1 as libc::c_int } {
@@ -2664,14 +461,14 @@ pub fn xmlPopInput_parser(mut ctxt: xmlParserCtxtPtr) -> xmlChar {
     return unsafe { *(*(*ctxt).input).cur };
 }
 /* *
- * xmlPushInput:
- * @ctxt:  an XML parser context
- * @input:  an XML parser input fragment (entity, XML fragment ...).
- *
- * xmlPushInput: switch to a new input stream which is stacked on top
- *               of the previous one(s).
- * Returns -1 in case of error or the index in the input stack
- */
+* xmlPushInput:
+* @ctxt:  an XML parser context
+* @input:  an XML parser input fragment (entity, XML fragment ...).
+*
+* xmlPushInput: switch to a new input stream which is stacked on top
+*               of the previous one(s).
+* Returns -1 in case of error or the index in the input stack
+*/
 
 pub fn xmlPushInput(mut ctxt: xmlParserCtxtPtr, mut input: xmlParserInputPtr) -> libc::c_int {
     let mut ret: libc::c_int = 0;
@@ -2726,28 +523,28 @@ pub fn xmlPushInput(mut ctxt: xmlParserCtxtPtr, mut input: xmlParserInputPtr) ->
     return ret;
 }
 /* *
- * xmlParseCharRef:
- * @ctxt:  an XML parser context
- *
- * parse Reference declarations
- *
- * [66] CharRef ::= '&#' [0-9]+ ';' |
- *                  '&#x' [0-9a-fA-F]+ ';'
- *
- * [ WFC: Legal Character ]
- * Characters referred to using character references must match the
- * production for Char.
- *
- * Returns the value parsed (as an int), 0 in case of error
- */
+* xmlParseCharRef:
+* @ctxt:  an XML parser context
+*
+* parse Reference declarations
+*
+* [66] CharRef ::= '&#' [0-9]+ ';' |
+*                  '&#x' [0-9a-fA-F]+ ';'
+*
+* [ WFC: Legal Character ]
+* Characters referred to using character references must match the
+* production for Char.
+*
+* Returns the value parsed (as an int), 0 in case of error
+*/
 
 pub fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut val: libc::c_int = 0 as libc::c_int;
     let mut count: libc::c_int = 0 as libc::c_int;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     /*
-     * Using RAW/CUR/NEXT is okay since we are working on ASCII range here
-     */
+    * Using RAW/CUR/NEXT is okay since we are working on ASCII range here
+    */
     if unsafe {
         *(*(*ctxt).input).cur as libc::c_int == '&' as i32
             && *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int == '#' as i32
@@ -2899,10 +696,10 @@ pub fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
         }
     }
     /*
-     * [ WFC: Legal Character ]
-     * Characters referred to using character references must match the
-     * production for Char.
-     */
+    * [ WFC: Legal Character ]
+    * Characters referred to using character references must match the
+    * production for Char.
+    */
     if val >= 0x110000 as libc::c_int {
         unsafe {
             xmlFatalErrMsgInt(
@@ -2939,23 +736,23 @@ pub fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     return 0 as libc::c_int;
 }
 /* *
- * xmlParseStringCharRef:
- * @ctxt:  an XML parser context
- * @str:  a pointer to an index in the string
- *
- * parse Reference declarations, variant parsing from a string rather
- * than an an input flow.
- *
- * [66] CharRef ::= '&#' [0-9]+ ';' |
- *                  '&#x' [0-9a-fA-F]+ ';'
- *
- * [ WFC: Legal Character ]
- * Characters referred to using character references must match the
- * production for Char.
- *
- * Returns the value parsed (as an int), 0 in case of error, str will be
- *         updated to the current value of the index
- */
+* xmlParseStringCharRef:
+* @ctxt:  an XML parser context
+* @str:  a pointer to an index in the string
+*
+* parse Reference declarations, variant parsing from a string rather
+* than an an input flow.
+*
+* [66] CharRef ::= '&#' [0-9]+ ';' |
+*                  '&#x' [0-9a-fA-F]+ ';'
+*
+* [ WFC: Legal Character ]
+* Characters referred to using character references must match the
+* production for Char.
+*
+* Returns the value parsed (as an int), 0 in case of error, str will be
+*         updated to the current value of the index
+*/
 fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const xmlChar) -> libc::c_int {
     let mut ptr: *const xmlChar = 0 as *const xmlChar;
     let mut cur: xmlChar = 0;
@@ -3042,10 +839,10 @@ fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const xmlCha
     }
     unsafe { *str = ptr };
     /*
-     * [ WFC: Legal Character ]
-     * Characters referred to using character references must match the
-     * production for Char.
-     */
+    * [ WFC: Legal Character ]
+    * Characters referred to using character references must match the
+    * production for Char.
+    */
     if val >= 0x110000 as libc::c_int {
         unsafe {
             xmlFatalErrMsgInt(
@@ -3082,37 +879,37 @@ fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const xmlCha
     return 0 as libc::c_int;
 }
 /* *
- * xmlParserHandlePEReference:
- * @ctxt:  the parser context
- *
- * [69] PEReference ::= '%' Name ';'
- *
- * [ WFC: No Recursion ]
- * A parsed entity must not contain a recursive
- * reference to itself, either directly or indirectly.
- *
- * [ WFC: Entity Declared ]
- * In a document without any DTD, a document with only an internal DTD
- * subset which contains no parameter entity references, or a document
- * with "standalone='yes'", ...  ... The declaration of a parameter
- * entity must precede any reference to it...
- *
- * [ VC: Entity Declared ]
- * In a document with an external subset or external parameter entities
- * with "standalone='no'", ...  ... The declaration of a parameter entity
- * must precede any reference to it...
- *
- * [ WFC: In DTD ]
- * Parameter-entity references may only appear in the DTD.
- * NOTE: misleading but this is handled.
- *
- * A PEReference may have been detected in the current input stream
- * the handling is done accordingly to
- *      http://www.w3.org/TR/REC-xml#entproc
- * i.e.
- *   - Included in literal in entity values
- *   - Included as Parameter Entity reference within DTDs
- */
+* xmlParserHandlePEReference:
+* @ctxt:  the parser context
+*
+* [69] PEReference ::= '%' Name ';'
+*
+* [ WFC: No Recursion ]
+* A parsed entity must not contain a recursive
+* reference to itself, either directly or indirectly.
+*
+* [ WFC: Entity Declared ]
+* In a document without any DTD, a document with only an internal DTD
+* subset which contains no parameter entity references, or a document
+* with "standalone='yes'", ...  ... The declaration of a parameter
+* entity must precede any reference to it...
+*
+* [ VC: Entity Declared ]
+* In a document with an external subset or external parameter entities
+* with "standalone='no'", ...  ... The declaration of a parameter entity
+* must precede any reference to it...
+*
+* [ WFC: In DTD ]
+* Parameter-entity references may only appear in the DTD.
+* NOTE: misleading but this is handled.
+*
+* A PEReference may have been detected in the current input stream
+* the handling is done accordingly to
+*      http://www.w3.org/TR/REC-xml#entproc
+* i.e.
+*   - Included in literal in entity values
+*   - Included as Parameter Entity reference within DTDs
+*/
 
 pub fn xmlParserHandlePEReference(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -3145,22 +942,22 @@ pub fn xmlParserHandlePEReference(mut ctxt: xmlParserCtxtPtr) {
         }
         11 => {
             /*
-             * NOTE: in the case of entity values, we don't do the
-             *       substitution here since we need the literal
-             *       entity value to be able to save the internal
-             *       subset of the document.
-             *       This will be handled by xmlStringDecodeEntities
-             */
+            * NOTE: in the case of entity values, we don't do the
+            *       substitution here since we need the literal
+            *       entity value to be able to save the internal
+            *       subset of the document.
+            *       This will be handled by xmlStringDecodeEntities
+            */
             return;
         }
         3 => {
             /*
-             * [WFC: Well-Formedness Constraint: PEs in Internal Subset]
-             * In the internal DTD subset, parameter-entity references
-             * can occur only where markup declarations can occur, not
-             * within markup declarations.
-             * In that case this is handled in xmlParseMarkupDecl
-             */
+            * [WFC: Well-Formedness Constraint: PEs in Internal Subset]
+            * In the internal DTD subset, parameter-entity references
+            * can occur only where markup declarations can occur, not
+            * within markup declarations.
+            * In that case this is handled in xmlParseMarkupDecl
+            */
             if (safe_ctxt).external == 0 as libc::c_int && (safe_ctxt).inputNr == 1 as libc::c_int {
                 return;
             }
@@ -3187,29 +984,29 @@ pub fn xmlParserHandlePEReference(mut ctxt: xmlParserCtxtPtr) {
     }
 }
 /*
- * Macro used to grow the current buffer.
- * buffer##_size is expected to be a size_t
- * mem_error: is expected to handle memory allocation failures
- */
+* Macro used to grow the current buffer.
+* buffer##_size is expected to be a size_t
+* mem_error: is expected to handle memory allocation failures
+*/
 /* *
- * xmlStringLenDecodeEntities:
- * @ctxt:  the parser context
- * @str:  the input string
- * @len: the string length
- * @what:  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF
- * @end:  an end marker xmlChar, 0 if none
- * @end2:  an end marker xmlChar, 0 if none
- * @end3:  an end marker xmlChar, 0 if none
- *
- * Takes a entity string content and process to do the adequate substitutions.
- *
- * [67] Reference ::= EntityRef | CharRef
- *
- * [69] PEReference ::= '%' Name ';'
- *
- * Returns A newly allocated string with the substitution done. The caller
- *      must deallocate it !
- */
+* xmlStringLenDecodeEntities:
+* @ctxt:  the parser context
+* @str:  the input string
+* @len: the string length
+* @what:  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF
+* @end:  an end marker xmlChar, 0 if none
+* @end2:  an end marker xmlChar, 0 if none
+* @end3:  an end marker xmlChar, 0 if none
+*
+* Takes a entity string content and process to do the adequate substitutions.
+*
+* [67] Reference ::= EntityRef | CharRef
+*
+* [69] PEReference ::= '%' Name ';'
+*
+* Returns A newly allocated string with the substitution done. The caller
+*      must deallocate it !
+*/
 
 pub fn xmlStringLenDecodeEntities(
     mut ctxt: xmlParserCtxtPtr,
@@ -3245,17 +1042,17 @@ pub fn xmlStringLenDecodeEntities(
         return 0 as *mut xmlChar;
     }
     /*
-     * allocate a translation buffer.
-     */
+    * allocate a translation buffer.
+    */
     buffer_size = 300 as libc::c_int as size_t;
     buffer = xmlMallocAtomic_safe(buffer_size) as *mut xmlChar;
     if buffer.is_null() {
         current_block = 13264933720371784297;
     } else {
         /*
-         * OK loop until we reach one of the ending char or a size limit.
-         * we are operating on already parsed values.
-         */
+        * OK loop until we reach one of the ending char or a size limit.
+        * we are operating on already parsed values.
+        */
         if str < last {
             unsafe {
                 c = xmlStringCurrentChar(ctxt, str, &mut l);
@@ -3528,11 +1325,11 @@ pub fn xmlStringLenDecodeEntities(
                 if !ent.is_null() {
                     if unsafe { (*ent).content.is_null() } {
                         /*
-                         * Note: external parsed entities will not be loaded,
-                         * it is not required for a non-validating parser to
-                         * complete external PEReferences coming from the
-                         * internal subset
-                         */
+                        * Note: external parsed entities will not be loaded,
+                        * it is not required for a non-validating parser to
+                        * complete external PEReferences coming from the
+                        * internal subset
+                        */
                         if (safe_ctxt).options & XML_PARSE_NOENT as libc::c_int != 0 as libc::c_int
                             || (safe_ctxt).options & XML_PARSE_DTDVALID as libc::c_int
                                 != 0 as libc::c_int
@@ -3684,23 +1481,23 @@ pub fn xmlStringLenDecodeEntities(
     return 0 as *mut xmlChar;
 }
 /* *
- * xmlStringDecodeEntities:
- * @ctxt:  the parser context
- * @str:  the input string
- * @what:  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF
- * @end:  an end marker xmlChar, 0 if none
- * @end2:  an end marker xmlChar, 0 if none
- * @end3:  an end marker xmlChar, 0 if none
- *
- * Takes a entity string content and process to do the adequate substitutions.
- *
- * [67] Reference ::= EntityRef | CharRef
- *
- * [69] PEReference ::= '%' Name ';'
- *
- * Returns A newly allocated string with the substitution done. The caller
- *      must deallocate it !
- */
+* xmlStringDecodeEntities:
+* @ctxt:  the parser context
+* @str:  the input string
+* @what:  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF
+* @end:  an end marker xmlChar, 0 if none
+* @end2:  an end marker xmlChar, 0 if none
+* @end3:  an end marker xmlChar, 0 if none
+*
+* Takes a entity string content and process to do the adequate substitutions.
+*
+* [67] Reference ::= EntityRef | CharRef
+*
+* [69] PEReference ::= '%' Name ';'
+*
+* Returns A newly allocated string with the substitution done. The caller
+*      must deallocate it !
+*/
 
 pub fn xmlStringDecodeEntities(
     mut ctxt: xmlParserCtxtPtr,
@@ -3716,21 +1513,21 @@ pub fn xmlStringDecodeEntities(
     return xmlStringLenDecodeEntities(ctxt, str, xmlStrlen_safe(str), what, end, end2, end3);
 }
 /* ***********************************************************************
- *									*
- *		Commodity functions, cleanup needed ?			*
- *									*
- ************************************************************************/
+*									*
+*		Commodity functions, cleanup needed ?			*
+*									*
+************************************************************************/
 /* *
- * areBlanks:
- * @ctxt:  an XML parser context
- * @str:  a xmlChar *
- * @len:  the size of @str
- * @blank_chars: we know the chars are blanks
- *
- * Is this a sequence of blank chars that one can ignore ?
- *
- * Returns 1 if ignorable 0 otherwise.
- */
+* areBlanks:
+* @ctxt:  an XML parser context
+* @str:  a xmlChar *
+* @len:  the size of @str
+* @blank_chars: we know the chars are blanks
+*
+* Is this a sequence of blank chars that one can ignore ?
+*
+* Returns 1 if ignorable 0 otherwise.
+*/
 fn areBlanks(
     mut ctxt: xmlParserCtxtPtr,
     mut str: *const xmlChar,
@@ -3741,16 +1538,16 @@ fn areBlanks(
     let mut ret: libc::c_int = 0;
     let mut lastChild: xmlNodePtr = 0 as *mut xmlNode;
     /*
-     * Don't spend time trying to differentiate them, the same callback is
-     * used !
-     */
+    * Don't spend time trying to differentiate them, the same callback is
+    * used !
+    */
     if unsafe { (*(*ctxt).sax).ignorableWhitespace == (*(*ctxt).sax).characters } {
         return 0 as libc::c_int;
     }
     let mut safe_ctxt = unsafe { &mut *ctxt };
     /*
-     * Check for xml:space value.
-     */
+    * Check for xml:space value.
+    */
     if unsafe {
         (*ctxt).space.is_null()
             || *(*ctxt).space == 1 as libc::c_int
@@ -3759,8 +1556,8 @@ fn areBlanks(
         return 0 as libc::c_int;
     }
     /*
-     * Check that the string is made of blanks
-     */
+    * Check that the string is made of blanks
+    */
     if blank_chars == 0 as libc::c_int {
         i = 0 as libc::c_int;
         while i < len {
@@ -3776,8 +1573,8 @@ fn areBlanks(
         }
     }
     /*
-     * Look if the element is mixed content in the DTD if available
-     */
+    * Look if the element is mixed content in the DTD if available
+    */
     if (safe_ctxt).node.is_null() {
         return 0 as libc::c_int;
     }
@@ -3791,8 +1588,8 @@ fn areBlanks(
         }
     }
     /*
-     * Otherwise, heuristic :-\
-     */
+    * Otherwise, heuristic :-\
+    */
     if unsafe {
         *(*(*ctxt).input).cur as libc::c_int != '<' as i32
             && *(*(*ctxt).input).cur as libc::c_int != 0xd as libc::c_int
@@ -3827,28 +1624,28 @@ fn areBlanks(
     return 1 as libc::c_int;
 }
 /* ***********************************************************************
- *									*
- *		Extra stuff for namespace support			*
- *	Relates to http://www.w3.org/TR/WD-xml-names			*
- *									*
- ************************************************************************/
+*									*
+*		Extra stuff for namespace support			*
+*	Relates to http://www.w3.org/TR/WD-xml-names			*
+*									*
+************************************************************************/
 /* *
- * xmlSplitQName:
- * @ctxt:  an XML parser context
- * @name:  an XML parser context
- * @prefix:  a xmlChar **
- *
- * parse an UTF8 encoded XML qualified name string
- *
- * [NS 5] QName ::= (Prefix ':')? LocalPart
- *
- * [NS 6] Prefix ::= NCName
- *
- * [NS 7] LocalPart ::= NCName
- *
- * Returns the local part, and prefix is updated
- *   to get the Prefix if any.
- */
+* xmlSplitQName:
+* @ctxt:  an XML parser context
+* @name:  an XML parser context
+* @prefix:  a xmlChar **
+*
+* parse an UTF8 encoded XML qualified name string
+*
+* [NS 5] QName ::= (Prefix ':')? LocalPart
+*
+* [NS 6] Prefix ::= NCName
+*
+* [NS 7] LocalPart ::= NCName
+*
+* Returns the local part, and prefix is updated
+*   to get the Prefix if any.
+*/
 
 pub fn xmlSplitQName(
     mut ctxt: xmlParserCtxtPtr,
@@ -3913,9 +1710,9 @@ pub fn xmlSplitQName(
     }
     if len >= max {
         /*
-         * Okay someone managed to make a huge name, so he's ready to pay
-         * for the processing speed.
-         */
+        * Okay someone managed to make a huge name, so he's ready to pay
+        * for the processing speed.
+        */
         max = len * 2 as libc::c_int;
         buffer = xmlMallocAtomic_safe(
             (max as libc::c_ulong).wrapping_mul(::std::mem::size_of::<xmlChar>() as libc::c_ulong),
@@ -3992,9 +1789,9 @@ pub fn xmlSplitQName(
         }
         len = 0 as libc::c_int;
         /*
-         * Check that the first character is proper to start
-         * a new name
-         */
+        * Check that the first character is proper to start
+        * a new name
+        */
         if !(c >= 0x61 as libc::c_int && c <= 0x7a as libc::c_int
             || c >= 0x41 as libc::c_int && c <= 0x5a as libc::c_int
             || c == '_' as i32
@@ -4048,9 +1845,9 @@ pub fn xmlSplitQName(
         }
         if len >= max {
             /*
-             * Okay someone managed to make a huge name, so he's ready to pay
-             * for the processing speed.
-             */
+            * Okay someone managed to make a huge name, so he's ready to pay
+            * for the processing speed.
+            */
             max = len * 2 as libc::c_int;
             buffer = xmlMallocAtomic_safe(
                 (max as libc::c_ulong)
@@ -4108,16 +1905,16 @@ pub fn xmlSplitQName(
     return ret;
 }
 /* ***********************************************************************
- *									*
- *			The parser itself				*
- *	Relates to http://www.w3.org/TR/REC-xml				*
- *									*
- ************************************************************************/
+*									*
+*			The parser itself				*
+*	Relates to http://www.w3.org/TR/REC-xml				*
+*									*
+************************************************************************/
 /* ***********************************************************************
- *									*
- *	Routines to parse Name, NCName and NmToken			*
- *									*
- ************************************************************************/
+*									*
+*	Routines to parse Name, NCName and NmToken			*
+*									*
+************************************************************************/
 
 #[cfg(HAVE_parser_DEBUG)]
 const nbParseName: libc::c_long = 0 as libc::c_long;
@@ -4133,22 +1930,22 @@ const nbParseNameComplex: libc::c_long = 0 as libc::c_long;
 const nbParseStringName: libc::c_long = 0 as libc::c_long;
 
 /*
- * The two following functions are related to the change of accepted
- * characters for Name and NmToken in the Revision 5 of XML-1.0
- * They correspond to the modified production [4] and the new production [4a]
- * changes in that revision. Also note that the macros used for the
- * productions Letter, Digit, CombiningChar and Extender are not needed
- * anymore.
- * We still keep compatibility to pre-revision5 parsing semantic if the
- * new XML_PARSE_OLD10 option is given to the parser.
- */
+* The two following functions are related to the change of accepted
+* characters for Name and NmToken in the Revision 5 of XML-1.0
+* They correspond to the modified production [4] and the new production [4a]
+* changes in that revision. Also note that the macros used for the
+* productions Letter, Digit, CombiningChar and Extender are not needed
+* anymore.
+* We still keep compatibility to pre-revision5 parsing semantic if the
+* new XML_PARSE_OLD10 option is given to the parser.
+*/
 fn xmlIsNameStartChar(mut ctxt: xmlParserCtxtPtr, mut c: libc::c_int) -> libc::c_int {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     if (safe_ctxt).options & XML_PARSE_OLD10 as libc::c_int == 0 as libc::c_int {
         /*
-         * Use the new checks of production [4] [4a] amd [5] of the
-         * Update 5 of XML-1.0
-         */
+        * Use the new checks of production [4] [4a] amd [5] of the
+        * Update 5 of XML-1.0
+        */
         if c != ' ' as i32
             && c != '>' as i32
             && c != '/' as i32
@@ -4199,9 +1996,9 @@ fn xmlIsNameChar(mut ctxt: xmlParserCtxtPtr, mut c: libc::c_int) -> libc::c_int 
     let mut safe_ctxt = unsafe { &mut *ctxt };
     if (safe_ctxt).options & XML_PARSE_OLD10 as libc::c_int == 0 as libc::c_int {
         /*
-         * Use the new checks of production [4] [4a] amd [5] of the
-         * Update 5 of XML-1.0
-         */
+        * Use the new checks of production [4] [4a] amd [5] of the
+        * Update 5 of XML-1.0
+        */
         if c != ' ' as i32
             && c != '>' as i32
             && c != '/' as i32
@@ -4288,8 +2085,8 @@ fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     };
 
     /*
-     * Handler for more complex cases
-     */
+    * Handler for more complex cases
+    */
     if (safe_ctxt).progressive == 0 as libc::c_int
         && unsafe {
             ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -4304,9 +2101,9 @@ fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     c = unsafe { xmlCurrentChar(ctxt, &mut l) };
     if (safe_ctxt).options & XML_PARSE_OLD10 as libc::c_int == 0 as libc::c_int {
         /*
-         * Use the new checks of production [4] [4a] amd [5] of the
-         * Update 5 of XML-1.0
-         */
+        * Use the new checks of production [4] [4a] amd [5] of the
+        * Update 5 of XML-1.0
+        */
         if c == ' ' as i32
             || c == '>' as i32
             || c == '/' as i32
@@ -4523,10 +2320,10 @@ fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             < len as libc::c_long
     } {
         /*
-         * There were a couple of bugs where PERefs lead to to a change
-         * of the buffer. Check the buffer size to avoid passing an invalid
-         * pointer to xmlDictLookup.
-         */
+        * There were a couple of bugs where PERefs lead to to a change
+        * of the buffer. Check the buffer size to avoid passing an invalid
+        * pointer to xmlDictLookup.
+        */
         unsafe {
             xmlFatalErr(
                 ctxt,
@@ -4560,20 +2357,20 @@ fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     };
 }
 /* *
- * xmlParseName:
- * @ctxt:  an XML parser context
- *
- * parse an XML name.
- *
- * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
- *                  CombiningChar | Extender
- *
- * [5] Name ::= (Letter | '_' | ':') (NameChar)*
- *
- * [6] Names ::= Name (#x20 Name)*
- *
- * Returns the Name parsed or NULL
- */
+* xmlParseName:
+* @ctxt:  an XML parser context
+*
+* parse an XML name.
+*
+* [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
+*                  CombiningChar | Extender
+*
+* [5] Name ::= (Letter | '_' | ':') (NameChar)*
+*
+* [6] Names ::= Name (#x20 Name)*
+*
+* Returns the Name parsed or NULL
+*/
 
 pub fn xmlParseName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
@@ -4597,8 +2394,8 @@ pub fn xmlParseName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     };
 
     /*
-     * Accelerator for simple ASCII names
-     */
+    * Accelerator for simple ASCII names
+    */
     in_0 = unsafe { (*(*ctxt).input).cur };
     if unsafe {
         *in_0 as libc::c_int >= 0x61 as libc::c_int && *in_0 as libc::c_int <= 0x7a as libc::c_int
@@ -4672,8 +2469,8 @@ fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     };
 
     /*
-     * Handler for more complex cases
-     */
+    * Handler for more complex cases
+    */
     if (safe_ctxt).progressive == 0 as libc::c_int
         && unsafe {
             ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -4742,10 +2539,10 @@ fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         if c == 0 as libc::c_int {
             count = 0 as libc::c_int;
             /*
-             * when shrinking to extend the buffer we really need to preserve
-             * the part of the name we already parsed. Hence rolling back
-             * by current length.
-             */
+            * when shrinking to extend the buffer we really need to preserve
+            * the part of the name we already parsed. Hence rolling back
+            * by current length.
+            */
             unsafe { (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(-(l as isize)) };
             if (safe_ctxt).progressive == 0 as libc::c_int
                 && unsafe {
@@ -4785,19 +2582,19 @@ fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     };
 }
 /* *
- * xmlParseNCName:
- * @ctxt:  an XML parser context
- * @len:  length of the string parsed
- *
- * parse an XML name.
- *
- * [4NS] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
- *                      CombiningChar | Extender
- *
- * [5NS] NCName ::= (Letter | '_') (NCNameChar)*
- *
- * Returns the Name parsed or NULL
- */
+* xmlParseNCName:
+* @ctxt:  an XML parser context
+* @len:  length of the string parsed
+*
+* parse an XML name.
+*
+* [4NS] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
+*                      CombiningChar | Extender
+*
+* [5NS] NCName ::= (Letter | '_') (NCNameChar)*
+*
+* Returns the Name parsed or NULL
+*/
 fn xmlParseNCName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
     let mut e: *const xmlChar = 0 as *const xmlChar;
@@ -4814,8 +2611,8 @@ fn xmlParseNCName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     };
 
     /*
-     * Accelerator for simple ASCII names
-     */
+    * Accelerator for simple ASCII names
+    */
     unsafe {
         in_0 = (*(*ctxt).input).cur;
         e = (*(*ctxt).input).end;
@@ -4881,15 +2678,15 @@ fn xmlParseNCName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     return xmlParseNCNameComplex(ctxt);
 }
 /* *
- * xmlParseNameAndCompare:
- * @ctxt:  an XML parser context
- *
- * parse an XML name and compares for match
- * (specialized for endtag parsing)
- *
- * Returns NULL for an illegal name, (xmlChar*) 1 for success
- * and the name for mismatch
- */
+* xmlParseNameAndCompare:
+* @ctxt:  an XML parser context
+*
+* parse an XML name and compares for match
+* (specialized for endtag parsing)
+*
+* Returns NULL for an illegal name, (xmlChar*) 1 for success
+* and the name for mismatch
+*/
 fn xmlParseNameAndCompare(mut ctxt: xmlParserCtxtPtr, mut other: *const xmlChar) -> *const xmlChar {
     let mut cmp: *const xmlChar = other;
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
@@ -4941,22 +2738,22 @@ fn xmlParseNameAndCompare(mut ctxt: xmlParserCtxtPtr, mut other: *const xmlChar)
     return ret;
 }
 /* *
- * xmlParseStringName:
- * @ctxt:  an XML parser context
- * @str:  a pointer to the string pointer (IN/OUT)
- *
- * parse an XML name.
- *
- * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
- *                  CombiningChar | Extender
- *
- * [5] Name ::= (Letter | '_' | ':') (NameChar)*
- *
- * [6] Names ::= Name (#x20 Name)*
- *
- * Returns the Name parsed or NULL. The @str pointer
- * is updated to the current location in the string.
- */
+* xmlParseStringName:
+* @ctxt:  an XML parser context
+* @str:  a pointer to the string pointer (IN/OUT)
+*
+* parse an XML name.
+*
+* [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
+*                  CombiningChar | Extender
+*
+* [5] Name ::= (Letter | '_' | ':') (NameChar)*
+*
+* [6] Names ::= Name (#x20 Name)*
+*
+* Returns the Name parsed or NULL. The @str pointer
+* is updated to the current location in the string.
+*/
 fn xmlParseStringName(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const xmlChar) -> *mut xmlChar {
     let mut buf: [xmlChar; 105] = [0; 105];
     let mut cur: *const xmlChar = unsafe { *str };
@@ -5003,9 +2800,9 @@ fn xmlParseStringName(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const xmlChar) 
         if len >= 100 as libc::c_int {
             /* test bigentname.xml */
             /*
-             * Okay someone managed to make a huge name, so he's ready to pay
-             * for the processing speed.
-             */
+            * Okay someone managed to make a huge name, so he's ready to pay
+            * for the processing speed.
+            */
             let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
             let mut max: libc::c_int = len * 2 as libc::c_int;
             buffer = xmlMallocAtomic_safe(
@@ -5091,17 +2888,17 @@ fn xmlParseStringName(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const xmlChar) 
     return xmlStrndup_safe(buf.as_mut_ptr(), len);
 }
 /* *
- * xmlParseNmtoken:
- * @ctxt:  an XML parser context
- *
- * parse an XML Nmtoken.
- *
- * [7] Nmtoken ::= (NameChar)+
- *
- * [8] Nmtokens ::= Nmtoken (#x20 Nmtoken)*
- *
- * Returns the Nmtoken parsed or NULL
- */
+* xmlParseNmtoken:
+* @ctxt:  an XML parser context
+*
+* parse an XML Nmtoken.
+*
+* [7] Nmtoken ::= (NameChar)+
+*
+* [8] Nmtokens ::= Nmtoken (#x20 Nmtoken)*
+*
+* Returns the Nmtoken parsed or NULL
+*/
 
 pub fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut buf: [xmlChar; 105] = [0; 105];
@@ -5185,9 +2982,9 @@ pub fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
         }
         if len >= 100 as libc::c_int {
             /*
-             * Okay someone managed to make a huge token, so he's ready to pay
-             * for the processing speed.
-             */
+            * Okay someone managed to make a huge token, so he's ready to pay
+            * for the processing speed.
+            */
             let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
             let mut max: libc::c_int = len * 2 as libc::c_int;
             buffer = xmlMallocAtomic_safe(
@@ -5299,17 +3096,17 @@ pub fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     return xmlStrndup_safe(buf.as_mut_ptr(), len);
 }
 /* *
- * xmlParseEntityValue:
- * @ctxt:  an XML parser context
- * @orig:  if non-NULL store a copy of the original entity value
- *
- * parse a value for ENTITY declarations
- *
- * [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"' |
- *	               "'" ([^%&'] | PEReference | Reference)* "'"
- *
- * Returns the EntityValue parsed with reference substituted or NULL
- */
+* xmlParseEntityValue:
+* @ctxt:  an XML parser context
+* @orig:  if non-NULL store a copy of the original entity value
+*
+* parse a value for ENTITY declarations
+*
+* [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"' |
+*	               "'" ([^%&'] | PEReference | Reference)* "'"
+*
+* Returns the EntityValue parsed with reference substituted or NULL
+*/
 
 pub fn xmlParseEntityValue(
     mut ctxt: xmlParserCtxtPtr,
@@ -5346,8 +3143,8 @@ pub fn xmlParseEntityValue(
         return 0 as *mut xmlChar;
     }
     /*
-     * The content of the entity definition is copied in a buffer.
-     */
+    * The content of the entity definition is copied in a buffer.
+    */
     (safe_ctxt).instate = XML_PARSER_ENTITY_VALUE;
     input = (safe_ctxt).input;
     if (safe_ctxt).progressive == 0 as libc::c_int
@@ -5363,14 +3160,14 @@ pub fn xmlParseEntityValue(
         unsafe { c = xmlCurrentChar(ctxt, &mut l) };
         loop
         /*
-         * NOTE: 4.4.5 Included in Literal
-         * When a parameter entity reference appears in a literal entity
-         * value, ... a single or double quote character in the replacement
-         * text is always treated as a normal data character and will not
-         * terminate the literal.
-         * In practice it means we stop the loop only when back at parsing
-         * the initial entity and the quote is found
-         */
+        * NOTE: 4.4.5 Included in Literal
+        * When a parameter entity reference appears in a literal entity
+        * value, ... a single or double quote character in the replacement
+        * text is always treated as a normal data character and will not
+        * terminate the literal.
+        * In practice it means we stop the loop only when back at parsing
+        * the initial entity and the quote is found
+        */
         {
             if !((if c < 0x100 as libc::c_int {
                 (0x9 as libc::c_int <= c && c <= 0xa as libc::c_int
@@ -5463,10 +3260,10 @@ pub fn xmlParseEntityValue(
                     } else {
                         xmlNextChar_safe(ctxt);
                         /*
-                         * Raise problem w.r.t. '&' and '%' being used in non-entities
-                         * reference constructs. Note Charref will be handled in
-                         * xmlStringDecodeEntities()
-                         */
+                        * Raise problem w.r.t. '&' and '%' being used in non-entities
+                        * reference constructs. Note Charref will be handled in
+                        * xmlStringDecodeEntities()
+                        */
                         cur = buf;
                         loop {
                             if !(unsafe { *cur } as libc::c_int != 0 as libc::c_int) {
@@ -5496,11 +3293,11 @@ pub fn xmlParseEntityValue(
                                 {
                                     unsafe {
                                         xmlFatalErrMsgInt(ctxt,
-                                                          XML_ERR_ENTITY_CHAR_ERROR,
-                                                          b"EntityValue: \'%c\' forbidden except for entities references\n\x00"
-                                                              as *const u8 as
-                                                              *const libc::c_char,
-                                                          tmp_0 as libc::c_int);
+                                      XML_ERR_ENTITY_CHAR_ERROR,
+                                      b"EntityValue: \'%c\' forbidden except for entities references\n\x00"
+                                          as *const u8 as
+                                          *const libc::c_char,
+                                      tmp_0 as libc::c_int);
                                     }
                                     current_block = 1624980031832806685;
                                     break;
@@ -5528,13 +3325,13 @@ pub fn xmlParseEntityValue(
                             1624980031832806685 => {}
                             _ => {
                                 /*
-                                 * Then PEReference entities are substituted.
-                                 *
-                                 * NOTE: 4.4.7 Bypassed
-                                 * When a general entity reference appears in the EntityValue in
-                                 * an entity declaration, it is bypassed and left as is.
-                                 * so XML_SUBSTITUTE_REF is not set here.
-                                 */
+                                * Then PEReference entities are substituted.
+                                *
+                                * NOTE: 4.4.7 Bypassed
+                                * When a general entity reference appears in the EntityValue in
+                                * an entity declaration, it is bypassed and left as is.
+                                * so XML_SUBSTITUTE_REF is not set here.
+                                */
                                 (safe_ctxt).depth += 1;
                                 ret = xmlStringDecodeEntities(
                                     ctxt,
@@ -5564,17 +3361,17 @@ pub fn xmlParseEntityValue(
     return ret;
 }
 /* *
- * xmlParseAttValueComplex:
- * @ctxt:  an XML parser context
- * @len:   the resulting attribute len
- * @normalize:  whether to apply the inner normalization
- *
- * parse a value for an attribute, this is the fallback function
- * of xmlParseAttValue() when the attribute parsing requires handling
- * of non-ASCII characters, or normalization compaction.
- *
- * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
- */
+* xmlParseAttValueComplex:
+* @ctxt:  an XML parser context
+* @len:   the resulting attribute len
+* @normalize:  whether to apply the inner normalization
+*
+* parse a value for an attribute, this is the fallback function
+* of xmlParseAttValue() when the attribute parsing requires handling
+* of non-ASCII characters, or normalization compaction.
+*
+* Returns the AttValue parsed or NULL. The value has to be freed by the caller.
+*/
 fn xmlParseAttValueComplex(
     mut ctxt: xmlParserCtxtPtr,
     mut attlen: *mut libc::c_int,
@@ -5615,16 +3412,16 @@ fn xmlParseAttValueComplex(
         return 0 as *mut xmlChar;
     }
     /*
-     * allocate a translation buffer.
-     */
+    * allocate a translation buffer.
+    */
     buf_size = 100 as libc::c_int as size_t;
     buf = xmlMallocAtomic_safe(buf_size) as *mut xmlChar;
     if buf.is_null() {
         current_block = 10140382788883813888;
     } else {
         /*
-         * OK loop until we reach one of the ending char or a size limit.
-         */
+        * OK loop until we reach one of the ending char or a size limit.
+        */
         unsafe {
             c = xmlCurrentChar(ctxt, &mut l);
         }
@@ -5649,9 +3446,9 @@ fn xmlParseAttValueComplex(
                 break;
             }
             /*
-             * Impose a reasonable limit on attribute size, unless XML_PARSE_HUGE
-             * special option is given
-             */
+            * Impose a reasonable limit on attribute size, unless XML_PARSE_HUGE
+            * special option is given
+            */
             if len > 10000000 as libc::c_int as libc::c_ulong
                 && (safe_ctxt).options & XML_PARSE_HUGE as libc::c_int == 0 as libc::c_int
             {
@@ -5697,9 +3494,9 @@ fn xmlParseAttValueComplex(
                                 unsafe { *buf.offset(fresh60 as isize) = '&' as i32 as xmlChar };
                             } else {
                                 /*
-                                 * The reparsing will be done in xmlStringGetNodeList()
-                                 * called by the attribute() function in SAX.c
-                                 */
+                                * The reparsing will be done in xmlStringGetNodeList()
+                                * called by the attribute() function in SAX.c
+                                */
                                 if len.wrapping_add(10 as libc::c_int as libc::c_ulong) > buf_size {
                                     let mut tmp_0: *mut xmlChar = 0 as *mut xmlChar;
                                     let mut new_size_0: size_t = buf_size
@@ -5933,9 +3730,9 @@ fn xmlParseAttValueComplex(
                             let mut i: libc::c_int = xmlStrlen_safe((safe_ent).name);
                             let mut cur: *const xmlChar = (safe_ent).name;
                             /*
-                             * This may look absurd but is needed to detect
-                             * entities problems
-                             */
+                            * This may look absurd but is needed to detect
+                            * entities problems
+                            */
                             if (safe_ent).etype as libc::c_uint
                                 != XML_INTERNAL_PREDEFINED_ENTITY as libc::c_int as libc::c_uint
                                 && !(safe_ent).content.is_null()
@@ -5983,8 +3780,8 @@ fn xmlParseAttValueComplex(
                                 }
                             }
                             /*
-                             * Just output the reference
-                             */
+                            * Just output the reference
+                            */
                             let fresh76 = len;
                             len = len.wrapping_add(1);
                             unsafe {
@@ -6195,9 +3992,9 @@ fn xmlParseAttValueComplex(
                         xmlNextChar_safe(ctxt);
                     }
                     /*
-                     * There we potentially risk an overflow, don't allow attribute value of
-                     * length more than INT_MAX it is a very reasonable assumption !
-                     */
+                    * There we potentially risk an overflow, don't allow attribute value of
+                    * length more than INT_MAX it is a very reasonable assumption !
+                    */
                     if len >= 2147483647 as libc::c_int as libc::c_ulong {
                         unsafe {
                             xmlFatalErrMsg(
@@ -6233,37 +4030,37 @@ fn xmlParseAttValueComplex(
     return 0 as *mut xmlChar;
 }
 /* *
- * xmlParseAttValue:
- * @ctxt:  an XML parser context
- *
- * parse a value for an attribute
- * Note: the parser won't do substitution of entities here, this
- * will be handled later in xmlStringGetNodeList
- *
- * [10] AttValue ::= '"' ([^<&"] | Reference)* '"' |
- *                   "'" ([^<&'] | Reference)* "'"
- *
- * 3.3.3 Attribute-Value Normalization:
- * Before the value of an attribute is passed to the application or
- * checked for validity, the XML processor must normalize it as follows:
- * - a character reference is processed by appending the referenced
- *   character to the attribute value
- * - an entity reference is processed by recursively processing the
- *   replacement text of the entity
- * - a whitespace character (#x20, #xD, #xA, #x9) is processed by
- *   appending #x20 to the normalized value, except that only a single
- *   #x20 is appended for a "#xD#xA" sequence that is part of an external
- *   parsed entity or the literal entity value of an internal parsed entity
- * - other characters are processed by appending them to the normalized value
- * If the declared value is not CDATA, then the XML processor must further
- * process the normalized attribute value by discarding any leading and
- * trailing space (#x20) characters, and by replacing sequences of space
- * (#x20) characters by a single space (#x20) character.
- * All attributes for which no declaration has been read should be treated
- * by a non-validating parser as if declared CDATA.
- *
- * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
- */
+* xmlParseAttValue:
+* @ctxt:  an XML parser context
+*
+* parse a value for an attribute
+* Note: the parser won't do substitution of entities here, this
+* will be handled later in xmlStringGetNodeList
+*
+* [10] AttValue ::= '"' ([^<&"] | Reference)* '"' |
+*                   "'" ([^<&'] | Reference)* "'"
+*
+* 3.3.3 Attribute-Value Normalization:
+* Before the value of an attribute is passed to the application or
+* checked for validity, the XML processor must normalize it as follows:
+* - a character reference is processed by appending the referenced
+*   character to the attribute value
+* - an entity reference is processed by recursively processing the
+*   replacement text of the entity
+* - a whitespace character (#x20, #xD, #xA, #x9) is processed by
+*   appending #x20 to the normalized value, except that only a single
+*   #x20 is appended for a "#xD#xA" sequence that is part of an external
+*   parsed entity or the literal entity value of an internal parsed entity
+* - other characters are processed by appending them to the normalized value
+* If the declared value is not CDATA, then the XML processor must further
+* process the normalized attribute value by discarding any leading and
+* trailing space (#x20) characters, and by replacing sequences of space
+* (#x20) characters by a single space (#x20) character.
+* All attributes for which no declaration has been read should be treated
+* by a non-validating parser as if declared CDATA.
+*
+* Returns the AttValue parsed or NULL. The value has to be freed by the caller.
+*/
 
 pub fn xmlParseAttValue(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     if ctxt.is_null() || unsafe { (*ctxt).input.is_null() } {
@@ -6279,15 +4076,15 @@ pub fn xmlParseAttValue(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     };
 }
 /* *
- * xmlParseSystemLiteral:
- * @ctxt:  an XML parser context
- *
- * parse an XML Literal
- *
- * [11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")
- *
- * Returns the SystemLiteral parsed or NULL
- */
+* xmlParseSystemLiteral:
+* @ctxt:  an XML parser context
+*
+* parse an XML Literal
+*
+* [11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")
+*
+* Returns the SystemLiteral parsed or NULL
+*/
 
 pub fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
@@ -6469,15 +4266,15 @@ pub fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     return buf;
 }
 /* *
- * xmlParsePubidLiteral:
- * @ctxt:  an XML parser context
- *
- * parse an XML public literal
- *
- * [12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
- *
- * Returns the PubidLiteral parsed or NULL.
- */
+* xmlParsePubidLiteral:
+* @ctxt:  an XML parser context
+*
+* parse an XML public literal
+*
+* [12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
+*
+* Returns the PubidLiteral parsed or NULL.
+*/
 
 pub fn xmlParsePubidLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
@@ -6619,8 +4416,8 @@ pub fn xmlParsePubidLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     return buf;
 }
 /*
- * used for the test in the inner loop of the char data testing
- */
+* used for the test in the inner loop of the char data testing
+*/
 static mut test_char_data: [libc::c_uchar; 256] = [
     0 as libc::c_int as libc::c_uchar,
     0 as libc::c_int as libc::c_uchar,
@@ -6880,20 +4677,20 @@ static mut test_char_data: [libc::c_uchar; 256] = [
     0 as libc::c_int as libc::c_uchar,
 ];
 /* *
- * xmlParseCharData:
- * @ctxt:  an XML parser context
- * @cdata:  int indicating whether we are within a CDATA section
- *
- * parse a CharData section.
- * if we are within a CDATA section ']]>' marks an end of section.
- *
- * The right angle bracket (>) may be represented using the string "&gt;",
- * and must, for compatibility, be escaped using "&gt;" or a character
- * reference when it appears in the string "]]>" in content, when that
- * string is not marking the end of a CDATA section.
- *
- * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
- */
+* xmlParseCharData:
+* @ctxt:  an XML parser context
+* @cdata:  int indicating whether we are within a CDATA section
+*
+* parse a CharData section.
+* if we are within a CDATA section ']]>' marks an end of section.
+*
+* The right angle bracket (>) may be represented using the string "&gt;",
+* and must, for compatibility, be escaped using "&gt;" or a character
+* reference when it appears in the string "]]>" in content, when that
+* string is not marking the end of a CDATA section.
+*
+* [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
+*/
 
 pub fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: libc::c_int) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -6920,9 +4717,9 @@ pub fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: libc::c_int) {
         xmlGROW(ctxt);
     }
     /*
-     * Accelerated common case where input don't need to be
-     * modified before passing it to the handler.
-     */
+    * Accelerated common case where input don't need to be
+    * modified before passing it to the handler.
+    */
     if cdata == 0 {
         in_0 = unsafe { (*(*ctxt).input).cur };
         loop {
@@ -7176,14 +4973,14 @@ pub fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: libc::c_int) {
     xmlParseCharDataComplex(ctxt, cdata);
 }
 /* *
- * xmlParseCharDataComplex:
- * @ctxt:  an XML parser context
- * @cdata:  int indicating whether we are within a CDATA section
- *
- * parse a CharData section.this is the fallback function
- * of xmlParseCharData() when the parsing requires handling
- * of non-ASCII characters.
- */
+* xmlParseCharDataComplex:
+* @ctxt:  an XML parser context
+* @cdata:  int indicating whether we are within a CDATA section
+*
+* parse a CharData section.this is the fallback function
+* of xmlParseCharData() when the parsing requires handling
+* of non-ASCII characters.
+*/
 fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: libc::c_int) {
     let mut buf: [xmlChar; 305] = [0; 305];
     let mut nbchar: libc::c_int = 0 as libc::c_int;
@@ -7248,8 +5045,8 @@ fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: libc::c_int) {
         if nbchar >= 300 as libc::c_int {
             buf[nbchar as usize] = 0 as libc::c_int as xmlChar;
             /*
-             * OK the segment is to be consumed as chars.
-             */
+            * OK the segment is to be consumed as chars.
+            */
             if !(safe_ctxt).sax.is_null() && (safe_ctxt).disableSAX == 0 {
                 if areBlanks(ctxt, buf.as_mut_ptr(), nbchar, 0 as libc::c_int) != 0 {
                     unsafe {
@@ -7327,8 +5124,8 @@ fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: libc::c_int) {
     if nbchar != 0 as libc::c_int {
         buf[nbchar as usize] = 0 as libc::c_int as xmlChar;
         /*
-         * OK the segment is to be consumed as chars.
-         */
+        * OK the segment is to be consumed as chars.
+        */
         if !(safe_ctxt).sax.is_null() && (safe_ctxt).disableSAX == 0 {
             if areBlanks(ctxt, buf.as_mut_ptr(), nbchar, 0 as libc::c_int) != 0 {
                 unsafe {
@@ -7395,26 +5192,26 @@ fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: libc::c_int) {
     };
 }
 /* *
- * xmlParseExternalID:
- * @ctxt:  an XML parser context
- * @publicID:  a xmlChar** receiving PubidLiteral
- * @strict: indicate whether we should restrict parsing to only
- *          production [75], see NOTE below
- *
- * Parse an External ID or a Public ID
- *
- * NOTE: Productions [75] and [83] interact badly since [75] can generate
- *       'PUBLIC' S PubidLiteral S SystemLiteral
- *
- * [75] ExternalID ::= 'SYSTEM' S SystemLiteral
- *                   | 'PUBLIC' S PubidLiteral S SystemLiteral
- *
- * [83] PublicID ::= 'PUBLIC' S PubidLiteral
- *
- * Returns the function returns SystemLiteral and in the second
- *                case publicID receives PubidLiteral, is strict is off
- *                it is possible to return NULL and have publicID set.
- */
+* xmlParseExternalID:
+* @ctxt:  an XML parser context
+* @publicID:  a xmlChar** receiving PubidLiteral
+* @strict: indicate whether we should restrict parsing to only
+*          production [75], see NOTE below
+*
+* Parse an External ID or a Public ID
+*
+* NOTE: Productions [75] and [83] interact badly since [75] can generate
+*       'PUBLIC' S PubidLiteral S SystemLiteral
+*
+* [75] ExternalID ::= 'SYSTEM' S SystemLiteral
+*                   | 'PUBLIC' S PubidLiteral S SystemLiteral
+*
+* [83] PublicID ::= 'PUBLIC' S PubidLiteral
+*
+* Returns the function returns SystemLiteral and in the second
+*                case publicID receives PubidLiteral, is strict is off
+*                it is possible to return NULL and have publicID set.
+*/
 
 pub fn xmlParseExternalID(
     mut ctxt: xmlParserCtxtPtr,
@@ -7519,8 +5316,8 @@ pub fn xmlParseExternalID(
         }
         if strict != 0 {
             /*
-             * We don't handle [83] so "S SystemLiteral" is required.
-             */
+            * We don't handle [83] so "S SystemLiteral" is required.
+            */
             if xmlSkipBlankChars(ctxt) == 0 as libc::c_int {
                 unsafe {
                     xmlFatalErrMsg(
@@ -7533,11 +5330,11 @@ pub fn xmlParseExternalID(
             }
         } else {
             /*
-             * We handle [83] so we return immediately, if
-             * "S SystemLiteral" is not detected. We skip blanks if no
-             * system literal was found, but this is harmless since we must
-             * be at the end of a NotationDecl.
-             */
+            * We handle [83] so we return immediately, if
+            * "S SystemLiteral" is not detected. We skip blanks if no
+            * system literal was found, but this is harmless since we must
+            * be at the end of a NotationDecl.
+            */
             if xmlSkipBlankChars(ctxt) == 0 as libc::c_int {
                 return 0 as *mut xmlChar;
             }
@@ -7558,19 +5355,19 @@ pub fn xmlParseExternalID(
     return URI;
 }
 /* *
- * xmlParseCommentComplex:
- * @ctxt:  an XML parser context
- * @buf:  the already parsed part of the buffer
- * @len:  number of bytes in the buffer
- * @size:  allocated size of the buffer
- *
- * Skip an XML (SGML) comment <!-- .... -->
- *  The spec says that "For compatibility, the string "--" (double-hyphen)
- *  must not occur within comments. "
- * This is the slow routine in case the accelerator for ascii didn't work
- *
- * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
- */
+* xmlParseCommentComplex:
+* @ctxt:  an XML parser context
+* @buf:  the already parsed part of the buffer
+* @len:  number of bytes in the buffer
+* @size:  allocated size of the buffer
+*
+* Skip an XML (SGML) comment <!-- .... -->
+*  The spec says that "For compatibility, the string "--" (double-hyphen)
+*  must not occur within comments. "
+* This is the slow routine in case the accelerator for ascii didn't work
+*
+* [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
+*/
 fn xmlParseCommentComplex(
     mut ctxt: xmlParserCtxtPtr,
     mut buf: *mut xmlChar,
@@ -7878,15 +5675,15 @@ fn xmlParseCommentComplex(
     xmlFree_safe(buf as *mut libc::c_void);
 }
 /* *
- * xmlParseComment:
- * @ctxt:  an XML parser context
- *
- * Skip an XML (SGML) comment <!-- .... -->
- *  The spec says that "For compatibility, the string "--" (double-hyphen)
- *  must not occur within comments. "
- *
- * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
- */
+* xmlParseComment:
+* @ctxt:  an XML parser context
+*
+* Skip an XML (SGML) comment <!-- .... -->
+*  The spec says that "For compatibility, the string "--" (double-hyphen)
+*  must not occur within comments. "
+*
+* [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
+*/
 
 pub fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
@@ -7899,8 +5696,8 @@ pub fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
     let mut inputid: libc::c_int = 0;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     /*
-     * Check that there is a comment right here.
-     */
+    * Check that there is a comment right here.
+    */
     if unsafe {
         *(*(*ctxt).input).cur as libc::c_int != '<' as i32
             || *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int != '!' as i32
@@ -7936,9 +5733,9 @@ pub fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
         xmlGROW(ctxt);
     }
     /*
-     * Accelerated common case where input don't need to be
-     * modified before passing it to the handler.
-     */
+    * Accelerated common case where input don't need to be
+    * modified before passing it to the handler.
+    */
     in_0 = unsafe { (*(*ctxt).input).cur };
     loop {
         //@todo unsafe范围缩小
@@ -7977,8 +5774,8 @@ pub fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
                 } else {
                     nbchar = in_0.offset_from((*(*ctxt).input).cur) as libc::c_long as size_t;
                     /*
-                     * save current set of data
-                     */
+                    * save current set of data
+                    */
                     if nbchar > 0 as libc::c_int as libc::c_ulong {
                         if !(*ctxt).sax.is_null() && (*(*ctxt).sax).comment.is_some() {
                             if buf.is_null() {
@@ -8172,15 +5969,15 @@ pub fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
     (safe_ctxt).instate = state;
 }
 /* *
- * xmlParsePITarget:
- * @ctxt:  an XML parser context
- *
- * parse the name of a PI
- *
- * [17] PITarget ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
- *
- * Returns the PITarget name or NULL
- */
+* xmlParsePITarget:
+* @ctxt:  an XML parser context
+*
+* parse the name of a PI
+*
+* [17] PITarget ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
+*
+* Returns the PITarget name or NULL
+*/
 
 pub fn xmlParsePITarget(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -8252,19 +6049,19 @@ pub fn xmlParsePITarget(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     return name;
 }
 /* *
- * xmlParseCatalogPI:
- * @ctxt:  an XML parser context
- * @catalog:  the PI value string
- *
- * parse an XML Catalog Processing Instruction.
- *
- * <?oasis-xml-catalog catalog="http://example.com/catalog.xml"?>
- *
- * Occurs only if allowed by the user and if happening in the Misc
- * part of the document before any doctype information
- * This will add the given catalog to the parsing context in order
- * to be used if there is a resolution need further down in the document
- */
+* xmlParseCatalogPI:
+* @ctxt:  an XML parser context
+* @catalog:  the PI value string
+*
+* parse an XML Catalog Processing Instruction.
+*
+* <?oasis-xml-catalog catalog="http://example.com/catalog.xml"?>
+*
+* Occurs only if allowed by the user and if happening in the Misc
+* part of the document before any doctype information
+* This will add the given catalog to the parsing context in order
+* to be used if there is a resolution need further down in the document
+*/
 
 #[cfg(HAVE_parser_LIBXML_CATALOG_ENABLED)]
 fn xmlParseCatalogPI(mut ctxt: xmlParserCtxtPtr, mut catalog: *const xmlChar) {
@@ -8359,15 +6156,15 @@ fn xmlParseCatalogPI(mut ctxt: xmlParserCtxtPtr, mut catalog: *const xmlChar) {
     };
 }
 /* *
- * xmlParsePI:
- * @ctxt:  an XML parser context
- *
- * parse an XML Processing Instruction.
- *
- * [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
- *
- * The processing is transferred to SAX once parsed.
- */
+* xmlParsePI:
+* @ctxt:  an XML parser context
+*
+* parse an XML Processing Instruction.
+*
+* [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
+*
+* The processing is transferred to SAX once parsed.
+*/
 
 pub fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
@@ -8387,8 +6184,8 @@ pub fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
         state = (safe_ctxt).instate;
         (safe_ctxt).instate = XML_PARSER_PI;
         /*
-         * this is a Processing Instruction.
-         */
+        * this is a Processing Instruction.
+        */
         unsafe {
             (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as libc::c_int as isize);
             (*(*ctxt).input).col += 2 as libc::c_int;
@@ -8406,9 +6203,9 @@ pub fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
             xmlSHRINK(ctxt);
         }
         /*
-         * Parse the target name and check for special support like
-         * namespace.
-         */
+        * Parse the target name and check for special support like
+        * namespace.
+        */
         target = xmlParsePITarget(ctxt);
         if !target.is_null() {
             if unsafe {
@@ -8434,8 +6231,8 @@ pub fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                     xmlParserInputGrow_safe((safe_ctxt).input, 250 as libc::c_int);
                 }
                 /*
-                 * SAX: PI detected.
-                 */
+                * SAX: PI detected.
+                */
                 unsafe {
                     if !(*ctxt).sax.is_null()
                         && (*ctxt).disableSAX == 0
@@ -8665,8 +6462,8 @@ pub fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                 };
 
                 /*
-                 * SAX: PI detected.
-                 */
+                * SAX: PI detected.
+                */
                 unsafe {
                     if !(*ctxt).sax.is_null()
                         && (*ctxt).disableSAX == 0
@@ -8692,20 +6489,20 @@ pub fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlParseNotationDecl:
- * @ctxt:  an XML parser context
- *
- * parse a notation declaration
- *
- * [82] NotationDecl ::= '<!NOTATION' S Name S (ExternalID |  PublicID) S? '>'
- *
- * Hence there is actually 3 choices:
- *     'PUBLIC' S PubidLiteral
- *     'PUBLIC' S PubidLiteral S SystemLiteral
- * and 'SYSTEM' S SystemLiteral
- *
- * See the NOTE on xmlParseExternalID().
- */
+* xmlParseNotationDecl:
+* @ctxt:  an XML parser context
+*
+* parse a notation declaration
+*
+* [82] NotationDecl ::= '<!NOTATION' S Name S (ExternalID |  PublicID) S? '>'
+*
+* Hence there is actually 3 choices:
+*     'PUBLIC' S PubidLiteral
+*     'PUBLIC' S PubidLiteral S SystemLiteral
+* and 'SYSTEM' S SystemLiteral
+*
+* See the NOTE on xmlParseExternalID().
+*/
 
 pub fn xmlParseNotationDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -8803,8 +6600,8 @@ pub fn xmlParseNotationDecl(mut ctxt: xmlParserCtxtPtr) {
             return;
         }
         /*
-         * Parse the IDs.
-         */
+        * Parse the IDs.
+        */
         Systemid = xmlParseExternalID(ctxt, &mut Pubid, 0 as libc::c_int);
         xmlSkipBlankChars(ctxt);
         unsafe {
@@ -8849,26 +6646,26 @@ pub fn xmlParseNotationDecl(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlParseEntityDecl:
- * @ctxt:  an XML parser context
- *
- * parse <!ENTITY declarations
- *
- * [70] EntityDecl ::= GEDecl | PEDecl
- *
- * [71] GEDecl ::= '<!ENTITY' S Name S EntityDef S? '>'
- *
- * [72] PEDecl ::= '<!ENTITY' S '%' S Name S PEDef S? '>'
- *
- * [73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)
- *
- * [74] PEDef ::= EntityValue | ExternalID
- *
- * [76] NDataDecl ::= S 'NDATA' S Name
- *
- * [ VC: Notation Declared ]
- * The Name must match the declared name of a notation.
- */
+* xmlParseEntityDecl:
+* @ctxt:  an XML parser context
+*
+* parse <!ENTITY declarations
+*
+* [70] EntityDecl ::= GEDecl | PEDecl
+*
+* [71] GEDecl ::= '<!ENTITY' S Name S EntityDef S? '>'
+*
+* [72] PEDecl ::= '<!ENTITY' S '%' S Name S PEDef S? '>'
+*
+* [73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)
+*
+* [74] PEDef ::= EntityValue | ExternalID
+*
+* [76] NDataDecl ::= S 'NDATA' S Name
+*
+* [ VC: Notation Declared ]
+* The Name must match the declared name of a notation.
+*/
 
 pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -8968,8 +6765,8 @@ pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
             }
             (*ctxt).instate = XML_PARSER_ENTITY_DECL;
             /*
-             * handle the various case of definitions...
-             */
+            * handle the various case of definitions...
+            */
             if isParameter != 0 {
                 if *(*(*ctxt).input).cur as libc::c_int == '\"' as i32
                     || *(*(*ctxt).input).cur as libc::c_int == '\'' as i32
@@ -9008,10 +6805,10 @@ pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                                 URI,
                             );
                             /*
-                             * This really ought to be a well formedness error
-                             * but the XML Core WG decided otherwise c.f. issue
-                             * E26 of the XML erratas.
-                             */
+                            * This really ought to be a well formedness error
+                            * but the XML Core WG decided otherwise c.f. issue
+                            * E26 of the XML erratas.
+                            */
                         } else {
                             if !(*uri).fragment.is_null() {
                                 /*
@@ -9058,8 +6855,8 @@ pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                     );
                 }
                 /*
-                 * For expat compatibility in SAX mode.
-                 */
+                * For expat compatibility in SAX mode.
+                */
                 if (*ctxt).myDoc.is_null()
                     || xmlStrEqual_safe(
                         (*(*ctxt).myDoc).version,
@@ -9114,10 +6911,10 @@ pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                             URI,
                         );
                         /*
-                         * This really ought to be a well formedness error
-                         * but the XML Core WG decided otherwise c.f. issue
-                         * E26 of the XML erratas.
-                         */
+                        * This really ought to be a well formedness error
+                        * but the XML Core WG decided otherwise c.f. issue
+                        * E26 of the XML erratas.
+                        */
                     } else {
                         if !(*uri_0).fragment.is_null() {
                             /*
@@ -9200,9 +6997,9 @@ pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                         );
                     }
                     /*
-                     * For expat compatibility in SAX mode.
-                     * assuming the entity replacement was asked for
-                     */
+                    * For expat compatibility in SAX mode.
+                    * assuming the entity replacement was asked for
+                    */
                     if (*ctxt).replaceEntities != 0 as libc::c_int
                         && ((*ctxt).myDoc.is_null()
                             || xmlStrEqual_safe(
@@ -9270,8 +7067,8 @@ pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                 }
                 if !orig.is_null() {
                     /*
-                     * Ugly mechanism to save the raw entity value.
-                     */
+                    * Ugly mechanism to save the raw entity value.
+                    */
                     let mut cur: xmlEntityPtr = 0 as xmlEntityPtr;
                     if isParameter != 0 {
                         if !(*ctxt).sax.is_null() && (*(*ctxt).sax).getParameterEntity.is_some() {
@@ -9314,33 +7111,33 @@ pub fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
     }
 }
 /* *
- * xmlParseDefaultDecl:
- * @ctxt:  an XML parser context
- * @value:  Receive a possible fixed default value for the attribute
- *
- * Parse an attribute default declaration
- *
- * [60] DefaultDecl ::= '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)
- *
- * [ VC: Required Attribute ]
- * if the default declaration is the keyword #REQUIRED, then the
- * attribute must be specified for all elements of the type in the
- * attribute-list declaration.
- *
- * [ VC: Attribute Default Legal ]
- * The declared default value must meet the lexical constraints of
- * the declared attribute type c.f. xmlValidateAttributeDecl()
- *
- * [ VC: Fixed Attribute Default ]
- * if an attribute has a default value declared with the #FIXED
- * keyword, instances of that attribute must match the default value.
- *
- * [ WFC: No < in Attribute Values ]
- * handled in xmlParseAttValue()
- *
- * returns: XML_ATTRIBUTE_NONE, XML_ATTRIBUTE_REQUIRED, XML_ATTRIBUTE_IMPLIED
- *          or XML_ATTRIBUTE_FIXED.
- */
+* xmlParseDefaultDecl:
+* @ctxt:  an XML parser context
+* @value:  Receive a possible fixed default value for the attribute
+*
+* Parse an attribute default declaration
+*
+* [60] DefaultDecl ::= '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)
+*
+* [ VC: Required Attribute ]
+* if the default declaration is the keyword #REQUIRED, then the
+* attribute must be specified for all elements of the type in the
+* attribute-list declaration.
+*
+* [ VC: Attribute Default Legal ]
+* The declared default value must meet the lexical constraints of
+* the declared attribute type c.f. xmlValidateAttributeDecl()
+*
+* [ VC: Fixed Attribute Default ]
+* if an attribute has a default value declared with the #FIXED
+* keyword, instances of that attribute must match the default value.
+*
+* [ WFC: No < in Attribute Values ]
+* handled in xmlParseAttValue()
+*
+* returns: XML_ATTRIBUTE_NONE, XML_ATTRIBUTE_REQUIRED, XML_ATTRIBUTE_IMPLIED
+*          or XML_ATTRIBUTE_FIXED.
+*/
 
 pub fn xmlParseDefaultDecl(
     mut ctxt: xmlParserCtxtPtr,
@@ -9468,21 +7265,21 @@ pub fn xmlParseDefaultDecl(
     return val;
 }
 /* *
- * xmlParseNotationType:
- * @ctxt:  an XML parser context
- *
- * parse an Notation attribute type.
- *
- * Note: the leading 'NOTATION' S part has already being parsed...
- *
- * [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
- *
- * [ VC: Notation Attributes ]
- * Values of this type must match one of the notation names included
- * in the declaration; all notation names in the declaration must be declared.
- *
- * Returns: the notation attribute tree built while parsing
- */
+* xmlParseNotationType:
+* @ctxt:  an XML parser context
+*
+* parse an Notation attribute type.
+*
+* Note: the leading 'NOTATION' S part has already being parsed...
+*
+* [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
+*
+* [ VC: Notation Attributes ]
+* Values of this type must match one of the notation names included
+* in the declaration; all notation names in the declaration must be declared.
+*
+* Returns: the notation attribute tree built while parsing
+*/
 
 pub fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -9580,19 +7377,19 @@ pub fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
     return ret;
 }
 /* *
- * xmlParseEnumerationType:
- * @ctxt:  an XML parser context
- *
- * parse an Enumeration attribute type.
- *
- * [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
- *
- * [ VC: Enumeration ]
- * Values of this type must match one of the Nmtoken tokens in
- * the declaration
- *
- * Returns: the enumeration attribute tree built while parsing
- */
+* xmlParseEnumerationType:
+* @ctxt:  an XML parser context
+*
+* parse an Enumeration attribute type.
+*
+* [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
+*
+* [ VC: Enumeration ]
+* Values of this type must match one of the Nmtoken tokens in
+* the declaration
+*
+* Returns: the enumeration attribute tree built while parsing
+*/
 
 pub fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
     let mut name: *mut xmlChar = 0 as *mut xmlChar;
@@ -9681,19 +7478,19 @@ pub fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr 
     return ret;
 }
 /* *
- * xmlParseEnumeratedType:
- * @ctxt:  an XML parser context
- * @tree:  the enumeration tree built while parsing
- *
- * parse an Enumerated attribute type.
- *
- * [57] EnumeratedType ::= NotationType | Enumeration
- *
- * [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
- *
- *
- * Returns: XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION
- */
+* xmlParseEnumeratedType:
+* @ctxt:  an XML parser context
+* @tree:  the enumeration tree built while parsing
+*
+* parse an Enumerated attribute type.
+*
+* [57] EnumeratedType ::= NotationType | Enumeration
+*
+* [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
+*
+*
+* Returns: XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION
+*/
 
 pub fn xmlParseEnumeratedType(
     mut ctxt: xmlParserCtxtPtr,
@@ -9753,50 +7550,50 @@ pub fn xmlParseEnumeratedType(
     return XML_ATTRIBUTE_ENUMERATION as libc::c_int;
 }
 /* *
- * xmlParseAttributeType:
- * @ctxt:  an XML parser context
- * @tree:  the enumeration tree built while parsing
- *
- * parse the Attribute list def for an element
- *
- * [54] AttType ::= StringType | TokenizedType | EnumeratedType
- *
- * [55] StringType ::= 'CDATA'
- *
- * [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' |
- *                        'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'
- *
- * Validity constraints for attribute values syntax are checked in
- * xmlValidateAttributeValue()
- *
- * [ VC: ID ]
- * Values of type ID must match the Name production. A name must not
- * appear more than once in an XML document as a value of this type;
- * i.e., ID values must uniquely identify the elements which bear them.
- *
- * [ VC: One ID per Element Type ]
- * No element type may have more than one ID attribute specified.
- *
- * [ VC: ID Attribute Default ]
- * An ID attribute must have a declared default of #IMPLIED or #REQUIRED.
- *
- * [ VC: IDREF ]
- * Values of type IDREF must match the Name production, and values
- * of type IDREFS must match Names; each IDREF Name must match the value
- * of an ID attribute on some element in the XML document; i.e. IDREF
- * values must match the value of some ID attribute.
- *
- * [ VC: Entity Name ]
- * Values of type ENTITY must match the Name production, values
- * of type ENTITIES must match Names; each Entity Name must match the
- * name of an unparsed entity declared in the DTD.
- *
- * [ VC: Name Token ]
- * Values of type NMTOKEN must match the Nmtoken production; values
- * of type NMTOKENS must match Nmtokens.
- *
- * Returns the attribute type
- */
+* xmlParseAttributeType:
+* @ctxt:  an XML parser context
+* @tree:  the enumeration tree built while parsing
+*
+* parse the Attribute list def for an element
+*
+* [54] AttType ::= StringType | TokenizedType | EnumeratedType
+*
+* [55] StringType ::= 'CDATA'
+*
+* [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' |
+*                        'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'
+*
+* Validity constraints for attribute values syntax are checked in
+* xmlValidateAttributeValue()
+*
+* [ VC: ID ]
+* Values of type ID must match the Name production. A name must not
+* appear more than once in an XML document as a value of this type;
+* i.e., ID values must uniquely identify the elements which bear them.
+*
+* [ VC: One ID per Element Type ]
+* No element type may have more than one ID attribute specified.
+*
+* [ VC: ID Attribute Default ]
+* An ID attribute must have a declared default of #IMPLIED or #REQUIRED.
+*
+* [ VC: IDREF ]
+* Values of type IDREF must match the Name production, and values
+* of type IDREFS must match Names; each IDREF Name must match the value
+* of an ID attribute on some element in the XML document; i.e. IDREF
+* values must match the value of some ID attribute.
+*
+* [ VC: Entity Name ]
+* Values of type ENTITY must match the Name production, values
+* of type ENTITIES must match Names; each Entity Name must match the
+* name of an unparsed entity declared in the DTD.
+*
+* [ VC: Name Token ]
+* Values of type NMTOKEN must match the Nmtoken production; values
+* of type NMTOKENS must match Nmtokens.
+*
+* Returns the attribute type
+*/
 
 pub fn xmlParseAttributeType(
     mut ctxt: xmlParserCtxtPtr,
@@ -10063,16 +7860,16 @@ pub fn xmlParseAttributeType(
     return xmlParseEnumeratedType(ctxt, tree);
 }
 /* *
- * xmlParseAttributeListDecl:
- * @ctxt:  an XML parser context
- *
- * : parse the Attribute list def for an element
- *
- * [52] AttlistDecl ::= '<!ATTLIST' S Name AttDef* S? '>'
- *
- * [53] AttDef ::= S Name S AttType S DefaultDecl
- *
- */
+* xmlParseAttributeListDecl:
+* @ctxt:  an XML parser context
+*
+* : parse the Attribute list def for an element
+*
+* [52] AttlistDecl ::= '<!ATTLIST' S Name AttDef* S? '>'
+*
+* [53] AttDef ::= S Name S AttType S DefaultDecl
+*
+*/
 
 pub fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut elemName: *const xmlChar = 0 as *const xmlChar;
@@ -10222,10 +8019,10 @@ pub fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                                 if *(*(*ctxt).input).cur as libc::c_int != '>' as i32 {
                                     if xmlSkipBlankChars(ctxt) == 0 as libc::c_int {
                                         xmlFatalErrMsg(ctxt,
-                                                       XML_ERR_SPACE_REQUIRED,
-                                                       b"Space required after the attribute default value\n\x00"
-                                                           as *const u8 as
-                                                           *const libc::c_char);
+                                   XML_ERR_SPACE_REQUIRED,
+                                   b"Space required after the attribute default value\n\x00"
+                                       as *const u8 as
+                                       *const libc::c_char);
                                         if !defaultValue.is_null() {
                                             xmlFree_safe(defaultValue as *mut libc::c_void);
                                         }
@@ -10281,8 +8078,8 @@ pub fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
             if *(*(*ctxt).input).cur as libc::c_int == '>' as i32 {
                 if inputid != (*(*ctxt).input).id {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                                   b"Attribute list declaration doesn\'t start and stop in the same entity\n\x00"
-                                       as *const u8 as *const libc::c_char);
+               b"Attribute list declaration doesn\'t start and stop in the same entity\n\x00"
+                   as *const u8 as *const libc::c_char);
                 }
                 xmlNextChar_safe(ctxt);
             }
@@ -10290,24 +8087,24 @@ pub fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
     }
 }
 /* *
- * xmlParseElementMixedContentDecl:
- * @ctxt:  an XML parser context
- * @inputchk:  the input used for the current entity, needed for boundary checks
- *
- * parse the declaration for a Mixed Element content
- * The leading '(' and spaces have been skipped in xmlParseElementContentDecl
- *
- * [51] Mixed ::= '(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' |
- *                '(' S? '#PCDATA' S? ')'
- *
- * [ VC: Proper Group/PE Nesting ] applies to [51] too (see [49])
- *
- * [ VC: No Duplicate Types ]
- * The same name must not appear more than once in a single
- * mixed-content declaration.
- *
- * returns: the list of the xmlElementContentPtr describing the element choices
- */
+* xmlParseElementMixedContentDecl:
+* @ctxt:  an XML parser context
+* @inputchk:  the input used for the current entity, needed for boundary checks
+*
+* parse the declaration for a Mixed Element content
+* The leading '(' and spaces have been skipped in xmlParseElementContentDecl
+*
+* [51] Mixed ::= '(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' |
+*                '(' S? '#PCDATA' S? ')'
+*
+* [ VC: Proper Group/PE Nesting ] applies to [51] too (see [49])
+*
+* [ VC: No Duplicate Types ]
+* The same name must not appear more than once in a single
+* mixed-content declaration.
+*
+* returns: the list of the xmlElementContentPtr describing the element choices
+*/
 
 pub fn xmlParseElementMixedContentDecl(
     mut ctxt: xmlParserCtxtPtr,
@@ -10364,8 +8161,8 @@ pub fn xmlParseElementMixedContentDecl(
             if *(*(*ctxt).input).cur as libc::c_int == ')' as i32 {
                 if (*(*ctxt).input).id != inputchk {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                                   b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
-                                       as *const u8 as *const libc::c_char);
+               b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
+                   as *const u8 as *const libc::c_char);
                 }
                 xmlNextChar_safe(ctxt);
                 ret = xmlNewDocElementContent_safe(
@@ -10477,8 +8274,8 @@ pub fn xmlParseElementMixedContentDecl(
                 }
                 if (*(*ctxt).input).id != inputchk {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                                   b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
-                                       as *const u8 as *const libc::c_char);
+               b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
+                   as *const u8 as *const libc::c_char);
                 }
                 (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as libc::c_int as isize);
                 (*(*ctxt).input).col += 2 as libc::c_int;
@@ -10497,37 +8294,37 @@ pub fn xmlParseElementMixedContentDecl(
     return ret;
 }
 /* *
- * xmlParseElementChildrenContentDeclPriv:
- * @ctxt:  an XML parser context
- * @inputchk:  the input used for the current entity, needed for boundary checks
- * @depth: the level of recursion
- *
- * parse the declaration for a Mixed Element content
- * The leading '(' and spaces have been skipped in xmlParseElementContentDecl
- *
- *
- * [47] children ::= (choice | seq) ('?' | '*' | '+')?
- *
- * [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
- *
- * [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
- *
- * [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
- *
- * [ VC: Proper Group/PE Nesting ] applies to [49] and [50]
- * TODO Parameter-entity replacement text must be properly nested
- *	with parenthesized groups. That is to say, if either of the
- *	opening or closing parentheses in a choice, seq, or Mixed
- *	construct is contained in the replacement text for a parameter
- *	entity, both must be contained in the same replacement text. For
- *	interoperability, if a parameter-entity reference appears in a
- *	choice, seq, or Mixed construct, its replacement text should not
- *	be empty, and neither the first nor last non-blank character of
- *	the replacement text should be a connector (| or ,).
- *
- * Returns the tree of xmlElementContentPtr describing the element
- *          hierarchy.
- */
+* xmlParseElementChildrenContentDeclPriv:
+* @ctxt:  an XML parser context
+* @inputchk:  the input used for the current entity, needed for boundary checks
+* @depth: the level of recursion
+*
+* parse the declaration for a Mixed Element content
+* The leading '(' and spaces have been skipped in xmlParseElementContentDecl
+*
+*
+* [47] children ::= (choice | seq) ('?' | '*' | '+')?
+*
+* [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
+*
+* [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
+*
+* [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
+*
+* [ VC: Proper Group/PE Nesting ] applies to [49] and [50]
+* TODO Parameter-entity replacement text must be properly nested
+*	with parenthesized groups. That is to say, if either of the
+*	opening or closing parentheses in a choice, seq, or Mixed
+*	construct is contained in the replacement text for a parameter
+*	entity, both must be contained in the same replacement text. For
+*	interoperability, if a parameter-entity reference appears in a
+*	choice, seq, or Mixed construct, its replacement text should not
+*	be empty, and neither the first nor last non-blank character of
+*	the replacement text should be a connector (| or ,).
+*
+* Returns the tree of xmlElementContentPtr describing the element
+*          hierarchy.
+*/
 fn xmlParseElementChildrenContentDeclPriv(
     mut ctxt: xmlParserCtxtPtr,
     mut inputchk: libc::c_int,
@@ -10649,8 +8446,8 @@ fn xmlParseElementChildrenContentDeclPriv(
             && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int
     } {
         /*
-         * Each loop we parse one separator and one element.
-         */
+        * Each loop we parse one separator and one element.
+        */
         if unsafe { *(*(*ctxt).input).cur as libc::c_int == ',' as i32 } {
             if type_0 as libc::c_int == 0 as libc::c_int {
                 unsafe { type_0 = *(*(*ctxt).input).cur };
@@ -10801,11 +8598,11 @@ fn xmlParseElementChildrenContentDeclPriv(
         if unsafe { *(*(*ctxt).input).cur as libc::c_int == '(' as i32 } {
             let mut inputid_0: libc::c_int = unsafe { (*(*ctxt).input).id };
             /*
-             * Detect "Name | Name , Name" error
-             */
+            * Detect "Name | Name , Name" error
+            */
             /*
-             * Detect "Name , Name | Name" error
-             */
+            * Detect "Name , Name | Name" error
+            */
             /* Recurse on second child */
             xmlNextChar_safe(ctxt);
             xmlSkipBlankChars(ctxt);
@@ -10903,9 +8700,9 @@ fn xmlParseElementChildrenContentDeclPriv(
                 (*ret).ocur = XML_ELEMENT_CONTENT_MULT;
                 cur = ret;
                 /*
-                 * Some normalization:
-                 * (a | b* | c?)* == (a | b | c)*
-                 */
+                * Some normalization:
+                * (a | b* | c?)* == (a | b | c)*
+                */
                 while !cur.is_null()
                     && (*cur).type_0 as libc::c_uint
                         == XML_ELEMENT_CONTENT_OR as libc::c_int as libc::c_uint
@@ -10943,10 +8740,10 @@ fn xmlParseElementChildrenContentDeclPriv(
                     (*ret).ocur = XML_ELEMENT_CONTENT_PLUS
                 }
                 /*
-                 * Some normalization:
-                 * (a | b*)+ == (a | b)*
-                 * (a | b?)+ == (a | b)*
-                 */
+                * Some normalization:
+                * (a | b*)+ == (a | b)*
+                * (a | b?)+ == (a | b)*
+                */
                 while !cur.is_null()
                     && (*cur).type_0 as libc::c_uint
                         == XML_ELEMENT_CONTENT_OR as libc::c_int as libc::c_uint
@@ -10981,35 +8778,35 @@ fn xmlParseElementChildrenContentDeclPriv(
     return ret;
 }
 /* *
- * xmlParseElementChildrenContentDecl:
- * @ctxt:  an XML parser context
- * @inputchk:  the input used for the current entity, needed for boundary checks
- *
- * parse the declaration for a Mixed Element content
- * The leading '(' and spaces have been skipped in xmlParseElementContentDecl
- *
- * [47] children ::= (choice | seq) ('?' | '*' | '+')?
- *
- * [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
- *
- * [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
- *
- * [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
- *
- * [ VC: Proper Group/PE Nesting ] applies to [49] and [50]
- * TODO Parameter-entity replacement text must be properly nested
- *	with parenthesized groups. That is to say, if either of the
- *	opening or closing parentheses in a choice, seq, or Mixed
- *	construct is contained in the replacement text for a parameter
- *	entity, both must be contained in the same replacement text. For
- *	interoperability, if a parameter-entity reference appears in a
- *	choice, seq, or Mixed construct, its replacement text should not
- *	be empty, and neither the first nor last non-blank character of
- *	the replacement text should be a connector (| or ,).
- *
- * Returns the tree of xmlElementContentPtr describing the element
- *          hierarchy.
- */
+* xmlParseElementChildrenContentDecl:
+* @ctxt:  an XML parser context
+* @inputchk:  the input used for the current entity, needed for boundary checks
+*
+* parse the declaration for a Mixed Element content
+* The leading '(' and spaces have been skipped in xmlParseElementContentDecl
+*
+* [47] children ::= (choice | seq) ('?' | '*' | '+')?
+*
+* [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
+*
+* [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
+*
+* [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
+*
+* [ VC: Proper Group/PE Nesting ] applies to [49] and [50]
+* TODO Parameter-entity replacement text must be properly nested
+*	with parenthesized groups. That is to say, if either of the
+*	opening or closing parentheses in a choice, seq, or Mixed
+*	construct is contained in the replacement text for a parameter
+*	entity, both must be contained in the same replacement text. For
+*	interoperability, if a parameter-entity reference appears in a
+*	choice, seq, or Mixed construct, its replacement text should not
+*	be empty, and neither the first nor last non-blank character of
+*	the replacement text should be a connector (| or ,).
+*
+* Returns the tree of xmlElementContentPtr describing the element
+*          hierarchy.
+*/
 
 pub fn xmlParseElementChildrenContentDecl(
     mut ctxt: xmlParserCtxtPtr,
@@ -11019,18 +8816,18 @@ pub fn xmlParseElementChildrenContentDecl(
     return xmlParseElementChildrenContentDeclPriv(ctxt, inputchk, 1 as libc::c_int);
 }
 /* *
- * xmlParseElementContentDecl:
- * @ctxt:  an XML parser context
- * @name:  the name of the element being defined.
- * @result:  the Element Content pointer will be stored here if any
- *
- * parse the declaration for an Element content either Mixed or Children,
- * the cases EMPTY and ANY are handled directly in xmlParseElementDecl
- *
- * [46] contentspec ::= 'EMPTY' | 'ANY' | Mixed | children
- *
- * returns: the type of element content XML_ELEMENT_TYPE_xxx
- */
+* xmlParseElementContentDecl:
+* @ctxt:  an XML parser context
+* @name:  the name of the element being defined.
+* @result:  the Element Content pointer will be stored here if any
+*
+* parse the declaration for an Element content either Mixed or Children,
+* the cases EMPTY and ANY are handled directly in xmlParseElementDecl
+*
+* [46] contentspec ::= 'EMPTY' | 'ANY' | Mixed | children
+*
+* returns: the type of element content XML_ELEMENT_TYPE_xxx
+*/
 
 pub fn xmlParseElementContentDecl(
     mut ctxt: xmlParserCtxtPtr,
@@ -11101,18 +8898,18 @@ pub fn xmlParseElementContentDecl(
     return res;
 }
 /* *
- * xmlParseElementDecl:
- * @ctxt:  an XML parser context
- *
- * parse an Element declaration.
- *
- * [45] elementdecl ::= '<!ELEMENT' S Name S contentspec S? '>'
- *
- * [ VC: Unique Element Type Declaration ]
- * No element type may be declared more than once
- *
- * Returns the type of the element, or -1 in case of error
- */
+* xmlParseElementDecl:
+* @ctxt:  an XML parser context
+*
+* parse an Element declaration.
+*
+* [45] elementdecl ::= '<!ELEMENT' S Name S contentspec S? '>'
+*
+* [ VC: Unique Element Type Declaration ]
+* No element type may be declared more than once
+*
+* Returns the type of the element, or -1 in case of error
+*/
 
 pub fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -11203,8 +9000,8 @@ pub fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                     xmlParserInputGrow_safe((*ctxt).input, 250 as libc::c_int);
                 }
                 /*
-                 * Element must always be empty.
-                 */
+                * Element must always be empty.
+                */
                 ret = XML_ELEMENT_TYPE_EMPTY as libc::c_int
             } else if *(*(*ctxt).input).cur as libc::c_int == 'A' as i32
                 && *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int
@@ -11218,15 +9015,15 @@ pub fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                     xmlParserInputGrow_safe((*ctxt).input, 250 as libc::c_int);
                 }
                 /*
-                 * Element is a generic container.
-                 */
+                * Element is a generic container.
+                */
                 ret = XML_ELEMENT_TYPE_ANY as libc::c_int
             } else if *(*(*ctxt).input).cur as libc::c_int == '(' as i32 {
                 ret = xmlParseElementContentDecl(ctxt, name, &mut content)
             } else {
                 /*
-                 * [ WFC: PEs in Internal Subset ] error handling.
-                 */
+                * [ WFC: PEs in Internal Subset ] error handling.
+                */
                 if *(*(*ctxt).input).cur as libc::c_int == '%' as i32
                     && (*ctxt).external == 0 as libc::c_int
                     && (*ctxt).inputNr == 1 as libc::c_int
@@ -11277,11 +9074,11 @@ pub fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                     );
                     if !content.is_null() && (*content).parent.is_null() {
                         /*
-                         * this is a trick: if xmlAddElementDecl is called,
-                         * instead of copying the full tree it is plugged directly
-                         * if called from the parser. Avoid duplicating the
-                         * interfaces or change the API/ABI
-                         */
+                        * this is a trick: if xmlAddElementDecl is called,
+                        * instead of copying the full tree it is plugged directly
+                        * if called from the parser. Avoid duplicating the
+                        * interfaces or change the API/ABI
+                        */
                         xmlFreeDocElementContent_safe((*ctxt).myDoc, content);
                     }
                 } else if !content.is_null() {
@@ -11293,15 +9090,15 @@ pub fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     return ret;
 }
 /* *
- * xmlParseConditionalSections
- * @ctxt:  an XML parser context
- *
- * [61] conditionalSect ::= includeSect | ignoreSect
- * [62] includeSect ::= '<![' S? 'INCLUDE' S? '[' extSubsetDecl ']]>'
- * [63] ignoreSect ::= '<![' S? 'IGNORE' S? '[' ignoreSectContents* ']]>'
- * [64] ignoreSectContents ::= Ignore ('<![' ignoreSectContents ']]>' Ignore)*
- * [65] Ignore ::= Char* - (Char* ('<![' | ']]>') Char*)
- */
+* xmlParseConditionalSections
+* @ctxt:  an XML parser context
+*
+* [61] conditionalSect ::= includeSect | ignoreSect
+* [62] includeSect ::= '<![' S? 'INCLUDE' S? '[' extSubsetDecl ']]>'
+* [63] ignoreSect ::= '<![' S? 'IGNORE' S? '[' ignoreSectContents* ']]>'
+* [64] ignoreSectContents ::= Ignore ('<![' ignoreSectContents ']]>' Ignore)*
+* [65] Ignore ::= Char* - (Char* ('<![' | ']]>') Char*)
+*/
 fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
     let mut inputIds: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut inputIdsSize: size_t = 0 as libc::c_int as size_t;
@@ -11358,9 +9155,9 @@ fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                     } else {
                         if (*(*ctxt).input).id != id {
                             xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                                           b"All markup of the conditional section is not in the same entity\n\x00"
-                                               as *const u8 as
-                                               *const libc::c_char);
+                       b"All markup of the conditional section is not in the same entity\n\x00"
+                           as *const u8 as
+                           *const libc::c_char);
                         }
                         xmlNextChar_safe(ctxt);
                         if inputIdsSize <= depth {
@@ -11421,9 +9218,9 @@ fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                     } else {
                         if (*(*ctxt).input).id != id {
                             xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                                           b"All markup of the conditional section is not in the same entity\n\x00"
-                                               as *const u8 as
-                                               *const libc::c_char);
+                       b"All markup of the conditional section is not in the same entity\n\x00"
+                           as *const u8 as
+                           *const libc::c_char);
                         }
                         xmlNextChar_safe(ctxt);
                         /*
@@ -11492,9 +9289,9 @@ fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                         } else {
                             if (*(*ctxt).input).id != id {
                                 xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                                               b"All markup of the conditional section is not in the same entity\n\x00"
-                                                   as *const u8 as
-                                                   *const libc::c_char);
+                           b"All markup of the conditional section is not in the same entity\n\x00"
+                               as *const u8 as
+                               *const libc::c_char);
                             }
                             (*(*ctxt).input).cur =
                                 (*(*ctxt).input).cur.offset(3 as libc::c_int as isize);
@@ -11565,27 +9362,27 @@ fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
     xmlFree_safe(inputIds as *mut libc::c_void);
 }
 /* *
- * xmlParseMarkupDecl:
- * @ctxt:  an XML parser context
- *
- * parse Markup declarations
- *
- * [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
- *                     NotationDecl | PI | Comment
- *
- * [ VC: Proper Declaration/PE Nesting ]
- * Parameter-entity replacement text must be properly nested with
- * markup declarations. That is to say, if either the first character
- * or the last character of a markup declaration (markupdecl above) is
- * contained in the replacement text for a parameter-entity reference,
- * both must be contained in the same replacement text.
- *
- * [ WFC: PEs in Internal Subset ]
- * In the internal DTD subset, parameter-entity references can occur
- * only where markup declarations can occur, not within markup declarations.
- * (This does not apply to references that occur in external parameter
- * entities or to the external subset.)
- */
+* xmlParseMarkupDecl:
+* @ctxt:  an XML parser context
+*
+* parse Markup declarations
+*
+* [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
+*                     NotationDecl | PI | Comment
+*
+* [ VC: Proper Declaration/PE Nesting ]
+* Parameter-entity replacement text must be properly nested with
+* markup declarations. That is to say, if either the first character
+* or the last character of a markup declaration (markupdecl above) is
+* contained in the replacement text for a parameter-entity reference,
+* both must be contained in the same replacement text.
+*
+* [ WFC: PEs in Internal Subset ]
+* In the internal DTD subset, parameter-entity references can occur
+* only where markup declarations can occur, not within markup declarations.
+* (This does not apply to references that occur in external parameter
+* entities or to the external subset.)
+*/
 
 pub fn xmlParseMarkupDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -11634,22 +9431,22 @@ pub fn xmlParseMarkupDecl(mut ctxt: xmlParserCtxtPtr) {
         }
     }
     /*
-     * detect requirement to exit there and act accordingly
-     * and avoid having instate overridden later on
-     */
+    * detect requirement to exit there and act accordingly
+    * and avoid having instate overridden later on
+    */
     if (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int {
         return;
     }
     (safe_ctxt).instate = XML_PARSER_DTD;
 }
 /* *
- * xmlParseTextDecl:
- * @ctxt:  an XML parser context
- *
- * parse an XML declaration header for external entities
- *
- * [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
- */
+* xmlParseTextDecl:
+* @ctxt:  an XML parser context
+*
+* parse an XML declaration header for external entities
+*
+* [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
+*/
 
 pub fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut version: *mut xmlChar = 0 as *mut xmlChar;
@@ -11657,8 +9454,8 @@ pub fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut oldstate: libc::c_int = 0;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     /*
-     * We know that '<?xml' is here.
-     */
+    * We know that '<?xml' is here.
+    */
     unsafe {
         if *((*(*ctxt).input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
             as libc::c_int
@@ -11707,8 +9504,8 @@ pub fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
         }
     }
     /*
-     * We may have the VersionInfo here.
-     */
+    * We may have the VersionInfo here.
+    */
     unsafe {
         version = xmlParseVersionInfo(ctxt);
     }
@@ -11727,15 +9524,15 @@ pub fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
         (*(*ctxt).input).version = version;
     }
     /*
-     * We must have the encoding declaration
-     */
+    * We must have the encoding declaration
+    */
     unsafe {
         encoding = xmlParseEncodingDecl(ctxt);
     }
     if (safe_ctxt).errNo == XML_ERR_UNSUPPORTED_ENCODING as libc::c_int {
         /*
-         * The XML REC instructs us to stop parsing right here
-         */
+        * The XML REC instructs us to stop parsing right here
+        */
         (safe_ctxt).instate = oldstate as xmlParserInputState;
         return;
     }
@@ -11775,17 +9572,17 @@ pub fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
     (safe_ctxt).instate = oldstate as xmlParserInputState;
 }
 /* *
- * xmlParseExternalSubset:
- * @ctxt:  an XML parser context
- * @ExternalID: the external identifier
- * @SystemID: the system identifier (or URL)
- *
- * parse Markup declarations from an external subset
- *
- * [30] extSubset ::= textDecl? extSubsetDecl
- *
- * [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *
- */
+* xmlParseExternalSubset:
+* @ctxt:  an XML parser context
+* @ExternalID: the external identifier
+* @SystemID: the system identifier (or URL)
+*
+* parse Markup declarations from an external subset
+*
+* [30] extSubset ::= textDecl? extSubsetDecl
+*
+* [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *
+*/
 
 pub fn xmlParseExternalSubset(
     mut ctxt: xmlParserCtxtPtr,
@@ -11844,8 +9641,8 @@ pub fn xmlParseExternalSubset(
         xmlParseTextDecl(ctxt);
         if (safe_ctxt).errNo == XML_ERR_UNSUPPORTED_ENCODING as libc::c_int {
             /*
-             * The XML REC instructs us to stop parsing right here
-             */
+            * The XML REC instructs us to stop parsing right here
+            */
             unsafe {
                 xmlHaltParser(ctxt);
             }
@@ -11922,16 +9719,16 @@ pub fn xmlParseExternalSubset(
     }
 }
 /* *
- * xmlParseReference:
- * @ctxt:  an XML parser context
- *
- * parse and handle entity references in content, depending on the SAX
- * interface, this may end-up in a call to character() if this is a
- * CharRef, a predefined entity, if there is no reference() callback.
- * or if the parser was asked to switch to that mode.
- *
- * [67] Reference ::= EntityRef | CharRef
- */
+* xmlParseReference:
+* @ctxt:  an XML parser context
+*
+* parse and handle entity references in content, depending on the SAX
+* interface, this may end-up in a call to character() if this is a
+* CharRef, a predefined entity, if there is no reference() callback.
+* or if the parser was asked to switch to that mode.
+*
+* [67] Reference ::= EntityRef | CharRef
+*/
 
 pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
     let mut ent: xmlEntityPtr = 0 as *mut xmlEntity;
@@ -11944,8 +9741,8 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
         return;
     }
     /*
-     * Simple case of a CharRef
-     */
+    * Simple case of a CharRef
+    */
     if unsafe {
         *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int == '#' as i32
     } {
@@ -11959,10 +9756,10 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
         }
         if (safe_ctxt).charset != XML_CHAR_ENCODING_UTF8 as libc::c_int {
             /*
-             * So we are using non-UTF-8 buffers
-             * Check that the char fit on 8bits, if not
-             * generate a CharRef.
-             */
+            * So we are using non-UTF-8 buffers
+            * Check that the char fit on 8bits, if not
+            * generate a CharRef.
+            */
             if value <= 0xff as libc::c_int {
                 out[0 as libc::c_int as usize] = value as xmlChar;
                 out[1 as libc::c_int as usize] = 0 as libc::c_int as xmlChar;
@@ -12010,8 +9807,8 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             }
         } else {
             /*
-             * Just encode the value in UTF-8
-             */
+            * Just encode the value in UTF-8
+            */
             if 0 as libc::c_int == 1 as libc::c_int {
                 let fresh87 = i;
                 i = i + 1;
@@ -12038,8 +9835,8 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
         return;
     }
     /*
-     * We are seeing an entity reference
-     */
+    * We are seeing an entity reference
+    */
     ent = unsafe { xmlParseEntityRef(ctxt) };
     if ent.is_null() {
         return;
@@ -12059,8 +9856,8 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             return;
         }
         /*
-         * inline the entity.
-         */
+        * inline the entity.
+        */
         unsafe {
             if !(safe_ctxt).sax.is_null()
                 && (*(*ctxt).sax).characters.is_some()
@@ -12078,15 +9875,15 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
         return;
     }
     /*
-     * The first reference to the entity trigger a parsing phase
-     * where the ent->children is filled with the result from
-     * the parsing.
-     * Note: external parsed entities will not be loaded, it is not
-     * required for a non-validating parser, unless the parsing option
-     * of validating, or substituting entities were given. Doing so is
-     * far more secure as the parser will only process data coming from
-     * the document entity by default.
-     */
+    * The first reference to the entity trigger a parsing phase
+    * where the ent->children is filled with the result from
+    * the parsing.
+    * Note: external parsed entities will not be loaded, it is not
+    * required for a non-validating parser, unless the parsing option
+    * of validating, or substituting entities were given. Doing so is
+    * far more secure as the parser will only process data coming from
+    * the document entity by default.
+    */
     if ((safe_ent).checked == 0 as libc::c_int
         || (safe_ent).children.is_null()
             && (safe_ctxt).options & XML_PARSE_NOENT as libc::c_int != 0)
@@ -12099,10 +9896,10 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
         let mut oldnbent: libc::c_ulong = (safe_ctxt).nbentities;
         let mut diff: libc::c_ulong = 0;
         /*
-         * This is a bit hackish but this seems the best
-         * way to make sure both SAX and DOM entity support
-         * behaves okay.
-         */
+        * This is a bit hackish but this seems the best
+        * way to make sure both SAX and DOM entity support
+        * behaves okay.
+        */
         let mut user_data: *mut libc::c_void = 0 as *mut libc::c_void;
         if (safe_ctxt).userData == ctxt as *mut libc::c_void {
             user_data = 0 as *mut libc::c_void
@@ -12110,11 +9907,11 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             user_data = (safe_ctxt).userData
         }
         /*
-         * Check that this entity is well formed
-         * 4.3.2: An internal general parsed entity is well-formed
-         * if its replacement text matches the production labeled
-         * content.
-         */
+        * Check that this entity is well formed
+        * 4.3.2: An internal general parsed entity is well-formed
+        * if its replacement text matches the production labeled
+        * content.
+        */
         if (safe_ent).etype as libc::c_uint
             == XML_INTERNAL_GENERAL_ENTITY as libc::c_int as libc::c_uint
         {
@@ -12152,9 +9949,9 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             }
         }
         /*
-         * Store the number of entities needing parsing for this entity
-         * content and do checkings
-         */
+        * Store the number of entities needing parsing for this entity
+        * content and do checkings
+        */
         diff = (safe_ctxt)
             .nbentities
             .wrapping_sub(oldnbent)
@@ -12290,24 +10087,24 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             .wrapping_add(((safe_ent).checked / 2 as libc::c_int) as libc::c_ulong)
     }
     /*
-     * Now that the entity content has been gathered
-     * provide it to the application, this can take different forms based
-     * on the parsing modes.
-     */
+    * Now that the entity content has been gathered
+    * provide it to the application, this can take different forms based
+    * on the parsing modes.
+    */
     if (safe_ent).children.is_null() {
         /*
-         * Probably running in SAX mode and the callbacks don't
-         * build the entity content. So unless we already went
-         * though parsing for first checking go though the entity
-         * content to generate callbacks associated to the entity
-         */
+        * Probably running in SAX mode and the callbacks don't
+        * build the entity content. So unless we already went
+        * though parsing for first checking go though the entity
+        * content to generate callbacks associated to the entity
+        */
         if was_checked != 0 as libc::c_int {
             let mut user_data_0: *mut libc::c_void = 0 as *mut libc::c_void;
             /*
-             * This is a bit hackish but this seems the best
-             * way to make sure both SAX and DOM entity support
-             * behaves okay.
-             */
+            * This is a bit hackish but this seems the best
+            * way to make sure both SAX and DOM entity support
+            * behaves okay.
+            */
             if (safe_ctxt).userData == ctxt as *mut libc::c_void {
                 user_data_0 = 0 as *mut libc::c_void
             } else {
@@ -12367,9 +10164,9 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             && (safe_ctxt).disableSAX == 0
         {
             /*
-             * Entity reference callback comes second, it's somewhat
-             * superfluous but a compatibility to historical behaviour
-             */
+            * Entity reference callback comes second, it's somewhat
+            * superfluous but a compatibility to historical behaviour
+            */
             unsafe {
                 (*(*ctxt).sax).reference.expect("non-null function pointer")(
                     (safe_ctxt).userData,
@@ -12381,16 +10178,16 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
     }
 
     /*
-     * If we didn't get any children for the entity being built
-     */
+    * If we didn't get any children for the entity being built
+    */
     if !(safe_ctxt).sax.is_null()
         && unsafe { (*(*ctxt).sax).reference.is_some() }
         && (safe_ctxt).replaceEntities == 0 as libc::c_int
         && (safe_ctxt).disableSAX == 0
     {
         /*
-         * Create a node.
-         */
+        * Create a node.
+        */
         unsafe {
             (*(*ctxt).sax).reference.expect("non-null function pointer")(
                 (safe_ctxt).userData,
@@ -12401,24 +10198,24 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
     }
     if (safe_ctxt).replaceEntities != 0 || (safe_ent).children.is_null() {
         /*
-         * There is a problem on the handling of _private for entities
-         * (bug 155816): Should we copy the content of the field from
-         * the entity (possibly overwriting some value set by the user
-         * when a copy is created), should we leave it alone, or should
-         * we try to take care of different situations?  The problem
-         * is exacerbated by the usage of this field by the xmlReader.
-         * To fix this bug, we look at _private on the created node
-         * and, if it's NULL, we copy in whatever was in the entity.
-         * If it's not NULL we leave it alone.  This is somewhat of a
-         * hack - maybe we should have further tests to determine
-         * what to do.
-         */
+        * There is a problem on the handling of _private for entities
+        * (bug 155816): Should we copy the content of the field from
+        * the entity (possibly overwriting some value set by the user
+        * when a copy is created), should we leave it alone, or should
+        * we try to take care of different situations?  The problem
+        * is exacerbated by the usage of this field by the xmlReader.
+        * To fix this bug, we look at _private on the created node
+        * and, if it's NULL, we copy in whatever was in the entity.
+        * If it's not NULL we leave it alone.  This is somewhat of a
+        * hack - maybe we should have further tests to determine
+        * what to do.
+        */
         if !(safe_ctxt).node.is_null() && !(safe_ent).children.is_null() {
             /*
-             * Seems we are generating the DOM content, do
-             * a simple tree copy for all references except the first
-             * In the first occurrence list contains the replacement.
-             */
+            * Seems we are generating the DOM content, do
+            * a simple tree copy for all references except the first
+            * In the first occurrence list contains the replacement.
+            */
             if list.is_null() && (safe_ent).owner == 0 as libc::c_int
                 || (safe_ctxt).parseMode as libc::c_uint
                     == XML_PARSE_READER as libc::c_int as libc::c_uint
@@ -12551,19 +10348,19 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             } else {
                 let mut nbktext: *const xmlChar = 0 as *const xmlChar;
                 /*
-                 * We are copying here, make sure there is no abuse
-                 */
+                * We are copying here, make sure there is no abuse
+                */
                 /*
-                 * Copy the entity child list and make it the new
-                 * entity child list. The goal is to make sure any
-                 * ID or REF referenced will be the one from the
-                 * document content and not the entity copy.
-                 */
+                * Copy the entity child list and make it the new
+                * entity child list. The goal is to make sure any
+                * ID or REF referenced will be the one from the
+                * document content and not the entity copy.
+                */
                 /*
-                 * the name change is to avoid coalescing of the
-                 * node with a possible previous text one which
-                 * would make ent->children a dangling pointer
-                 */
+                * the name change is to avoid coalescing of the
+                * node with a possible previous text one which
+                * would make ent->children a dangling pointer
+                */
                 nbktext = xmlDictLookup_safe(
                     (safe_ctxt).dict,
                     b"nbktext\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
@@ -12585,9 +10382,9 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                 xmlAddChildList_safe((safe_ctxt).node, (safe_ent).children);
             }
             /*
-             * This is to avoid a nasty side effect, see
-             * characters() in SAX.c
-             */
+            * This is to avoid a nasty side effect, see
+            * characters() in SAX.c
+            */
             (safe_ctxt).nodemem = 0 as libc::c_int;
             (safe_ctxt).nodelen = 0 as libc::c_int;
             return;
@@ -12595,33 +10392,33 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlParseEntityRef:
- * @ctxt:  an XML parser context
- *
- * parse ENTITY references declarations
- *
- * [68] EntityRef ::= '&' Name ';'
- *
- * [ WFC: Entity Declared ]
- * In a document without any DTD, a document with only an internal DTD
- * subset which contains no parameter entity references, or a document
- * with "standalone='yes'", the Name given in the entity reference
- * must match that in an entity declaration, except that well-formed
- * documents need not declare any of the following entities: amp, lt,
- * gt, apos, quot.  The declaration of a parameter entity must precede
- * any reference to it.  Similarly, the declaration of a general entity
- * must precede any reference to it which appears in a default value in an
- * attribute-list declaration. Note that if entities are declared in the
- * external subset or in external parameter entities, a non-validating
- * processor is not obligated to read and process their declarations;
- * for such documents, the rule that an entity must be declared is a
- * well-formedness constraint only if standalone='yes'.
- *
- * [ WFC: Parsed Entity ]
- * An entity reference must not contain the name of an unparsed entity
- *
- * Returns the xmlEntityPtr if found, or NULL otherwise.
- */
+* xmlParseEntityRef:
+* @ctxt:  an XML parser context
+*
+* parse ENTITY references declarations
+*
+* [68] EntityRef ::= '&' Name ';'
+*
+* [ WFC: Entity Declared ]
+* In a document without any DTD, a document with only an internal DTD
+* subset which contains no parameter entity references, or a document
+* with "standalone='yes'", the Name given in the entity reference
+* must match that in an entity declaration, except that well-formed
+* documents need not declare any of the following entities: amp, lt,
+* gt, apos, quot.  The declaration of a parameter entity must precede
+* any reference to it.  Similarly, the declaration of a general entity
+* must precede any reference to it which appears in a default value in an
+* attribute-list declaration. Note that if entities are declared in the
+* external subset or in external parameter entities, a non-validating
+* processor is not obligated to read and process their declarations;
+* for such documents, the rule that an entity must be declared is a
+* well-formedness constraint only if standalone='yes'.
+*
+* [ WFC: Parsed Entity ]
+* An entity reference must not contain the name of an unparsed entity
+*
+* Returns the xmlEntityPtr if found, or NULL otherwise.
+*/
 
 pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -12665,8 +10462,8 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
     }
     xmlNextChar_safe(ctxt);
     /*
-     * Predefined entities override any extra definition
-     */
+    * Predefined entities override any extra definition
+    */
     if (safe_ctxt).options & XML_PARSE_OLDSAX as libc::c_int == 0 as libc::c_int {
         ent = xmlGetPredefinedEntity_safe(name);
         if !ent.is_null() {
@@ -12674,13 +10471,13 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
         }
     }
     /*
-     * Increase the number of entity references parsed
-     */
+    * Increase the number of entity references parsed
+    */
     (safe_ctxt).nbentities = (safe_ctxt).nbentities.wrapping_add(1);
     /*
-     * Ask first SAX for entity resolution, otherwise try the
-     * entities which may have stored in the parser context.
-     */
+    * Ask first SAX for entity resolution, otherwise try the
+    * entities which may have stored in the parser context.
+    */
     if !(safe_ctxt).sax.is_null() {
         unsafe {
             if (*(*ctxt).sax).getEntity.is_some() {
@@ -12707,26 +10504,26 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
         return 0 as xmlEntityPtr;
     }
     /*
-     * [ WFC: Entity Declared ]
-     * In a document without any DTD, a document with only an
-     * internal DTD subset which contains no parameter entity
-     * references, or a document with "standalone='yes'", the
-     * Name given in the entity reference must match that in an
-     * entity declaration, except that well-formed documents
-     * need not declare any of the following entities: amp, lt,
-     * gt, apos, quot.
-     * The declaration of a parameter entity must precede any
-     * reference to it.
-     * Similarly, the declaration of a general entity must
-     * precede any reference to it which appears in a default
-     * value in an attribute-list declaration. Note that if
-     * entities are declared in the external subset or in
-     * external parameter entities, a non-validating processor
-     * is not obligated to read and process their declarations;
-     * for such documents, the rule that an entity must be
-     * declared is a well-formedness constraint only if
-     * standalone='yes'.
-     */
+    * [ WFC: Entity Declared ]
+    * In a document without any DTD, a document with only an
+    * internal DTD subset which contains no parameter entity
+    * references, or a document with "standalone='yes'", the
+    * Name given in the entity reference must match that in an
+    * entity declaration, except that well-formed documents
+    * need not declare any of the following entities: amp, lt,
+    * gt, apos, quot.
+    * The declaration of a parameter entity must precede any
+    * reference to it.
+    * Similarly, the declaration of a general entity must
+    * precede any reference to it which appears in a default
+    * value in an attribute-list declaration. Note that if
+    * entities are declared in the external subset or in
+    * external parameter entities, a non-validating processor
+    * is not obligated to read and process their declarations;
+    * for such documents, the rule that an entity must be
+    * declared is a well-formedness constraint only if
+    * standalone='yes'.
+    */
     let mut safe_ent = unsafe { &mut *ent };
     if ent.is_null() {
         if (safe_ctxt).standalone == 1 as libc::c_int
@@ -12812,24 +10609,24 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
         }
     } else {
         /*
-         * [ WFC: Parsed Entity ]
-         * An entity reference must not contain the name of an
-         * unparsed entity
-         */
+        * [ WFC: Parsed Entity ]
+        * An entity reference must not contain the name of an
+        * unparsed entity
+        */
         /*
-         * [ WFC: No External Entity References ]
-         * Attribute values cannot contain direct or indirect
-         * entity references to external entities.
-         */
+        * [ WFC: No External Entity References ]
+        * Attribute values cannot contain direct or indirect
+        * entity references to external entities.
+        */
         /*
-         * [ WFC: No < in Attribute Values ]
-         * The replacement text of any entity referred to directly or
-         * indirectly in an attribute value (other than "&lt;") must
-         * not contain a <.
-         */
+        * [ WFC: No < in Attribute Values ]
+        * The replacement text of any entity referred to directly or
+        * indirectly in an attribute value (other than "&lt;") must
+        * not contain a <.
+        */
         /*
-         * Internal check, no parameter entities here ...
-         */
+        * Internal check, no parameter entities here ...
+        */
         match (safe_ent).etype as libc::c_uint {
             4 | 5 => unsafe {
                 xmlFatalErrMsgStr(
@@ -12844,49 +10641,49 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
         }
     }
     /*
-     * [ WFC: No Recursion ]
-     * A parsed entity must not contain a recursive reference
-     * to itself, either directly or indirectly.
-     * Done somewhere else
-     */
+    * [ WFC: No Recursion ]
+    * A parsed entity must not contain a recursive reference
+    * to itself, either directly or indirectly.
+    * Done somewhere else
+    */
     return ent;
 }
 /* ***********************************************************************
- *									*
- *		Parser stacks related functions and macros		*
- *									*
- ************************************************************************/
+*									*
+*		Parser stacks related functions and macros		*
+*									*
+************************************************************************/
 /* *
- * xmlParseStringEntityRef:
- * @ctxt:  an XML parser context
- * @str:  a pointer to an index in the string
- *
- * parse ENTITY references declarations, but this version parses it from
- * a string value.
- *
- * [68] EntityRef ::= '&' Name ';'
- *
- * [ WFC: Entity Declared ]
- * In a document without any DTD, a document with only an internal DTD
- * subset which contains no parameter entity references, or a document
- * with "standalone='yes'", the Name given in the entity reference
- * must match that in an entity declaration, except that well-formed
- * documents need not declare any of the following entities: amp, lt,
- * gt, apos, quot.  The declaration of a parameter entity must precede
- * any reference to it.  Similarly, the declaration of a general entity
- * must precede any reference to it which appears in a default value in an
- * attribute-list declaration. Note that if entities are declared in the
- * external subset or in external parameter entities, a non-validating
- * processor is not obligated to read and process their declarations;
- * for such documents, the rule that an entity must be declared is a
- * well-formedness constraint only if standalone='yes'.
- *
- * [ WFC: Parsed Entity ]
- * An entity reference must not contain the name of an unparsed entity
- *
- * Returns the xmlEntityPtr if found, or NULL otherwise. The str pointer
- * is updated to the current location in the string.
- */
+* xmlParseStringEntityRef:
+* @ctxt:  an XML parser context
+* @str:  a pointer to an index in the string
+*
+* parse ENTITY references declarations, but this version parses it from
+* a string value.
+*
+* [68] EntityRef ::= '&' Name ';'
+*
+* [ WFC: Entity Declared ]
+* In a document without any DTD, a document with only an internal DTD
+* subset which contains no parameter entity references, or a document
+* with "standalone='yes'", the Name given in the entity reference
+* must match that in an entity declaration, except that well-formed
+* documents need not declare any of the following entities: amp, lt,
+* gt, apos, quot.  The declaration of a parameter entity must precede
+* any reference to it.  Similarly, the declaration of a general entity
+* must precede any reference to it which appears in a default value in an
+* attribute-list declaration. Note that if entities are declared in the
+* external subset or in external parameter entities, a non-validating
+* processor is not obligated to read and process their declarations;
+* for such documents, the rule that an entity must be declared is a
+* well-formedness constraint only if standalone='yes'.
+*
+* [ WFC: Parsed Entity ]
+* An entity reference must not contain the name of an unparsed entity
+*
+* Returns the xmlEntityPtr if found, or NULL otherwise. The str pointer
+* is updated to the current location in the string.
+*/
 fn xmlParseStringEntityRef(
     mut ctxt: xmlParserCtxtPtr,
     mut str: *mut *const xmlChar,
@@ -12933,8 +10730,8 @@ fn xmlParseStringEntityRef(
         ptr = ptr.offset(1);
     }
     /*
-     * Predefined entities override any extra definition
-     */
+    * Predefined entities override any extra definition
+    */
     if (safe_ctxt).options & XML_PARSE_OLDSAX as libc::c_int == 0 as libc::c_int {
         ent = xmlGetPredefinedEntity_safe(name);
         if !ent.is_null() {
@@ -12946,13 +10743,13 @@ fn xmlParseStringEntityRef(
         }
     }
     /*
-     * Increase the number of entity references parsed
-     */
+    * Increase the number of entity references parsed
+    */
     (safe_ctxt).nbentities = (safe_ctxt).nbentities.wrapping_add(1);
     /*
-     * Ask first SAX for entity resolution, otherwise try the
-     * entities which may have stored in the parser context.
-     */
+    * Ask first SAX for entity resolution, otherwise try the
+    * entities which may have stored in the parser context.
+    */
     if !(safe_ctxt).sax.is_null() {
         unsafe {
             if (*(*ctxt).sax).getEntity.is_some() {
@@ -12974,26 +10771,26 @@ fn xmlParseStringEntityRef(
         return 0 as xmlEntityPtr;
     }
     /*
-     * [ WFC: Entity Declared ]
-     * In a document without any DTD, a document with only an
-     * internal DTD subset which contains no parameter entity
-     * references, or a document with "standalone='yes'", the
-     * Name given in the entity reference must match that in an
-     * entity declaration, except that well-formed documents
-     * need not declare any of the following entities: amp, lt,
-     * gt, apos, quot.
-     * The declaration of a parameter entity must precede any
-     * reference to it.
-     * Similarly, the declaration of a general entity must
-     * precede any reference to it which appears in a default
-     * value in an attribute-list declaration. Note that if
-     * entities are declared in the external subset or in
-     * external parameter entities, a non-validating processor
-     * is not obligated to read and process their declarations;
-     * for such documents, the rule that an entity must be
-     * declared is a well-formedness constraint only if
-     * standalone='yes'.
-     */
+    * [ WFC: Entity Declared ]
+    * In a document without any DTD, a document with only an
+    * internal DTD subset which contains no parameter entity
+    * references, or a document with "standalone='yes'", the
+    * Name given in the entity reference must match that in an
+    * entity declaration, except that well-formed documents
+    * need not declare any of the following entities: amp, lt,
+    * gt, apos, quot.
+    * The declaration of a parameter entity must precede any
+    * reference to it.
+    * Similarly, the declaration of a general entity must
+    * precede any reference to it which appears in a default
+    * value in an attribute-list declaration. Note that if
+    * entities are declared in the external subset or in
+    * external parameter entities, a non-validating processor
+    * is not obligated to read and process their declarations;
+    * for such documents, the rule that an entity must be
+    * declared is a well-formedness constraint only if
+    * standalone='yes'.
+    */
     let mut safe_ent = unsafe { &mut *ent };
     if ent.is_null() {
         if (safe_ctxt).standalone == 1 as libc::c_int
@@ -13024,7 +10821,7 @@ fn xmlParseStringEntityRef(
             ent,
             0 as libc::c_int as size_t,
         );
-        /* TODO ? check regressions ctxt->valid = 0; */
+    /* TODO ? check regressions ctxt->valid = 0; */
     } else if (safe_ent).etype as libc::c_uint
         == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY as libc::c_int as libc::c_uint
     {
@@ -13067,24 +10864,24 @@ fn xmlParseStringEntityRef(
         }
     } else {
         /*
-         * [ WFC: Parsed Entity ]
-         * An entity reference must not contain the name of an
-         * unparsed entity
-         */
+        * [ WFC: Parsed Entity ]
+        * An entity reference must not contain the name of an
+        * unparsed entity
+        */
         /*
-         * [ WFC: No External Entity References ]
-         * Attribute values cannot contain direct or indirect
-         * entity references to external entities.
-         */
+        * [ WFC: No External Entity References ]
+        * Attribute values cannot contain direct or indirect
+        * entity references to external entities.
+        */
         /*
-         * [ WFC: No < in Attribute Values ]
-         * The replacement text of any entity referred to directly or
-         * indirectly in an attribute value (other than "&lt;") must
-         * not contain a <.
-         */
+        * [ WFC: No < in Attribute Values ]
+        * The replacement text of any entity referred to directly or
+        * indirectly in an attribute value (other than "&lt;") must
+        * not contain a <.
+        */
         /*
-         * Internal check, no parameter entities here ...
-         */
+        * Internal check, no parameter entities here ...
+        */
         match (safe_ent).etype as libc::c_uint {
             4 | 5 => unsafe {
                 xmlFatalErrMsgStr(
@@ -13099,11 +10896,11 @@ fn xmlParseStringEntityRef(
         }
     }
     /*
-     * [ WFC: No Recursion ]
-     * A parsed entity must not contain a recursive reference
-     * to itself, either directly or indirectly.
-     * Done somewhere else
-     */
+    * [ WFC: No Recursion ]
+    * A parsed entity must not contain a recursive reference
+    * to itself, either directly or indirectly.
+    * Done somewhere else
+    */
     xmlFree_safe(name as *mut libc::c_void);
     unsafe {
         *str = ptr;
@@ -13111,34 +10908,34 @@ fn xmlParseStringEntityRef(
     return ent;
 }
 /* *
- * xmlParsePEReference:
- * @ctxt:  an XML parser context
- *
- * parse PEReference declarations
- * The entity content is handled directly by pushing it's content as
- * a new input stream.
- *
- * [69] PEReference ::= '%' Name ';'
- *
- * [ WFC: No Recursion ]
- * A parsed entity must not contain a recursive
- * reference to itself, either directly or indirectly.
- *
- * [ WFC: Entity Declared ]
- * In a document without any DTD, a document with only an internal DTD
- * subset which contains no parameter entity references, or a document
- * with "standalone='yes'", ...  ... The declaration of a parameter
- * entity must precede any reference to it...
- *
- * [ VC: Entity Declared ]
- * In a document with an external subset or external parameter entities
- * with "standalone='no'", ...  ... The declaration of a parameter entity
- * must precede any reference to it...
- *
- * [ WFC: In DTD ]
- * Parameter-entity references may only appear in the DTD.
- * NOTE: misleading but this is handled.
- */
+* xmlParsePEReference:
+* @ctxt:  an XML parser context
+*
+* parse PEReference declarations
+* The entity content is handled directly by pushing it's content as
+* a new input stream.
+*
+* [69] PEReference ::= '%' Name ';'
+*
+* [ WFC: No Recursion ]
+* A parsed entity must not contain a recursive
+* reference to itself, either directly or indirectly.
+*
+* [ WFC: Entity Declared ]
+* In a document without any DTD, a document with only an internal DTD
+* subset which contains no parameter entity references, or a document
+* with "standalone='yes'", ...  ... The declaration of a parameter
+* entity must precede any reference to it...
+*
+* [ VC: Entity Declared ]
+* In a document with an external subset or external parameter entities
+* with "standalone='no'", ...  ... The declaration of a parameter entity
+* must precede any reference to it...
+*
+* [ WFC: In DTD ]
+* Parameter-entity references may only appear in the DTD.
+* NOTE: misleading but this is handled.
+*/
 
 pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -13179,12 +10976,12 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     xmlNextChar_safe(ctxt);
     /*
-     * Increase the number of entity references parsed
-     */
+    * Increase the number of entity references parsed
+    */
     (safe_ctxt).nbentities = (safe_ctxt).nbentities.wrapping_add(1);
     /*
-     * Request the entity from SAX
-     */
+    * Request the entity from SAX
+    */
     unsafe {
         if !(safe_ctxt).sax.is_null() && (*(*ctxt).sax).getParameterEntity.is_some() {
             entity = (*(*ctxt).sax)
@@ -13198,13 +10995,13 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_entity = unsafe { &mut *entity };
     if entity.is_null() {
         /*
-         * [ WFC: Entity Declared ]
-         * In a document without any DTD, a document with only an
-         * internal DTD subset which contains no parameter entity
-         * references, or a document with "standalone='yes'", ...
-         * ... The declaration of a parameter entity must precede
-         * any reference to it...
-         */
+        * [ WFC: Entity Declared ]
+        * In a document without any DTD, a document with only an
+        * internal DTD subset which contains no parameter entity
+        * references, or a document with "standalone='yes'", ...
+        * ... The declaration of a parameter entity must precede
+        * any reference to it...
+        */
         if (safe_ctxt).standalone == 1 as libc::c_int
             || (safe_ctxt).hasExternalSubset == 0 as libc::c_int
                 && (safe_ctxt).hasPErefs == 0 as libc::c_int
@@ -13219,12 +11016,12 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
             }
         } else {
             /*
-             * [ VC: Entity Declared ]
-             * In a document with an external subset or external
-             * parameter entities with "standalone='no'", ...
-             * ... The declaration of a parameter entity must
-             * precede any reference to it...
-             */
+            * [ VC: Entity Declared ]
+            * In a document with an external subset or external
+            * parameter entities with "standalone='no'", ...
+            * ... The declaration of a parameter entity must
+            * precede any reference to it...
+            */
             if (safe_ctxt).validate != 0 && (safe_ctxt).vctxt.error.is_some() {
                 unsafe {
                     xmlValidityError(
@@ -13301,17 +11098,17 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
             == XML_EXTERNAL_PARAMETER_ENTITY as libc::c_int as libc::c_uint
         {
             /*
-             * Internal checking in case the entity quest barfed
-             */
+            * Internal checking in case the entity quest barfed
+            */
             /*
-             * Get the 4 first bytes and decode the charset
-             * if enc != XML_CHAR_ENCODING_NONE
-             * plug some encoding conversion routines.
-             * Note that, since we may have some non-UTF8
-             * encoding (like UTF16, bug 135229), the 'length'
-             * is not known, but we can calculate based upon
-             * the amount of data in the buffer.
-             */
+            * Get the 4 first bytes and decode the charset
+            * if enc != XML_CHAR_ENCODING_NONE
+            * plug some encoding conversion routines.
+            * Note that, since we may have some non-UTF8
+            * encoding (like UTF16, bug 135229), the 'length'
+            * is not known, but we can calculate based upon
+            * the amount of data in the buffer.
+            */
             if (safe_ctxt).progressive == 0 as libc::c_int
                 && unsafe {
                     ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -13373,16 +11170,16 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
     (safe_ctxt).hasPErefs = 1 as libc::c_int;
 }
 /* *
- * xmlLoadEntityContent:
- * @ctxt:  an XML parser context
- * @entity: an unloaded system entity
- *
- * Load the original content of the given system entity from the
- * ExternalID/SystemID given. This is to be used for Included in Literal
- * http://www.w3.org/TR/REC-xml/#inliteral processing of entities references
- *
- * Returns 0 in case of success and -1 in case of failure
- */
+* xmlLoadEntityContent:
+* @ctxt:  an XML parser context
+* @entity: an unloaded system entity
+*
+* Load the original content of the given system entity from the
+* ExternalID/SystemID given. This is to be used for Included in Literal
+* http://www.w3.org/TR/REC-xml/#inliteral processing of entities references
+*
+* Returns 0 in case of success and -1 in case of failure
+*/
 fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) -> libc::c_int {
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
     let mut buf: xmlBufferPtr = 0 as *mut xmlBuffer;
@@ -13441,9 +11238,9 @@ fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) ->
         return -(1 as libc::c_int);
     }
     /*
-     * Push the entity as the current input, read char by char
-     * saving to the buffer until the end of the entity or an error
-     */
+    * Push the entity as the current input, read char by char
+    * saving to the buffer until the end of the entity or an error
+    */
     if xmlPushInput(ctxt, input) < 0 as libc::c_int {
         xmlBufferFree_safe(buf);
         return -(1 as libc::c_int);
@@ -13553,36 +11350,36 @@ fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) ->
 }
 /* DEPR void xmlParserHandleReference(xmlParserCtxtPtr ctxt); */
 /* *
- * xmlParseStringPEReference:
- * @ctxt:  an XML parser context
- * @str:  a pointer to an index in the string
- *
- * parse PEReference declarations
- *
- * [69] PEReference ::= '%' Name ';'
- *
- * [ WFC: No Recursion ]
- * A parsed entity must not contain a recursive
- * reference to itself, either directly or indirectly.
- *
- * [ WFC: Entity Declared ]
- * In a document without any DTD, a document with only an internal DTD
- * subset which contains no parameter entity references, or a document
- * with "standalone='yes'", ...  ... The declaration of a parameter
- * entity must precede any reference to it...
- *
- * [ VC: Entity Declared ]
- * In a document with an external subset or external parameter entities
- * with "standalone='no'", ...  ... The declaration of a parameter entity
- * must precede any reference to it...
- *
- * [ WFC: In DTD ]
- * Parameter-entity references may only appear in the DTD.
- * NOTE: misleading but this is handled.
- *
- * Returns the string of the entity content.
- *         str is updated to the current value of the index
- */
+* xmlParseStringPEReference:
+* @ctxt:  an XML parser context
+* @str:  a pointer to an index in the string
+*
+* parse PEReference declarations
+*
+* [69] PEReference ::= '%' Name ';'
+*
+* [ WFC: No Recursion ]
+* A parsed entity must not contain a recursive
+* reference to itself, either directly or indirectly.
+*
+* [ WFC: Entity Declared ]
+* In a document without any DTD, a document with only an internal DTD
+* subset which contains no parameter entity references, or a document
+* with "standalone='yes'", ...  ... The declaration of a parameter
+* entity must precede any reference to it...
+*
+* [ VC: Entity Declared ]
+* In a document with an external subset or external parameter entities
+* with "standalone='no'", ...  ... The declaration of a parameter entity
+* must precede any reference to it...
+*
+* [ WFC: In DTD ]
+* Parameter-entity references may only appear in the DTD.
+* NOTE: misleading but this is handled.
+*
+* Returns the string of the entity content.
+*         str is updated to the current value of the index
+*/
 fn xmlParseStringPEReference(
     mut ctxt: xmlParserCtxtPtr,
     mut str: *mut *const xmlChar,
@@ -13632,12 +11429,12 @@ fn xmlParseStringPEReference(
     ptr = unsafe { ptr.offset(1) };
     let mut safe_ctxt = unsafe { &mut *ctxt };
     /*
-     * Increase the number of entity references parsed
-     */
+    * Increase the number of entity references parsed
+    */
     (safe_ctxt).nbentities = (safe_ctxt).nbentities.wrapping_add(1);
     /*
-     * Request the entity from SAX
-     */
+    * Request the entity from SAX
+    */
     unsafe {
         if !(*ctxt).sax.is_null() && (*(*ctxt).sax).getParameterEntity.is_some() {
             entity = (*(*ctxt).sax)
@@ -13653,13 +11450,13 @@ fn xmlParseStringPEReference(
     }
     if entity.is_null() {
         /*
-         * [ WFC: Entity Declared ]
-         * In a document without any DTD, a document with only an
-         * internal DTD subset which contains no parameter entity
-         * references, or a document with "standalone='yes'", ...
-         * ... The declaration of a parameter entity must precede
-         * any reference to it...
-         */
+        * [ WFC: Entity Declared ]
+        * In a document without any DTD, a document with only an
+        * internal DTD subset which contains no parameter entity
+        * references, or a document with "standalone='yes'", ...
+        * ... The declaration of a parameter entity must precede
+        * any reference to it...
+        */
         if (safe_ctxt).standalone == 1 as libc::c_int
             || (safe_ctxt).hasExternalSubset == 0 as libc::c_int
                 && (safe_ctxt).hasPErefs == 0 as libc::c_int
@@ -13674,12 +11471,12 @@ fn xmlParseStringPEReference(
             }
         } else {
             /*
-             * [ VC: Entity Declared ]
-             * In a document with an external subset or external
-             * parameter entities with "standalone='no'", ...
-             * ... The declaration of a parameter entity must
-             * precede any reference to it...
-             */
+            * [ VC: Entity Declared ]
+            * In a document with an external subset or external
+            * parameter entities with "standalone='no'", ...
+            * ... The declaration of a parameter entity must
+            * precede any reference to it...
+            */
             unsafe {
                 xmlWarningMsg(
                     ctxt,
@@ -13720,21 +11517,21 @@ fn xmlParseStringPEReference(
     return entity;
 }
 /*
- * Internal checking in case the entity quest barfed
- */
+* Internal checking in case the entity quest barfed
+*/
 /* *
- * xmlParseDocTypeDecl:
- * @ctxt:  an XML parser context
- *
- * parse a DOCTYPE declaration
- *
- * [28] doctypedecl ::= '<!DOCTYPE' S Name (S ExternalID)? S?
- *                      ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
- *
- * [ VC: Root Element Type ]
- * The Name in the document type declaration must match the element
- * type of the root element.
- */
+* xmlParseDocTypeDecl:
+* @ctxt:  an XML parser context
+*
+* parse a DOCTYPE declaration
+*
+* [28] doctypedecl ::= '<!DOCTYPE' S Name (S ExternalID)? S?
+*                      ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
+*
+* [ VC: Root Element Type ]
+* The Name in the document type declaration must match the element
+* type of the root element.
+*/
 
 pub fn xmlParseDocTypeDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -13742,8 +11539,8 @@ pub fn xmlParseDocTypeDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut URI: *mut xmlChar = 0 as *mut xmlChar;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     /*
-     * We know that '<!DOCTYPE' has been detected.
-     */
+    * We know that '<!DOCTYPE' has been detected.
+    */
     unsafe {
         (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9 as libc::c_int as isize);
         (*(*ctxt).input).col += 9 as libc::c_int;
@@ -13753,8 +11550,8 @@ pub fn xmlParseDocTypeDecl(mut ctxt: xmlParserCtxtPtr) {
     }
     xmlSkipBlankChars(ctxt);
     /*
-     * Parse the DOCTYPE name.
-     */
+    * Parse the DOCTYPE name.
+    */
     name = xmlParseName(ctxt);
     if name.is_null() {
         unsafe {
@@ -13769,8 +11566,8 @@ pub fn xmlParseDocTypeDecl(mut ctxt: xmlParserCtxtPtr) {
     (safe_ctxt).intSubName = name;
     xmlSkipBlankChars(ctxt);
     /*
-     * Check for SystemID and ExternalID
-     */
+    * Check for SystemID and ExternalID
+    */
     URI = xmlParseExternalID(ctxt, &mut ExternalID, 1 as libc::c_int);
     if !URI.is_null() || !ExternalID.is_null() {
         (safe_ctxt).hasExternalSubset = 1 as libc::c_int
@@ -13779,8 +11576,8 @@ pub fn xmlParseDocTypeDecl(mut ctxt: xmlParserCtxtPtr) {
     (safe_ctxt).extSubSystem = ExternalID;
     xmlSkipBlankChars(ctxt);
     /*
-     * Create and update the internal subset.
-     */
+    * Create and update the internal subset.
+    */
     unsafe {
         if !(safe_ctxt).sax.is_null()
             && (*(*ctxt).sax).internalSubset.is_some()
@@ -13797,16 +11594,16 @@ pub fn xmlParseDocTypeDecl(mut ctxt: xmlParserCtxtPtr) {
         return;
     }
     /*
-     * Is there any internal subset declarations ?
-     * they are handled separately in xmlParseInternalSubset()
-     */
+    * Is there any internal subset declarations ?
+    * they are handled separately in xmlParseInternalSubset()
+    */
     unsafe {
         if *(*(*ctxt).input).cur as libc::c_int == '[' as i32 {
             return;
         }
         /*
-         * We should be at the end of the DOCTYPE declaration.
-         */
+        * We should be at the end of the DOCTYPE declaration.
+        */
         if *(*(*ctxt).input).cur as libc::c_int != '>' as i32 {
             xmlFatalErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED, 0 as *const libc::c_char);
         }
@@ -13814,17 +11611,17 @@ pub fn xmlParseDocTypeDecl(mut ctxt: xmlParserCtxtPtr) {
     xmlNextChar_safe(ctxt);
 }
 /* *
- * xmlParseInternalSubset:
- * @ctxt:  an XML parser context
- *
- * parse the internal subset declaration
- *
- * [28 end] ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
- */
+* xmlParseInternalSubset:
+* @ctxt:  an XML parser context
+*
+* parse the internal subset declaration
+*
+* [28 end] ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
+*/
 fn xmlParseInternalSubset(mut ctxt: xmlParserCtxtPtr) {
     /*
-     * Is there any DTD definition ?
-     */
+    * Is there any DTD definition ?
+    */
     //@todo 削减unsafe范围
     unsafe {
         if *(*(*ctxt).input).cur as libc::c_int == '[' as i32 {
@@ -13832,10 +11629,10 @@ fn xmlParseInternalSubset(mut ctxt: xmlParserCtxtPtr) {
             (*ctxt).instate = XML_PARSER_DTD;
             xmlNextChar_safe(ctxt);
             /*
-             * Parse the succession of Markup declarations and
-             * PEReferences.
-             * Subsequence (markupdecl | PEReference | S)*
-             */
+            * Parse the succession of Markup declarations and
+            * PEReferences.
+            * Subsequence (markupdecl | PEReference | S)*
+            */
             while (*(*(*ctxt).input).cur as libc::c_int != ']' as i32
                 || (*ctxt).inputNr > baseInputNr)
                 && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int
@@ -13846,9 +11643,9 @@ fn xmlParseInternalSubset(mut ctxt: xmlParserCtxtPtr) {
                 xmlParseMarkupDecl(ctxt);
                 xmlParsePEReference(ctxt);
                 /*
-                 * Conditional sections are allowed from external entities included
-                 * by PE References in the internal subset.
-                 */
+                * Conditional sections are allowed from external entities included
+                * by PE References in the internal subset.
+                */
                 if (*ctxt).inputNr > 1 as libc::c_int
                     && !(*(*ctxt).input).filename.is_null()
                     && *(*(*ctxt).input).cur as libc::c_int == '<' as i32
@@ -13881,8 +11678,8 @@ fn xmlParseInternalSubset(mut ctxt: xmlParserCtxtPtr) {
             }
         }
         /*
-         * We should be at the end of the DOCTYPE declaration.
-         */
+        * We should be at the end of the DOCTYPE declaration.
+        */
         if *(*(*ctxt).input).cur as libc::c_int != '>' as i32 {
             xmlFatalErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED, 0 as *const libc::c_char);
             return;
@@ -13891,37 +11688,37 @@ fn xmlParseInternalSubset(mut ctxt: xmlParserCtxtPtr) {
     xmlNextChar_safe(ctxt);
 }
 /* *
- * xmlParseAttribute:
- * @ctxt:  an XML parser context
- * @value:  a xmlChar ** used to store the value of the attribute
- *
- * parse an attribute
- *
- * [41] Attribute ::= Name Eq AttValue
- *
- * [ WFC: No External Entity References ]
- * Attribute values cannot contain direct or indirect entity references
- * to external entities.
- *
- * [ WFC: No < in Attribute Values ]
- * The replacement text of any entity referred to directly or indirectly in
- * an attribute value (other than "&lt;") must not contain a <.
- *
- * [ VC: Attribute Value Type ]
- * The attribute must have been declared; the value must be of the type
- * declared for it.
- *
- * [25] Eq ::= S? '=' S?
- *
- * With namespace:
- *
- * [NS 11] Attribute ::= QName Eq AttValue
- *
- * Also the case QName == xmlns:??? is handled independently as a namespace
- * definition.
- *
- * Returns the attribute name, and the value in *value.
- */
+* xmlParseAttribute:
+* @ctxt:  an XML parser context
+* @value:  a xmlChar ** used to store the value of the attribute
+*
+* parse an attribute
+*
+* [41] Attribute ::= Name Eq AttValue
+*
+* [ WFC: No External Entity References ]
+* Attribute values cannot contain direct or indirect entity references
+* to external entities.
+*
+* [ WFC: No < in Attribute Values ]
+* The replacement text of any entity referred to directly or indirectly in
+* an attribute value (other than "&lt;") must not contain a <.
+*
+* [ VC: Attribute Value Type ]
+* The attribute must have been declared; the value must be of the type
+* declared for it.
+*
+* [25] Eq ::= S? '=' S?
+*
+* With namespace:
+*
+* [NS 11] Attribute ::= QName Eq AttValue
+*
+* Also the case QName == xmlns:??? is handled independently as a namespace
+* definition.
+*
+* Returns the attribute name, and the value in *value.
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseAttribute(
     mut ctxt: xmlParserCtxtPtr,
@@ -13950,8 +11747,8 @@ pub fn xmlParseAttribute(
         return 0 as *const xmlChar;
     }
     /*
-     * read the value
-     */
+    * read the value
+    */
     xmlSkipBlankChars(ctxt);
     if unsafe { *(*(*ctxt).input).cur as libc::c_int == '=' as i32 } {
         xmlNextChar_safe(ctxt);
@@ -13971,10 +11768,10 @@ pub fn xmlParseAttribute(
         return 0 as *const xmlChar;
     }
     /*
-     * Check that xml:lang conforms to the specification
-     * No more registered as an error, just generate a warning now
-     * since this was deprecated in XML second edition
-     */
+    * Check that xml:lang conforms to the specification
+    * No more registered as an error, just generate a warning now
+    * since this was deprecated in XML second edition
+    */
     if (safe_ctxt).pedantic != 0
         && xmlStrEqual_safe(
             name,
@@ -13994,8 +11791,8 @@ pub fn xmlParseAttribute(
         }
     }
     /*
-     * Check that xml:space conforms to the specification
-     */
+    * Check that xml:space conforms to the specification
+    */
     if xmlStrEqual_safe(
         name,
         b"xml:space\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
@@ -14016,9 +11813,9 @@ pub fn xmlParseAttribute(
         } else {
             unsafe {
                 xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
-                              b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
-                                  as *const u8 as *const libc::c_char, val,
-                              0 as *const xmlChar);
+          b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
+              as *const u8 as *const libc::c_char, val,
+          0 as *const xmlChar);
             }
         }
     }
@@ -14026,32 +11823,32 @@ pub fn xmlParseAttribute(
     return name;
 }
 /* *
- * xmlParseStartTag:
- * @ctxt:  an XML parser context
- *
- * parse a start of tag either for rule element or
- * EmptyElement. In both case we don't parse the tag closing chars.
- *
- * [40] STag ::= '<' Name (S Attribute)* S? '>'
- *
- * [ WFC: Unique Att Spec ]
- * No attribute name may appear more than once in the same start-tag or
- * empty-element tag.
- *
- * [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
- *
- * [ WFC: Unique Att Spec ]
- * No attribute name may appear more than once in the same start-tag or
- * empty-element tag.
- *
- * With namespace:
- *
- * [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
- *
- * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
- *
- * Returns the element name parsed
- */
+* xmlParseStartTag:
+* @ctxt:  an XML parser context
+*
+* parse a start of tag either for rule element or
+* EmptyElement. In both case we don't parse the tag closing chars.
+*
+* [40] STag ::= '<' Name (S Attribute)* S? '>'
+*
+* [ WFC: Unique Att Spec ]
+* No attribute name may appear more than once in the same start-tag or
+* empty-element tag.
+*
+* [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
+*
+* [ WFC: Unique Att Spec ]
+* No attribute name may appear more than once in the same start-tag or
+* empty-element tag.
+*
+* With namespace:
+*
+* [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
+*
+* [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
+*
+* Returns the element name parsed
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -14085,10 +11882,10 @@ pub fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         return 0 as *const xmlChar;
     }
     /*
-     * Now parse the attributes, it ends up with the ending
-     *
-     * (S Attribute)* S?
-     */
+    * Now parse the attributes, it ends up with the ending
+    *
+    * (S Attribute)* S?
+    */
     xmlSkipBlankChars(ctxt);
     if (safe_ctxt).progressive == 0 as libc::c_int
         && unsafe {
@@ -14114,10 +11911,10 @@ pub fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         attname = xmlParseAttribute(ctxt, &mut attvalue);
         if !attname.is_null() && !attvalue.is_null() {
             /*
-             * [ WFC: Unique Att Spec ]
-             * No attribute name may appear more than once in the same
-             * start-tag or empty-element tag.
-             */
+            * [ WFC: Unique Att Spec ]
+            * No attribute name may appear more than once in the same
+            * start-tag or empty-element tag.
+            */
             i = 0 as libc::c_int;
             loop {
                 if !(i < nbatts) {
@@ -14137,8 +11934,8 @@ pub fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
                 13942178848302774114 => {}
                 _ =>
                 /*
-                 * Add the pair to atts
-                 */
+                * Add the pair to atts
+                */
                 {
                     if atts.is_null() {
                         maxatts = 22 as libc::c_int; /* allow for 10 attrs by default */
@@ -14271,8 +12068,8 @@ pub fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         }
     }
     /*
-     * SAX: Start of Element !
-     */
+    * SAX: Start of Element !
+    */
     if !(safe_ctxt).sax.is_null()
         && unsafe { (*(*ctxt).sax).startElement.is_some() }
         && (safe_ctxt).disableSAX == 0
@@ -14312,19 +12109,19 @@ pub fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     return name;
 }
 /* *
- * xmlParseEndTag1:
- * @ctxt:  an XML parser context
- * @line:  line of the start tag
- * @nsNr:  number of namespaces on the start tag
- *
- * parse an end of tag
- *
- * [42] ETag ::= '</' Name S? '>'
- *
- * With namespace
- *
- * [NS 9] ETag ::= '</' QName S? '>'
- */
+* xmlParseEndTag1:
+* @ctxt:  an XML parser context
+* @line:  line of the start tag
+* @nsNr:  number of namespaces on the start tag
+*
+* parse an end of tag
+*
+* [42] ETag ::= '</' Name S? '>'
+*
+* With namespace
+*
+* [NS 9] ETag ::= '</' QName S? '>'
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: libc::c_int) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -14353,8 +12150,8 @@ fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: libc::c_int) {
         }
         name = xmlParseNameAndCompare(ctxt, (*ctxt).name);
         /*
-         * We should definitely be at the ending "S? '>'" part
-         */
+        * We should definitely be at the ending "S? '>'" part
+        */
         if (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
                 < 250 as libc::c_int as libc::c_long
@@ -14377,11 +12174,11 @@ fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: libc::c_int) {
             }
         }
         /*
-         * [ WFC: Element Type Match ]
-         * The Name in an element's end-tag must match the element type in the
-         * start-tag.
-         *
-         */
+        * [ WFC: Element Type Match ]
+        * The Name in an element's end-tag must match the element type in the
+        * start-tag.
+        *
+        */
         if name != 1 as libc::c_int as *mut xmlChar {
             if name.is_null() {
                 name = b"unparsable\x00" as *const u8 as *const libc::c_char as *mut xmlChar
@@ -14397,8 +12194,8 @@ fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: libc::c_int) {
             );
         }
         /*
-         * SAX: End of Tag
-         */
+        * SAX: End of Tag
+        */
         if !(*ctxt).sax.is_null() && (*(*ctxt).sax).endElement.is_some() && (*ctxt).disableSAX == 0
         {
             (*(*ctxt).sax)
@@ -14410,37 +12207,37 @@ fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: libc::c_int) {
     spacePop(ctxt);
 }
 /* *
- * xmlParseEndTag:
- * @ctxt:  an XML parser context
- *
- * parse an end of tag
- *
- * [42] ETag ::= '</' Name S? '>'
- *
- * With namespace
- *
- * [NS 9] ETag ::= '</' QName S? '>'
- */
+* xmlParseEndTag:
+* @ctxt:  an XML parser context
+*
+* parse an end of tag
+*
+* [42] ETag ::= '</' Name S? '>'
+*
+* With namespace
+*
+* [NS 9] ETag ::= '</' QName S? '>'
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseEndTag(mut ctxt: xmlParserCtxtPtr) {
     xmlParseEndTag1(ctxt, 0 as libc::c_int);
 }
 /* LIBXML_SAX1_ENABLED */
 /* ***********************************************************************
- *									*
- *		      SAX 2 specific operations				*
- *									*
- ************************************************************************/
+*									*
+*		      SAX 2 specific operations				*
+*									*
+************************************************************************/
 /*
- * xmlGetNamespace:
- * @ctxt:  an XML parser context
- * @prefix:  the prefix to lookup
- *
- * Lookup the namespace name for the @prefix (which ca be NULL)
- * The prefix must come from the @ctxt->dict dictionary
- *
- * Returns the namespace name or NULL if not bound
- */
+* xmlGetNamespace:
+* @ctxt:  an XML parser context
+* @prefix:  the prefix to lookup
+*
+* Lookup the namespace name for the @prefix (which ca be NULL)
+* The prefix must come from the @ctxt->dict dictionary
+*
+* Returns the namespace name or NULL if not bound
+*/
 fn xmlGetNamespace(mut ctxt: xmlParserCtxtPtr, mut prefix: *const xmlChar) -> *const xmlChar {
     let mut i: libc::c_int = 0;
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -14465,18 +12262,18 @@ fn xmlGetNamespace(mut ctxt: xmlParserCtxtPtr, mut prefix: *const xmlChar) -> *c
     return 0 as *const xmlChar;
 }
 /* *
- * xmlParseQName:
- * @ctxt:  an XML parser context
- * @prefix:  pointer to store the prefix part
- *
- * parse an XML Namespace QName
- *
- * [6]  QName  ::= (Prefix ':')? LocalPart
- * [7]  Prefix  ::= NCName
- * [8]  LocalPart  ::= NCName
- *
- * Returns the Name parsed or NULL
- */
+* xmlParseQName:
+* @ctxt:  an XML parser context
+* @prefix:  pointer to store the prefix part
+*
+* parse an XML Namespace QName
+*
+* [6]  QName  ::= (Prefix ':')? LocalPart
+* [7]  Prefix  ::= NCName
+* [8]  LocalPart  ::= NCName
+*
+* Returns the Name parsed or NULL
+*/
 fn xmlParseQName(mut ctxt: xmlParserCtxtPtr, mut prefix: *mut *const xmlChar) -> *const xmlChar {
     let mut l: *const xmlChar = 0 as *const xmlChar;
     let mut p: *const xmlChar = 0 as *const xmlChar;
@@ -14603,17 +12400,17 @@ fn xmlParseQName(mut ctxt: xmlParserCtxtPtr, mut prefix: *mut *const xmlChar) ->
     return l;
 }
 /* *
- * xmlParseQNameAndCompare:
- * @ctxt:  an XML parser context
- * @name:  the localname
- * @prefix:  the prefix, if any.
- *
- * parse an XML name and compares for match
- * (specialized for endtag parsing)
- *
- * Returns NULL for an illegal name, (xmlChar*) 1 for success
- * and the name for mismatch
- */
+* xmlParseQNameAndCompare:
+* @ctxt:  an XML parser context
+* @name:  the localname
+* @prefix:  the prefix, if any.
+*
+* parse an XML name and compares for match
+* (specialized for endtag parsing)
+*
+* Returns NULL for an illegal name, (xmlChar*) 1 for success
+* and the name for mismatch
+*/
 fn xmlParseQNameAndCompare(
     mut ctxt: xmlParserCtxtPtr,
     mut name: *const xmlChar,
@@ -14668,8 +12465,8 @@ fn xmlParseQNameAndCompare(
         }
     }
     /*
-     * all strings coms from the dictionary, equality can be done directly
-     */
+    * all strings coms from the dictionary, equality can be done directly
+    */
     ret = xmlParseQName(ctxt, &mut prefix2);
     if ret == name && prefix == prefix2 {
         return 1 as libc::c_int as *const xmlChar;
@@ -14677,38 +12474,38 @@ fn xmlParseQNameAndCompare(
     return ret;
 }
 /* *
- * xmlParseAttValueInternal:
- * @ctxt:  an XML parser context
- * @len:  attribute len result
- * @alloc:  whether the attribute was reallocated as a new string
- * @normalize:  if 1 then further non-CDATA normalization must be done
- *
- * parse a value for an attribute.
- * NOTE: if no normalization is needed, the routine will return pointers
- *       directly from the data buffer.
- *
- * 3.3.3 Attribute-Value Normalization:
- * Before the value of an attribute is passed to the application or
- * checked for validity, the XML processor must normalize it as follows:
- * - a character reference is processed by appending the referenced
- *   character to the attribute value
- * - an entity reference is processed by recursively processing the
- *   replacement text of the entity
- * - a whitespace character (#x20, #xD, #xA, #x9) is processed by
- *   appending #x20 to the normalized value, except that only a single
- *   #x20 is appended for a "#xD#xA" sequence that is part of an external
- *   parsed entity or the literal entity value of an internal parsed entity
- * - other characters are processed by appending them to the normalized value
- * If the declared value is not CDATA, then the XML processor must further
- * process the normalized attribute value by discarding any leading and
- * trailing space (#x20) characters, and by replacing sequences of space
- * (#x20) characters by a single space (#x20) character.
- * All attributes for which no declaration has been read should be treated
- * by a non-validating parser as if declared CDATA.
- *
- * Returns the AttValue parsed or NULL. The value has to be freed by the
- *     caller if it was copied, this can be detected by val[*len] == 0.
- */
+* xmlParseAttValueInternal:
+* @ctxt:  an XML parser context
+* @len:  attribute len result
+* @alloc:  whether the attribute was reallocated as a new string
+* @normalize:  if 1 then further non-CDATA normalization must be done
+*
+* parse a value for an attribute.
+* NOTE: if no normalization is needed, the routine will return pointers
+*       directly from the data buffer.
+*
+* 3.3.3 Attribute-Value Normalization:
+* Before the value of an attribute is passed to the application or
+* checked for validity, the XML processor must normalize it as follows:
+* - a character reference is processed by appending the referenced
+*   character to the attribute value
+* - an entity reference is processed by recursively processing the
+*   replacement text of the entity
+* - a whitespace character (#x20, #xD, #xA, #x9) is processed by
+*   appending #x20 to the normalized value, except that only a single
+*   #x20 is appended for a "#xD#xA" sequence that is part of an external
+*   parsed entity or the literal entity value of an internal parsed entity
+* - other characters are processed by appending them to the normalized value
+* If the declared value is not CDATA, then the XML processor must further
+* process the normalized attribute value by discarding any leading and
+* trailing space (#x20) characters, and by replacing sequences of space
+* (#x20) characters by a single space (#x20) character.
+* All attributes for which no declaration has been read should be treated
+* by a non-validating parser as if declared CDATA.
+*
+* Returns the AttValue parsed or NULL. The value has to be freed by the
+*     caller if it was copied, this can be detected by val[*len] == 0.
+*/
 fn xmlParseAttValueInternal(
     mut ctxt: xmlParserCtxtPtr,
     mut len: *mut libc::c_int,
@@ -14748,10 +12545,10 @@ fn xmlParseAttValueInternal(
     let mut safe_ctxt = unsafe { &mut *ctxt };
     (safe_ctxt).instate = XML_PARSER_ATTRIBUTE_VALUE;
     /*
-     * try to handle in this routine the most common case where no
-     * allocation of a new string is required and where content is
-     * pure ASCII.
-     */
+    * try to handle in this routine the most common case where no
+    * allocation of a new string is required and where content is
+    * pure ASCII.
+    */
     let fresh95 = in_0;
     unsafe {
         in_0 = in_0.offset(1);
@@ -14785,8 +12582,8 @@ fn xmlParseAttValueInternal(
     }
     if normalize != 0 {
         /*
-         * Skip any leading spaces
-         */
+        * Skip any leading spaces
+        */
         while in_0 < end
             && unsafe { *in_0 } as libc::c_int != limit as libc::c_int
             && (unsafe { *in_0 } as libc::c_int == 0x20 as libc::c_int
@@ -14888,8 +12685,8 @@ fn xmlParseAttValueInternal(
         }
         last = in_0;
         /*
-         * skip the trailing blanks
-         */
+        * skip the trailing blanks
+        */
         unsafe {
             while *last.offset(-(1 as libc::c_int) as isize) as libc::c_int == 0x20 as libc::c_int
                 && last > start
@@ -15068,19 +12865,19 @@ fn xmlParseAttValueInternal(
     };
 }
 /* *
- * xmlParseAttribute2:
- * @ctxt:  an XML parser context
- * @pref:  the element prefix
- * @elem:  the element name
- * @prefix:  a xmlChar ** used to store the value of the attribute prefix
- * @value:  a xmlChar ** used to store the value of the attribute
- * @len:  an int * to save the length of the attribute
- * @alloc:  an int * to indicate if the attribute was allocated
- *
- * parse an attribute in the new SAX2 framework.
- *
- * Returns the attribute name, and the value in *value, .
- */
+* xmlParseAttribute2:
+* @ctxt:  an XML parser context
+* @pref:  the element prefix
+* @elem:  the element name
+* @prefix:  a xmlChar ** used to store the value of the attribute prefix
+* @value:  a xmlChar ** used to store the value of the attribute
+* @len:  an int * to save the length of the attribute
+* @alloc:  an int * to indicate if the attribute was allocated
+*
+* parse an attribute in the new SAX2 framework.
+*
+* Returns the attribute name, and the value in *value, .
+*/
 fn xmlParseAttribute2(
     mut ctxt: xmlParserCtxtPtr,
     mut pref: *const xmlChar,
@@ -15115,8 +12912,8 @@ fn xmlParseAttribute2(
         return 0 as *const xmlChar;
     }
     /*
-     * get the type if needed
-     */
+    * get the type if needed
+    */
     if !(safe_ctxt).attsSpecial.is_null() {
         let mut type_0: libc::c_int = 0;
         type_0 = xmlHashQLookup2_safe(
@@ -15131,8 +12928,8 @@ fn xmlParseAttribute2(
         }
     }
     /*
-     * read the value
-     */
+    * read the value
+    */
     xmlSkipBlankChars(ctxt);
     if unsafe { *(*(*ctxt).input).cur as libc::c_int == '=' as i32 } {
         xmlNextChar_safe(ctxt);
@@ -15140,11 +12937,11 @@ fn xmlParseAttribute2(
         val = xmlParseAttValueInternal(ctxt, len, alloc, normalize);
         if normalize != 0 {
             /*
-             * Sometimes a second normalisation pass for spaces is needed
-             * but that only happens if charrefs or entities references
-             * have been used in the attribute value, i.e. the attribute
-             * value have been extracted in an allocated string already.
-             */
+            * Sometimes a second normalisation pass for spaces is needed
+            * but that only happens if charrefs or entities references
+            * have been used in the attribute value, i.e. the attribute
+            * value have been extracted in an allocated string already.
+            */
             if unsafe { *alloc != 0 } {
                 let mut val2: *const xmlChar = 0 as *const xmlChar;
                 val2 = xmlAttrNormalizeSpace2(ctxt, val, len);
@@ -15169,10 +12966,10 @@ fn xmlParseAttribute2(
     }
     if unsafe { *prefix } == (safe_ctxt).str_xml {
         /*
-         * Check that xml:lang conforms to the specification
-         * No more registered as an error, just generate a warning now
-         * since this was deprecated in XML second edition
-         */
+        * Check that xml:lang conforms to the specification
+        * No more registered as an error, just generate a warning now
+        * since this was deprecated in XML second edition
+        */
         if (safe_ctxt).pedantic != 0
             && xmlStrEqual_safe(
                 name,
@@ -15194,8 +12991,8 @@ fn xmlParseAttribute2(
             }
         }
         /*
-         * Check that xml:space conforms to the specification
-         */
+        * Check that xml:space conforms to the specification
+        */
         if xmlStrEqual_safe(
             name,
             b"space\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
@@ -15217,9 +13014,9 @@ fn xmlParseAttribute2(
             } else {
                 unsafe {
                     xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
-                                  b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
-                                      as *const u8 as *const libc::c_char,
-                                  internal_val, 0 as *const xmlChar);
+              b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
+                  as *const u8 as *const libc::c_char,
+              internal_val, 0 as *const xmlChar);
                 }
             }
         }
@@ -15233,33 +13030,33 @@ fn xmlParseAttribute2(
     return name;
 }
 /* *
- * xmlParseStartTag2:
- * @ctxt:  an XML parser context
- *
- * parse a start of tag either for rule element or
- * EmptyElement. In both case we don't parse the tag closing chars.
- * This routine is called when running SAX2 parsing
- *
- * [40] STag ::= '<' Name (S Attribute)* S? '>'
- *
- * [ WFC: Unique Att Spec ]
- * No attribute name may appear more than once in the same start-tag or
- * empty-element tag.
- *
- * [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
- *
- * [ WFC: Unique Att Spec ]
- * No attribute name may appear more than once in the same start-tag or
- * empty-element tag.
- *
- * With namespace:
- *
- * [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
- *
- * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
- *
- * Returns the element name parsed
- */
+* xmlParseStartTag2:
+* @ctxt:  an XML parser context
+*
+* parse a start of tag either for rule element or
+* EmptyElement. In both case we don't parse the tag closing chars.
+* This routine is called when running SAX2 parsing
+*
+* [40] STag ::= '<' Name (S Attribute)* S? '>'
+*
+* [ WFC: Unique Att Spec ]
+* No attribute name may appear more than once in the same start-tag or
+* empty-element tag.
+*
+* [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
+*
+* [ WFC: Unique Att Spec ]
+* No attribute name may appear more than once in the same start-tag or
+* empty-element tag.
+*
+* With namespace:
+*
+* [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
+*
+* [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
+*
+* Returns the element name parsed
+*/
 fn xmlParseStartTag2(
     mut ctxt: xmlParserCtxtPtr,
     mut pref: *mut *const xmlChar,
@@ -15296,12 +13093,12 @@ fn xmlParseStartTag2(
             xmlParserInputGrow_safe((*ctxt).input, 250 as libc::c_int);
         }
         /*
-         * NOTE: it is crucial with the SAX2 API to never call SHRINK beyond that
-         *       point since the attribute values may be stored as pointers to
-         *       the buffer and calling SHRINK would destroy them !
-         *       The Shrinking is only possible once the full set of attribute
-         *       callbacks have been done.
-         */
+        * NOTE: it is crucial with the SAX2 API to never call SHRINK beyond that
+        *       point since the attribute values may be stored as pointers to
+        *       the buffer and calling SHRINK would destroy them !
+        *       The Shrinking is only possible once the full set of attribute
+        *       callbacks have been done.
+        */
         if (*ctxt).progressive == 0 as libc::c_int
             && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as libc::c_long
                 > (2 as libc::c_int * 250 as libc::c_int) as libc::c_long
@@ -15338,10 +13135,10 @@ fn xmlParseStartTag2(
             .wrapping_sub(cur) as libc::c_int;
     }
     /*
-     * Now parse the attributes, it ends up with the ending
-     *
-     * (S Attribute)* S?
-     */
+    * Now parse the attributes, it ends up with the ending
+    *
+    * (S Attribute)* S?
+    */
     xmlSkipBlankChars(ctxt);
     if unsafe {
         (*ctxt).progressive == 0 as libc::c_int
@@ -15468,8 +13265,8 @@ fn xmlParseStartTag2(
                         1905178534984964470 => {}
                         _ => {
                             /*
-                             * check that it's not a defined namespace
-                             */
+                            * check that it's not a defined namespace
+                            */
                             j = 1 as libc::c_int;
                             while j <= nbNs {
                                 if unsafe {
@@ -15584,8 +13381,8 @@ fn xmlParseStartTag2(
                         xmlFreeURI_safe(uri_0);
                     }
                     /*
-                     * check that it's not a defined namespace
-                     */
+                    * check that it's not a defined namespace
+                    */
                     j = 1 as libc::c_int;
                     while j <= nbNs {
                         if unsafe {
@@ -15606,8 +13403,8 @@ fn xmlParseStartTag2(
                 }
             } else {
                 /*
-                 * Add the pair to atts
-                 */
+                * Add the pair to atts
+                */
                 if atts.is_null() || nbatts + 5 as libc::c_int > maxatts {
                     if xmlCtxtGrowAttrs(ctxt, nbatts + 5 as libc::c_int) < 0 as libc::c_int {
                         current_block = 1905178534984964470;
@@ -15635,11 +13432,11 @@ fn xmlParseStartTag2(
                             let ref mut fresh101 = *atts.offset(fresh100 as isize);
                             *fresh101 = aprefix;
                             /*
-                             * The namespace URI field is used temporarily to point at the
-                             * base of the current input buffer for non-alloced attributes.
-                             * When the input buffer is reallocated, all the pointers become
-                             * invalid, but they can be reconstructed later.
-                             */
+                            * The namespace URI field is used temporarily to point at the
+                            * base of the current input buffer for non-alloced attributes.
+                            * When the input buffer is reallocated, all the pointers become
+                            * invalid, but they can be reconstructed later.
+                            */
                             if alloc != 0 {
                                 let fresh102 = nbatts;
                                 nbatts = nbatts + 1;
@@ -15662,8 +13459,8 @@ fn xmlParseStartTag2(
                             *fresh109 = attvalue;
                         }
                         /*
-                         * tag if some deallocation is needed
-                         */
+                        * tag if some deallocation is needed
+                        */
                         if alloc != 0 as libc::c_int {
                             attval = 1 as libc::c_int
                         }
@@ -15674,8 +13471,8 @@ fn xmlParseStartTag2(
             }
         }
         /*
-         * Do not keep a namespace definition node
-         */
+        * Do not keep a namespace definition node
+        */
         if !attvalue.is_null() && alloc != 0 as libc::c_int {
             xmlFree_safe(attvalue as *mut libc::c_void);
             attvalue = 0 as *mut xmlChar
@@ -15747,9 +13544,9 @@ fn xmlParseStartTag2(
                     unsafe {
                         if !(*atts.offset((i + 2 as libc::c_int) as isize)).is_null() {
                             /*
-                             * Arithmetic on dangling pointers is technically undefined
-                             * behavior, but well...
-                             */
+                            * Arithmetic on dangling pointers is technically undefined
+                            * behavior, but well...
+                            */
                             let mut offset: ptrdiff_t = (*(*ctxt).input)
                                 .base
                                 .offset_from(*atts.offset((i + 2 as libc::c_int) as isize))
@@ -15766,8 +13563,8 @@ fn xmlParseStartTag2(
                     j += 1
                 }
                 /*
-                 * The attributes defaulting
-                 */
+                * The attributes defaulting
+                */
                 if !(safe_ctxt).attsDefault.is_null() {
                     let mut defaults: xmlDefAttrsPtr = 0 as *mut xmlDefAttrs;
                     defaults = xmlHashLookup2_safe((safe_ctxt).attsDefault, localname, prefix)
@@ -15791,12 +13588,12 @@ fn xmlParseStartTag2(
                             }
 
                             /*
-                             * special work for namespaces defaulted defs
-                             */
+                            * special work for namespaces defaulted defs
+                            */
                             if attname == (safe_ctxt).str_xmlns && aprefix.is_null() {
                                 /*
-                                 * check that it's not a defined namespace
-                                 */
+                                * check that it's not a defined namespace
+                                */
                                 j = 1 as libc::c_int;
                                 while j <= nbNs {
                                     if unsafe {
@@ -15833,8 +13630,8 @@ fn xmlParseStartTag2(
                                 }
                             } else if aprefix == (safe_ctxt).str_xmlns {
                                 /*
-                                 * check that it's not a defined namespace
-                                 */
+                                * check that it's not a defined namespace
+                                */
                                 j = 1 as libc::c_int;
                                 while j <= nbNs {
                                     if unsafe {
@@ -15872,8 +13669,8 @@ fn xmlParseStartTag2(
                                 }
                             } else {
                                 /*
-                                 * check that it's not a defined attribute
-                                 */
+                                * check that it's not a defined attribute
+                                */
                                 j = 0 as libc::c_int;
                                 while j < nbatts {
                                     unsafe {
@@ -15941,11 +13738,11 @@ fn xmlParseStartTag2(
                                         }
                                     {
                                         xmlValidityError(ctxt,
-                                                         XML_DTD_STANDALONE_DEFAULTED,
-                                                         b"standalone: attribute %s on %s defaulted from external subset\n\x00"
-                                                             as *const u8 as
-                                                             *const libc::c_char,
-                                                         attname, localname);
+                                     XML_DTD_STANDALONE_DEFAULTED,
+                                     b"standalone: attribute %s on %s defaulted from external subset\n\x00"
+                                         as *const u8 as
+                                         *const libc::c_char,
+                                     attname, localname);
                                     }
                                     nbdef += 1
                                 }
@@ -15962,13 +13759,13 @@ fn xmlParseStartTag2(
                     5568905272147674894 => {}
                     _ => {
                         /*
-                         * The attributes checkings
-                         */
+                        * The attributes checkings
+                        */
                         i = 0 as libc::c_int;
                         while i < nbatts {
                             /*
-                            	* The default namespace does not apply to attribute names.
-                            	*/
+                            * The default namespace does not apply to attribute names.
+                            */
                             if unsafe { !(*atts.offset((i + 1 as libc::c_int) as isize)).is_null() }
                             {
                                 unsafe {
@@ -15996,11 +13793,11 @@ fn xmlParseStartTag2(
                                 nsname = 0 as *const xmlChar
                             }
                             /*
-                             * [ WFC: Unique Att Spec ]
-                             * No attribute name may appear more than once in the same
-                             * start-tag or empty-element tag.
-                             * As extended by the Namespace in XML REC.
-                             */
+                            * [ WFC: Unique Att Spec ]
+                            * No attribute name may appear more than once in the same
+                            * start-tag or empty-element tag.
+                            * As extended by the Namespace in XML REC.
+                            */
                             j = 0 as libc::c_int;
                             while j < i {
                                 unsafe {
@@ -16052,8 +13849,8 @@ fn xmlParseStartTag2(
                             *pref = prefix;
                             *URI = nsname;
                             /*
-                             * SAX: Start of Element !
-                             */
+                            * SAX: Start of Element !
+                            */
                             if !(*ctxt).sax.is_null()
                                 && (*(*ctxt).sax).startElementNs.is_some()
                                 && (*ctxt).disableSAX == 0
@@ -16098,8 +13895,8 @@ fn xmlParseStartTag2(
         _ => {}
     }
     /*
-     * Free up attribute allocated strings if needed
-     */
+    * Free up attribute allocated strings if needed
+    */
     if attval != 0 as libc::c_int {
         i = 3 as libc::c_int;
         j = 0 as libc::c_int;
@@ -16118,19 +13915,19 @@ fn xmlParseStartTag2(
     return localname;
 }
 /* *
- * xmlParseEndTag2:
- * @ctxt:  an XML parser context
- * @line:  line of the start tag
- * @nsNr:  number of namespaces on the start tag
- *
- * parse an end of tag
- *
- * [42] ETag ::= '</' Name S? '>'
- *
- * With namespace
- *
- * [NS 9] ETag ::= '</' QName S? '>'
- */
+* xmlParseEndTag2:
+* @ctxt:  an XML parser context
+* @line:  line of the start tag
+* @nsNr:  number of namespaces on the start tag
+*
+* parse an end of tag
+*
+* [42] ETag ::= '</' Name S? '>'
+*
+* With namespace
+*
+* [NS 9] ETag ::= '</' QName S? '>'
+*/
 fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTag) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     if unsafe {
@@ -16162,8 +13959,8 @@ fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTag) {
         name = xmlParseQNameAndCompare(ctxt, (safe_ctxt).name, (safe_tag).prefix)
     }
     /*
-     * We should definitely be at the ending "S? '>'" part
-     */
+    * We should definitely be at the ending "S? '>'" part
+    */
     if unsafe {
         (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -16193,11 +13990,11 @@ fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTag) {
         }
     }
     /*
-     * [ WFC: Element Type Match ]
-     * The Name in an element's end-tag must match the element type in the
-     * start-tag.
-     *
-     */
+    * [ WFC: Element Type Match ]
+    * The Name in an element's end-tag must match the element type in the
+    * start-tag.
+    *
+    */
     if name != 1 as libc::c_int as *mut xmlChar {
         if name.is_null() {
             name = b"unparsable\x00" as *const u8 as *const libc::c_char as *mut xmlChar
@@ -16213,8 +14010,8 @@ fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTag) {
         );
     }
     /*
-     * SAX: End of Tag
-     */
+    * SAX: End of Tag
+    */
     unsafe {
         if !(safe_ctxt).sax.is_null()
             && (*(*ctxt).sax).endElementNs.is_some()
@@ -16236,19 +14033,19 @@ fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTag) {
     }
 }
 /* *
- * xmlParseCDSect:
- * @ctxt:  an XML parser context
- *
- * Parse escaped pure raw content.
- *
- * [18] CDSect ::= CDStart CData CDEnd
- *
- * [19] CDStart ::= '<![CDATA['
- *
- * [20] Data ::= (Char* - (Char* ']]>' Char*))
- *
- * [21] CDEnd ::= ']]>'
- */
+* xmlParseCDSect:
+* @ctxt:  an XML parser context
+*
+* Parse escaped pure raw content.
+*
+* [18] CDSect ::= CDStart CData CDEnd
+*
+* [19] CDStart ::= '<![CDATA['
+*
+* [20] Data ::= (Char* - (Char* ']]>' Char*))
+*
+* [21] CDEnd ::= ']]>'
+*/
 
 pub fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
@@ -16473,8 +14270,8 @@ pub fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
         (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize);
     }
     /*
-     * OK the buffer is to be consumed as cdata.
-     */
+    * OK the buffer is to be consumed as cdata.
+    */
     if !(safe_ctxt).sax.is_null() && (safe_ctxt).disableSAX == 0 {
         unsafe {
             if (*(*ctxt).sax).cdataBlock.is_some() {
@@ -16491,12 +14288,12 @@ pub fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
     xmlFree_safe(buf as *mut libc::c_void);
 }
 /* *
- * xmlParseContentInternal:
- * @ctxt:  an XML parser context
- *
- * Parse a content sequence. Stops at EOF or '</'. Leaves checking of
- * unexpected EOF to the caller.
- */
+* xmlParseContentInternal:
+* @ctxt:  an XML parser context
+*
+* Parse a content sequence. Stops at EOF or '</'. Leaves checking of
+* unexpected EOF to the caller.
+*/
 fn xmlParseContentInternal(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     let mut nameNr: libc::c_int = (safe_ctxt).nameNr;
@@ -16515,8 +14312,8 @@ fn xmlParseContentInternal(mut ctxt: xmlParserCtxtPtr) {
             let mut cons: libc::c_uint = (*(*ctxt).input).consumed as libc::c_uint;
             let mut cur: *const xmlChar = (*(*ctxt).input).cur;
             /*
-             * First case : a Processing Instruction.
-             */
+            * First case : a Processing Instruction.
+            */
             if *cur as libc::c_int == '<' as i32
                 && *cur.offset(1 as libc::c_int as isize) as libc::c_int == '?' as i32
             {
@@ -16575,22 +14372,22 @@ fn xmlParseContentInternal(mut ctxt: xmlParserCtxtPtr) {
                 xmlParseReference(ctxt);
             } else {
                 /*
-                 * Second case : a CDSection
-                 */
+                * Second case : a CDSection
+                */
                 /* 2.6.0 test was *cur not RAW */
                 /*
-                 * Third case :  a comment
-                 */
+                * Third case :  a comment
+                */
                 /*
-                 * Fourth case :  a sub-element.
-                 */
+                * Fourth case :  a sub-element.
+                */
                 /*
-                 * Fifth case : a reference. If if has not been resolved,
-                 *    parsing returns it's Name, create the node
-                 */
+                * Fifth case : a reference. If if has not been resolved,
+                *    parsing returns it's Name, create the node
+                */
                 /*
-                 * Last case, text. Note that References are handled directly.
-                 */
+                * Last case, text. Note that References are handled directly.
+                */
                 xmlParseCharData(ctxt, 0 as libc::c_int);
             }
             if (*ctxt).progressive == 0 as libc::c_int
@@ -16622,13 +14419,13 @@ fn xmlParseContentInternal(mut ctxt: xmlParserCtxtPtr) {
     }
 }
 /* *
- * xmlParseContent:
- * @ctxt:  an XML parser context
- *
- * Parse a content sequence. Stops at EOF or '</'.
- *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
- */
+* xmlParseContent:
+* @ctxt:  an XML parser context
+*
+* Parse a content sequence. Stops at EOF or '</'.
+*
+* [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+*/
 
 pub fn xmlParseContent(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -16658,18 +14455,18 @@ pub fn xmlParseContent(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlParseElement:
- * @ctxt:  an XML parser context
- *
- * parse an XML element
- *
- * [39] element ::= EmptyElemTag | STag content ETag
- *
- * [ WFC: Element Type Match ]
- * The Name in an element's end-tag must match the element type in the
- * start-tag.
- *
- */
+* xmlParseElement:
+* @ctxt:  an XML parser context
+*
+* parse an XML element
+*
+* [39] element ::= EmptyElemTag | STag content ETag
+*
+* [ WFC: Element Type Match ]
+* The Name in an element's end-tag must match the element type in the
+* start-tag.
+*
+*/
 
 pub fn xmlParseElement(mut ctxt: xmlParserCtxtPtr) {
     if xmlParseElementStart(ctxt) != 0 as libc::c_int {
@@ -16704,12 +14501,12 @@ pub fn xmlParseElement(mut ctxt: xmlParserCtxtPtr) {
     xmlParseElementEnd(ctxt);
 }
 /* *
- * xmlParseElementStart:
- * @ctxt:  an XML parser context
- *
- * Parse the start of an XML element. Returns -1 in case of error, 0 if an
- * opening tag was parsed, 1 if an empty element was parsed.
- */
+* xmlParseElementStart:
+* @ctxt:  an XML parser context
+*
+* Parse the start of an XML element. Returns -1 in case of error, 0 if an
+* opening tag was parsed, 1 if an empty element was parsed.
+*/
 fn xmlParseElementStart(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     let mut name: *const xmlChar = 0 as *const xmlChar;
@@ -16789,10 +14586,10 @@ fn xmlParseElementStart(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     nameNsPush(ctxt, name, prefix, URI, line, (safe_ctxt).nsNr - nsNr);
     ret = (safe_ctxt).node;
     /*
-     * [ VC: Root Element Type ]
-     * The Name in the document type declaration must match the element
-     * type of the root element.
-     */
+    * [ VC: Root Element Type ]
+    * The Name in the document type declaration must match the element
+    * type of the root element.
+    */
 
     match () {
         #[cfg(HAVE_parser_LIBXML_VALID_ENABLED)]
@@ -16812,8 +14609,8 @@ fn xmlParseElementStart(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
 
     /* LIBXML_VALID_ENABLED */
     /*
-     * Check for an Empty Element.
-     */
+    * Check for an Empty Element.
+    */
     //@todo 削减unsafe范围
     unsafe {
         if *(*(*ctxt).input).cur as libc::c_int == '/' as i32
@@ -16888,8 +14685,8 @@ fn xmlParseElementStart(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             );
             /* LIBXML_SAX1_ENABLED */
             /*
-             * end of parsing of this node.
-             */
+            * end of parsing of this node.
+            */
             nodePop(ctxt);
             namePop(ctxt);
             spacePop(ctxt);
@@ -16897,8 +14694,8 @@ fn xmlParseElementStart(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                 nsPop(ctxt, (*ctxt).nsNr - nsNr);
             }
             /*
-             * Capture end position and add node
-             */
+            * Capture end position and add node
+            */
             if !ret.is_null() && (*ctxt).record_info != 0 {
                 node_info.end_pos = (*(*ctxt).input)
                     .consumed
@@ -16914,11 +14711,11 @@ fn xmlParseElementStart(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     return 0 as libc::c_int;
 }
 /* *
- * xmlParseElementEnd:
- * @ctxt:  an XML parser context
- *
- * Parse the end of an XML element.
- */
+* xmlParseElementEnd:
+* @ctxt:  an XML parser context
+*
+* Parse the end of an XML element.
+*/
 fn xmlParseElementEnd(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     let mut node_info: xmlParserNodeInfo = xmlParserNodeInfo {
@@ -16933,8 +14730,8 @@ fn xmlParseElementEnd(mut ctxt: xmlParserCtxtPtr) {
         return;
     }
     /*
-     * parse the end of tag: '</' should be here.
-     */
+    * parse the end of tag: '</' should be here.
+    */
     if (safe_ctxt).sax2 != 0 {
         unsafe {
             xmlParseEndTag2(
@@ -16957,8 +14754,8 @@ fn xmlParseElementEnd(mut ctxt: xmlParserCtxtPtr) {
     }
     /* LIBXML_SAX1_ENABLED */
     /*
-     * Capture end position and add node
-     */
+    * Capture end position and add node
+    */
     if !ret.is_null() && (safe_ctxt).record_info != 0 {
         unsafe {
             node_info.end_pos = (*(*ctxt).input)
@@ -16972,17 +14769,17 @@ fn xmlParseElementEnd(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlParseVersionNum:
- * @ctxt:  an XML parser context
- *
- * parse the XML version value.
- *
- * [26] VersionNum ::= '1.' [0-9]+
- *
- * In practice allow [0-9].[0-9]+ at that level
- *
- * Returns the string giving the XML version number, or NULL
- */
+* xmlParseVersionNum:
+* @ctxt:  an XML parser context
+*
+* parse the XML version value.
+*
+* [26] VersionNum ::= '1.' [0-9]+
+*
+* In practice allow [0-9].[0-9]+ at that level
+*
+* Returns the string giving the XML version number, or NULL
+*/
 
 pub fn xmlParseVersionNum(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
@@ -17049,17 +14846,17 @@ pub fn xmlParseVersionNum(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     return buf;
 }
 /* *
- * xmlParseVersionInfo:
- * @ctxt:  an XML parser context
- *
- * parse the XML version.
- *
- * [24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
- *
- * [25] Eq ::= S? '=' S?
- *
- * Returns the version string, e.g. "1.0"
- */
+* xmlParseVersionInfo:
+* @ctxt:  an XML parser context
+*
+* parse the XML version.
+*
+* [24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
+*
+* [25] Eq ::= S? '=' S?
+*
+* Returns the version string, e.g. "1.0"
+*/
 
 pub fn xmlParseVersionInfo(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut version: *mut xmlChar = 0 as *mut xmlChar;
@@ -17123,15 +14920,15 @@ pub fn xmlParseVersionInfo(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     return version;
 }
 /* *
- * xmlParseEncName:
- * @ctxt:  an XML parser context
- *
- * parse the XML encoding name
- *
- * [81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*
- *
- * Returns the encoding name value or NULL
- */
+* xmlParseEncName:
+* @ctxt:  an XML parser context
+*
+* parse the XML encoding name
+*
+* [81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*
+*
+* Returns the encoding name value or NULL
+*/
 
 pub fn xmlParseEncName(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
@@ -17216,17 +15013,17 @@ pub fn xmlParseEncName(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     return buf;
 }
 /* *
- * xmlParseEncodingDecl:
- * @ctxt:  an XML parser context
- *
- * parse the XML encoding declaration
- *
- * [80] EncodingDecl ::= S 'encoding' Eq ('"' EncName '"' |  "'" EncName "'")
- *
- * this setups the conversion filters.
- *
- * Returns the encoding value or NULL
- */
+* xmlParseEncodingDecl:
+* @ctxt:  an XML parser context
+*
+* parse the XML encoding declaration
+*
+* [80] EncodingDecl ::= S 'encoding' Eq ('"' EncName '"' |  "'" EncName "'")
+*
+* this setups the conversion filters.
+*
+* Returns the encoding value or NULL
+*/
 
 pub fn xmlParseEncodingDecl(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -17296,16 +15093,16 @@ pub fn xmlParseEncodingDecl(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             xmlFatalErr(ctxt, XML_ERR_STRING_NOT_STARTED, 0 as *const libc::c_char);
         }
         /*
-         * Non standard parsing, allowing the user to ignore encoding
-         */
+        * Non standard parsing, allowing the user to ignore encoding
+        */
         if (safe_ctxt).options & XML_PARSE_IGNORE_ENC as libc::c_int != 0 {
             xmlFree_safe(encoding as *mut libc::c_void);
             return 0 as *const xmlChar;
         }
         /*
-         * UTF-16 encoding switch has already taken place at this stage,
-         * more over the little-endian/big-endian selection is already done
-         */
+        * UTF-16 encoding switch has already taken place at this stage,
+        * more over the little-endian/big-endian selection is already done
+        */
         if !encoding.is_null()
             && (xmlStrcasecmp_safe(
                 encoding,
@@ -17317,11 +15114,11 @@ pub fn xmlParseEncodingDecl(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
                 ) == 0)
         {
             /*
-             * If no encoding was passed to the parser, that we are
-             * using UTF-16 and no decoder is present i.e. the
-             * document is apparently UTF-8 compatible, then raise an
-             * encoding mismatch fatal error
-             */
+            * If no encoding was passed to the parser, that we are
+            * using UTF-16 and no decoder is present i.e. the
+            * document is apparently UTF-8 compatible, then raise an
+            * encoding mismatch fatal error
+            */
             if unsafe {
                 (*ctxt).encoding.is_null()
                     && !(*(*ctxt).input).buf.is_null()
@@ -17365,8 +15162,8 @@ pub fn xmlParseEncodingDecl(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             if !handler.is_null() {
                 if xmlSwitchToEncoding_safe(ctxt, handler) < 0 as libc::c_int {
                     /*
-                     * UTF-8 encoding is handled natively
-                     */
+                    * UTF-8 encoding is handled natively
+                    */
                     /* failed to convert */
                     (safe_ctxt).errNo = XML_ERR_UNSUPPORTED_ENCODING as libc::c_int;
                     return 0 as *const xmlChar;
@@ -17385,35 +15182,35 @@ pub fn xmlParseEncodingDecl(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     return encoding;
 }
 /* *
- * xmlParseSDDecl:
- * @ctxt:  an XML parser context
- *
- * parse the XML standalone declaration
- *
- * [32] SDDecl ::= S 'standalone' Eq
- *                 (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"'))
- *
- * [ VC: Standalone Document Declaration ]
- * TODO The standalone document declaration must have the value "no"
- * if any external markup declarations contain declarations of:
- *  - attributes with default values, if elements to which these
- *    attributes apply appear in the document without specifications
- *    of values for these attributes, or
- *  - entities (other than amp, lt, gt, apos, quot), if references
- *    to those entities appear in the document, or
- *  - attributes with values subject to normalization, where the
- *    attribute appears in the document with a value which will change
- *    as a result of normalization, or
- *  - element types with element content, if white space occurs directly
- *    within any instance of those types.
- *
- * Returns:
- *   1 if standalone="yes"
- *   0 if standalone="no"
- *  -2 if standalone attribute is missing or invalid
- *	  (A standalone value of -2 means that the XML declaration was found,
- *	   but no value was specified for the standalone attribute).
- */
+* xmlParseSDDecl:
+* @ctxt:  an XML parser context
+*
+* parse the XML standalone declaration
+*
+* [32] SDDecl ::= S 'standalone' Eq
+*                 (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"'))
+*
+* [ VC: Standalone Document Declaration ]
+* TODO The standalone document declaration must have the value "no"
+* if any external markup declarations contain declarations of:
+*  - attributes with default values, if elements to which these
+*    attributes apply appear in the document without specifications
+*    of values for these attributes, or
+*  - entities (other than amp, lt, gt, apos, quot), if references
+*    to those entities appear in the document, or
+*  - attributes with values subject to normalization, where the
+*    attribute appears in the document with a value which will change
+*    as a result of normalization, or
+*  - element types with element content, if white space occurs directly
+*    within any instance of those types.
+*
+* Returns:
+*   1 if standalone="yes"
+*   0 if standalone="no"
+*  -2 if standalone attribute is missing or invalid
+*	  (A standalone value of -2 means that the XML declaration was found,
+*	   but no value was specified for the standalone attribute).
+*/
 
 pub fn xmlParseSDDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut standalone: libc::c_int = -(2 as libc::c_int);
@@ -17535,27 +15332,27 @@ pub fn xmlParseSDDecl(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     return standalone;
 }
 /* *
- * xmlParseXMLDecl:
- * @ctxt:  an XML parser context
- *
- * parse an XML declaration header
- *
- * [23] XMLDecl ::= '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
- */
+* xmlParseXMLDecl:
+* @ctxt:  an XML parser context
+*
+* parse an XML declaration header
+*
+* [23] XMLDecl ::= '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
+*/
 
 pub fn xmlParseXMLDecl(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     let mut version: *mut xmlChar = 0 as *mut xmlChar;
     unsafe {
         /*
-         * This value for standalone indicates that the document has an
-         * XML declaration but it does not have a standalone attribute.
-         * It will be overwritten later if a standalone attribute is found.
-         */
+        * This value for standalone indicates that the document has an
+        * XML declaration but it does not have a standalone attribute.
+        * It will be overwritten later if a standalone attribute is found.
+        */
         (*(*ctxt).input).standalone = -(2 as libc::c_int);
         /*
-         * We know that '<?xml' is here.
-         */
+        * We know that '<?xml' is here.
+        */
         (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5 as libc::c_int as isize);
         (*(*ctxt).input).col += 5 as libc::c_int;
         if *(*(*ctxt).input).cur as libc::c_int == 0 as libc::c_int {
@@ -17575,8 +15372,8 @@ pub fn xmlParseXMLDecl(mut ctxt: xmlParserCtxtPtr) {
     }
     xmlSkipBlankChars(ctxt);
     /*
-     * We must have the VersionInfo here.
-     */
+    * We must have the VersionInfo here.
+    */
     version = xmlParseVersionInfo(ctxt);
     if version.is_null() {
         xmlFatalErr(ctxt, XML_ERR_VERSION_MISSING, 0 as *const libc::c_char);
@@ -17587,8 +15384,8 @@ pub fn xmlParseXMLDecl(mut ctxt: xmlParserCtxtPtr) {
         ) == 0
         {
             /*
-             * Changed here for XML-1.0 5th edition
-             */
+            * Changed here for XML-1.0 5th edition
+            */
             if (safe_ctxt).options & XML_PARSE_OLD10 as libc::c_int != 0 {
                 xmlFatalErrMsgStr(
                     ctxt,
@@ -17623,8 +15420,8 @@ pub fn xmlParseXMLDecl(mut ctxt: xmlParserCtxtPtr) {
     }
     unsafe {
         /*
-         * We may have the encoding declaration
-         */
+        * We may have the encoding declaration
+        */
         if !(*(*(*ctxt).input).cur as libc::c_int == 0x20 as libc::c_int
             || 0x9 as libc::c_int <= *(*(*ctxt).input).cur as libc::c_int
                 && *(*(*ctxt).input).cur as libc::c_int <= 0xa as libc::c_int
@@ -17653,14 +15450,14 @@ pub fn xmlParseXMLDecl(mut ctxt: xmlParserCtxtPtr) {
         || (safe_ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
     {
         /*
-         * The XML REC instructs us to stop parsing right here
-         */
+        * The XML REC instructs us to stop parsing right here
+        */
         return;
     }
     unsafe {
         /*
-         * We may have the standalone status.
-         */
+        * We may have the standalone status.
+        */
         if !(*(*ctxt).input).encoding.is_null()
             && !(*(*(*ctxt).input).cur as libc::c_int == 0x20 as libc::c_int
                 || 0x9 as libc::c_int <= *(*(*ctxt).input).cur as libc::c_int
@@ -17686,8 +15483,8 @@ pub fn xmlParseXMLDecl(mut ctxt: xmlParserCtxtPtr) {
         }
     }
     /*
-     * We can grow the input buffer freely at that point
-     */
+    * We can grow the input buffer freely at that point
+    */
     if unsafe {
         (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
@@ -17726,13 +15523,13 @@ pub fn xmlParseXMLDecl(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlParseMisc:
- * @ctxt:  an XML parser context
- *
- * parse an XML Misc* optional field.
- *
- * [27] Misc ::= Comment | PI |  S
- */
+* xmlParseMisc:
+* @ctxt:  an XML parser context
+*
+* parse an XML Misc* optional field.
+*
+* [27] Misc ::= Comment | PI |  S
+*/
 
 pub fn xmlParseMisc(mut ctxt: xmlParserCtxtPtr) {
     //@todo 削减unsafe范围
@@ -17776,19 +15573,19 @@ pub fn xmlParseMisc(mut ctxt: xmlParserCtxtPtr) {
     }
 }
 /* *
- * xmlParseDocument:
- * @ctxt:  an XML parser context
- *
- * parse an XML document (and build a tree if using the standard SAX
- * interface).
- *
- * [1] document ::= prolog element Misc*
- *
- * [22] prolog ::= XMLDecl? Misc* (doctypedecl Misc*)?
- *
- * Returns 0, -1 in case of error. the parser context is augmented
- *                as a result of the parsing.
- */
+* xmlParseDocument:
+* @ctxt:  an XML parser context
+*
+* parse an XML document (and build a tree if using the standard SAX
+* interface).
+*
+* [1] document ::= prolog element Misc*
+*
+* [22] prolog ::= XMLDecl? Misc* (doctypedecl Misc*)?
+*
+* Returns 0, -1 in case of error. the parser context is augmented
+*                as a result of the parsing.
+*/
 
 pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -17808,13 +15605,13 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
         xmlGROW(ctxt);
     }
     /*
-     * SAX: detecting the level.
-     */
+    * SAX: detecting the level.
+    */
     xmlDetectSAX2(ctxt);
     unsafe {
         /*
-         * SAX: beginning of the document processing.
-         */
+        * SAX: beginning of the document processing.
+        */
         if !(*ctxt).sax.is_null() && (*(*ctxt).sax).setDocumentLocator.is_some() {
             (*(*ctxt).sax)
                 .setDocumentLocator
@@ -17832,10 +15629,10 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                 >= 4 as libc::c_int as libc::c_long
         {
             /*
-             * Get the 4 first bytes and decode the charset
-             * if enc != XML_CHAR_ENCODING_NONE
-             * plug some encoding conversion routines.
-             */
+            * Get the 4 first bytes and decode the charset
+            * if enc != XML_CHAR_ENCODING_NONE
+            * plug some encoding conversion routines.
+            */
             start[0 as libc::c_int as usize] = *(*(*ctxt).input).cur;
             start[1 as libc::c_int as usize] =
                 *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize);
@@ -17856,11 +15653,11 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             return -(1 as libc::c_int);
         }
         /*
-         * Check for the XMLDecl in the Prolog.
-         * do not GROW here to avoid the detected encoder to decode more
-         * than just the first line, unless the amount of data is really
-         * too small to hold "<?xml version="1.0" encoding="foo"
-         */
+        * Check for the XMLDecl in the Prolog.
+        * do not GROW here to avoid the detected encoder to decode more
+        * than just the first line, unless the amount of data is really
+        * too small to hold "<?xml version="1.0" encoding="foo"
+        */
         if ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
             < 35 as libc::c_int as libc::c_long
         {
@@ -17896,15 +15693,15 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                     == 0xd as libc::c_int)
         {
             /*
-             * Note that we will switch encoding on the fly.
-             */
+            * Note that we will switch encoding on the fly.
+            */
             xmlParseXMLDecl(ctxt);
             if (*ctxt).errNo == XML_ERR_UNSUPPORTED_ENCODING as libc::c_int
                 || (*ctxt).instate as libc::c_int == XML_PARSER_EOF as libc::c_int
             {
                 /*
-                 * The XML REC instructs us to stop parsing right here
-                 */
+                * The XML REC instructs us to stop parsing right here
+                */
                 return -(1 as libc::c_int);
             }
             (*ctxt).standalone = (*(*ctxt).input).standalone;
@@ -17931,8 +15728,8 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             (*(*ctxt).myDoc).compression = (*(*(*ctxt).input).buf).compressed
         }
         /*
-         * The Misc part of the Prolog
-         */
+        * The Misc part of the Prolog
+        */
         if (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
                 < 250 as libc::c_int as libc::c_long
@@ -17941,9 +15738,9 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
         }
         xmlParseMisc(ctxt);
         /*
-         * Then possibly doc type declaration(s) and more Misc
-         * (doctypedecl Misc*)?
-         */
+        * Then possibly doc type declaration(s) and more Misc
+        * (doctypedecl Misc*)?
+        */
         if (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
                 < 250 as libc::c_int as libc::c_long
@@ -17988,8 +15785,8 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                 }
             }
             /*
-             * Create and update the external subset.
-             */
+            * Create and update the external subset.
+            */
             (*ctxt).inSubset = 2 as libc::c_int;
             if !(*ctxt).sax.is_null()
                 && (*(*ctxt).sax).externalSubset.is_some()
@@ -18013,8 +15810,8 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             xmlParseMisc(ctxt);
         }
         /*
-         * Time to start parsing the tree itself
-         */
+        * Time to start parsing the tree itself
+        */
         if (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
                 < 250 as libc::c_int as libc::c_long
@@ -18032,8 +15829,8 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             xmlParseElement(ctxt);
             (*ctxt).instate = XML_PARSER_EPILOG;
             /*
-             * The Misc part at the end
-             */
+            * The Misc part at the end
+            */
             xmlParseMisc(ctxt);
             if *(*(*ctxt).input).cur as libc::c_int != 0 as libc::c_int {
                 xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, 0 as *const libc::c_char);
@@ -18041,16 +15838,16 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             (*ctxt).instate = XML_PARSER_EOF
         }
         /*
-         * SAX: end of the document processing.
-         */
+        * SAX: end of the document processing.
+        */
         if !(*ctxt).sax.is_null() && (*(*ctxt).sax).endDocument.is_some() {
             (*(*ctxt).sax)
                 .endDocument
                 .expect("non-null function pointer")((*ctxt).userData);
         }
         /*
-         * Remove locally kept entity definitions if the tree was not built
-         */
+        * Remove locally kept entity definitions if the tree was not built
+        */
         if !(*ctxt).myDoc.is_null()
             && xmlStrEqual_safe(
                 (*(*ctxt).myDoc).version,
@@ -18081,18 +15878,18 @@ pub fn xmlParseDocument(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     return 0 as libc::c_int;
 }
 /* *
- * xmlParseExtParsedEnt:
- * @ctxt:  an XML parser context
- *
- * parse a general parsed entity
- * An external general parsed entity is well-formed if it matches the
- * production labeled extParsedEnt.
- *
- * [78] extParsedEnt ::= TextDecl? content
- *
- * Returns 0, -1 in case of error. the parser context is augmented
- *                as a result of the parsing.
- */
+* xmlParseExtParsedEnt:
+* @ctxt:  an XML parser context
+*
+* parse a general parsed entity
+* An external general parsed entity is well-formed if it matches the
+* production labeled extParsedEnt.
+*
+* [78] extParsedEnt ::= TextDecl? content
+*
+* Returns 0, -1 in case of error. the parser context is augmented
+*                as a result of the parsing.
+*/
 
 pub fn xmlParseExtParsedEnt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -18111,8 +15908,8 @@ pub fn xmlParseExtParsedEnt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             xmlGROW(ctxt);
         }
         /*
-         * SAX: beginning of the document processing.
-         */
+        * SAX: beginning of the document processing.
+        */
         if !(*ctxt).sax.is_null() && (*(*ctxt).sax).setDocumentLocator.is_some() {
             (*(*ctxt).sax)
                 .setDocumentLocator
@@ -18121,10 +15918,10 @@ pub fn xmlParseExtParsedEnt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             );
         }
         /*
-         * Get the 4 first bytes and decode the charset
-         * if enc != XML_CHAR_ENCODING_NONE
-         * plug some encoding conversion routines.
-         */
+        * Get the 4 first bytes and decode the charset
+        * if enc != XML_CHAR_ENCODING_NONE
+        * plug some encoding conversion routines.
+        */
         if (*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long
             >= 4 as libc::c_int as libc::c_long
         {
@@ -18144,8 +15941,8 @@ pub fn xmlParseExtParsedEnt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             xmlFatalErr(ctxt, XML_ERR_DOCUMENT_EMPTY, 0 as *const libc::c_char);
         }
         /*
-         * Check for the XMLDecl in the Prolog.
-         */
+        * Check for the XMLDecl in the Prolog.
+        */
         if (*ctxt).progressive == 0 as libc::c_int
             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as libc::c_long)
                 < 250 as libc::c_int as libc::c_long
@@ -18177,13 +15974,13 @@ pub fn xmlParseExtParsedEnt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
                     == 0xd as libc::c_int)
         {
             /*
-             * Note that we will switch encoding on the fly.
-             */
+            * Note that we will switch encoding on the fly.
+            */
             xmlParseXMLDecl(ctxt);
             if (*ctxt).errNo == XML_ERR_UNSUPPORTED_ENCODING as libc::c_int {
                 /*
-                 * The XML REC instructs us to stop parsing right here
-                 */
+                * The XML REC instructs us to stop parsing right here
+                */
                 return -(1 as libc::c_int);
             }
             xmlSkipBlankChars(ctxt);
@@ -18203,8 +16000,8 @@ pub fn xmlParseExtParsedEnt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
         return -(1 as libc::c_int);
     }
     /*
-     * Doing validity checking on chunk doesn't make sense
-     */
+    * Doing validity checking on chunk doesn't make sense
+    */
     (safe_ctxt).instate = XML_PARSER_CONTENT;
     (safe_ctxt).validate = 0 as libc::c_int;
     (safe_ctxt).loadsubset = 0 as libc::c_int;
@@ -18222,8 +16019,8 @@ pub fn xmlParseExtParsedEnt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             xmlFatalErr(ctxt, XML_ERR_EXTRA_CONTENT, 0 as *const libc::c_char);
         }
         /*
-         * SAX: end of the document processing.
-         */
+        * SAX: end of the document processing.
+        */
         if !(safe_ctxt).sax.is_null() && (*(*ctxt).sax).endDocument.is_some() {
             (*(*ctxt).sax)
                 .endDocument
@@ -18236,26 +16033,26 @@ pub fn xmlParseExtParsedEnt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     return 0 as libc::c_int;
 }
 /* ***********************************************************************
- *									*
- *		Progressive parsing interfaces				*
- *									*
- ************************************************************************/
+*									*
+*		Progressive parsing interfaces				*
+*									*
+************************************************************************/
 /* *
- * xmlParseLookupSequence:
- * @ctxt:  an XML parser context
- * @first:  the first char to lookup
- * @next:  the next char to lookup or zero
- * @third:  the next char to lookup or zero
- *
- * Try to find if a sequence (first, next, third) or  just (first next) or
- * (first) is available in the input stream.
- * This function has a side effect of (possibly) incrementing ctxt->checkIndex
- * to avoid rescanning sequences of bytes, it DOES change the state of the
- * parser, do not use liberally.
- *
- * Returns the index to the current parsing point if the full sequence
- *      is available, -1 otherwise.
- */
+* xmlParseLookupSequence:
+* @ctxt:  an XML parser context
+* @first:  the first char to lookup
+* @next:  the next char to lookup or zero
+* @third:  the next char to lookup or zero
+*
+* Try to find if a sequence (first, next, third) or  just (first next) or
+* (first) is available in the input stream.
+* This function has a side effect of (possibly) incrementing ctxt->checkIndex
+* to avoid rescanning sequences of bytes, it DOES change the state of the
+* parser, do not use liberally.
+*
+* Returns the index to the current parsing point if the full sequence
+*      is available, -1 otherwise.
+*/
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
 fn xmlParseLookupSequence(
     mut ctxt: xmlParserCtxtPtr,
@@ -18410,13 +16207,13 @@ fn xmlParseLookupSequence(
     return -(1 as libc::c_int);
 }
 /* *
- * xmlParseGetLasts:
- * @ctxt:  an XML parser context
- * @lastlt:  pointer to store the last '<' from the input
- * @lastgt:  pointer to store the last '>' from the input
- *
- * Lookup the last < and > in the current chunk
- */
+* xmlParseGetLasts:
+* @ctxt:  an XML parser context
+* @lastlt:  pointer to store the last '<' from the input
+* @lastgt:  pointer to store the last '>' from the input
+*
+* Lookup the last < and > in the current chunk
+*/
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
 fn xmlParseGetLasts(
     mut ctxt: xmlParserCtxtPtr,
@@ -18492,16 +16289,16 @@ fn xmlParseGetLasts(
     };
 }
 /* *
- * xmlCheckCdataPush:
- * @cur: pointer to the block of characters
- * @len: length of the block in bytes
- * @complete: 1 if complete CDATA block is passed in, 0 if partial block
- *
- * Check that the block of characters is okay as SCdata content [20]
- *
- * Returns the number of bytes to pass if okay, a negative index where an
- *         UTF-8 error occurred otherwise
- */
+* xmlCheckCdataPush:
+* @cur: pointer to the block of characters
+* @len: length of the block in bytes
+* @complete: 1 if complete CDATA block is passed in, 0 if partial block
+*
+* Check that the block of characters is okay as SCdata content [20]
+*
+* Returns the number of bytes to pass if okay, a negative index where an
+*         UTF-8 error occurred otherwise
+*/
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
 fn xmlCheckCdataPush(
     mut utf: *const xmlChar,
@@ -18648,14 +16445,14 @@ fn xmlCheckCdataPush(
     return ix;
 }
 /* *
- * xmlParseTryOrFinish:
- * @ctxt:  an XML parser context
- * @terminate:  last chunk indicator
- *
- * Try to progress on parsing
- *
- * Returns zero if no parsing was possible
- */
+* xmlParseTryOrFinish:
+* @ctxt:  an XML parser context
+* @terminate:  last chunk indicator
+*
+* Try to progress on parsing
+*
+* Returns zero if no parsing was possible
+*/
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
 fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -> libc::c_int {
     let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -18809,12 +16606,12 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
                     as libc::c_int
             } else {
                 /*
-                 * If we are operating on converted input, try to flush
-                 * remaining chars to avoid them stalling in the non-converted
-                 * buffer. But do not do this in document start where
-                 * encoding="..." may not have been read and we work on a
-                 * guessed encoding.
-                 */
+                * If we are operating on converted input, try to flush
+                * remaining chars to avoid them stalling in the non-converted
+                * buffer. But do not do this in document start where
+                * encoding="..." may not have been read and we work on a
+                * guessed encoding.
+                */
                 if (*ctxt).instate as libc::c_int != XML_PARSER_START as libc::c_int
                     && !(*(*(*ctxt).input).buf).raw.is_null()
                     && xmlBufIsEmpty((*(*(*ctxt).input).buf).raw) == 0 as libc::c_int
@@ -18855,20 +16652,20 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
                     let mut start: [xmlChar; 4] = [0; 4];
                     let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
                     /*
-                     * Very first chars read from the document flow.
-                     */
+                    * Very first chars read from the document flow.
+                    */
                     if avail < 4 as libc::c_int {
                         current_block = 1672565932838553232;
                         break;
                     }
                     unsafe {
                         /*
-                         * Get the 4 first bytes and decode the charset
-                         * if enc != XML_CHAR_ENCODING_NONE
-                         * plug some encoding conversion routines,
-                         * else xmlSwitchEncoding will set to (default)
-                         * UTF8.
-                         */
+                        * Get the 4 first bytes and decode the charset
+                        * if enc != XML_CHAR_ENCODING_NONE
+                        * plug some encoding conversion routines,
+                        * else xmlSwitchEncoding will set to (default)
+                        * UTF8.
+                        */
                         start[0 as libc::c_int as usize] = *(*(*ctxt).input).cur;
                         start[1 as libc::c_int as usize] =
                             *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize);
@@ -19196,10 +16993,10 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
                         break;
                     } else {
                         /*
-                         * [ VC: Root Element Type ]
-                         * The Name in the document type declaration must match
-                         * the element type of the root element.
-                         */
+                        * [ VC: Root Element Type ]
+                        * The Name in the document type declaration must match
+                        * the element type of the root element.
+                        */
 
                         match () {
                             #[cfg(HAVE_parser_LIBXML_VALID_ENABLED)]
@@ -19222,8 +17019,8 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
 
                         /* LIBXML_VALID_ENABLED */
                         /*
-                         * Check for an Empty Element.
-                         */
+                        * Check for an Empty Element.
+                        */
                         //@todo 削减unsafe范围
                         unsafe {
                             if *(*(*ctxt).input).cur as libc::c_int == '/' as i32
@@ -19445,16 +17242,16 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
                             /* LIBXML_SAX1_ENABLED */
                             /* TODO Avoid the extra copy, handle directly !!! */
                             /*
-                             * Goal of the following test is:
-                             *  - minimize calls to the SAX 'character' callback
-                             *    when they are mergeable
-                             *  - handle an problem for isBlank when we only parse
-                             *    a sequence of blank chars and the next one is
-                             *    not available to check against '<' presence.
-                             *  - tries to homogenize the differences in SAX
-                             *    callbacks between the push and pull versions
-                             *    of the parser.
-                             */
+                            * Goal of the following test is:
+                            *  - minimize calls to the SAX 'character' callback
+                            *    when they are mergeable
+                            *  - handle an problem for isBlank when we only parse
+                            *    a sequence of blank chars and the next one is
+                            *    not available to check against '<' presence.
+                            *  - tries to homogenize the differences in SAX
+                            *    callbacks between the push and pull versions
+                            *    of the parser.
+                            */
                             if (safe_ctxt).inputNr == 1 as libc::c_int && avail < 300 as libc::c_int
                             {
                                 if terminate == 0 {
@@ -19553,9 +17350,9 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
             }
             8 => {
                 /*
-                 * The Push mode need to have the SAX callback for
-                 * cdataBlock merge back contiguous callbacks.
-                 */
+                * The Push mode need to have the SAX callback for
+                * cdataBlock merge back contiguous callbacks.
+                */
                 let mut base_0: libc::c_int = 0;
                 base_0 = xmlParseLookupSequence(
                     ctxt,
@@ -19650,10 +17447,10 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
                         {
                             unsafe {
                                 /*
-                                 * Special case to provide identical behaviour
-                                 * between pull and push parsers on enpty CDATA
-                                 * sections
-                                 */
+                                * Special case to provide identical behaviour
+                                * between pull and push parsers on enpty CDATA
+                                * sections
+                                */
                                 if (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base)
                                     as libc::c_long
                                     >= 9 as libc::c_int as libc::c_long
@@ -19898,8 +17695,8 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
                                 };
                             } else {
                                 /*
-                                 * Create and update the external subset.
-                                 */
+                                * Create and update the external subset.
+                                */
                                 (safe_ctxt).inSubset = 2 as libc::c_int;
                                 if !(safe_ctxt).sax.is_null()
                                     && (safe_ctxt).disableSAX == 0
@@ -20211,15 +18008,15 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
             }
             3 => {
                 /*
-                 * Sorry but progressive parsing of the internal subset
-                 * is not expected to be supported. We first check that
-                 * the full content of the internal subset is available and
-                 * the parsing is launched only at that point.
-                 * Internal subset ends up with "']' S? '>'" in an unescaped
-                 * section and not in a ']]>' sequence which are conditional
-                 * sections (whoever argued to keep that crap in XML deserve
-                 * a place in hell !).
-                 */
+                * Sorry but progressive parsing of the internal subset
+                * is not expected to be supported. We first check that
+                * the full content of the internal subset is available and
+                * the parsing is launched only at that point.
+                * Internal subset ends up with "']' S? '>'" in an unescaped
+                * section and not in a ']]>' sequence which are conditional
+                * sections (whoever argued to keep that crap in XML deserve
+                * a place in hell !).
+                */
                 let mut base_1: libc::c_int = 0;
                 let mut i: libc::c_int = 0;
                 let mut buf: *mut xmlChar = 0 as *mut xmlChar;
@@ -20631,11 +18428,11 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
     match current_block {
         1672565932838553232 =>
         /*
-         * We didn't found the end of the Internal subset
-         */
+        * We didn't found the end of the Internal subset
+        */
         /*
-         * Document parsing is done !
-         */
+        * Document parsing is done !
+        */
         {
             match () {
                 #[cfg(HAVE_parser_DEBUG_PUSH)]
@@ -20680,16 +18477,16 @@ fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: libc::c_int) -
 }
 
 /* *
- * xmlParseCheckTransition:
- * @ctxt:  an XML parser context
- * @chunk:  a char array
- * @size:  the size in byte of the chunk
- *
- * Check depending on the current parser state if the chunk given must be
- * processed immediately or one need more data to advance on parsing.
- *
- * Returns -1 in case of error, 0 if the push is not needed and 1 if needed
- */
+* xmlParseCheckTransition:
+* @ctxt:  an XML parser context
+* @chunk:  a char array
+* @size:  the size in byte of the chunk
+*
+* Check depending on the current parser state if the chunk given must be
+* processed immediately or one need more data to advance on parsing.
+*
+* Returns -1 in case of error, 0 if the push is not needed and 1 if needed
+*/
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
 fn xmlParseCheckTransition(
     mut ctxt: xmlParserCtxtPtr,
@@ -20785,16 +18582,16 @@ fn xmlParseCheckTransition(
 }
 
 /* *
- * xmlParseChunk:
- * @ctxt:  an XML parser context
- * @chunk:  an char array
- * @size:  the size in byte of the chunk
- * @terminate:  last chunk indicator
- *
- * Parse a Chunk of memory
- *
- * Returns zero if no error, the xmlParserErrors otherwise.
- */
+* xmlParseChunk:
+* @ctxt:  an XML parser context
+* @chunk:  an char array
+* @size:  the size in byte of the chunk
+* @terminate:  last chunk indicator
+*
+* Parse a Chunk of memory
+*
+* Returns zero if no error, the xmlParserErrors otherwise.
+*/
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
 pub fn xmlParseChunk(
     mut ctxt: xmlParserCtxtPtr,
@@ -20849,10 +18646,10 @@ pub fn xmlParseChunk(
             let mut res: libc::c_int = 0;
             old_avail = unsafe { xmlBufUse((*(*safe_ctxt.input).buf).buffer) };
             /*
-             * Specific handling if we autodetected an encoding, we should not
-             * push more than the first line ... which depend on the encoding
-             * And only push the rest once the final encoding was detected
-             */
+            * Specific handling if we autodetected an encoding, we should not
+            * push more than the first line ... which depend on the encoding
+            * And only push the rest once the final encoding was detected
+            */
             unsafe {
                 if safe_ctxt.instate as libc::c_int == XML_PARSER_START as libc::c_int
                     && !safe_ctxt.input.is_null()
@@ -20971,11 +18768,11 @@ pub fn xmlParseChunk(
                 }
             }
             /*
-             * Depending on the current state it may not be such
-             * a good idea to try parsing if there is nothing in the chunk
-             * which would be worth doing a parser state transition and we
-             * need to wait for more data
-             */
+            * Depending on the current state it may not be such
+            * a good idea to try parsing if there is nothing in the chunk
+            * which would be worth doing a parser state transition and we
+            * need to wait for more data
+            */
             unsafe {
                 if terminate != 0
                     || avail > 10000000 as libc::c_int as libc::c_ulong
@@ -21049,8 +18846,8 @@ pub fn xmlParseChunk(
     }
     if terminate != 0 {
         /*
-         * Check for termination
-         */
+        * Check for termination
+        */
         let mut cur_avail: libc::c_int = 0 as libc::c_int;
         unsafe {
             if !safe_ctxt.input.is_null() {
@@ -21098,28 +18895,28 @@ pub fn xmlParseChunk(
     };
 }
 /* ***********************************************************************
- *									*
- *		I/O front end functions to the parser			*
- *									*
- ************************************************************************/
+*									*
+*		I/O front end functions to the parser			*
+*									*
+************************************************************************/
 /* *
- * xmlCreatePushParserCtxt:
- * @sax:  a SAX handler
- * @user_data:  The user data returned on SAX callbacks
- * @chunk:  a pointer to an array of chars
- * @size:  number of chars in the array
- * @filename:  an optional file name or URI
- *
- * Create a parser context for using the XML parser in push mode.
- * If @buffer and @size are non-NULL, the data is used to detect
- * the encoding.  The remaining characters will be parsed so they
- * don't need to be fed in again through xmlParseChunk.
- * To allow content encoding detection, @size should be >= 4
- * The value of @filename is used for fetching external entities
- * and error/warning reports.
- *
- * Returns the new parser context or NULL
- */
+* xmlCreatePushParserCtxt:
+* @sax:  a SAX handler
+* @user_data:  The user data returned on SAX callbacks
+* @chunk:  a pointer to an array of chars
+* @size:  number of chars in the array
+* @filename:  an optional file name or URI
+*
+* Create a parser context for using the XML parser in push mode.
+* If @buffer and @size are non-NULL, the data is used to detect
+* the encoding.  The remaining characters will be parsed so they
+* don't need to be fed in again through xmlParseChunk.
+* To allow content encoding detection, @size should be >= 4
+* The value of @filename is used for fetching external entities
+* and error/warning reports.
+*
+* Returns the new parser context or NULL
+*/
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
 pub fn xmlCreatePushParserCtxt(
     mut sax: xmlSAXHandlerPtr,
@@ -21133,8 +18930,8 @@ pub fn xmlCreatePushParserCtxt(
     let mut buf: xmlParserInputBufferPtr = 0 as *mut xmlParserInputBuffer;
     let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
     /*
-     * plug some encoding conversion routines
-     */
+    * plug some encoding conversion routines
+    */
     if !chunk.is_null() && size >= 4 as libc::c_int {
         enc = xmlDetectCharEncoding_safe(chunk as *const xmlChar, size)
     }
@@ -21231,10 +19028,10 @@ pub fn xmlCreatePushParserCtxt(
     }
     inputPush_safe(ctxt, inputStream);
     /*
-     * If the caller didn't provide an initial 'chunk' for determining
-     * the encoding, we set the context to XML_CHAR_ENCODING_NONE so
-     * that it can be automatically determined later
-     */
+    * If the caller didn't provide an initial 'chunk' for determining
+    * the encoding, we set the context to XML_CHAR_ENCODING_NONE so
+    * that it can be automatically determined later
+    */
     if size == 0 as libc::c_int || chunk.is_null() {
         safe_ctxt.charset = XML_CHAR_ENCODING_NONE as libc::c_int
     } else if !safe_ctxt.input.is_null() && unsafe { !(*safe_ctxt.input).buf.is_null() } {
@@ -21275,12 +19072,12 @@ pub fn xmlCreatePushParserCtxt(
 
 /* LIBXML_PUSH_ENABLED */
 /* *
- * xmlHaltParser:
- * @ctxt:  an XML parser context
- *
- * Blocks further parser processing don't override error
- * for internal use
- */
+* xmlHaltParser:
+* @ctxt:  an XML parser context
+*
+* Blocks further parser processing don't override error
+* for internal use
+*/
 fn xmlHaltParser(mut ctxt: xmlParserCtxtPtr) {
     if ctxt.is_null() {
         return;
@@ -21294,9 +19091,9 @@ fn xmlHaltParser(mut ctxt: xmlParserCtxtPtr) {
     }
     if !safe_ctxt.input.is_null() {
         /*
-         * in case there was a specific allocation deallocate before
-         * overriding base
-         */
+        * in case there was a specific allocation deallocate before
+        * overriding base
+        */
         unsafe {
             if (*safe_ctxt.input).free.is_some() {
                 (*safe_ctxt.input).free.expect("non-null function pointer")(
@@ -21316,11 +19113,11 @@ fn xmlHaltParser(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlStopParser:
- * @ctxt:  an XML parser context
- *
- * Blocks further parser processing
- */
+* xmlStopParser:
+* @ctxt:  an XML parser context
+*
+* Blocks further parser processing
+*/
 
 pub fn xmlStopParser_parser(mut ctxt: xmlParserCtxtPtr) {
     if ctxt.is_null() {
@@ -21332,19 +19129,19 @@ pub fn xmlStopParser_parser(mut ctxt: xmlParserCtxtPtr) {
     safe_ctxt.errNo = XML_ERR_USER_STOP as libc::c_int;
 }
 /* *
- * xmlCreateIOParserCtxt:
- * @sax:  a SAX handler
- * @user_data:  The user data returned on SAX callbacks
- * @ioread:  an I/O read function
- * @ioclose:  an I/O close function
- * @ioctx:  an I/O handler
- * @enc:  the charset encoding if known
- *
- * Create a parser context for using the XML parser with an existing
- * I/O stream
- *
- * Returns the new parser context or NULL
- */
+* xmlCreateIOParserCtxt:
+* @sax:  a SAX handler
+* @user_data:  The user data returned on SAX callbacks
+* @ioread:  an I/O read function
+* @ioclose:  an I/O close function
+* @ioctx:  an I/O handler
+* @enc:  the charset encoding if known
+*
+* Create a parser context for using the XML parser with an existing
+* I/O stream
+*
+* Returns the new parser context or NULL
+*/
 
 pub fn xmlCreateIOParserCtxt(
     mut sax: xmlSAXHandlerPtr,
@@ -21432,21 +19229,21 @@ pub fn xmlCreateIOParserCtxt(
 }
 
 /* ***********************************************************************
- *									*
- *		Front ends when parsing a DTD				*
- *									*
- ************************************************************************/
+*									*
+*		Front ends when parsing a DTD				*
+*									*
+************************************************************************/
 /* *
- * xmlIOParseDTD:
- * @sax:  the SAX handler block or NULL
- * @input:  an Input Buffer
- * @enc:  the charset encoding if known
- *
- * Load and parse a DTD
- *
- * Returns the resulting xmlDtdPtr or NULL in case of error.
- * @input will be freed by the function in any case.
- */
+* xmlIOParseDTD:
+* @sax:  the SAX handler block or NULL
+* @input:  an Input Buffer
+* @enc:  the charset encoding if known
+*
+* Load and parse a DTD
+*
+* Returns the resulting xmlDtdPtr or NULL in case of error.
+* @input will be freed by the function in any case.
+*/
 #[cfg(HAVE_parser_LIBXML_VALID_ENABLED)]
 pub fn xmlIOParseDTD(
     mut sax: xmlSAXHandlerPtr,
@@ -21471,8 +19268,8 @@ pub fn xmlIOParseDTD(
     /* We are loading a DTD */
     safe_ctxt.options |= XML_PARSE_DTDLOAD as libc::c_int;
     /*
-     * Set-up the SAX context
-     */
+    * Set-up the SAX context
+    */
     if !sax.is_null() {
         if !safe_ctxt.sax.is_null() {
             xmlFree_safe(safe_ctxt.sax as *mut libc::c_void);
@@ -21483,8 +19280,8 @@ pub fn xmlIOParseDTD(
     unsafe {
         xmlDetectSAX2(ctxt);
         /*
-         * generate a parser input from the I/O handler
-         */
+        * generate a parser input from the I/O handler
+        */
         pinput = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
     }
     if pinput.is_null() {
@@ -21496,8 +19293,8 @@ pub fn xmlIOParseDTD(
         return 0 as xmlDtdPtr;
     }
     /*
-     * plug some encoding conversion routines here.
-     */
+    * plug some encoding conversion routines here.
+    */
     if unsafe { xmlPushInput(ctxt, pinput) < 0 as libc::c_int } {
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
@@ -21519,8 +19316,8 @@ pub fn xmlIOParseDTD(
     }
     safe_pinput.free = None;
     /*
-     * let's parse that entity knowing it's an external subset.
-     */
+    * let's parse that entity knowing it's an external subset.
+    */
     safe_ctxt.inSubset = 2 as libc::c_int;
     unsafe {
         safe_ctxt.myDoc = xmlNewDoc(b"1.0\x00" as *const u8 as *const libc::c_char as *mut xmlChar);
@@ -21545,10 +19342,10 @@ pub fn xmlIOParseDTD(
                 >= 4 as libc::c_int as libc::c_long
         {
             /*
-             * Get the 4 first bytes and decode the charset
-             * if enc != XML_CHAR_ENCODING_NONE
-             * plug some encoding conversion routines.
-             */
+            * Get the 4 first bytes and decode the charset
+            * if enc != XML_CHAR_ENCODING_NONE
+            * plug some encoding conversion routines.
+            */
             start[0 as libc::c_int as usize] = *(*safe_ctxt.input).cur;
             start[1 as libc::c_int as usize] =
                 *(*safe_ctxt.input).cur.offset(1 as libc::c_int as isize);
@@ -21597,15 +19394,15 @@ pub fn xmlIOParseDTD(
 }
 
 /* *
- * xmlSAXParseDTD:
- * @sax:  the SAX handler block
- * @ExternalID:  a NAME* containing the External ID of the DTD
- * @SystemID:  a NAME* containing the URL to the DTD
- *
- * Load and parse an external subset.
- *
- * Returns the resulting xmlDtdPtr or NULL in case of error.
- */
+* xmlSAXParseDTD:
+* @sax:  the SAX handler block
+* @ExternalID:  a NAME* containing the External ID of the DTD
+* @SystemID:  a NAME* containing the URL to the DTD
+*
+* Load and parse an external subset.
+*
+* Returns the resulting xmlDtdPtr or NULL in case of error.
+*/
 #[cfg(HAVE_parser_LIBXML_VALID_ENABLED)]
 pub fn xmlSAXParseDTD(
     mut sax: xmlSAXHandlerPtr,
@@ -21629,8 +19426,8 @@ pub fn xmlSAXParseDTD(
     /* We are loading a DTD */
     safe_ctxt.options |= XML_PARSE_DTDLOAD as libc::c_int;
     /*
-     * Set-up the SAX context
-     */
+    * Set-up the SAX context
+    */
     if !sax.is_null() {
         if !safe_ctxt.sax.is_null() {
             xmlFree_safe(safe_ctxt.sax as *mut libc::c_void);
@@ -21639,16 +19436,16 @@ pub fn xmlSAXParseDTD(
         safe_ctxt.userData = ctxt as *mut libc::c_void
     }
     /*
-     * Canonicalise the system ID
-     */
+    * Canonicalise the system ID
+    */
     systemIdCanonic = xmlCanonicPath_safe(SystemID);
     if !SystemID.is_null() && systemIdCanonic.is_null() {
         xmlFreeParserCtxt_safe(ctxt);
         return 0 as xmlDtdPtr;
     }
     /*
-     * Ask the Entity resolver to load the damn thing
-     */
+    * Ask the Entity resolver to load the damn thing
+    */
     unsafe {
         if !safe_ctxt.sax.is_null() && (*safe_ctxt.sax).resolveEntity.is_some() {
             input = (*safe_ctxt.sax)
@@ -21671,8 +19468,8 @@ pub fn xmlSAXParseDTD(
         return 0 as xmlDtdPtr;
     }
     /*
-     * plug some encoding conversion routines here.
-     */
+    * plug some encoding conversion routines here.
+    */
     if unsafe { xmlPushInput(ctxt, input) < 0 as libc::c_int } {
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
@@ -21704,8 +19501,8 @@ pub fn xmlSAXParseDTD(
         (*input).free = None;
     }
     /*
-     * let's parse that entity knowing it's an external subset.
-     */
+    * let's parse that entity knowing it's an external subset.
+    */
     safe_ctxt.inSubset = 2 as libc::c_int;
     unsafe {
         safe_ctxt.myDoc = xmlNewDoc(b"1.0\x00" as *const u8 as *const libc::c_char as *mut xmlChar);
@@ -21759,40 +19556,40 @@ pub fn xmlSAXParseDTD(
     return ret;
 }
 /* *
- * xmlParseDTD:
- * @ExternalID:  a NAME* containing the External ID of the DTD
- * @SystemID:  a NAME* containing the URL to the DTD
- *
- * Load and parse an external subset.
- *
- * Returns the resulting xmlDtdPtr or NULL in case of error.
- */
+* xmlParseDTD:
+* @ExternalID:  a NAME* containing the External ID of the DTD
+* @SystemID:  a NAME* containing the URL to the DTD
+*
+* Load and parse an external subset.
+*
+* Returns the resulting xmlDtdPtr or NULL in case of error.
+*/
 #[cfg(HAVE_parser_LIBXML_VALID_ENABLED)]
 pub fn xmlParseDTD(mut ExternalID: *const xmlChar, mut SystemID: *const xmlChar) -> xmlDtdPtr {
     return xmlSAXParseDTD(0 as xmlSAXHandlerPtr, ExternalID, SystemID);
 }
 /* LIBXML_VALID_ENABLED */
 /* ***********************************************************************
- *									*
- *		Front ends when parsing an Entity			*
- *									*
- ************************************************************************/
+*									*
+*		Front ends when parsing an Entity			*
+*									*
+************************************************************************/
 /* *
- * xmlParseCtxtExternalEntity:
- * @ctx:  the existing parsing context
- * @URL:  the URL for the entity to load
- * @ID:  the System ID for the entity to load
- * @lst:  the return value for the set of parsed nodes
- *
- * Parse an external general entity within an existing parsing context
- * An external general parsed entity is well-formed if it matches the
- * production labeled extParsedEnt.
- *
- * [78] extParsedEnt ::= TextDecl? content
- *
- * Returns 0 if the entity is well formed, -1 in case of args problem and
- *    the parser error code otherwise
- */
+* xmlParseCtxtExternalEntity:
+* @ctx:  the existing parsing context
+* @URL:  the URL for the entity to load
+* @ID:  the System ID for the entity to load
+* @lst:  the return value for the set of parsed nodes
+*
+* Parse an external general entity within an existing parsing context
+* An external general parsed entity is well-formed if it matches the
+* production labeled extParsedEnt.
+*
+* [78] extParsedEnt ::= TextDecl? content
+*
+* Returns 0 if the entity is well formed, -1 in case of args problem and
+*    the parser error code otherwise
+*/
 
 pub fn xmlParseCtxtExternalEntity(
     mut ctx: xmlParserCtxtPtr,
@@ -21805,10 +19602,10 @@ pub fn xmlParseCtxtExternalEntity(
         return -(1 as libc::c_int);
     }
     /*
-     * If the user provided their own SAX callbacks, then reuse the
-     * userData callback field, otherwise the expected setup in a
-     * DOM builder is to have userData == ctxt
-     */
+    * If the user provided their own SAX callbacks, then reuse the
+    * userData callback field, otherwise the expected setup in a
+    * DOM builder is to have userData == ctxt
+    */
     let mut safe_ctx = unsafe { &mut *ctx };
 
     if safe_ctx.userData == ctx as *mut libc::c_void {
@@ -21829,21 +19626,21 @@ pub fn xmlParseCtxtExternalEntity(
 }
 
 /* *
- * xmlParseExternalEntityPrivate:
- * @doc:  the document the chunk pertains to
- * @oldctxt:  the previous parser context if available
- * @sax:  the SAX handler block (possibly NULL)
- * @user_data:  The user data returned on SAX callbacks (possibly NULL)
- * @depth:  Used for loop detection, use 0
- * @URL:  the URL for the entity to load
- * @ID:  the System ID for the entity to load
- * @list:  the return value for the set of parsed nodes
- *
- * Private version of xmlParseExternalEntity()
- *
- * Returns 0 if the entity is well formed, -1 in case of args problem and
- *    the parser error code otherwise
- */
+* xmlParseExternalEntityPrivate:
+* @doc:  the document the chunk pertains to
+* @oldctxt:  the previous parser context if available
+* @sax:  the SAX handler block (possibly NULL)
+* @user_data:  The user data returned on SAX callbacks (possibly NULL)
+* @depth:  Used for loop detection, use 0
+* @URL:  the URL for the entity to load
+* @ID:  the System ID for the entity to load
+* @list:  the return value for the set of parsed nodes
+*
+* Private version of xmlParseExternalEntity()
+*
+* Returns 0 if the entity is well formed, -1 in case of args problem and
+*    the parser error code otherwise
+*/
 fn xmlParseExternalEntityPrivate(
     mut doc: xmlDocPtr,
     mut oldctxt: xmlParserCtxtPtr,
@@ -21951,10 +19748,10 @@ fn xmlParseExternalEntityPrivate(
         safe_newRoot.doc = doc
     }
     /*
-     * Get the 4 first bytes and decode the charset
-     * if enc != XML_CHAR_ENCODING_NONE
-     * plug some encoding conversion routines.
-     */
+    * Get the 4 first bytes and decode the charset
+    * if enc != XML_CHAR_ENCODING_NONE
+    * plug some encoding conversion routines.
+    */
     unsafe {
         if safe_ctxt.progressive == 0 as libc::c_int
             && ((*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as libc::c_long)
@@ -21978,8 +19775,8 @@ fn xmlParseExternalEntityPrivate(
             }
         }
         /*
-         * Parse a possible text declaration first
-         */
+        * Parse a possible text declaration first
+        */
         if *((*safe_ctxt.input).cur as *mut libc::c_uchar).offset(0 as libc::c_int as isize)
             as libc::c_int
             == '<' as i32
@@ -22006,8 +19803,8 @@ fn xmlParseExternalEntityPrivate(
         {
             xmlParseTextDecl(ctxt);
             /*
-             * An XML-1.0 document can't reference an entity not XML-1.0
-             */
+            * An XML-1.0 document can't reference an entity not XML-1.0
+            */
             if xmlStrEqual(
                 safe_oldctxt.version,
                 b"1.0\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
@@ -22072,9 +19869,9 @@ fn xmlParseExternalEntityPrivate(
         safe_ctxt.node_seq.buffer = safe_oldctxt.node_seq.buffer
     } else {
         /*
-         * Doing validity checking on chunk without context
-         * doesn't make sense
-         */
+        * Doing validity checking on chunk without context
+        * doesn't make sense
+        */
         safe_ctxt._private = 0 as *mut libc::c_void;
         safe_ctxt.validate = 0 as libc::c_int;
         safe_ctxt.external = 2 as libc::c_int;
@@ -22104,9 +19901,9 @@ fn xmlParseExternalEntityPrivate(
         if !list.is_null() {
             let mut cur: xmlNodePtr = 0 as *mut xmlNode;
             /*
-             * Return the newly created nodeset after unlinking it from
-             * they pseudo parent.
-             */
+            * Return the newly created nodeset after unlinking it from
+            * they pseudo parent.
+            */
             unsafe {
                 cur = (*safe_newDoc.children).children;
                 *list = cur;
@@ -22120,15 +19917,15 @@ fn xmlParseExternalEntityPrivate(
         ret = XML_ERR_OK
     }
     /*
-     * Record in the parent context the number of entities replacement
-     * done when parsing that reference.
-     */
+    * Record in the parent context the number of entities replacement
+    * done when parsing that reference.
+    */
     if !oldctxt.is_null() {
         safe_oldctxt.nbentities = safe_oldctxt.nbentities.wrapping_add(safe_ctxt.nbentities)
     }
     /*
-     * Also record the size of the entity parsed
-     */
+    * Also record the size of the entity parsed
+    */
     unsafe {
         if !safe_ctxt.input.is_null() && !oldctxt.is_null() {
             safe_oldctxt.sizeentities = safe_oldctxt
@@ -22140,8 +19937,8 @@ fn xmlParseExternalEntityPrivate(
                     as libc::c_long as libc::c_ulong)
         }
         /*
-         * And record the last error if any
-         */
+        * And record the last error if any
+        */
         if !oldctxt.is_null() && safe_ctxt.lastError.code != XML_ERR_OK as libc::c_int {
             xmlCopyError(&mut safe_ctxt.lastError, &mut safe_oldctxt.lastError);
         }
@@ -22169,24 +19966,24 @@ fn xmlParseExternalEntityPrivate(
     return ret;
 }
 /* *
- * xmlParseExternalEntity:
- * @doc:  the document the chunk pertains to
- * @sax:  the SAX handler block (possibly NULL)
- * @user_data:  The user data returned on SAX callbacks (possibly NULL)
- * @depth:  Used for loop detection, use 0
- * @URL:  the URL for the entity to load
- * @ID:  the System ID for the entity to load
- * @lst:  the return value for the set of parsed nodes
- *
- * Parse an external general entity
- * An external general parsed entity is well-formed if it matches the
- * production labeled extParsedEnt.
- *
- * [78] extParsedEnt ::= TextDecl? content
- *
- * Returns 0 if the entity is well formed, -1 in case of args problem and
- *    the parser error code otherwise
- */
+* xmlParseExternalEntity:
+* @doc:  the document the chunk pertains to
+* @sax:  the SAX handler block (possibly NULL)
+* @user_data:  The user data returned on SAX callbacks (possibly NULL)
+* @depth:  Used for loop detection, use 0
+* @URL:  the URL for the entity to load
+* @ID:  the System ID for the entity to load
+* @lst:  the return value for the set of parsed nodes
+*
+* Parse an external general entity
+* An external general parsed entity is well-formed if it matches the
+* production labeled extParsedEnt.
+*
+* [78] extParsedEnt ::= TextDecl? content
+*
+* Returns 0 if the entity is well formed, -1 in case of args problem and
+*    the parser error code otherwise
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseExternalEntity(
     mut doc: xmlDocPtr,
@@ -22209,24 +20006,24 @@ pub fn xmlParseExternalEntity(
     ) as libc::c_int;
 }
 /* *
- * xmlParseBalancedChunkMemory:
- * @doc:  the document the chunk pertains to (must not be NULL)
- * @sax:  the SAX handler block (possibly NULL)
- * @user_data:  The user data returned on SAX callbacks (possibly NULL)
- * @depth:  Used for loop detection, use 0
- * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
- * @lst:  the return value for the set of parsed nodes
- *
- * Parse a well-balanced chunk of an XML document
- * called by the parser
- * The allowed sequence for the Well Balanced Chunk is the one defined by
- * the content production in the XML grammar:
- *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
- *
- * Returns 0 if the chunk is well balanced, -1 in case of args problem and
- *    the parser error code otherwise
- */
+* xmlParseBalancedChunkMemory:
+* @doc:  the document the chunk pertains to (must not be NULL)
+* @sax:  the SAX handler block (possibly NULL)
+* @user_data:  The user data returned on SAX callbacks (possibly NULL)
+* @depth:  Used for loop detection, use 0
+* @string:  the input string in UTF8 or ISO-Latin (zero terminated)
+* @lst:  the return value for the set of parsed nodes
+*
+* Parse a well-balanced chunk of an XML document
+* called by the parser
+* The allowed sequence for the Well Balanced Chunk is the one defined by
+* the content production in the XML grammar:
+*
+* [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+*
+* Returns 0 if the chunk is well balanced, -1 in case of args problem and
+*    the parser error code otherwise
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseBalancedChunkMemory(
     mut doc: xmlDocPtr,
@@ -22249,26 +20046,26 @@ pub fn xmlParseBalancedChunkMemory(
 /* LIBXML_LEGACY_ENABLED */
 /* LIBXML_SAX1_ENABLED */
 /* *
- * xmlParseBalancedChunkMemoryInternal:
- * @oldctxt:  the existing parsing context
- * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
- * @user_data:  the user data field for the parser context
- * @lst:  the return value for the set of parsed nodes
- *
- *
- * Parse a well-balanced chunk of an XML document
- * called by the parser
- * The allowed sequence for the Well Balanced Chunk is the one defined by
- * the content production in the XML grammar:
- *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
- *
- * Returns XML_ERR_OK if the chunk is well balanced, and the parser
- * error code otherwise
- *
- * In case recover is set to 1, the nodelist will not be empty even if
- * the parsed chunk is not well balanced.
- */
+* xmlParseBalancedChunkMemoryInternal:
+* @oldctxt:  the existing parsing context
+* @string:  the input string in UTF8 or ISO-Latin (zero terminated)
+* @user_data:  the user data field for the parser context
+* @lst:  the return value for the set of parsed nodes
+*
+*
+* Parse a well-balanced chunk of an XML document
+* called by the parser
+* The allowed sequence for the Well Balanced Chunk is the one defined by
+* the content production in the XML grammar:
+*
+* [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+*
+* Returns XML_ERR_OK if the chunk is well balanced, and the parser
+* error code otherwise
+*
+* In case recover is set to 1, the nodelist will not be empty even if
+* the parsed chunk is not well balanced.
+*/
 
 fn xmlParseBalancedChunkMemoryInternal(
     mut oldctxt: xmlParserCtxtPtr,
@@ -22425,8 +20222,8 @@ fn xmlParseBalancedChunkMemoryInternal(
     safe_ctxt.loadsubset = safe_oldctxt.loadsubset;
     if safe_oldctxt.validate != 0 || safe_oldctxt.replaceEntities != 0 as libc::c_int {
         /*
-         * ID/IDREF registration will be done in xmlValidateElement below
-         */
+        * ID/IDREF registration will be done in xmlValidateElement below
+        */
         safe_ctxt.loadsubset |= 8 as libc::c_int
     }
     safe_ctxt.dictNames = safe_oldctxt.dictNames;
@@ -22458,9 +20255,9 @@ fn xmlParseBalancedChunkMemoryInternal(
     if !lst.is_null() && ret as libc::c_uint == XML_ERR_OK as libc::c_int as libc::c_uint {
         let mut cur: xmlNodePtr = 0 as *mut xmlNode;
         /*
-         * Return the newly created nodeset after unlinking it from
-         * they pseudo parent.
-         */
+        * Return the newly created nodeset after unlinking it from
+        * they pseudo parent.
+        */
         unsafe {
             cur = (*(*safe_ctxt.myDoc).children).children;
             *lst = cur;
@@ -22501,15 +20298,15 @@ fn xmlParseBalancedChunkMemoryInternal(
         }
     }
     /*
-     * Record in the parent context the number of entities replacement
-     * done when parsing that reference.
-     */
+    * Record in the parent context the number of entities replacement
+    * done when parsing that reference.
+    */
     if !oldctxt.is_null() {
         safe_oldctxt.nbentities = safe_oldctxt.nbentities.wrapping_add(safe_ctxt.nbentities)
     }
     /*
-     * Also record the last error if any
-     */
+    * Also record the last error if any
+    */
     if safe_ctxt.lastError.code != XML_ERR_OK as libc::c_int {
         unsafe {
             xmlCopyError(&mut safe_ctxt.lastError, &mut safe_oldctxt.lastError);
@@ -22526,24 +20323,24 @@ fn xmlParseBalancedChunkMemoryInternal(
     return ret;
 }
 /* *
- * xmlParseInNodeContext:
- * @node:  the context node
- * @data:  the input string
- * @datalen:  the input string length in bytes
- * @options:  a combination of xmlParserOption
- * @lst:  the return value for the set of parsed nodes
- *
- * Parse a well-balanced chunk of an XML document
- * within the context (DTD, namespaces, etc ...) of the given node.
- *
- * The allowed sequence for the data is a Well Balanced Chunk defined by
- * the content production in the XML grammar:
- *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
- *
- * Returns XML_ERR_OK if the chunk is well balanced, and the parser
- * error code otherwise
- */
+* xmlParseInNodeContext:
+* @node:  the context node
+* @data:  the input string
+* @datalen:  the input string length in bytes
+* @options:  a combination of xmlParserOption
+* @lst:  the return value for the set of parsed nodes
+*
+* Parse a well-balanced chunk of an XML document
+* within the context (DTD, namespaces, etc ...) of the given node.
+*
+* The allowed sequence for the data is a Well Balanced Chunk defined by
+* the content production in the XML grammar:
+*
+* [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+*
+* Returns XML_ERR_OK if the chunk is well balanced, and the parser
+* error code otherwise
+*/
 
 pub fn xmlParseInNodeContext(
     mut node: xmlNodePtr,
@@ -22562,8 +20359,8 @@ pub fn xmlParseInNodeContext(
             let mut nsnr: libc::c_int = 0 as libc::c_int;
             let mut ret: xmlParserErrors = XML_ERR_OK;
             /*
-             * check all input parameters, grab the document
-             */
+            * check all input parameters, grab the document
+            */
             if lst.is_null() || node.is_null() || data.is_null() || datalen < 0 as libc::c_int {
                 return XML_ERR_INTERNAL_ERROR;
             }
@@ -22595,9 +20392,9 @@ pub fn xmlParseInNodeContext(
                 return XML_ERR_INTERNAL_ERROR;
             }
             /*
-             * allocate a context and set-up everything not related to the
-             * node position in the tree
-             */
+            * allocate a context and set-up everything not related to the
+            * node position in the tree
+            */
             let mut safe_doc = unsafe { &mut *doc };
 
             if safe_doc.type_0 as libc::c_uint == XML_DOCUMENT_NODE as libc::c_int as libc::c_uint {
@@ -22627,10 +20424,10 @@ pub fn xmlParseInNodeContext(
                 return XML_ERR_NO_MEMORY;
             }
             /*
-             * Use input doc's dict if present, else assure XML_PARSE_NODICT is set.
-             * We need a dictionary for xmlDetectSAX2, so if there's no doc dict
-             * we must wait until the last moment to free the original one.
-             */
+            * Use input doc's dict if present, else assure XML_PARSE_NODICT is set.
+            * We need a dictionary for xmlDetectSAX2, so if there's no doc dict
+            * we must wait until the last moment to free the original one.
+            */
             let mut safe_ctxt = unsafe { &mut *ctxt };
 
             if !safe_doc.dict.is_null() {
@@ -22681,8 +20478,8 @@ pub fn xmlParseInNodeContext(
                     nodePush(ctxt, node);
                 }
                 /*
-                 * initialize the SAX2 namespaces stack
-                 */
+                * initialize the SAX2 namespaces stack
+                */
                 cur = node;
                 let mut safe_cur = unsafe { &mut *cur };
                 while !cur.is_null()
@@ -22720,8 +20517,8 @@ pub fn xmlParseInNodeContext(
             }
             if safe_ctxt.validate != 0 || safe_ctxt.replaceEntities != 0 as libc::c_int {
                 /*
-                 * ID/IDREF registration will be done in xmlValidateElement below
-                 */
+                * ID/IDREF registration will be done in xmlValidateElement below
+                */
                 safe_ctxt.loadsubset |= 8 as libc::c_int
             }
 
@@ -22766,9 +20563,9 @@ pub fn xmlParseInNodeContext(
                 ret = XML_ERR_OK
             }
             /*
-             * Return the newly created nodeset after unlinking it from
-             * the pseudo sibling.
-             */
+            * Return the newly created nodeset after unlinking it from
+            * the pseudo sibling.
+            */
             let mut safe_fake = unsafe { &mut *fake };
 
             cur = safe_fake.next;
@@ -22808,30 +20605,30 @@ pub fn xmlParseInNodeContext(
     /* !SAX2 */
 }
 /* *
- * xmlParseBalancedChunkMemoryRecover:
- * @doc:  the document the chunk pertains to (must not be NULL)
- * @sax:  the SAX handler block (possibly NULL)
- * @user_data:  The user data returned on SAX callbacks (possibly NULL)
- * @depth:  Used for loop detection, use 0
- * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
- * @lst:  the return value for the set of parsed nodes
- * @recover: return nodes even if the data is broken (use 0)
- *
- *
- * Parse a well-balanced chunk of an XML document
- * called by the parser
- * The allowed sequence for the Well Balanced Chunk is the one defined by
- * the content production in the XML grammar:
- *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
- *
- * Returns 0 if the chunk is well balanced, -1 in case of args problem and
- *    the parser error code otherwise
- *
- * In case recover is set to 1, the nodelist will not be empty even if
- * the parsed chunk is not well balanced, assuming the parsing succeeded to
- * some extent.
- */
+* xmlParseBalancedChunkMemoryRecover:
+* @doc:  the document the chunk pertains to (must not be NULL)
+* @sax:  the SAX handler block (possibly NULL)
+* @user_data:  The user data returned on SAX callbacks (possibly NULL)
+* @depth:  Used for loop detection, use 0
+* @string:  the input string in UTF8 or ISO-Latin (zero terminated)
+* @lst:  the return value for the set of parsed nodes
+* @recover: return nodes even if the data is broken (use 0)
+*
+*
+* Parse a well-balanced chunk of an XML document
+* called by the parser
+* The allowed sequence for the Well Balanced Chunk is the one defined by
+* the content production in the XML grammar:
+*
+* [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+*
+* Returns 0 if the chunk is well balanced, -1 in case of args problem and
+*    the parser error code otherwise
+*
+* In case recover is set to 1, the nodelist will not be empty even if
+* the parsed chunk is not well balanced, assuming the parsing succeeded to
+* some extent.
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseBalancedChunkMemoryRecover(
     mut doc: xmlDocPtr,
@@ -22968,8 +20765,8 @@ pub fn xmlParseBalancedChunkMemoryRecover(
     safe_ctxt.input_id = 2 as libc::c_int;
     safe_ctxt.depth = depth;
     /*
-     * Doing validity checking on chunk doesn't make sense
-     */
+    * Doing validity checking on chunk doesn't make sense
+    */
     safe_ctxt.validate = 0 as libc::c_int;
     safe_ctxt.loadsubset = 0 as libc::c_int;
     unsafe {
@@ -23007,9 +20804,9 @@ pub fn xmlParseBalancedChunkMemoryRecover(
     if !lst.is_null() && (ret == 0 as libc::c_int || recover == 1 as libc::c_int) {
         let mut cur: xmlNodePtr = 0 as *mut xmlNode;
         /*
-         * Return the newly created nodeset after unlinking it from
-         * they pseudo parent.
-         */
+        * Return the newly created nodeset after unlinking it from
+        * they pseudo parent.
+        */
         unsafe {
             cur = (*safe_newDoc.children).children;
             *lst = cur;
@@ -23037,20 +20834,20 @@ pub fn xmlParseBalancedChunkMemoryRecover(
     return ret;
 }
 /* *
- * xmlSAXParseEntity:
- * @sax:  the SAX handler block
- * @filename:  the filename
- *
- * parse an XML external entity out of context and build a tree.
- * It use the given SAX function block to handle the parsing callback.
- * If sax is NULL, fallback to the default DOM tree building routines.
- *
- * [78] extParsedEnt ::= TextDecl? content
- *
- * This correspond to a "Well Balanced" chunk
- *
- * Returns the resulting document tree
- */
+* xmlSAXParseEntity:
+* @sax:  the SAX handler block
+* @filename:  the filename
+*
+* parse an XML external entity out of context and build a tree.
+* It use the given SAX function block to handle the parsing callback.
+* If sax is NULL, fallback to the default DOM tree building routines.
+*
+* [78] extParsedEnt ::= TextDecl? content
+*
+* This correspond to a "Well Balanced" chunk
+*
+* Returns the resulting document tree
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSAXParseEntity(
     mut sax: xmlSAXHandlerPtr,
@@ -23089,17 +20886,17 @@ pub fn xmlSAXParseEntity(
 }
 
 /* *
- * xmlParseEntity:
- * @filename:  the filename
- *
- * parse an XML external entity out of context and build a tree.
- *
- * [78] extParsedEnt ::= TextDecl? content
- *
- * This correspond to a "Well Balanced" chunk
- *
- * Returns the resulting document tree
- */
+* xmlParseEntity:
+* @filename:  the filename
+*
+* parse an XML external entity out of context and build a tree.
+*
+* [78] extParsedEnt ::= TextDecl? content
+*
+* This correspond to a "Well Balanced" chunk
+*
+* Returns the resulting document tree
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseEntity(mut filename: *const libc::c_char) -> xmlDocPtr {
     unsafe {
@@ -23108,18 +20905,18 @@ pub fn xmlParseEntity(mut filename: *const libc::c_char) -> xmlDocPtr {
 }
 /* LIBXML_SAX1_ENABLED */
 /* *
- * xmlCreateEntityParserCtxtInternal:
- * @URL:  the entity URL
- * @ID:  the entity PUBLIC ID
- * @base:  a possible base for the target URI
- * @pctx:  parser context used to set options on new context
- *
- * Create a parser context for an external entity
- * Automatic support for ZLIB/Compress compressed document is provided
- * by default if found at compile-time.
- *
- * Returns the new parser context or NULL
- */
+* xmlCreateEntityParserCtxtInternal:
+* @URL:  the entity URL
+* @ID:  the entity PUBLIC ID
+* @base:  a possible base for the target URI
+* @pctx:  parser context used to set options on new context
+*
+* Create a parser context for an external entity
+* Automatic support for ZLIB/Compress compressed document is provided
+* by default if found at compile-time.
+*
+* Returns the new parser context or NULL
+*/
 fn xmlCreateEntityParserCtxtInternal(
     mut URL: *const xmlChar,
     mut ID: *const xmlChar,
@@ -23141,9 +20938,9 @@ fn xmlCreateEntityParserCtxtInternal(
         safe_ctxt.options = safe_pctx.options;
         safe_ctxt._private = safe_pctx._private;
         /*
-         * this is a subparser of pctx, so the input_id should be
-         * incremented to distinguish from main entity
-         */
+        * this is a subparser of pctx, so the input_id should be
+        * incremented to distinguish from main entity
+        */
         safe_ctxt.input_id = safe_pctx.input_id + 1 as libc::c_int
     }
     /* Don't read from stdin. */
@@ -23194,17 +20991,17 @@ fn xmlCreateEntityParserCtxtInternal(
 }
 
 /* *
- * xmlCreateEntityParserCtxt:
- * @URL:  the entity URL
- * @ID:  the entity PUBLIC ID
- * @base:  a possible base for the target URI
- *
- * Create a parser context for an external entity
- * Automatic support for ZLIB/Compress compressed document is provided
- * by default if found at compile-time.
- *
- * Returns the new parser context or NULL
- */
+* xmlCreateEntityParserCtxt:
+* @URL:  the entity URL
+* @ID:  the entity PUBLIC ID
+* @base:  a possible base for the target URI
+*
+* Create a parser context for an external entity
+* Automatic support for ZLIB/Compress compressed document is provided
+* by default if found at compile-time.
+*
+* Returns the new parser context or NULL
+*/
 
 pub fn xmlCreateEntityParserCtxt(
     mut URL: *const xmlChar,
@@ -23216,21 +21013,21 @@ pub fn xmlCreateEntityParserCtxt(
     }
 }
 /* ***********************************************************************
- *									*
- *		Front ends when parsing from a file			*
- *									*
- ************************************************************************/
+*									*
+*		Front ends when parsing from a file			*
+*									*
+************************************************************************/
 /* *
- * xmlCreateURLParserCtxt:
- * @filename:  the filename or URL
- * @options:  a combination of xmlParserOption
- *
- * Create a parser context for a file or URL content.
- * Automatic support for ZLIB/Compress compressed document is provided
- * by default if found at compile-time and for file accesses
- *
- * Returns the new parser context or NULL
- */
+* xmlCreateURLParserCtxt:
+* @filename:  the filename or URL
+* @options:  a combination of xmlParserOption
+*
+* Create a parser context for a file or URL content.
+* Automatic support for ZLIB/Compress compressed document is provided
+* by default if found at compile-time and for file accesses
+*
+* Returns the new parser context or NULL
+*/
 
 pub fn xmlCreateURLParserCtxt(
     mut filename: *const libc::c_char,
@@ -23269,37 +21066,37 @@ pub fn xmlCreateURLParserCtxt(
     return ctxt;
 }
 /* *
- * xmlCreateFileParserCtxt:
- * @filename:  the filename
- *
- * Create a parser context for a file content.
- * Automatic support for ZLIB/Compress compressed document is provided
- * by default if found at compile-time.
- *
- * Returns the new parser context or NULL
- */
+* xmlCreateFileParserCtxt:
+* @filename:  the filename
+*
+* Create a parser context for a file content.
+* Automatic support for ZLIB/Compress compressed document is provided
+* by default if found at compile-time.
+*
+* Returns the new parser context or NULL
+*/
 
 pub fn xmlCreateFileParserCtxt(mut filename: *const libc::c_char) -> xmlParserCtxtPtr {
     return xmlCreateURLParserCtxt(filename, 0 as libc::c_int);
 }
 /* *
- * xmlSAXParseFileWithData:
- * @sax:  the SAX handler block
- * @filename:  the filename
- * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
- *             documents
- * @data:  the userdata
- *
- * parse an XML file and build a tree. Automatic support for ZLIB/Compress
- * compressed document is provided by default if found at compile-time.
- * It use the given SAX function block to handle the parsing callback.
- * If sax is NULL, fallback to the default DOM tree building routines.
- *
- * User data (void *) is stored within the parser context in the
- * context's _private member, so it is available nearly everywhere in libxml
- *
- * Returns the resulting document tree
- */
+* xmlSAXParseFileWithData:
+* @sax:  the SAX handler block
+* @filename:  the filename
+* @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+*             documents
+* @data:  the userdata
+*
+* parse an XML file and build a tree. Automatic support for ZLIB/Compress
+* compressed document is provided by default if found at compile-time.
+* It use the given SAX function block to handle the parsing callback.
+* If sax is NULL, fallback to the default DOM tree building routines.
+*
+* User data (void *) is stored within the parser context in the
+* context's _private member, so it is available nearly everywhere in libxml
+*
+* Returns the resulting document tree
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSAXParseFileWithData(
     mut sax: xmlSAXHandlerPtr,
@@ -23362,19 +21159,19 @@ pub fn xmlSAXParseFileWithData(
 }
 
 /* *
- * xmlSAXParseFile:
- * @sax:  the SAX handler block
- * @filename:  the filename
- * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
- *             documents
- *
- * parse an XML file and build a tree. Automatic support for ZLIB/Compress
- * compressed document is provided by default if found at compile-time.
- * It use the given SAX function block to handle the parsing callback.
- * If sax is NULL, fallback to the default DOM tree building routines.
- *
- * Returns the resulting document tree
- */
+* xmlSAXParseFile:
+* @sax:  the SAX handler block
+* @filename:  the filename
+* @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+*             documents
+*
+* parse an XML file and build a tree. Automatic support for ZLIB/Compress
+* compressed document is provided by default if found at compile-time.
+* It use the given SAX function block to handle the parsing callback.
+* If sax is NULL, fallback to the default DOM tree building routines.
+*
+* Returns the resulting document tree
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSAXParseFile(
     mut sax: xmlSAXHandlerPtr,
@@ -23387,29 +21184,29 @@ pub fn xmlSAXParseFile(
 }
 
 /* *
- * xmlRecoverDoc:
- * @cur:  a pointer to an array of xmlChar
- *
- * parse an XML in-memory document and build a tree.
- * In the case the document is not Well Formed, a attempt to build a
- * tree is tried anyway
- *
- * Returns the resulting document tree or NULL in case of failure
- */
+* xmlRecoverDoc:
+* @cur:  a pointer to an array of xmlChar
+*
+* parse an XML in-memory document and build a tree.
+* In the case the document is not Well Formed, a attempt to build a
+* tree is tried anyway
+*
+* Returns the resulting document tree or NULL in case of failure
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlRecoverDoc(mut cur: *const xmlChar) -> xmlDocPtr {
     return xmlSAXParseDoc(0 as xmlSAXHandlerPtr, cur, 1 as libc::c_int);
 }
 /* *
- * xmlParseFile:
- * @filename:  the filename
- *
- * parse an XML file and build a tree. Automatic support for ZLIB/Compress
- * compressed document is provided by default if found at compile-time.
- *
- * Returns the resulting document tree if the file was wellformed,
- * NULL otherwise.
- */
+* xmlParseFile:
+* @filename:  the filename
+*
+* parse an XML file and build a tree. Automatic support for ZLIB/Compress
+* compressed document is provided by default if found at compile-time.
+*
+* Returns the resulting document tree if the file was wellformed,
+* NULL otherwise.
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseFile(mut filename: *const libc::c_char) -> xmlDocPtr {
     unsafe {
@@ -23417,30 +21214,30 @@ pub fn xmlParseFile(mut filename: *const libc::c_char) -> xmlDocPtr {
     }
 }
 /* *
- * xmlRecoverFile:
- * @filename:  the filename
- *
- * parse an XML file and build a tree. Automatic support for ZLIB/Compress
- * compressed document is provided by default if found at compile-time.
- * In the case the document is not Well Formed, it attempts to build
- * a tree anyway
- *
- * Returns the resulting document tree or NULL in case of failure
- */
+* xmlRecoverFile:
+* @filename:  the filename
+*
+* parse an XML file and build a tree. Automatic support for ZLIB/Compress
+* compressed document is provided by default if found at compile-time.
+* In the case the document is not Well Formed, it attempts to build
+* a tree anyway
+*
+* Returns the resulting document tree or NULL in case of failure
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlRecoverFile(mut filename: *const libc::c_char) -> xmlDocPtr {
     return xmlSAXParseFile(0 as xmlSAXHandlerPtr, filename, 1 as libc::c_int);
 }
 /* *
- * xmlSetupParserForBuffer:
- * @ctxt:  an XML parser context
- * @buffer:  a xmlChar * buffer
- * @filename:  a file name
- *
- * Setup the parser context to parse a new buffer; Clears any prior
- * contents from the parser context. The buffer parameter must not be
- * NULL, but the filename parameter can be
- */
+* xmlSetupParserForBuffer:
+* @ctxt:  an XML parser context
+* @buffer:  a xmlChar * buffer
+* @filename:  a file name
+*
+* Setup the parser context to parse a new buffer; Clears any prior
+* contents from the parser context. The buffer parameter must not be
+* NULL, but the filename parameter can be
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSetupParserForBuffer(
     mut ctxt: xmlParserCtxtPtr,
@@ -23478,16 +21275,16 @@ pub fn xmlSetupParserForBuffer(
     inputPush_safe(ctxt, input);
 }
 /* *
- * xmlSAXUserParseFile:
- * @sax:  a SAX handler
- * @user_data:  The user data returned on SAX callbacks
- * @filename:  a file name
- *
- * parse an XML file and call the given SAX handler routines.
- * Automatic support for ZLIB/Compress compressed document is provided
- *
- * Returns 0 in case of success or a error number otherwise
- */
+* xmlSAXUserParseFile:
+* @sax:  a SAX handler
+* @user_data:  The user data returned on SAX callbacks
+* @filename:  a file name
+*
+* parse an XML file and call the given SAX handler routines.
+* Automatic support for ZLIB/Compress compressed document is provided
+*
+* Returns 0 in case of success or a error number otherwise
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSAXUserParseFile(
     mut sax: xmlSAXHandlerPtr,
@@ -23535,19 +21332,19 @@ pub fn xmlSAXUserParseFile(
 }
 /* LIBXML_SAX1_ENABLED */
 /* ***********************************************************************
- *									*
- *		Front ends when parsing from memory			*
- *									*
- ************************************************************************/
+*									*
+*		Front ends when parsing from memory			*
+*									*
+************************************************************************/
 /* *
- * xmlCreateMemoryParserCtxt:
- * @buffer:  a pointer to a char array
- * @size:  the size of the array
- *
- * Create a parser context for an XML in-memory document.
- *
- * Returns the new parser context or NULL
- */
+* xmlCreateMemoryParserCtxt:
+* @buffer:  a pointer to a char array
+* @size:  the size of the array
+*
+* Create a parser context for an XML in-memory document.
+*
+* Returns the new parser context or NULL
+*/
 
 pub fn xmlCreateMemoryParserCtxt_parser(
     mut buffer: *const libc::c_char,
@@ -23588,23 +21385,23 @@ pub fn xmlCreateMemoryParserCtxt_parser(
 }
 
 /* *
- * xmlSAXParseMemoryWithData:
- * @sax:  the SAX handler block
- * @buffer:  an pointer to a char array
- * @size:  the size of the array
- * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
- *             documents
- * @data:  the userdata
- *
- * parse an XML in-memory block and use the given SAX function block
- * to handle the parsing callback. If sax is NULL, fallback to the default
- * DOM tree building routines.
- *
- * User data (void *) is stored within the parser context in the
- * context's _private member, so it is available nearly everywhere in libxml
- *
- * Returns the resulting document tree
- */
+* xmlSAXParseMemoryWithData:
+* @sax:  the SAX handler block
+* @buffer:  an pointer to a char array
+* @size:  the size of the array
+* @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+*             documents
+* @data:  the userdata
+*
+* parse an XML in-memory block and use the given SAX function block
+* to handle the parsing callback. If sax is NULL, fallback to the default
+* DOM tree building routines.
+*
+* User data (void *) is stored within the parser context in the
+* context's _private member, so it is available nearly everywhere in libxml
+*
+* Returns the resulting document tree
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSAXParseMemoryWithData(
     mut sax: xmlSAXHandlerPtr,
@@ -23652,19 +21449,19 @@ pub fn xmlSAXParseMemoryWithData(
 }
 
 /* *
- * xmlSAXParseMemory:
- * @sax:  the SAX handler block
- * @buffer:  an pointer to a char array
- * @size:  the size of the array
- * @recovery:  work in recovery mode, i.e. tries to read not Well Formed
- *             documents
- *
- * parse an XML in-memory block and use the given SAX function block
- * to handle the parsing callback. If sax is NULL, fallback to the default
- * DOM tree building routines.
- *
- * Returns the resulting document tree
- */
+* xmlSAXParseMemory:
+* @sax:  the SAX handler block
+* @buffer:  an pointer to a char array
+* @size:  the size of the array
+* @recovery:  work in recovery mode, i.e. tries to read not Well Formed
+*             documents
+*
+* parse an XML in-memory block and use the given SAX function block
+* to handle the parsing callback. If sax is NULL, fallback to the default
+* DOM tree building routines.
+*
+* Returns the resulting document tree
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSAXParseMemory(
     mut sax: xmlSAXHandlerPtr,
@@ -23677,45 +21474,45 @@ pub fn xmlSAXParseMemory(
     }
 }
 /* *
- * xmlParseMemory:
- * @buffer:  an pointer to a char array
- * @size:  the size of the array
- *
- * parse an XML in-memory block and build a tree.
- *
- * Returns the resulting document tree
- */
+* xmlParseMemory:
+* @buffer:  an pointer to a char array
+* @size:  the size of the array
+*
+* parse an XML in-memory block and build a tree.
+*
+* Returns the resulting document tree
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseMemory(mut buffer: *const libc::c_char, mut size: libc::c_int) -> xmlDocPtr {
     return xmlSAXParseMemory(0 as xmlSAXHandlerPtr, buffer, size, 0 as libc::c_int);
 }
 /* *
- * xmlRecoverMemory:
- * @buffer:  an pointer to a char array
- * @size:  the size of the array
- *
- * parse an XML in-memory block and build a tree.
- * In the case the document is not Well Formed, an attempt to
- * build a tree is tried anyway
- *
- * Returns the resulting document tree or NULL in case of error
- */
+* xmlRecoverMemory:
+* @buffer:  an pointer to a char array
+* @size:  the size of the array
+*
+* parse an XML in-memory block and build a tree.
+* In the case the document is not Well Formed, an attempt to
+* build a tree is tried anyway
+*
+* Returns the resulting document tree or NULL in case of error
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlRecoverMemory(mut buffer: *const libc::c_char, mut size: libc::c_int) -> xmlDocPtr {
     return xmlSAXParseMemory(0 as xmlSAXHandlerPtr, buffer, size, 1 as libc::c_int);
 }
 /* *
- * xmlSAXUserParseMemory:
- * @sax:  a SAX handler
- * @user_data:  The user data returned on SAX callbacks
- * @buffer:  an in-memory XML document input
- * @size:  the length of the XML document in bytes
- *
- * A better SAX parsing routine.
- * parse an XML in-memory buffer and call the given SAX handler routines.
- *
- * Returns 0 in case of success or a error number otherwise
- */
+* xmlSAXUserParseMemory:
+* @sax:  a SAX handler
+* @user_data:  The user data returned on SAX callbacks
+* @buffer:  an in-memory XML document input
+* @size:  the length of the XML document in bytes
+*
+* A better SAX parsing routine.
+* parse an XML in-memory buffer and call the given SAX handler routines.
+*
+* Returns 0 in case of success or a error number otherwise
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSAXUserParseMemory(
     mut sax: xmlSAXHandlerPtr,
@@ -23763,13 +21560,13 @@ pub fn xmlSAXUserParseMemory(
 }
 /* LIBXML_SAX1_ENABLED */
 /* *
- * xmlCreateDocParserCtxt:
- * @cur:  a pointer to an array of xmlChar
- *
- * Creates a parser context for an XML in-memory document.
- *
- * Returns the new parser context or NULL
- */
+* xmlCreateDocParserCtxt:
+* @cur:  a pointer to an array of xmlChar
+*
+* Creates a parser context for an XML in-memory document.
+*
+* Returns the new parser context or NULL
+*/
 
 pub fn xmlCreateDocParserCtxt(mut cur: *const xmlChar) -> xmlParserCtxtPtr {
     let mut len: libc::c_int = 0;
@@ -23782,18 +21579,18 @@ pub fn xmlCreateDocParserCtxt(mut cur: *const xmlChar) -> xmlParserCtxtPtr {
     }
 }
 /* *
- * xmlSAXParseDoc:
- * @sax:  the SAX handler block
- * @cur:  a pointer to an array of xmlChar
- * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
- *             documents
- *
- * parse an XML in-memory document and build a tree.
- * It use the given SAX function block to handle the parsing callback.
- * If sax is NULL, fallback to the default DOM tree building routines.
- *
- * Returns the resulting document tree
- */
+* xmlSAXParseDoc:
+* @sax:  the SAX handler block
+* @cur:  a pointer to an array of xmlChar
+* @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+*             documents
+*
+* parse an XML in-memory document and build a tree.
+* It use the given SAX function block to handle the parsing callback.
+* If sax is NULL, fallback to the default DOM tree building routines.
+*
+* Returns the resulting document tree
+*/
 
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlSAXParseDoc(
@@ -23839,13 +21636,13 @@ pub fn xmlSAXParseDoc(
 }
 
 /* *
- * xmlParseDoc:
- * @cur:  a pointer to an array of xmlChar
- *
- * parse an XML in-memory document and build a tree.
- *
- * Returns the resulting document tree
- */
+* xmlParseDoc:
+* @cur:  a pointer to an array of xmlChar
+*
+* parse an XML in-memory document and build a tree.
+*
+* Returns the resulting document tree
+*/
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
 pub fn xmlParseDoc(mut cur: *const xmlChar) -> xmlDocPtr {
     unsafe {
@@ -23854,21 +21651,21 @@ pub fn xmlParseDoc(mut cur: *const xmlChar) -> xmlDocPtr {
 }
 /* LIBXML_SAX1_ENABLED */
 /* ***********************************************************************
- *									*
- *	Specific function to keep track of entities references		*
- *	and used by the XSLT debugger					*
- *									*
- ************************************************************************/
+*									*
+*	Specific function to keep track of entities references		*
+*	and used by the XSLT debugger					*
+*									*
+************************************************************************/
 #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
 static mut xmlEntityRefFunc: xmlEntityReferenceFunc = None;
 /* *
- * xmlAddEntityReference:
- * @ent : A valid entity
- * @firstNode : A valid first node for children of entity
- * @lastNode : A valid last node of children entity
- *
- * Notify of a reference to an entity of type XML_EXTERNAL_GENERAL_PARSED_ENTITY
- */
+* xmlAddEntityReference:
+* @ent : A valid entity
+* @firstNode : A valid first node for children of entity
+* @lastNode : A valid last node of children entity
+*
+* Notify of a reference to an entity of type XML_EXTERNAL_GENERAL_PARSED_ENTITY
+*/
 
 #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
 fn xmlAddEntityReference(
@@ -23884,11 +21681,11 @@ fn xmlAddEntityReference(
     }
 }
 /* *
- * xmlSetEntityReferenceFunc:
- * @func: A valid function
- *
- * Set the function to call call back when a xml reference has been made
- */
+* xmlSetEntityReferenceFunc:
+* @func: A valid function
+*
+* Set the function to call call back when a xml reference has been made
+*/
 #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
 pub fn xmlSetEntityReferenceFunc(mut func: xmlEntityReferenceFunc) {
     unsafe {
@@ -23897,12 +21694,12 @@ pub fn xmlSetEntityReferenceFunc(mut func: xmlEntityReferenceFunc) {
 }
 static mut xmlParserInitialized: libc::c_int = 0 as libc::c_int;
 /* *
- * xmlInitParser:
- *
- * Initialization function for the XML parser.
- * This is not reentrant. Call once before processing in case of
- * use in multithreaded programs.
- */
+* xmlInitParser:
+*
+* Initialization function for the XML parser.
+* This is not reentrant. Call once before processing in case of
+* use in multithreaded programs.
+*/
 
 pub fn xmlInitParser_parser() {
     unsafe {
@@ -24065,26 +21862,26 @@ pub fn xmlInitParser_parser() {
     };
 }
 /* *
- * xmlCleanupParser:
- *
- * This function name is somewhat misleading. It does not clean up
- * parser state, it cleans up memory allocated by the library itself.
- * It is a cleanup function for the XML library. It tries to reclaim all
- * related global memory allocated for the library processing.
- * It doesn't deallocate any document related memory. One should
- * call xmlCleanupParser() only when the process has finished using
- * the library and all XML/HTML documents built with it.
- * See also xmlInitParser() which has the opposite function of preparing
- * the library for operations.
- *
- * WARNING: if your application is multithreaded or has plugin support
- *          calling this may crash the application if another thread or
- *          a plugin is still using libxml2. It's sometimes very hard to
- *          guess if libxml2 is in use in the application, some libraries
- *          or plugins may use it without notice. In case of doubt abstain
- *          from calling this function or do it just before calling exit()
- *          to avoid leak reports from valgrind !
- */
+* xmlCleanupParser:
+*
+* This function name is somewhat misleading. It does not clean up
+* parser state, it cleans up memory allocated by the library itself.
+* It is a cleanup function for the XML library. It tries to reclaim all
+* related global memory allocated for the library processing.
+* It doesn't deallocate any document related memory. One should
+* call xmlCleanupParser() only when the process has finished using
+* the library and all XML/HTML documents built with it.
+* See also xmlInitParser() which has the opposite function of preparing
+* the library for operations.
+*
+* WARNING: if your application is multithreaded or has plugin support
+*          calling this may crash the application if another thread or
+*          a plugin is still using libxml2. It's sometimes very hard to
+*          guess if libxml2 is in use in the application, some libraries
+*          or plugins may use it without notice. In case of doubt abstain
+*          from calling this function or do it just before calling exit()
+*          to avoid leak reports from valgrind !
+*/
 
 pub fn xmlCleanupParser() {
     unsafe {
@@ -24129,23 +21926,23 @@ pub fn xmlCleanupParser() {
     }
 }
 /* ***********************************************************************
- *									*
- *	New set (2.6.0) of simpler and more flexible APIs		*
- *									*
- ************************************************************************/
+*									*
+*	New set (2.6.0) of simpler and more flexible APIs		*
+*									*
+************************************************************************/
 /* *
- * DICT_FREE:
- * @str:  a string
- *
- * Free a string if it is not owned by the "dict" dictionary in the
- * current scope
- */
+* DICT_FREE:
+* @str:  a string
+*
+* Free a string if it is not owned by the "dict" dictionary in the
+* current scope
+*/
 /* *
- * xmlCtxtReset:
- * @ctxt: an XML parser context
- *
- * Reset a parser context
- */
+* xmlCtxtReset:
+* @ctxt: an XML parser context
+*
+* Reset a parser context
+*/
 
 pub fn xmlCtxtReset_parser(mut ctxt: xmlParserCtxtPtr) {
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
@@ -24268,17 +22065,17 @@ pub fn xmlCtxtReset_parser(mut ctxt: xmlParserCtxtPtr) {
     };
 }
 /* *
- * xmlCtxtResetPush:
- * @ctxt: an XML parser context
- * @chunk:  a pointer to an array of chars
- * @size:  number of chars in the array
- * @filename:  an optional file name or URI
- * @encoding:  the document encoding, or NULL
- *
- * Reset a push parser context
- *
- * Returns 0 in case of success and 1 in case of error
- */
+* xmlCtxtResetPush:
+* @ctxt: an XML parser context
+* @chunk:  a pointer to an array of chars
+* @size:  number of chars in the array
+* @filename:  an optional file name or URI
+* @encoding:  the document encoding, or NULL
+*
+* Reset a push parser context
+*
+* Returns 0 in case of success and 1 in case of error
+*/
 
 pub fn xmlCtxtResetPush(
     mut ctxt: xmlParserCtxtPtr,
@@ -24388,16 +22185,16 @@ pub fn xmlCtxtResetPush(
     return 0 as libc::c_int;
 }
 /* *
- * xmlCtxtUseOptionsInternal:
- * @ctxt: an XML parser context
- * @options:  a combination of xmlParserOption
- * @encoding:  the user provided encoding to use
- *
- * Applies the options to the parser context
- *
- * Returns 0 in case of success, the set of unknown or unimplemented options
- *         in case of error.
- */
+* xmlCtxtUseOptionsInternal:
+* @ctxt: an XML parser context
+* @options:  a combination of xmlParserOption
+* @encoding:  the user provided encoding to use
+*
+* Applies the options to the parser context
+*
+* Returns 0 in case of success, the set of unknown or unimplemented options
+*         in case of error.
+*/
 fn xmlCtxtUseOptionsInternal(
     mut ctxt: xmlParserCtxtPtr,
     mut options: libc::c_int,
@@ -24572,31 +22369,31 @@ fn xmlCtxtUseOptionsInternal(
     return options;
 }
 /* *
- * xmlCtxtUseOptions:
- * @ctxt: an XML parser context
- * @options:  a combination of xmlParserOption
- *
- * Applies the options to the parser context
- *
- * Returns 0 in case of success, the set of unknown or unimplemented options
- *         in case of error.
- */
+* xmlCtxtUseOptions:
+* @ctxt: an XML parser context
+* @options:  a combination of xmlParserOption
+*
+* Applies the options to the parser context
+*
+* Returns 0 in case of success, the set of unknown or unimplemented options
+*         in case of error.
+*/
 
 pub fn xmlCtxtUseOptions(mut ctxt: xmlParserCtxtPtr, mut options: libc::c_int) -> libc::c_int {
     return xmlCtxtUseOptionsInternal(ctxt, options, 0 as *const libc::c_char);
 }
 /* *
- * xmlDoRead:
- * @ctxt:  an XML parser context
- * @URL:  the base URL to use for the document
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- * @reuse:  keep the context for reuse
- *
- * Common front-end for the xmlRead functions
- *
- * Returns the resulting document tree or NULL
- */
+* xmlDoRead:
+* @ctxt:  an XML parser context
+* @URL:  the base URL to use for the document
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+* @reuse:  keep the context for reuse
+*
+* Common front-end for the xmlRead functions
+*
+* Returns the resulting document tree or NULL
+*/
 
 fn xmlDoRead(
     mut ctxt: xmlParserCtxtPtr,
@@ -24639,16 +22436,16 @@ fn xmlDoRead(
     return ret;
 }
 /* *
- * xmlReadDoc:
- * @cur:  a pointer to a zero terminated string
- * @URL:  the base URL to use for the document
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- *
- * parse an XML in-memory document and build a tree.
- *
- * Returns the resulting document tree
- */
+* xmlReadDoc:
+* @cur:  a pointer to a zero terminated string
+* @URL:  the base URL to use for the document
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+*
+* parse an XML in-memory document and build a tree.
+*
+* Returns the resulting document tree
+*/
 
 pub fn xmlReadDoc(
     mut cur: *const xmlChar,
@@ -24668,15 +22465,15 @@ pub fn xmlReadDoc(
     return xmlDoRead(ctxt, URL, encoding, options, 0 as libc::c_int);
 }
 /* *
- * xmlReadFile:
- * @filename:  a file or URL
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- *
- * parse an XML file from the filesystem or the network.
- *
- * Returns the resulting document tree
- */
+* xmlReadFile:
+* @filename:  a file or URL
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+*
+* parse an XML file from the filesystem or the network.
+*
+* Returns the resulting document tree
+*/
 
 pub fn xmlReadFile(
     mut filename: *const libc::c_char,
@@ -24700,17 +22497,17 @@ pub fn xmlReadFile(
     };
 }
 /* *
- * xmlReadMemory:
- * @buffer:  a pointer to a char array
- * @size:  the size of the array
- * @URL:  the base URL to use for the document
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- *
- * parse an XML in-memory document and build a tree.
- *
- * Returns the resulting document tree
- */
+* xmlReadMemory:
+* @buffer:  a pointer to a char array
+* @size:  the size of the array
+* @URL:  the base URL to use for the document
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+*
+* parse an XML in-memory document and build a tree.
+*
+* Returns the resulting document tree
+*/
 
 pub fn xmlReadMemory(
     mut buffer: *const libc::c_char,
@@ -24728,18 +22525,18 @@ pub fn xmlReadMemory(
     unsafe { return xmlDoRead(ctxt, URL, encoding, options, 0 as libc::c_int) };
 }
 /* *
- * xmlReadFd:
- * @fd:  an open file descriptor
- * @URL:  the base URL to use for the document
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- *
- * parse an XML from a file descriptor and build a tree.
- * NOTE that the file descriptor will not be closed when the
- *      reader is closed or reset.
- *
- * Returns the resulting document tree
- */
+* xmlReadFd:
+* @fd:  an open file descriptor
+* @URL:  the base URL to use for the document
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+*
+* parse an XML from a file descriptor and build a tree.
+* NOTE that the file descriptor will not be closed when the
+*      reader is closed or reset.
+*
+* Returns the resulting document tree
+*/
 
 pub fn xmlReadFd(
     mut fd: libc::c_int,
@@ -24775,18 +22572,18 @@ pub fn xmlReadFd(
     unsafe { return xmlDoRead(ctxt, URL, encoding, options, 0 as libc::c_int) };
 }
 /* *
- * xmlReadIO:
- * @ioread:  an I/O read function
- * @ioclose:  an I/O close function
- * @ioctx:  an I/O handler
- * @URL:  the base URL to use for the document
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- *
- * parse an XML document from I/O functions and source and build a tree.
- *
- * Returns the resulting document tree
- */
+* xmlReadIO:
+* @ioread:  an I/O read function
+* @ioclose:  an I/O close function
+* @ioctx:  an I/O handler
+* @URL:  the base URL to use for the document
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+*
+* parse an XML document from I/O functions and source and build a tree.
+*
+* Returns the resulting document tree
+*/
 
 pub fn xmlReadIO(
     mut ioread: xmlInputReadCallback,
@@ -24827,18 +22624,18 @@ pub fn xmlReadIO(
     unsafe { return xmlDoRead(ctxt, URL, encoding, options, 0 as libc::c_int) };
 }
 /* *
- * xmlCtxtReadDoc:
- * @ctxt:  an XML parser context
- * @cur:  a pointer to a zero terminated string
- * @URL:  the base URL to use for the document
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- *
- * parse an XML in-memory document and build a tree.
- * This reuses the existing @ctxt parser context
- *
- * Returns the resulting document tree
- */
+* xmlCtxtReadDoc:
+* @ctxt:  an XML parser context
+* @cur:  a pointer to a zero terminated string
+* @URL:  the base URL to use for the document
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+*
+* parse an XML in-memory document and build a tree.
+* This reuses the existing @ctxt parser context
+*
+* Returns the resulting document tree
+*/
 
 pub fn xmlCtxtReadDoc(
     mut ctxt: xmlParserCtxtPtr,
@@ -24864,17 +22661,17 @@ pub fn xmlCtxtReadDoc(
     unsafe { return xmlDoRead(ctxt, URL, encoding, options, 1 as libc::c_int) };
 }
 /* *
- * xmlCtxtReadFile:
- * @ctxt:  an XML parser context
- * @filename:  a file or URL
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- *
- * parse an XML file from the filesystem or the network.
- * This reuses the existing @ctxt parser context
- *
- * Returns the resulting document tree
- */
+* xmlCtxtReadFile:
+* @ctxt:  an XML parser context
+* @filename:  a file or URL
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+*
+* parse an XML file from the filesystem or the network.
+* This reuses the existing @ctxt parser context
+*
+* Returns the resulting document tree
+*/
 
 pub fn xmlCtxtReadFile(
     mut ctxt: xmlParserCtxtPtr,
@@ -24907,19 +22704,19 @@ pub fn xmlCtxtReadFile(
     };
 }
 /* *
- * xmlCtxtReadMemory:
- * @ctxt:  an XML parser context
- * @buffer:  a pointer to a char array
- * @size:  the size of the array
- * @URL:  the base URL to use for the document
- * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption
- *
- * parse an XML in-memory document and build a tree.
- * This reuses the existing @ctxt parser context
- *
- * Returns the resulting document tree
- */
+* xmlCtxtReadMemory:
+* @ctxt:  an XML parser context
+* @buffer:  a pointer to a char array
+* @size:  the size of the array
+* @URL:  the base URL to use for the document
+* @encoding:  the document encoding, or NULL
+* @options:  a combination of xmlParserOption
+*
+* parse an XML in-memory document and build a tree.
+* This reuses the existing @ctxt parser context
+*
+* Returns the resulting document tree
+*/
 
 pub fn xmlCtxtReadMemory(
     mut ctxt: xmlParserCtxtPtr,
