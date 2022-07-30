@@ -6929,14 +6929,16 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         init
     },
     {
-        let mut init = _htmlEntityDesc {
-            value: 171 as libc::c_int as libc::c_uint,
-            name:
-            b"laquo\x00" as *const u8 as *const libc::c_char,
-            desc:
-            b"left-pointing double angle quotation mark = left pointing guillemet, U+00AB ISOnum\x00"
-                as *const u8 as *const libc::c_char,
-        };
+        let mut init =
+                _htmlEntityDesc {
+                    value: 171 as libc::c_int as libc::c_uint,
+                    name:
+                    b"laquo\x00" as *const u8 as
+                        *const libc::c_char,
+                    desc:
+                    b"left-pointing double angle quotation mark = left pointing guillemet, U+00AB ISOnum\x00"
+                        as *const u8 as *const libc::c_char,
+                };
         init
     },
     {
@@ -7072,14 +7074,16 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         init
     },
     {
-        let mut init = _htmlEntityDesc {
-            value: 187 as libc::c_int as libc::c_uint,
-            name:
-            b"raquo\x00" as *const u8 as *const libc::c_char,
-            desc:
-            b"right-pointing double angle quotation mark right pointing guillemet, U+00BB ISOnum\x00"
-                as *const u8 as *const libc::c_char,
-        };
+        let mut init =
+                _htmlEntityDesc {
+                    value: 187 as libc::c_int as libc::c_uint,
+                    name:
+                    b"raquo\x00" as *const u8 as
+                        *const libc::c_char,
+                    desc:
+                    b"right-pointing double angle quotation mark right pointing guillemet, U+00BB ISOnum\x00"
+                        as *const u8 as *const libc::c_char,
+                };
         init
     },
     {
@@ -7119,14 +7123,16 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         init
     },
     {
-        let mut init = _htmlEntityDesc {
-            value: 192 as libc::c_int as libc::c_uint,
-            name:
-            b"Agrave\x00" as *const u8 as *const libc::c_char,
-            desc:
-            b"latin capital letter A with grave = latin capital letter A grave, U+00C0 ISOlat1\x00"
-                as *const u8 as *const libc::c_char,
-        };
+        let mut init =
+                _htmlEntityDesc {
+                    value: 192 as libc::c_int as libc::c_uint,
+                    name:
+                    b"Agrave\x00" as *const u8 as
+                        *const libc::c_char,
+                    desc:
+                    b"latin capital letter A with grave = latin capital letter A grave, U+00C0 ISOlat1\x00"
+                        as *const u8 as *const libc::c_char,
+                };
         init
     },
     {
@@ -7166,14 +7172,16 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         init
     },
     {
-        let mut init = _htmlEntityDesc {
-            value: 197 as libc::c_int as libc::c_uint,
-            name:
-            b"Aring\x00" as *const u8 as *const libc::c_char,
-            desc:
-            b"latin capital letter A with ring above = latin capital letter A ring, U+00C5 ISOlat1\x00"
-                as *const u8 as *const libc::c_char,
-        };
+        let mut init =
+                _htmlEntityDesc {
+                    value: 197 as libc::c_int as libc::c_uint,
+                    name:
+                    b"Aring\x00" as *const u8 as
+                        *const libc::c_char,
+                    desc:
+                    b"latin capital letter A with ring above = latin capital letter A ring, U+00C5 ISOlat1\x00"
+                        as *const u8 as *const libc::c_char,
+                };
         init
     },
     {
@@ -7338,14 +7346,16 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         init
     },
     {
-        let mut init = _htmlEntityDesc {
-            value: 216 as libc::c_int as libc::c_uint,
-            name:
-            b"Oslash\x00" as *const u8 as *const libc::c_char,
-            desc:
-            b"latin capital letter O with stroke latin capital letter O slash, U+00D8 ISOlat1\x00"
-                as *const u8 as *const libc::c_char,
-        };
+        let mut init =
+                _htmlEntityDesc {
+                    value: 216 as libc::c_int as libc::c_uint,
+                    name:
+                    b"Oslash\x00" as *const u8 as
+                        *const libc::c_char,
+                    desc:
+                    b"latin capital letter O with stroke latin capital letter O slash, U+00D8 ISOlat1\x00"
+                        as *const u8 as *const libc::c_char,
+                };
         init
     },
     {
@@ -7458,14 +7468,16 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         init
     },
     {
-        let mut init = _htmlEntityDesc {
-            value: 229 as libc::c_int as libc::c_uint,
-            name:
-            b"aring\x00" as *const u8 as *const libc::c_char,
-            desc:
-            b"latin small letter a with ring above = latin small letter a ring, U+00E5 ISOlat1\x00"
-                as *const u8 as *const libc::c_char,
-        };
+        let mut init =
+                _htmlEntityDesc {
+                    value: 229 as libc::c_int as libc::c_uint,
+                    name:
+                    b"aring\x00" as *const u8 as
+                        *const libc::c_char,
+                    desc:
+                    b"latin small letter a with ring above = latin small letter a ring, U+00E5 ISOlat1\x00"
+                        as *const u8 as *const libc::c_char,
+                };
         init
     },
     {
@@ -7629,14 +7641,16 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         init
     },
     {
-        let mut init = _htmlEntityDesc {
-            value: 248 as libc::c_int as libc::c_uint,
-            name:
-            b"oslash\x00" as *const u8 as *const libc::c_char,
-            desc:
-            b"latin small letter o with stroke, = latin small letter o slash, U+00F8 ISOlat1\x00"
-                as *const u8 as *const libc::c_char,
-        };
+        let mut init =
+                _htmlEntityDesc {
+                    value: 248 as libc::c_int as libc::c_uint,
+                    name:
+                    b"oslash\x00" as *const u8 as
+                        *const libc::c_char,
+                    desc:
+                    b"latin small letter o with stroke, = latin small letter o slash, U+00F8 ISOlat1\x00"
+                        as *const u8 as *const libc::c_char,
+                };
         init
     },
     {
@@ -10382,7 +10396,8 @@ pub fn htmlParseEntityRef(
  *
  * parse a value for an attribute
  * Note: the parser won't do substitution of entities here, this
- * will be handled later in xmlStringGetNodeList, unless it was * asked for ctxt->replaceEntities != 0
+ * will be handled later in xmlStringGetNodeList, unless it was
+ * asked for ctxt->replaceEntities != 0
  *
  * Returns the AttValue parsed or NULL.
  */
@@ -10588,7 +10603,8 @@ fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
  *
  * Script data ( %Script; in the DTD) can be the content of the SCRIPT
  * element and the value of intrinsic event attributes. User agents must
- * not evaluate script data as HTML markup but instead must pass it on as * data to a script engine.
+ * not evaluate script data as HTML markup but instead must pass it on as
+ * data to a script engine.
  * NOTES:
  * - The content is passed like CDATA
  * - the attributes for style and scripting "onXXX" are also described
@@ -10614,7 +10630,8 @@ fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
              *
              * In recovery mode, only break if end tag match the
              * current tag, effectively ignoring all tags inside the
-             * script/style block and treating the entire block as * CDATA.
+             * script/style block and treating the entire block as
+             * CDATA.
              */
             if ctxtPtr.recovery != 0 {
                 unsafe {
