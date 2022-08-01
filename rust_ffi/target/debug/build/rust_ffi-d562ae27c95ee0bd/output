@@ -1,0 +1,2 @@
+cargo:rustc-link-lib=static=xml2
+cargo:rustc-link-search=native=/root/code/01/01/libxml2-rust

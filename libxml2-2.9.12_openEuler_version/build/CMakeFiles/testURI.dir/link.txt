@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/testURI.dir/testURI.c.o -o testURI  -Wl,-rpath,/home/code/libxml2-2.9.12/build libxml2.so.2.9.10 

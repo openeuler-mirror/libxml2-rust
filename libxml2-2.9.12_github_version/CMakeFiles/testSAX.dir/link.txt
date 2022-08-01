@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/testSAX.dir/testSAX.c.o -o testSAX   -L/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/rust/target/debug  -Wl,-rpath,/root/pr/20220713_01/libxml2-rust/libxml2-2.9.12_github_version/rust/target/debug libxml2.a -lrust_project -ldl -lm /usr/lib/x86_64-linux-gnu/liblzma.so -lpthread /usr/lib/x86_64-linux-gnu/libz.so 
