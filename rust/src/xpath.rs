@@ -5669,7 +5669,7 @@ pub unsafe fn xmlXPathNodeSetAdd(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) ->
  * Returns 0 in case of success and -1 in case of failure
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNodeSetAddUnique(
+pub unsafe extern "C" fn xmlXPathNodeSetAddUnique(
     mut cur: xmlNodeSetPtr,
     mut val: xmlNodePtr,
 ) -> libc::c_int {
@@ -6403,7 +6403,7 @@ unsafe fn xmlXPathFreeValueTree(mut obj: xmlNodeSetPtr) {
  */
 #[cfg(DEBUG_OR_DEBUG_STEP)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlGenericErrorContextNodeSet(mut output: *mut FILE, mut obj: xmlNodeSetPtr) {
+pub unsafe extern "C" fn xmlGenericErrorContextNodeSet(mut output: *mut FILE, mut obj: xmlNodeSetPtr) {
     let mut i: libc::c_int = 0;
     let safe_obj = unsafe { &mut *obj };
     if output.is_null() {
@@ -7344,7 +7344,7 @@ pub unsafe fn xmlXPathFunctionLookupNS(
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 #[cfg(DEBUG_STEP)]
-pub extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mut nbNodes: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mut nbNodes: libc::c_int) {
     let safe_op = unsafe { &mut *op };
     unsafe {
         (*__xmlGenericError()).expect("non-null function pointer")(
@@ -11193,7 +11193,7 @@ pub unsafe fn xmlXPathModValues(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextSelf(
+pub unsafe extern "C" fn xmlXPathNextSelf(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11217,7 +11217,7 @@ pub extern "C" fn xmlXPathNextSelf(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextChild(
+pub unsafe extern "C" fn xmlXPathNextChild(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11397,7 +11397,7 @@ extern "C" fn xmlXPathNextChildElement(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextDescendant(
+pub unsafe extern "C" fn xmlXPathNextDescendant(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11488,7 +11488,7 @@ pub extern "C" fn xmlXPathNextDescendant(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextDescendantOrSelf(
+pub unsafe extern "C" fn xmlXPathNextDescendantOrSelf(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11522,7 +11522,7 @@ pub extern "C" fn xmlXPathNextDescendantOrSelf(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextParent(
+pub unsafe extern "C" fn xmlXPathNextParent(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11597,7 +11597,7 @@ pub extern "C" fn xmlXPathNextParent(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextAncestor(
+pub unsafe extern "C" fn xmlXPathNextAncestor(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11721,7 +11721,7 @@ pub extern "C" fn xmlXPathNextAncestor(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextAncestorOrSelf(
+pub unsafe extern "C" fn xmlXPathNextAncestorOrSelf(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11746,7 +11746,7 @@ pub extern "C" fn xmlXPathNextAncestorOrSelf(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextFollowingSibling(
+pub unsafe extern "C" fn xmlXPathNextFollowingSibling(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11782,7 +11782,7 @@ pub extern "C" fn xmlXPathNextFollowingSibling(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextPrecedingSibling(
+pub unsafe extern "C" fn xmlXPathNextPrecedingSibling(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11828,7 +11828,7 @@ pub extern "C" fn xmlXPathNextPrecedingSibling(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextFollowing(
+pub unsafe extern "C" fn xmlXPathNextFollowing(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -12096,7 +12096,7 @@ extern "C" fn xmlXPathNextPrecedingInternal(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextNamespace(
+pub unsafe extern "C" fn xmlXPathNextNamespace(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -12166,7 +12166,7 @@ pub extern "C" fn xmlXPathNextNamespace(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextAttribute(
+pub unsafe extern "C" fn xmlXPathNextAttribute(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -12239,7 +12239,7 @@ pub unsafe fn xmlXPathRoot(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathLastFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathLastFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     if ctxt.is_null() {
         return;
     }
@@ -12292,7 +12292,7 @@ pub extern "C" fn xmlXPathLastFunction(mut ctxt: xmlXPathParserContextPtr, mut n
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathPositionFunction(
+pub unsafe extern "C" fn xmlXPathPositionFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12345,7 +12345,7 @@ pub extern "C" fn xmlXPathPositionFunction(
  *    number count(node-set) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathCountFunction(
+pub unsafe extern "C" fn xmlXPathCountFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12491,7 +12491,7 @@ unsafe fn xmlXPathGetElementsByIds(mut doc: xmlDocPtr, mut ids: *const xmlChar) 
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathIdFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathIdFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     let mut tokens: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
@@ -12563,7 +12563,7 @@ pub extern "C" fn xmlXPathIdFunction(mut ctxt: xmlXPathParserContextPtr, mut nar
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathLocalNameFunction(
+pub unsafe extern "C" fn xmlXPathLocalNameFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12686,7 +12686,7 @@ pub extern "C" fn xmlXPathLocalNameFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNamespaceURIFunction(
+pub unsafe extern "C" fn xmlXPathNamespaceURIFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12968,7 +12968,7 @@ extern "C" fn xmlXPathNameFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathStringFunction(
+pub unsafe extern "C" fn xmlXPathStringFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13019,7 +13019,7 @@ pub extern "C" fn xmlXPathStringFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathStringLengthFunction(
+pub unsafe extern "C" fn xmlXPathStringLengthFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13097,7 +13097,7 @@ pub extern "C" fn xmlXPathStringLengthFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathConcatFunction(
+pub unsafe extern "C" fn xmlXPathConcatFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13177,7 +13177,7 @@ pub extern "C" fn xmlXPathConcatFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathContainsFunction(
+pub unsafe extern "C" fn xmlXPathContainsFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13254,7 +13254,7 @@ pub extern "C" fn xmlXPathContainsFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathStartsWithFunction(
+pub unsafe extern "C" fn xmlXPathStartsWithFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13348,7 +13348,7 @@ pub extern "C" fn xmlXPathStartsWithFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathSubstringFunction(
+pub unsafe extern "C" fn xmlXPathSubstringFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13499,7 +13499,7 @@ pub extern "C" fn xmlXPathSubstringFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathSubstringBeforeFunction(
+pub unsafe extern "C" fn xmlXPathSubstringBeforeFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13565,7 +13565,7 @@ pub extern "C" fn xmlXPathSubstringBeforeFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathSubstringAfterFunction(
+pub unsafe extern "C" fn xmlXPathSubstringAfterFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13641,7 +13641,7 @@ pub extern "C" fn xmlXPathSubstringAfterFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNormalizeFunction(
+pub unsafe extern "C" fn xmlXPathNormalizeFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13752,7 +13752,7 @@ pub extern "C" fn xmlXPathNormalizeFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathTranslateFunction(
+pub unsafe extern "C" fn xmlXPathTranslateFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13893,7 +13893,7 @@ pub extern "C" fn xmlXPathTranslateFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathBooleanFunction(
+pub unsafe extern "C" fn xmlXPathBooleanFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13927,7 +13927,7 @@ pub extern "C" fn xmlXPathBooleanFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNotFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathNotFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     if ctxt.is_null() {
         return;
     }
@@ -13963,7 +13963,7 @@ pub extern "C" fn xmlXPathNotFunction(mut ctxt: xmlXPathParserContextPtr, mut na
  *    boolean true() */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathTrueFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathTrueFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     if ctxt.is_null() {
         return;
     }
@@ -13991,7 +13991,7 @@ pub extern "C" fn xmlXPathTrueFunction(mut ctxt: xmlXPathParserContextPtr, mut n
  *    boolean false() */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathFalseFunction(
+pub unsafe extern "C" fn xmlXPathFalseFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -14034,7 +14034,7 @@ pub extern "C" fn xmlXPathFalseFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     let mut current_block: u64;
     let mut val: xmlXPathObjectPtr = 0 as xmlXPathObjectPtr;
     let mut theLang: *const xmlChar = 0 as *const xmlChar;
@@ -14153,7 +14153,7 @@ pub extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut n
  *    number number(object?) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNumberFunction(
+pub unsafe extern "C" fn xmlXPathNumberFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -14199,7 +14199,7 @@ pub extern "C" fn xmlXPathNumberFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathSumFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathSumFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     let mut cur: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut i: libc::c_int = 0;
     let mut res: libc::c_double = 0.0f64;
@@ -14248,7 +14248,7 @@ pub extern "C" fn xmlXPathSumFunction(mut ctxt: xmlXPathParserContextPtr, mut na
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathFloorFunction(
+pub unsafe extern "C" fn xmlXPathFloorFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -14290,7 +14290,7 @@ pub extern "C" fn xmlXPathFloorFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathCeilingFunction(
+pub unsafe extern "C" fn xmlXPathCeilingFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -14341,7 +14341,7 @@ pub extern "C" fn xmlXPathCeilingFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathRoundFunction(
+pub unsafe extern "C" fn xmlXPathRoundFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
