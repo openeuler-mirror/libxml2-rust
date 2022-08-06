@@ -3,7 +3,8 @@ const HTML_PARSER_BIG_BUFFER_SIZE: libc::c_int = 1000 as libc::c_int;
 const HTML_PARSER_BUFFER_SIZE: libc::c_int = 100 as libc::c_int;
 const INPUT_CHUNK: libc::c_int = 250 as libc::c_int;
 
-fn UPPER(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+
+unsafe fn UPPER(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut __res: libc::c_int = 0;
     if ::std::mem::size_of::<xmlChar>() as libc::c_ulong > 1 as libc::c_int as libc::c_ulong {
         if 0 != 0 {
@@ -25,11 +26,11 @@ fn UPPER(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     __res
 }
 
-fn CUR(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+unsafe fn CUR(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     unsafe { *(*(*ctxt).input).cur as libc::c_int }
 }
 
-fn RAW(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+unsafe fn RAW(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.token != 0 {
         -(1 as libc::c_int)
@@ -38,23 +39,23 @@ fn RAW(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     }
 }
 
-fn NXT(mut ctxt: htmlParserCtxtPtr, mut val: libc::c_int) -> libc::c_int {
+unsafe fn NXT(mut ctxt: htmlParserCtxtPtr, mut val: libc::c_int) -> libc::c_int {
     unsafe { *(*(*ctxt).input).cur.offset(val as isize) as libc::c_int }
 }
 
-fn SHRINK_bool1(mut ctxt: htmlParserCtxtPtr, mut num: libc::c_long) -> bool {
+unsafe fn SHRINK_bool1(mut ctxt: htmlParserCtxtPtr, mut num: libc::c_long) -> bool {
     let mut result: libc::c_long =
         unsafe { (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) } as libc::c_long;
     result > num
 }
 
-fn SHRINK_bool2(mut ctxt: htmlParserCtxtPtr, mut num: libc::c_long) -> bool {
+unsafe fn SHRINK_bool2(mut ctxt: htmlParserCtxtPtr, mut num: libc::c_long) -> bool {
     let mut result: libc::c_long =
         unsafe { (*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) } as libc::c_long;
     result < num
 }
 
-fn SHRINK(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn SHRINK(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if SHRINK_bool1(ctxt, (2 * INPUT_CHUNK) as libc::c_long)
         && SHRINK_bool2(ctxt, (2 * INPUT_CHUNK) as libc::c_long)
@@ -63,7 +64,7 @@ fn SHRINK(mut ctxt: htmlParserCtxtPtr) {
     }
 }
 
-fn SKIP(mut ctxt: htmlParserCtxtPtr, mut val: libc::c_int) {
+unsafe fn SKIP(mut ctxt: htmlParserCtxtPtr, mut val: libc::c_int) {
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     unsafe {
         inputPtr.cur = inputPtr.cur.offset(val as isize);
@@ -71,7 +72,7 @@ fn SKIP(mut ctxt: htmlParserCtxtPtr, mut val: libc::c_int) {
     inputPtr.col += val;
 }
 
-fn NEXTL(mut ctxt: htmlParserCtxtPtr, mut ql: libc::c_int) {
+unsafe fn NEXTL(mut ctxt: htmlParserCtxtPtr, mut ql: libc::c_int) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     if CUR(ctxt) == '\n' as i32 {
@@ -86,14 +87,14 @@ fn NEXTL(mut ctxt: htmlParserCtxtPtr, mut ql: libc::c_int) {
     }
 }
 
-fn GROW(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn GROW(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.progressive == 0 as libc::c_int && SHRINK_bool2(ctxt, INPUT_CHUNK as libc::c_long) {
         xmlParserInputGrow_safe(ctxtPtr.input, INPUT_CHUNK);
     }
 }
 
-fn IS_CHAR(mut q: libc::c_int) -> bool {
+unsafe fn IS_CHAR(mut q: libc::c_int) -> bool {
     if q < 0x100 as libc::c_int {
         (0x9 as libc::c_int <= q && q <= 0xa as libc::c_int)
             || q == 0xd as libc::c_int
@@ -105,19 +106,19 @@ fn IS_CHAR(mut q: libc::c_int) -> bool {
     }
 }
 
-fn IS_CHAR_CH(mut c: libc::c_int) -> bool {
+unsafe fn IS_CHAR_CH(mut c: libc::c_int) -> bool {
     (0x9 as libc::c_int <= c && c <= 0xa as libc::c_int)
         || c == 0xd as libc::c_int
         || 0x20 as libc::c_int <= c
 }
 
-fn IS_BLANK_CH(c: libc::c_int) -> bool {
+unsafe fn IS_BLANK_CH(c: libc::c_int) -> bool {
     (c == 0x20 as libc::c_int)
         || ((c >= 0x9 as libc::c_int) && (c <= 0xa as libc::c_int))
         || (c == 0xd as libc::c_int)
 }
 
-fn IS_BLANK(cur: libc::c_int) -> bool {
+unsafe fn IS_BLANK(cur: libc::c_int) -> bool {
     (if cur < 0x100 as libc::c_int {
         (cur == 0x20 as libc::c_int
             || 0x9 as libc::c_int <= cur && cur <= 0xa as libc::c_int
@@ -127,7 +128,7 @@ fn IS_BLANK(cur: libc::c_int) -> bool {
     }) != 0
 }
 
-fn IS_LETTER(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
+unsafe fn IS_LETTER(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
     ((if c < 0x100 as libc::c_int {
         (0x41 as libc::c_int <= c && c <= 0x5a as libc::c_int
             || 0x61 as libc::c_int <= c && c <= 0x7a as libc::c_int
@@ -147,7 +148,7 @@ fn IS_LETTER(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
         }) != 0)
 }
 
-fn IS_DIGIT(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
+unsafe fn IS_DIGIT(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
     (if c < 0x100 as libc::c_int {
         (0x30 as libc::c_int <= c && c <= 0x39 as libc::c_int) as libc::c_int
     } else {
@@ -155,7 +156,7 @@ fn IS_DIGIT(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
     }) != 0
 }
 
-fn IS_COMBINING(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
+unsafe fn IS_COMBINING(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
     (if c < 0x100 as libc::c_int {
         0 as libc::c_int
     } else {
@@ -163,7 +164,7 @@ fn IS_COMBINING(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
     }) != 0
 }
 
-fn IS_EXTENDER(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
+unsafe fn IS_EXTENDER(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
     (if c < 0x100 as libc::c_int {
         (c == 0xb7 as libc::c_int) as libc::c_int
     } else {
@@ -171,7 +172,7 @@ fn IS_EXTENDER(c: libc::c_int, group: *const xmlChRangeGroup) -> bool {
     }) != 0
 }
 
-fn COPY_BUF(
+unsafe fn COPY_BUF(
     mut ql: libc::c_int,
     mut buf: *mut xmlChar,
     mut len: libc::c_int,
@@ -191,16 +192,16 @@ fn COPY_BUF(
     return len;
 }
 
-fn IS_ASCII_LETTER(c: libc::c_int) -> bool {
+unsafe fn IS_ASCII_LETTER(c: libc::c_int) -> bool {
     ((c >= 0x41 as libc::c_int) && (c <= 0x5a as libc::c_int))
         || ((c >= 0x61 as libc::c_int) && (c <= 0x7a as libc::c_int))
 }
 
-fn IS_ASCII_DIGIT(c: libc::c_int) -> bool {
+unsafe fn IS_ASCII_DIGIT(c: libc::c_int) -> bool {
     (c >= 0x30 as libc::c_int) && (c <= 0x39 as libc::c_int)
 }
 
-fn UPP(ctxt: htmlParserCtxtPtr, val: libc::c_int) -> libc::c_int {
+unsafe fn UPP(ctxt: htmlParserCtxtPtr, val: libc::c_int) -> libc::c_int {
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut __res: libc::c_int = 0;
     if ::std::mem::size_of::<xmlChar>() as libc::c_ulong > 1 as libc::c_int as libc::c_ulong {
@@ -224,7 +225,7 @@ fn UPP(ctxt: htmlParserCtxtPtr, val: libc::c_int) -> libc::c_int {
 }
 
 #[inline]
-fn bsearch(
+unsafe fn bsearch(
     mut __key: *const libc::c_void,
     mut __base: *const libc::c_void,
     mut __nmemb: size_t,
@@ -263,7 +264,7 @@ fn bsearch(
 }
 
 #[inline]
-fn toupper(mut __c: libc::c_int) -> libc::c_int {
+unsafe fn toupper(mut __c: libc::c_int) -> libc::c_int {
     return if __c >= -(128 as libc::c_int) && __c < 256 as libc::c_int {
         unsafe { *(*__ctype_toupper_loc_safe()).offset(__c as isize) }
     } else {
@@ -284,7 +285,7 @@ static mut htmlOmittedDefaultValue: libc::c_int = 1 as libc::c_int;
  *
  * Handle a redefinition of attribute error
  */
-fn htmlErrMemory(mut ctxt: xmlParserCtxtPtr, mut extra: *const libc::c_char) {
+unsafe fn htmlErrMemory(mut ctxt: xmlParserCtxtPtr, mut extra: *const libc::c_char) {
     unsafe {
         if !ctxt.is_null()
             && (*ctxt).disableSAX != 0 as libc::c_int
@@ -350,7 +351,7 @@ fn htmlErrMemory(mut ctxt: xmlParserCtxtPtr, mut extra: *const libc::c_char) {
  *
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
-fn htmlParseErr(
+unsafe fn htmlParseErr(
     mut ctxt: xmlParserCtxtPtr,
     mut error: xmlParserErrors,
     mut msg: *const libc::c_char,
@@ -401,7 +402,7 @@ fn htmlParseErr(
  *
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
-fn htmlParseErrInt(
+unsafe fn htmlParseErrInt(
     mut ctxt: xmlParserCtxtPtr,
     mut error: xmlParserErrors,
     mut msg: *const libc::c_char,
@@ -455,7 +456,7 @@ fn htmlParseErrInt(
  *
  * Returns 0 in case of error, the index in the stack otherwise
  */
-fn htmlnamePush(mut ctxt: htmlParserCtxtPtr, mut value: *const xmlChar) -> libc::c_int {
+unsafe fn htmlnamePush(mut ctxt: htmlParserCtxtPtr, mut value: *const xmlChar) -> libc::c_int {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.html < 3 as libc::c_int
         && xmlStrEqual_safe(
@@ -500,7 +501,7 @@ fn htmlnamePush(mut ctxt: htmlParserCtxtPtr, mut value: *const xmlChar) -> libc:
  *
  * Returns the name just removed
  */
-fn htmlnamePop(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
+unsafe fn htmlnamePop(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut ret: *const xmlChar = 0 as *const xmlChar;
     if ctxtPtr.nameNr <= 0 as libc::c_int {
@@ -535,7 +536,7 @@ fn htmlnamePop(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
  *
  * Returns 0 in case of error, the index in the stack otherwise
  */
-fn htmlNodeInfoPush(
+unsafe fn htmlNodeInfoPush(
     mut ctxt: htmlParserCtxtPtr,
     mut value: *mut htmlParserNodeInfo,
 ) -> libc::c_int {
@@ -574,7 +575,7 @@ fn htmlNodeInfoPush(
  *
  * Returns 0 in case of error, the pointer to NodeInfo otherwise
  */
-fn htmlNodeInfoPop(mut ctxt: htmlParserCtxtPtr) -> *mut htmlParserNodeInfo {
+unsafe fn htmlNodeInfoPop(mut ctxt: htmlParserCtxtPtr) -> *mut htmlParserNodeInfo {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.nodeInfoNr <= 0 as libc::c_int {
         return 0 as *mut htmlParserNodeInfo;
@@ -612,7 +613,7 @@ fn htmlNodeInfoPop(mut ctxt: htmlParserCtxtPtr) -> *mut htmlParserNodeInfo {
  * Returns an encoding string or NULL if not found, the string need to
  *   be freed
  */
-fn htmlFindEncoding(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
+unsafe fn htmlFindEncoding(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut start: *const xmlChar = 0 as *const xmlChar;
     let mut cur: *const xmlChar = 0 as *const xmlChar;
     let mut end: *const xmlChar = 0 as *const xmlChar;
@@ -693,7 +694,7 @@ fn htmlFindEncoding(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
  *
  * Returns the current char value and its length
  */
-fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut libc::c_int) -> libc::c_int {
+unsafe fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut libc::c_int) -> libc::c_int {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut current_block: i32;
@@ -993,7 +994,7 @@ fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut libc::c_int) -> lib
  *
  * Returns the number of space chars skipped
  */
-fn htmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
+unsafe fn htmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut res: libc::c_int = 0 as libc::c_int;
@@ -6205,7 +6206,7 @@ static mut htmlEndPriority: [elementPriority; 12] = [
  * This is a no-op now.
  */
 
-pub fn htmlInitAutoClose_htmlparser() {}
+pub unsafe fn htmlInitAutoClose_htmlparser() {}
 
 extern "C" fn htmlCompareTags(
     mut key: *const libc::c_void,
@@ -6225,11 +6226,10 @@ extern "C" fn htmlCompareTags(
  * Returns the related htmlElemDescPtr or NULL if not found.
  */
 
-pub fn htmlTagLookup(mut tag: *const xmlChar) -> *const htmlElemDesc {
-    if tag.is_null() {
-        return 0 as *const htmlElemDesc;
-    }
-    unsafe {
+pub unsafe fn htmlTagLookup(mut tag: *const xmlChar) -> *const htmlElemDesc {
+        if tag.is_null() {
+            return 0 as *const htmlElemDesc;
+        }
         return bsearch(
             tag as *const libc::c_void,
             html40ElementTable.as_ptr() as *const libc::c_void,
@@ -6244,7 +6244,6 @@ pub fn htmlTagLookup(mut tag: *const xmlChar) -> *const htmlElemDesc {
                     ) -> libc::c_int,
             ),
         ) as *const htmlElemDesc;
-    }
 }
 /* *
  * htmlGetEndPriority:
@@ -6252,7 +6251,7 @@ pub fn htmlTagLookup(mut tag: *const xmlChar) -> *const htmlElemDesc {
  *
  * Return value: The "endtag" priority.
  **/
-fn htmlGetEndPriority(mut name: *const xmlChar) -> libc::c_int {
+unsafe fn htmlGetEndPriority(mut name: *const xmlChar) -> libc::c_int {
     let mut i: libc::c_int = 0 as libc::c_int;
     while !getHtmlEndPriority(i as usize).name.is_null()
         && xmlStrEqual_safe(getHtmlEndPriority(i as usize).name as *const xmlChar, name) == 0
@@ -6287,7 +6286,7 @@ extern "C" fn htmlCompareStartClose(
  *
  * Returns 0 if no, 1 if yes.
  */
-fn htmlCheckAutoClose(mut newtag: *const xmlChar, mut oldtag: *const xmlChar) -> libc::c_int {
+unsafe fn htmlCheckAutoClose(mut newtag: *const xmlChar, mut oldtag: *const xmlChar) -> libc::c_int {
     let mut key: htmlStartCloseEntry = htmlStartCloseEntry {
         oldTag: 0 as *const libc::c_char,
         newTag: 0 as *const libc::c_char,
@@ -6321,7 +6320,7 @@ fn htmlCheckAutoClose(mut newtag: *const xmlChar, mut oldtag: *const xmlChar) ->
  *
  * The HTML DTD allows an ending tag to implicitly close other tags.
  */
-fn htmlAutoCloseOnClose(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar) {
+unsafe fn htmlAutoCloseOnClose(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut info: *const htmlElemDesc = 0 as *const htmlElemDesc;
     let mut i: libc::c_int = 0;
@@ -6380,7 +6379,7 @@ fn htmlAutoCloseOnClose(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar)
  *
  * Close all remaining tags at the end of the stream
  */
-fn htmlAutoCloseOnEnd(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlAutoCloseOnEnd(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut i: libc::c_int = 0;
     if ctxtPtr.nameNr == 0 as libc::c_int {
@@ -6410,7 +6409,7 @@ fn htmlAutoCloseOnEnd(mut ctxt: htmlParserCtxtPtr) {
  * If newtag is NULL this mean we are at the end of the resource
  * and we should check
  */
-fn htmlAutoClose(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar) {
+unsafe fn htmlAutoClose(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut sax_condition = false;
     while !newtag.is_null()
@@ -6465,7 +6464,7 @@ fn htmlAutoClose(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar) {
  * Returns 1 if autoclose, 0 otherwise
  */
 
-pub fn htmlAutoCloseTag(
+pub unsafe fn htmlAutoCloseTag(
     mut doc: htmlDocPtr,
     mut name: *const xmlChar,
     mut elem: htmlNodePtr,
@@ -6502,7 +6501,7 @@ pub fn htmlAutoCloseTag(
  * Returns 1 if autoclosed, 0 otherwise
  */
 
-pub fn htmlIsAutoClosed(mut doc: htmlDocPtr, mut elem: htmlNodePtr) -> libc::c_int {
+pub unsafe fn htmlIsAutoClosed(mut doc: htmlDocPtr, mut elem: htmlNodePtr) -> libc::c_int {
     let mut child: htmlNodePtr = 0 as *mut xmlNode;
     if elem.is_null() {
         return 1 as libc::c_int;
@@ -6526,7 +6525,7 @@ pub fn htmlIsAutoClosed(mut doc: htmlDocPtr, mut elem: htmlNodePtr) -> libc::c_i
  * called when a new tag has been detected and generates the
  * appropriates implicit tags if missing
  */
-fn htmlCheckImplied(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar) {
+unsafe fn htmlCheckImplied(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut i: libc::c_int = 0;
     if ctxtPtr.options & HTML_PARSE_NOIMPLIED as libc::c_int != 0 {
@@ -6683,7 +6682,7 @@ fn htmlCheckImplied(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlChar) {
  * Returns 1 if a paragraph has been inserted, 0 if not and -1
  *         in case of error.
  */
-fn htmlCheckParagraph(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+unsafe fn htmlCheckParagraph(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut tag: *const xmlChar = 0 as *const xmlChar;
     let mut i: libc::c_int = 0;
     if ctxt.is_null() {
@@ -6761,7 +6760,7 @@ fn htmlCheckParagraph(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
  * Returns 1 is the attribute is a script 0 otherwise
  */
 
-pub fn htmlIsScriptAttribute(mut name: *const xmlChar) -> libc::c_int {
+pub unsafe fn htmlIsScriptAttribute(mut name: *const xmlChar) -> libc::c_int {
     let mut i: libc::c_uint = 0;
     if name.is_null() {
         return 0 as libc::c_int;
@@ -9011,7 +9010,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
  * Returns the associated htmlEntityDescPtr if found, NULL otherwise.
  */
 
-pub fn htmlEntityLookup(mut name: *const xmlChar) -> *const htmlEntityDesc {
+pub unsafe fn htmlEntityLookup(mut name: *const xmlChar) -> *const htmlEntityDesc {
     let mut i: libc::c_uint = 0;
     i = 0 as libc::c_int as libc::c_uint;
     while (i as libc::c_ulong)
@@ -9043,7 +9042,7 @@ pub fn htmlEntityLookup(mut name: *const xmlChar) -> *const htmlEntityDesc {
  * Returns the associated htmlEntityDescPtr if found, NULL otherwise.
  */
 
-pub fn htmlEntityValueLookup(mut value: libc::c_uint) -> *const htmlEntityDesc {
+pub unsafe fn htmlEntityValueLookup(mut value: libc::c_uint) -> *const htmlEntityDesc {
     let mut i: libc::c_uint = 0;
     i = 0 as libc::c_int as libc::c_uint;
     while (i as libc::c_ulong)
@@ -9083,7 +9082,7 @@ pub fn htmlEntityValueLookup(mut value: libc::c_uint) -> *const htmlEntityDesc {
  *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of octets consumed.
  */
-pub fn UTF8ToHtml(
+pub unsafe fn UTF8ToHtml(
     mut out: *mut libc::c_uchar,
     mut outlen: *mut libc::c_int,
     mut in_0: *const libc::c_uchar,
@@ -9268,7 +9267,7 @@ pub fn UTF8ToHtml(
  *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of octets consumed.
  */
-pub fn htmlEncodeEntities(
+pub unsafe fn htmlEncodeEntities(
     mut out: *mut libc::c_uchar,
     mut outlen: *mut libc::c_int,
     mut in_0: *const libc::c_uchar,
@@ -9450,7 +9449,7 @@ pub fn htmlEncodeEntities(
  * Returns the new input stream or NULL
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-fn htmlNewInputStream(mut ctxt: htmlParserCtxtPtr) -> htmlParserInputPtr {
+unsafe fn htmlNewInputStream(mut ctxt: htmlParserCtxtPtr) -> htmlParserInputPtr {
     let mut input: htmlParserInputPtr = 0 as *mut xmlParserInput;
     input = xmlMalloc_safe(::std::mem::size_of::<htmlParserInput>() as libc::c_ulong)
         as xmlParserInputPtr;
@@ -9557,7 +9556,7 @@ static mut allowPCData: [*const libc::c_char; 53] = [
  *
  * Returns 1 if ignorable 0 otherwise.
  */
-fn areBlanks_htmlparser(
+unsafe fn areBlanks_htmlparser(
     mut ctxt: htmlParserCtxtPtr,
     mut str: *const xmlChar,
     mut len: libc::c_int,
@@ -9691,7 +9690,7 @@ fn areBlanks_htmlparser(
  * Returns a new document, do not initialize the DTD if not provided
  */
 
-pub fn htmlNewDocNoDtD(mut URI: *const xmlChar, mut ExternalID: *const xmlChar) -> htmlDocPtr {
+pub unsafe fn htmlNewDocNoDtD(mut URI: *const xmlChar, mut ExternalID: *const xmlChar) -> htmlDocPtr {
     let mut cur: xmlDocPtr = 0 as *mut xmlDoc;
     /*
      * Allocate a new document and fill the fields.
@@ -9746,7 +9745,7 @@ pub fn htmlNewDocNoDtD(mut URI: *const xmlChar, mut ExternalID: *const xmlChar) 
  * Returns a new document
  */
 
-pub fn htmlNewDoc(mut URI: *const xmlChar, mut ExternalID: *const xmlChar) -> htmlDocPtr {
+pub unsafe fn htmlNewDoc(mut URI: *const xmlChar, mut ExternalID: *const xmlChar) -> htmlDocPtr {
     if URI.is_null() && ExternalID.is_null() {
         return htmlNewDocNoDtD(
             b"http://www.w3.org/TR/REC-html40/loose.dtd\x00" as *const u8 as *const libc::c_char
@@ -9766,7 +9765,7 @@ pub fn htmlNewDoc(mut URI: *const xmlChar, mut ExternalID: *const xmlChar) -> ht
  *
  * Returns the Tag Name parsed or NULL
  */
-fn htmlParseHTMLName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
+unsafe fn htmlParseHTMLName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
     let mut i: libc::c_int = 0 as libc::c_int;
     let mut loc: [xmlChar; 100] = [0; 100];
     if !IS_ASCII_LETTER(CUR(ctxt))
@@ -9805,7 +9804,7 @@ fn htmlParseHTMLName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
  *
  * Returns the Tag Name parsed or NULL
  */
-fn htmlParseHTMLName_nonInvasive(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
+unsafe fn htmlParseHTMLName_nonInvasive(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
     let mut i: libc::c_int = 0 as libc::c_int;
     let mut loc: [xmlChar; 100] = [0; 100];
     if !(IS_ASCII_LETTER(NXT(ctxt, 1 as libc::c_int)))
@@ -9841,7 +9840,7 @@ fn htmlParseHTMLName_nonInvasive(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar 
  *
  * Returns the Name parsed or NULL
  */
-fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
+unsafe fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
@@ -9906,7 +9905,7 @@ fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
  *			The parser itself				*
  *									*
  ************************************************************************/
-fn htmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+unsafe fn htmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut len: libc::c_int = 0 as libc::c_int;
@@ -9982,7 +9981,7 @@ fn htmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
  *
  * Returns the attribute parsed or NULL
  */
-fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> *mut xmlChar {
+unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> *mut xmlChar {
     let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
     let mut buffer_size: libc::c_int = 0 as libc::c_int;
     let mut out: *mut xmlChar = 0 as *mut xmlChar;
@@ -10320,7 +10319,7 @@ fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> *mut xm
  *         if non-NULL *str will have to be freed by the caller.
  */
 
-pub fn htmlParseEntityRef(
+pub unsafe fn htmlParseEntityRef(
     mut ctxt: htmlParserCtxtPtr,
     mut str: *mut *const xmlChar,
 ) -> *const htmlEntityDesc {
@@ -10386,7 +10385,7 @@ pub fn htmlParseEntityRef(
  *
  * Returns the AttValue parsed or NULL.
  */
-fn htmlParseAttValue(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
+unsafe fn htmlParseAttValue(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if CUR(ctxt) == '\"' as i32 {
         xmlNextChar_safe(ctxt);
@@ -10443,7 +10442,7 @@ fn htmlParseAttValue(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
  *
  * Returns the SystemLiteral parsed or NULL
  */
-fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
+unsafe fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
     let mut len: size_t = 0 as libc::c_int as size_t;
     let mut startPosition: size_t = 0 as libc::c_int as size_t;
     let mut err: libc::c_int = 0 as libc::c_int;
@@ -10513,7 +10512,7 @@ fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
  *
  * Returns the PubidLiteral parsed or NULL.
  */
-fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
+unsafe fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
     let mut len: size_t = 0 as libc::c_int as size_t;
     let mut startPosition: size_t = 0 as libc::c_int as size_t;
     let mut err: libc::c_int = 0 as libc::c_int;
@@ -10595,7 +10594,7 @@ fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
  *   as CDATA but SGML allows entities references in attributes so their
  *   processing is identical as other attributes
  */
-fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     const BUF_SIZE: usize = (HTML_PARSER_BIG_BUFFER_SIZE + 5) as usize;
     let mut buf: [xmlChar; BUF_SIZE] = [0; BUF_SIZE];
@@ -10719,7 +10718,7 @@ fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
  *
  * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
  */
-fn htmlParseCharDataInternal(mut ctxt: htmlParserCtxtPtr, mut readahead: libc::c_int) {
+unsafe fn htmlParseCharDataInternal(mut ctxt: htmlParserCtxtPtr, mut readahead: libc::c_int) {
     const BUF_SIZE: usize = (HTML_PARSER_BIG_BUFFER_SIZE + 6) as usize;
     let mut buf: [xmlChar; BUF_SIZE] = [0; BUF_SIZE];
     let mut nbchar: libc::c_int = 0 as libc::c_int;
@@ -10857,7 +10856,7 @@ fn htmlParseCharDataInternal(mut ctxt: htmlParserCtxtPtr, mut readahead: libc::c
  *
  * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
  */
-fn htmlParseCharData(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParseCharData(mut ctxt: htmlParserCtxtPtr) {
     htmlParseCharDataInternal(ctxt, 0 as libc::c_int);
 }
 /* *
@@ -10876,7 +10875,7 @@ fn htmlParseCharData(mut ctxt: htmlParserCtxtPtr) {
  *                case publicID receives PubidLiteral, is strict is off
  *                it is possible to return NULL and have publicID set.
  */
-fn htmlParseExternalID(
+unsafe fn htmlParseExternalID(
     mut ctxt: htmlParserCtxtPtr,
     mut publicID: *mut *mut xmlChar,
 ) -> *mut xmlChar {
@@ -10957,7 +10956,7 @@ fn htmlParseExternalID(
  *
  * [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
  */
-fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
     let mut len: libc::c_int = 0 as libc::c_int;
@@ -11119,7 +11118,7 @@ fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
  *
  * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
  */
-fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
     let mut len: libc::c_int = 0;
     let mut size: libc::c_int = 100 as libc::c_int;
@@ -11282,7 +11281,7 @@ fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
  * Returns the value parsed (as an int)
  */
 
-pub fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut val: libc::c_int = 0 as libc::c_int;
     unsafe {
         if ctxt.is_null() || (*ctxt).input.is_null() {
@@ -11397,7 +11396,7 @@ pub fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
  * [28] doctypedecl ::= '<!DOCTYPE' S Name (S ExternalID)? S?
  *                      ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
  */
-fn htmlParseDocTypeDecl(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParseDocTypeDecl(mut ctxt: htmlParserCtxtPtr) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut ExternalID: *mut xmlChar = 0 as *mut xmlChar;
     let mut URI: *mut xmlChar = 0 as *mut xmlChar;
@@ -11494,7 +11493,7 @@ fn htmlParseDocTypeDecl(mut ctxt: htmlParserCtxtPtr) {
  *
  * Returns the attribute name, and the value in *value.
  */
-fn htmlParseAttribute(mut ctxt: htmlParserCtxtPtr, mut value: *mut *mut xmlChar) -> *const xmlChar {
+unsafe fn htmlParseAttribute(mut ctxt: htmlParserCtxtPtr, mut value: *mut *mut xmlChar) -> *const xmlChar {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut val: *mut xmlChar = 0 as *mut xmlChar;
     unsafe {
@@ -11535,7 +11534,7 @@ fn htmlParseAttribute(mut ctxt: htmlParserCtxtPtr, mut value: *mut *mut xmlChar)
  * If a new encoding is detected the parser is switched to decode
  * it and pass UTF8
  */
-fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *const xmlChar) {
+unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *const xmlChar) {
     unsafe {
         if ctxt.is_null()
             || encoding.is_null()
@@ -11649,7 +11648,7 @@ fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *const xml
  * If a new encoding is detected the parser is switched to decode
  * it and pass UTF8
  */
-fn htmlCheckEncoding(mut ctxt: htmlParserCtxtPtr, mut attvalue: *const xmlChar) {
+unsafe fn htmlCheckEncoding(mut ctxt: htmlParserCtxtPtr, mut attvalue: *const xmlChar) {
     let mut encoding: *const xmlChar = 0 as *const xmlChar;
     if attvalue.is_null() {
         return;
@@ -11687,7 +11686,7 @@ fn htmlCheckEncoding(mut ctxt: htmlParserCtxtPtr, mut attvalue: *const xmlChar) 
  *
  * Checks an attributes from a Meta tag
  */
-fn htmlCheckMeta(mut ctxt: htmlParserCtxtPtr, mut atts: *mut *const xmlChar) {
+unsafe fn htmlCheckMeta(mut ctxt: htmlParserCtxtPtr, mut atts: *mut *const xmlChar) {
     let mut i: libc::c_int = 0;
     let mut att: *const xmlChar = 0 as *const xmlChar;
     let mut value: *const xmlChar = 0 as *const xmlChar;
@@ -11761,7 +11760,7 @@ fn htmlCheckMeta(mut ctxt: htmlParserCtxtPtr, mut atts: *mut *const xmlChar) {
  *
  * Returns 0 in case of success, -1 in case of error and 1 if discarded
  */
-fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut current_block: i32;
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut attname: *const xmlChar = 0 as *const xmlChar;
@@ -12087,7 +12086,7 @@ fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
  *
  * Returns 1 if the current level should be closed.
  */
-fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut oldname: *const xmlChar = 0 as *const xmlChar;
     let mut i: libc::c_int = 0;
@@ -12217,7 +12216,7 @@ fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
  * this will end-up in a call to character() since this is either a
  * CharRef, or a predefined entity.
  */
-fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut sax_condition = false;
     let mut ent: *const htmlEntityDesc = 0 as *const htmlEntityDesc;
@@ -12379,7 +12378,7 @@ fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
  * Parse a content: comment, sub-element, reference or text.
  * Kept for compatibility with old code
  */
-fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut currentNode: *mut xmlChar = 0 as *mut xmlChar;
     let mut depth: libc::c_int = 0;
@@ -12542,7 +12541,7 @@ fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
  *
  * [41] Attribute ::= Name Eq AttValue
  */
-pub fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
+pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
     let mut sax_condition = false;
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut currentNode: *mut xmlChar = 0 as *mut xmlChar;
@@ -12711,7 +12710,7 @@ pub fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
     };
 }
 
-fn htmlParserFinishElementParsing(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParserFinishElementParsing(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     /*
      * Capture end position and add node
@@ -12746,7 +12745,7 @@ fn htmlParserFinishElementParsing(mut ctxt: htmlParserCtxtPtr) {
  *
  * [41] Attribute ::= Name Eq AttValue
  */
-fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut info: *const htmlElemDesc = 0 as *const htmlElemDesc;
     let mut node_info: htmlParserNodeInfo = {
@@ -12873,7 +12872,7 @@ fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
  * Parse a content: comment, sub-element, reference or text.
  * New version for non recursive htmlParseElementInternal
  */
-fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
+unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut currentNode: *mut xmlChar = 0 as *mut xmlChar;
     let mut depth: libc::c_int = 0;
@@ -13049,7 +13048,7 @@ fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
  * This is the entry point when called from parser.c
  */
 
-pub fn __htmlParseContent_htmlparser(mut ctxt: *mut libc::c_void) {
+pub unsafe fn __htmlParseContent_htmlparser(mut ctxt: *mut libc::c_void) {
     if !ctxt.is_null() {
         htmlParseContentInternal(ctxt as htmlParserCtxtPtr);
     };
@@ -13064,7 +13063,7 @@ pub fn __htmlParseContent_htmlparser(mut ctxt: *mut libc::c_void) {
  * Returns 0, -1 in case of error. the parser context is augmented
  *                as a result of the parsing.
  */
-pub fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut start: [xmlChar; 4] = [0; 4];
     let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
     let mut dtd: xmlDtdPtr = 0 as *mut xmlDtd;
@@ -13237,7 +13236,7 @@ pub fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
  *
  * Returns 0 in case of success and -1 in case of error
  */
-fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut sax: *mut htmlSAXHandler = 0 as *mut htmlSAXHandler;
     if ctxt.is_null() {
         return -(1 as libc::c_int);
@@ -13383,7 +13382,7 @@ fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
  * document in ctxt->myDoc is not freed.
  */
 
-pub fn htmlFreeParserCtxt(mut ctxt: htmlParserCtxtPtr) {
+pub unsafe fn htmlFreeParserCtxt(mut ctxt: htmlParserCtxtPtr) {
     xmlFreeParserCtxt_safe(ctxt);
 }
 /* *
@@ -13394,7 +13393,7 @@ pub fn htmlFreeParserCtxt(mut ctxt: htmlParserCtxtPtr) {
  * Returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
 
-pub fn htmlNewParserCtxt() -> htmlParserCtxtPtr {
+pub unsafe fn htmlNewParserCtxt() -> htmlParserCtxtPtr {
     let mut ctxt: xmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
     ctxt =
         xmlMalloc_safe(::std::mem::size_of::<xmlParserCtxt>() as libc::c_ulong) as xmlParserCtxtPtr;
@@ -13426,7 +13425,7 @@ pub fn htmlNewParserCtxt() -> htmlParserCtxtPtr {
  * Returns the new parser context or NULL
  */
 
-pub fn htmlCreateMemoryParserCtxt_htmlparser(
+pub unsafe fn htmlCreateMemoryParserCtxt_htmlparser(
     mut buffer: *const libc::c_char,
     mut size: libc::c_int,
 ) -> htmlParserCtxtPtr {
@@ -13471,7 +13470,7 @@ pub fn htmlCreateMemoryParserCtxt_htmlparser(
  *
  * Returns the new parser context or NULL
  */
-fn htmlCreateDocParserCtxt(
+unsafe fn htmlCreateDocParserCtxt(
     mut cur: *const xmlChar,
     mut encoding: *const libc::c_char,
 ) -> htmlParserCtxtPtr {
@@ -13553,7 +13552,7 @@ fn htmlCreateDocParserCtxt(
  *      is available, -1 otherwise.
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-fn htmlParseLookupSequence(
+unsafe fn htmlParseLookupSequence(
     mut ctxt: htmlParserCtxtPtr,
     mut first: xmlChar,
     mut next: xmlChar,
@@ -13736,7 +13735,7 @@ fn htmlParseLookupSequence(
  * Returns the index to the current parsing point if the full sequence is available, -1 otherwise.
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-fn htmlParseLookupCommentEnd(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
+unsafe fn htmlParseLookupCommentEnd(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut mark: libc::c_int = 0 as libc::c_int;
@@ -13771,7 +13770,7 @@ fn htmlParseLookupCommentEnd(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
  * Returns zero if no parsing was possible
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: libc::c_int) -> libc::c_int {
+unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: libc::c_int) -> libc::c_int {
     let mut DEBUG_PUSH: libc::c_int = 0 as libc::c_int;
     match () {
         #[cfg(DEBUG_PUSH)]
@@ -15049,7 +15048,7 @@ fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: libc::c_int)
  * Returns zero if no error, the xmlParserErrors otherwise.
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-pub fn htmlParseChunk(
+pub unsafe fn htmlParseChunk(
     mut ctxt: htmlParserCtxtPtr,
     mut chunk: *const libc::c_char,
     mut size: libc::c_int,
@@ -15173,7 +15172,7 @@ pub fn htmlParseChunk(
  * Returns the new parser context or NULL
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-pub fn htmlCreatePushParserCtxt(
+pub unsafe fn htmlCreatePushParserCtxt(
     mut sax: htmlSAXHandlerPtr,
     mut user_data: *mut libc::c_void,
     mut chunk: *const libc::c_char,
@@ -15290,7 +15289,7 @@ pub fn htmlCreatePushParserCtxt(
  *     not well formed.
  */
 
-pub fn htmlSAXParseDoc(
+pub unsafe fn htmlSAXParseDoc(
     mut cur: *const xmlChar,
     mut encoding: *const libc::c_char,
     mut sax: htmlSAXHandlerPtr,
@@ -15333,7 +15332,7 @@ pub fn htmlSAXParseDoc(
  * Returns the resulting document tree
  */
 
-pub fn htmlParseDoc(mut cur: *const xmlChar, mut encoding: *const libc::c_char) -> htmlDocPtr {
+pub unsafe fn htmlParseDoc(mut cur: *const xmlChar, mut encoding: *const libc::c_char) -> htmlDocPtr {
     return htmlSAXParseDoc(
         cur,
         encoding,
@@ -15353,7 +15352,7 @@ pub fn htmlParseDoc(mut cur: *const xmlChar, mut encoding: *const libc::c_char) 
  * Returns the new parser context or NULL
  */
 
-pub fn htmlCreateFileParserCtxt(
+pub unsafe fn htmlCreateFileParserCtxt(
     mut filename: *const libc::c_char,
     mut encoding: *const libc::c_char,
 ) -> htmlParserCtxtPtr {
@@ -15439,7 +15438,7 @@ pub fn htmlCreateFileParserCtxt(
  *     not well formed.
  */
 
-pub fn htmlSAXParseFile(
+pub unsafe fn htmlSAXParseFile(
     mut filename: *const libc::c_char,
     mut encoding: *const libc::c_char,
     mut sax: htmlSAXHandlerPtr,
@@ -15479,7 +15478,7 @@ pub fn htmlSAXParseFile(
  * Returns the resulting document tree
  */
 
-pub fn htmlParseFile(
+pub unsafe fn htmlParseFile(
     mut filename: *const libc::c_char,
     mut encoding: *const libc::c_char,
 ) -> htmlDocPtr {
@@ -15499,7 +15498,7 @@ pub fn htmlParseFile(
  * Returns the last value for 0 for no handling, 1 for auto insertion.
  */
 
-pub fn htmlHandleOmittedElem(mut val: libc::c_int) -> libc::c_int {
+pub unsafe fn htmlHandleOmittedElem(mut val: libc::c_int) -> libc::c_int {
     let mut old: libc::c_int = getHtmlOmittedDefaultValue();
     setHtmlOmittedDefaultValue(val);
     return old;
@@ -15515,7 +15514,7 @@ pub fn htmlHandleOmittedElem(mut val: libc::c_int) -> libc::c_int {
  * Returns 1 if allowed; 0 otherwise.
  */
 
-pub fn htmlElementAllowedHere(
+pub unsafe fn htmlElementAllowedHere(
     mut parent: *const htmlElemDesc,
     mut elt: *const xmlChar,
 ) -> libc::c_int {
@@ -15546,7 +15545,7 @@ pub fn htmlElementAllowedHere(
  * Returns one of HTML_VALID, HTML_DEPRECATED, HTML_INVALID
  */
 
-pub fn htmlElementStatusHere(
+pub unsafe fn htmlElementStatusHere(
     mut parent: *const htmlElemDesc,
     mut elt: *const htmlElemDesc,
 ) -> htmlStatus {
@@ -15575,7 +15574,7 @@ pub fn htmlElementStatusHere(
  * Returns one of HTML_REQUIRED, HTML_VALID, HTML_DEPRECATED, HTML_INVALID
  */
 
-pub fn htmlAttrAllowed(
+pub unsafe fn htmlAttrAllowed(
     mut elt: *const htmlElemDesc,
     mut attr: *const xmlChar,
     mut legacy: libc::c_int,
@@ -15635,7 +15634,7 @@ pub fn htmlAttrAllowed(
  *	for other nodes, HTML_NA (no checks performed)
  */
 
-pub fn htmlNodeStatus(node: htmlNodePtr, mut legacy: libc::c_int) -> htmlStatus {
+pub unsafe fn htmlNodeStatus(node: htmlNodePtr, mut legacy: libc::c_int) -> htmlStatus {
     if node.is_null() {
         return HTML_INVALID;
     }
@@ -15681,7 +15680,7 @@ pub fn htmlNodeStatus(node: htmlNodePtr, mut legacy: libc::c_int) -> htmlStatus 
  * Reset a parser context
  */
 
-pub fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
+pub unsafe fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
     let mut dict: xmlDictPtr = 0 as *mut xmlDict;
     if ctxt.is_null() {
@@ -15807,7 +15806,7 @@ pub fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
  *         in case of error.
  */
 
-pub fn htmlCtxtUseOptions(mut ctxt: htmlParserCtxtPtr, mut options: libc::c_int) -> libc::c_int {
+pub unsafe fn htmlCtxtUseOptions(mut ctxt: htmlParserCtxtPtr, mut options: libc::c_int) -> libc::c_int {
     if ctxt.is_null() {
         return -(1 as libc::c_int);
     }
@@ -15889,7 +15888,7 @@ pub fn htmlCtxtUseOptions(mut ctxt: htmlParserCtxtPtr, mut options: libc::c_int)
  *
  * Returns the resulting document tree or NULL
  */
-fn htmlDoRead(
+unsafe fn htmlDoRead(
     mut ctxt: htmlParserCtxtPtr,
     mut URL: *const libc::c_char,
     mut encoding: *const libc::c_char,
@@ -15944,7 +15943,7 @@ fn htmlDoRead(
  * Returns the resulting document tree
  */
 
-pub fn htmlReadDoc(
+pub unsafe fn htmlReadDoc(
     mut cur: *const xmlChar,
     mut URL: *const libc::c_char,
     mut encoding: *const libc::c_char,
@@ -15972,7 +15971,7 @@ pub fn htmlReadDoc(
  * Returns the resulting document tree
  */
 
-pub fn htmlReadFile(
+pub unsafe fn htmlReadFile(
     mut filename: *const libc::c_char,
     mut encoding: *const libc::c_char,
     mut options: libc::c_int,
@@ -16004,7 +16003,7 @@ pub fn htmlReadFile(
  * Returns the resulting document tree
  */
 
-pub fn htmlReadMemory(
+pub unsafe fn htmlReadMemory(
     mut buffer: *const libc::c_char,
     mut size: libc::c_int,
     mut URL: *const libc::c_char,
@@ -16040,7 +16039,7 @@ pub fn htmlReadMemory(
  * Returns the resulting document tree
  */
 
-pub fn htmlReadFd(
+pub unsafe fn htmlReadFd(
     mut fd: libc::c_int,
     mut URL: *const libc::c_char,
     mut encoding: *const libc::c_char,
@@ -16086,7 +16085,7 @@ pub fn htmlReadFd(
  * Returns the resulting document tree
  */
 
-pub fn htmlReadIO(
+pub unsafe fn htmlReadIO(
     mut ioread: xmlInputReadCallback,
     mut ioclose: xmlInputCloseCallback,
     mut ioctx: *mut libc::c_void,
@@ -16136,7 +16135,7 @@ pub fn htmlReadIO(
  * Returns the resulting document tree
  */
 
-pub fn htmlCtxtReadDoc(
+pub unsafe fn htmlCtxtReadDoc(
     mut ctxt: htmlParserCtxtPtr,
     mut cur: *const xmlChar,
     mut URL: *const libc::c_char,
@@ -16172,7 +16171,7 @@ pub fn htmlCtxtReadDoc(
  * Returns the resulting document tree
  */
 
-pub fn htmlCtxtReadFile(
+pub unsafe fn htmlCtxtReadFile(
     mut ctxt: htmlParserCtxtPtr,
     mut filename: *const libc::c_char,
     mut encoding: *const libc::c_char,
@@ -16215,7 +16214,7 @@ pub fn htmlCtxtReadFile(
  * Returns the resulting document tree
  */
 
-pub fn htmlCtxtReadMemory(
+pub unsafe fn htmlCtxtReadMemory(
     mut ctxt: htmlParserCtxtPtr,
     mut buffer: *const libc::c_char,
     mut size: libc::c_int,
@@ -16259,7 +16258,7 @@ pub fn htmlCtxtReadMemory(
  * Returns the resulting document tree
  */
 
-pub fn htmlCtxtReadFd(
+pub unsafe fn htmlCtxtReadFd(
     mut ctxt: htmlParserCtxtPtr,
     mut fd: libc::c_int,
     mut URL: *const libc::c_char,
@@ -16304,7 +16303,7 @@ pub fn htmlCtxtReadFd(
  * Returns the resulting document tree
  */
 
-pub fn htmlCtxtReadIO(
+pub unsafe fn htmlCtxtReadIO(
     mut ctxt: htmlParserCtxtPtr,
     mut ioread: xmlInputReadCallback,
     mut ioclose: xmlInputCloseCallback,
@@ -16340,7 +16339,7 @@ pub fn htmlCtxtReadIO(
 }
 /* LIBXML_HTML_ENABLED */
 
-fn xmlSAXHandler_endElement_safe(
+unsafe fn xmlSAXHandler_endElement_safe(
     func: endElementSAXFunc,
     arg1: *mut libc::c_void,
     arg2: *const xmlChar,
@@ -16350,7 +16349,7 @@ fn xmlSAXHandler_endElement_safe(
     }
 }
 
-fn xmlSAXHandler_startElement_safe(
+unsafe fn xmlSAXHandler_startElement_safe(
     func: startElementSAXFunc,
     arg1: *mut libc::c_void,
     arg2: *const xmlChar,
@@ -16361,7 +16360,7 @@ fn xmlSAXHandler_startElement_safe(
     }
 }
 
-fn xmlSAXHandler_cdataBlock_safe(
+unsafe fn xmlSAXHandler_cdataBlock_safe(
     func: cdataBlockSAXFunc,
     arg1: *mut libc::c_void,
     arg2: *const xmlChar,
@@ -16372,7 +16371,7 @@ fn xmlSAXHandler_cdataBlock_safe(
     }
 }
 
-fn xmlSAXHandler_characters_safe(
+unsafe fn xmlSAXHandler_characters_safe(
     func: charactersSAXFunc,
     arg1: *mut libc::c_void,
     arg2: *const xmlChar,
@@ -16383,7 +16382,7 @@ fn xmlSAXHandler_characters_safe(
     }
 }
 
-fn xmlSAXHandler_ignorableWhitespace_safe(
+unsafe fn xmlSAXHandler_ignorableWhitespace_safe(
     func: ignorableWhitespaceSAXFunc,
     arg1: *mut libc::c_void,
     arg2: *const xmlChar,
@@ -16394,7 +16393,7 @@ fn xmlSAXHandler_ignorableWhitespace_safe(
     }
 }
 
-fn xmlSAXHandler_processingInstruction_safe(
+unsafe fn xmlSAXHandler_processingInstruction_safe(
     func: processingInstructionSAXFunc,
     arg1: *mut libc::c_void,
     arg2: *const xmlChar,
@@ -16405,13 +16404,13 @@ fn xmlSAXHandler_processingInstruction_safe(
     }
 }
 
-fn xmlSAXHandler_comment_safe(func: commentSAXFunc, arg1: *mut libc::c_void, arg2: *const xmlChar) {
+unsafe fn xmlSAXHandler_comment_safe(func: commentSAXFunc, arg1: *mut libc::c_void, arg2: *const xmlChar) {
     unsafe {
         func.expect("non-null function pointer")(arg1, arg2);
     }
 }
 
-fn xmlSAXHandler_internalSubset_safe(
+unsafe fn xmlSAXHandler_internalSubset_safe(
     func: internalSubsetSAXFunc,
     arg1: *mut libc::c_void,
     arg2: *const xmlChar,
@@ -16423,19 +16422,19 @@ fn xmlSAXHandler_internalSubset_safe(
     }
 }
 
-fn xmlSAXHandler_endDocument_safe(func: endDocumentSAXFunc, arg1: *mut libc::c_void) {
+unsafe fn xmlSAXHandler_endDocument_safe(func: endDocumentSAXFunc, arg1: *mut libc::c_void) {
     unsafe {
         func.expect("non-null function pointer")(arg1);
     }
 }
 
-fn xmlSAXHandler_startDocument_safe(func: startDocumentSAXFunc, arg1: *mut libc::c_void) {
+unsafe fn xmlSAXHandler_startDocument_safe(func: startDocumentSAXFunc, arg1: *mut libc::c_void) {
     unsafe {
         func.expect("non-null function pointer")(arg1);
     }
 }
 
-fn xmlSAXHandler_setDocumentLocator_safe(
+unsafe fn xmlSAXHandler_setDocumentLocator_safe(
     func: setDocumentLocatorSAXFunc,
     arg1: *mut libc::c_void,
     arg2: xmlSAXLocatorPtr,
@@ -16445,49 +16444,49 @@ fn xmlSAXHandler_setDocumentLocator_safe(
     }
 }
 
-fn ioclose_safe(func: xmlInputCloseCallback, arg1: *mut libc::c_void) {
+unsafe fn ioclose_safe(func: xmlInputCloseCallback, arg1: *mut libc::c_void) {
     unsafe {
         func.expect("non-null function pointer")(arg1);
     }
 }
 
-fn getHtmlEndPriority(index: usize) -> elementPriority {
+unsafe fn getHtmlEndPriority(index: usize) -> elementPriority {
     unsafe {
         return htmlEndPriority[index];
     }
 }
 
-fn getHtmlOmittedDefaultValue() -> libc::c_int {
+unsafe fn getHtmlOmittedDefaultValue() -> libc::c_int {
     unsafe {
         return htmlOmittedDefaultValue;
     }
 }
 
-fn setHtmlOmittedDefaultValue(val: libc::c_int) {
+unsafe fn setHtmlOmittedDefaultValue(val: libc::c_int) {
     unsafe {
         htmlOmittedDefaultValue = val;
     }
 }
 
-fn getHtmlNoContentElements(index: usize) -> *const libc::c_char {
+unsafe fn getHtmlNoContentElements(index: usize) -> *const libc::c_char {
     unsafe {
         return htmlNoContentElements[index];
     }
 }
 
-fn getHtmlScriptAttributes(index: usize) -> *const libc::c_char {
+unsafe fn getHtmlScriptAttributes(index: usize) -> *const libc::c_char {
     unsafe {
         return htmlScriptAttributes[index];
     }
 }
 
-fn getHtml40EntitiesTable(index: usize) -> htmlEntityDesc {
+unsafe fn getHtml40EntitiesTable(index: usize) -> htmlEntityDesc {
     unsafe {
         return html40EntitiesTable[index];
     }
 }
 
-fn getAllowPCData(index: usize) -> *const libc::c_char {
+unsafe fn getAllowPCData(index: usize) -> *const libc::c_char {
     unsafe {
         return allowPCData[index];
     }

@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/code/01/01/libxml2-rust
+CMAKE_SOURCE_DIR = /root/code/01/08/libxml2-rust
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/code/01/01/libxml2-rust
+CMAKE_BINARY_DIR = /root/code/01/08/libxml2-rust
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -133,7 +133,7 @@ list_install_components/fast: list_install_components
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	/usr/bin/cpack --config ./CPackSourceConfig.cmake /root/code/01/01/libxml2-rust/CPackSourceConfig.cmake
+	/usr/bin/cpack --config ./CPackSourceConfig.cmake /root/code/01/08/libxml2-rust/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -162,9 +162,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/code/01/01/libxml2-rust/CMakeFiles /root/code/01/01/libxml2-rust//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/code/01/08/libxml2-rust/CMakeFiles /root/code/01/08/libxml2-rust//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/code/01/01/libxml2-rust/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/code/01/08/libxml2-rust/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
