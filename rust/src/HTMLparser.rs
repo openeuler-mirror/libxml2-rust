@@ -205,7 +205,7 @@ unsafe fn UPP(ctxt: htmlParserCtxtPtr, val: libc::c_int) -> libc::c_int {
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut __res: libc::c_int = 0;
     if ::std::mem::size_of::<xmlChar>() as libc::c_ulong > 1 as libc::c_int as libc::c_ulong {
-        if 0 != 0 {
+        if 0 > 1{
             let mut __c: libc::c_int = unsafe { *inputPtr.cur.offset(val as isize) } as libc::c_int;
             __res = (if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
                 __c

@@ -14594,9 +14594,7 @@ unsafe fn xmlParseElementStart(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
             node_info.begin_line = (*(*ctxt).input).line as libc::c_ulong
         }
     }
-    if (safe_ctxt).spaceNr == 0 as libc::c_int {
-        spacePush(ctxt, -(1 as libc::c_int));
-    } else if unsafe { *(*ctxt).space == -(2 as libc::c_int) } {
+    if (safe_ctxt).spaceNr == 0 as libc::c_int || *(*ctxt).space == -(2 as libc::c_int)  {
         spacePush(ctxt, -(1 as libc::c_int));
     } else {
         unsafe {
