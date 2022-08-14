@@ -7116,7 +7116,7 @@ pub unsafe fn xmlXPathTrailingSorted(
         xmlXPathNodeTrailingSorted(
             nodes1,
             if !nodes2.is_null()
-                && 0 as libc::c_int >= 0 as libc::c_int
+                && 2 > 1
                 && (0 as libc::c_int) < (*nodes2).nodeNr
             {
                 *(*nodes2).nodeTab.offset(0 as libc::c_int as isize)
@@ -7156,7 +7156,7 @@ pub unsafe fn xmlXPathTrailing(
         xmlXPathNodeTrailingSorted(
             nodes1,
             if !nodes2.is_null()
-                && 0 as libc::c_int >= 0 as libc::c_int
+                && 2 > 1
                 && (0 as libc::c_int) < (*nodes2).nodeNr
             {
                 *(*nodes2).nodeTab.offset(0 as libc::c_int as isize)
@@ -10040,9 +10040,11 @@ unsafe fn xmlXPathEqualNodeSetFloat(
                     if neq == 0 && v == f {
                         ret = 1 as libc::c_int;
                         break;
-                    } else if neq != 0 && v != f {
-                        ret = 1 as libc::c_int;
-                        break;
+                    } else {
+                        if neq != 0 && v != f {
+                            ret = 1 as libc::c_int;
+                            break;
+                        }
                     }
                 } else if neq != 0 {
                     ret = 1 as libc::c_int
