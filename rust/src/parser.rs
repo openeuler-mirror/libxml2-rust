@@ -16361,12 +16361,10 @@ unsafe fn xmlCheckCdataPush(
         c = unsafe { *utf.offset(ix as isize) };
         if c as libc::c_int & 0x80 as libc::c_int == 0 as libc::c_int {
             /* 1-byte code, starts with 10 */
-            if c as libc::c_int >= 0x20 as libc::c_int {
-                ix += 1
-            } else if c as libc::c_int == 0xa as libc::c_int
-                || c as libc::c_int == 0xd as libc::c_int
-                || c as libc::c_int == 0x9 as libc::c_int
-            {
+            if c as libc::c_int >= 0x20 as libc::c_int
+            || c as libc::c_int == 0xa as libc::c_int
+            || c as libc::c_int == 0xd as libc::c_int
+            || c as libc::c_int == 0x9 as libc::c_int{
                 ix += 1
             } else {
                 return -ix;
@@ -16995,9 +16993,8 @@ unsafe fn xmlParseTryOrFinish(
                             break;
                         }
                     }
-                    if (safe_ctxt).spaceNr == 0 as libc::c_int {
-                        spacePush(ctxt, -(1 as libc::c_int));
-                    } else if unsafe { *(*ctxt).space } == -(2 as libc::c_int) {
+                    if (safe_ctxt).spaceNr == 0 as libc::c_int
+                    || unsafe { *(*ctxt).space } == -(2 as libc::c_int){
                         spacePush(ctxt, -(1 as libc::c_int));
                     } else {
                         spacePush(ctxt, unsafe { *(*ctxt).space });

@@ -470,7 +470,11 @@ unsafe fn libxml_domnode_tim_sort_collapse(
                     .wrapping_add((*stack.offset(1 as libc::c_int as isize)).length)
                     == size
             }
-        {
+        || stack_curr == 2 as libc::c_int
+        && unsafe {
+            (*stack.offset(0 as libc::c_int as isize)).length
+                <= (*stack.offset(1 as libc::c_int as isize)).length
+        } {
             unsafe { libxml_domnode_tim_sort_merge(dst, stack, stack_curr, store) };
             let ref mut fresh0 = unsafe { (*stack.offset(0 as libc::c_int as isize)).length };
             *fresh0 = (*fresh0 as libc::c_ulong)
@@ -478,20 +482,7 @@ unsafe fn libxml_domnode_tim_sort_collapse(
                 as size_t as size_t;
             stack_curr -= 1;
             break;
-        } else if stack_curr == 2 as libc::c_int
-            && unsafe {
-                (*stack.offset(0 as libc::c_int as isize)).length
-                    <= (*stack.offset(1 as libc::c_int as isize)).length
-            }
-        {
-            unsafe { libxml_domnode_tim_sort_merge(dst, stack, stack_curr, store) };
-            let ref mut fresh1 = unsafe { (*stack.offset(0 as libc::c_int as isize)).length };
-            *fresh1 = (*fresh1 as libc::c_ulong)
-                .wrapping_add(unsafe { (*stack.offset(1 as libc::c_int as isize)).length })
-                as size_t as size_t;
-            stack_curr -= 1;
-            break;
-        } else {
+        }  else {
             if stack_curr == 2 as libc::c_int {
                 break;
             }
@@ -17684,7 +17675,10 @@ unsafe fn xmlXPathCompStep(mut ctxt: xmlXPathParserContextPtr) {
             } else {
             };
         }
-        while *(*ctxt).cur as libc::c_int == '[' as i32 {
+        while  1<2 {
+            if (!(*(*ctxt).cur as libc::c_int == '[' as i32)){
+                break;
+            }
             xmlXPathCompPredicate(ctxt, 0 as libc::c_int);
         }
         if rangeto != 0 {
@@ -23395,7 +23389,10 @@ extern "C" fn xmlXPathEscapeUriFunction(
 
         let safe_cptr = unsafe { *cptr } as libc::c_int;
         let safe_cptr_xmlChar = unsafe { *cptr } as *mut xmlChar;
-        while safe_cptr != 0 {
+        while  1<2 {
+            if safe_cptr == 0 {
+                break;
+            }
             if safe_cptr as libc::c_int >= 'A' as i32 && safe_cptr as libc::c_int <= 'Z' as i32
                 || safe_cptr as libc::c_int >= 'a' as i32 && safe_cptr as libc::c_int <= 'z' as i32
                 || safe_cptr as libc::c_int >= '0' as i32 && safe_cptr as libc::c_int <= '9' as i32

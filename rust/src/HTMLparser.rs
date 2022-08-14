@@ -11557,9 +11557,12 @@ unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *co
         let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
         let mut handler: xmlCharEncodingHandlerPtr = 0 as *mut xmlCharEncodingHandler;
         let mut encoding_safe = unsafe { *encoding };
-        while encoding_safe as libc::c_int == ' ' as i32
-            || encoding_safe as libc::c_int == '\t' as i32
+        while 1<2
         {
+            if (!(encoding_safe as libc::c_int == ' ' as i32
+            || encoding_safe as libc::c_int == '\t' as i32)){
+                break;
+            }
             unsafe { encoding = encoding.offset(1) }
         }
         if !inputPtr.encoding.is_null() {
