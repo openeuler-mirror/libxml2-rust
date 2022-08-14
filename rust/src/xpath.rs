@@ -15980,7 +15980,7 @@ unsafe fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
         } else {
         };
     }
-    if unsafe {
+    if (unsafe {
         *safe_ctxt.cur as libc::c_int == '$' as i32
             || *safe_ctxt.cur as libc::c_int == '(' as i32
             || 0x30 as libc::c_int <= *safe_ctxt.cur as libc::c_int
@@ -15992,19 +15992,13 @@ unsafe fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
                     <= *safe_ctxt.cur.offset(1 as libc::c_int as isize) as libc::c_int
                     && *safe_ctxt.cur.offset(1 as libc::c_int as isize) as libc::c_int
                         <= 0x39 as libc::c_int)
-    } {
+    }) {
         lc = 0 as libc::c_int
-    } else if unsafe { *safe_ctxt.cur as libc::c_int == '*' as i32 } {
+    } else if (unsafe { *safe_ctxt.cur as libc::c_int == '*' as i32 })
+    || (unsafe { *safe_ctxt.cur as libc::c_int == '/' as i32 })
+    || (unsafe { *safe_ctxt.cur as libc::c_int == '@' as i32 })
+    || (unsafe { *safe_ctxt.cur as libc::c_int == '.' as i32 }) {
         /* relative or absolute location path */
-        lc = 1 as libc::c_int
-    } else if unsafe { *safe_ctxt.cur as libc::c_int == '/' as i32 } {
-        /* relative or absolute location path */
-        lc = 1 as libc::c_int
-    } else if unsafe { *safe_ctxt.cur as libc::c_int == '@' as i32 } {
-        /* relative abbreviated attribute location path */
-        lc = 1 as libc::c_int
-    } else if unsafe { *safe_ctxt.cur as libc::c_int == '.' as i32 } {
-        /* relative abbreviated attribute location path */
         lc = 1 as libc::c_int
     } else {
         /*
@@ -16067,33 +16061,17 @@ unsafe fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
                     *safe_ctxt.cur.offset(len as isize) as libc::c_int == '(' as i32
                 } {
                     /* Node Type or Function */
-                    if unsafe { xmlXPathIsNodeType(name) != 0 } {
-                        lc = 1 as libc::c_int
-                    } else if safe_ctxt.xptr != 0
+                    if ((unsafe { xmlXPathIsNodeType(name) != 0 })) || (safe_ctxt.xptr != 0
                         && unsafe {
                             xmlStrEqual(
                                 name,
                                 b"range-to\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
                             ) != 0
-                        }
-                    {
+                        }) {
                         lc = 1 as libc::c_int
                     } else {
                         lc = 0 as libc::c_int
                     }
-                    break;
-                } else if unsafe {
-                    *safe_ctxt.cur.offset(len as isize) as libc::c_int == '[' as i32
-                } {
-                    /* element name */
-                    lc = 1 as libc::c_int;
-                    break;
-                } else if unsafe {
-                    *safe_ctxt.cur.offset(len as isize) as libc::c_int == '<' as i32
-                        || *safe_ctxt.cur.offset(len as isize) as libc::c_int == '>' as i32
-                        || *safe_ctxt.cur.offset(len as isize) as libc::c_int == '=' as i32
-                } {
-                    lc = 1 as libc::c_int;
                     break;
                 } else {
                     lc = 1 as libc::c_int;
@@ -19235,7 +19213,8 @@ unsafe fn xmlXPathNodeCollectAndTest(
                         if unsafe { (*cur).type_0 as libc::c_uint }
                             == XML_ATTRIBUTE_NODE as libc::c_int as libc::c_uint
                         {
-                            if prefix.is_null() {
+                            if (prefix.is_null()) || (!unsafe { (*cur).ns.is_null() }
+                            && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0) {
                                 if hasAxisRange != 0 as libc::c_int {
                                     pos += 1;
                                     if pos == maxPos {
@@ -19260,34 +19239,35 @@ unsafe fn xmlXPathNodeCollectAndTest(
                                         break;
                                     }
                                 }
-                            } else if !unsafe { (*cur).ns.is_null() }
-                                && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0
-                            {
-                                if hasAxisRange != 0 as libc::c_int {
-                                    pos += 1;
-                                    if pos == maxPos {
-                                        if unsafe {
-                                            addNode.expect("non-null function pointer")(seq, cur)
-                                        } < 0 as libc::c_int
-                                        {
-                                            safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
-                                        }
-                                        current_block = 12278438173206364583;
-                                        break;
-                                    }
-                                } else {
-                                    if unsafe {
-                                        addNode.expect("non-null function pointer")(seq, cur)
-                                    } < 0 as libc::c_int
-                                    {
-                                        safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
-                                    }
-                                    if breakOnFirstHit != 0 {
-                                        current_block = 795179968803393002;
-                                        break;
-                                    }
-                                }
-                            }
+                            } 
+                            // else if !unsafe { (*cur).ns.is_null() }
+                            //     && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0
+                            // {
+                            //     if hasAxisRange != 0 as libc::c_int {
+                            //         pos += 1;
+                            //         if pos == maxPos {
+                            //             if unsafe {
+                            //                 addNode.expect("non-null function pointer")(seq, cur)
+                            //             } < 0 as libc::c_int
+                            //             {
+                            //                 safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
+                            //             }
+                            //             current_block = 12278438173206364583;
+                            //             break;
+                            //         }
+                            //     } else {
+                            //         if unsafe {
+                            //             addNode.expect("non-null function pointer")(seq, cur)
+                            //         } < 0 as libc::c_int
+                            //         {
+                            //             safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
+                            //         }
+                            //         if breakOnFirstHit != 0 {
+                            //             current_block = 795179968803393002;
+                            //             break;
+                            //         }
+                            //     }
+                            // }
                         }
                     } else if axis as libc::c_uint == AXIS_NAMESPACE as libc::c_int as libc::c_uint
                     {
@@ -19324,7 +19304,8 @@ unsafe fn xmlXPathNodeCollectAndTest(
                     } else if unsafe { (*cur).type_0 as libc::c_uint }
                         == XML_ELEMENT_NODE as libc::c_int as libc::c_uint
                     {
-                        if prefix.is_null() {
+                        if (prefix.is_null()) || (!unsafe { (*cur).ns.is_null() }
+                        && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0) {
                             if hasAxisRange != 0 as libc::c_int {
                                 pos += 1;
                                 if pos == maxPos {
@@ -19348,33 +19329,34 @@ unsafe fn xmlXPathNodeCollectAndTest(
                                     break;
                                 }
                             }
-                        } else if !unsafe { (*cur).ns.is_null() }
-                            && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0
-                        {
-                            if hasAxisRange != 0 as libc::c_int {
-                                pos += 1;
-                                if pos == maxPos {
-                                    if unsafe {
-                                        addNode.expect("non-null function pointer")(seq, cur)
-                                    } < 0 as libc::c_int
-                                    {
-                                        safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
-                                    }
-                                    current_block = 12278438173206364583;
-                                    break;
-                                }
-                            } else {
-                                if unsafe { addNode.expect("non-null function pointer")(seq, cur) }
-                                    < 0 as libc::c_int
-                                {
-                                    safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
-                                }
-                                if breakOnFirstHit != 0 {
-                                    current_block = 795179968803393002;
-                                    break;
-                                }
-                            }
-                        }
+                        } 
+                        // else if !unsafe { (*cur).ns.is_null() }
+                        //     && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0
+                        // {
+                        //     if hasAxisRange != 0 as libc::c_int {
+                        //         pos += 1;
+                        //         if pos == maxPos {
+                        //             if unsafe {
+                        //                 addNode.expect("non-null function pointer")(seq, cur)
+                        //             } < 0 as libc::c_int
+                        //             {
+                        //                 safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
+                        //             }
+                        //             current_block = 12278438173206364583;
+                        //             break;
+                        //         }
+                        //     } else {
+                        //         if unsafe { addNode.expect("non-null function pointer")(seq, cur) }
+                        //             < 0 as libc::c_int
+                        //         {
+                        //             safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
+                        //         }
+                        //         if breakOnFirstHit != 0 {
+                        //             current_block = 795179968803393002;
+                        //             break;
+                        //         }
+                        //     }
+                        // }
                     }
                 }
                 4 => {
@@ -22156,11 +22138,8 @@ unsafe fn xmlXPathRunStreamEval(
                                             current_block = 16903048813113120619;
                                             break 'c_52613;
                                         }
-                                        if (*cur).type_0 as libc::c_uint
-                                            == XML_ELEMENT_NODE as libc::c_int as libc::c_uint
-                                        {
-                                            ret = xmlStreamPop(patstream)
-                                        } else if eval_all_nodes != 0
+                                        if ((*cur).type_0 as libc::c_uint
+                                        == XML_ELEMENT_NODE as libc::c_int as libc::c_uint) || (eval_all_nodes != 0
                                             && ((*cur).type_0 as libc::c_uint
                                                 == XML_TEXT_NODE as libc::c_int as libc::c_uint
                                                 || (*cur).type_0 as libc::c_uint
@@ -22170,7 +22149,7 @@ unsafe fn xmlXPathRunStreamEval(
                                                     == XML_COMMENT_NODE as libc::c_int
                                                         as libc::c_uint
                                                 || (*cur).type_0 as libc::c_uint
-                                                    == XML_PI_NODE as libc::c_int as libc::c_uint)
+                                                    == XML_PI_NODE as libc::c_int as libc::c_uint))
                                         {
                                             ret = xmlStreamPop(patstream)
                                         }
