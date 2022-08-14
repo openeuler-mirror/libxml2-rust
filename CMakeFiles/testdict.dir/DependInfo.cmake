@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/root/code/01/08/libxml2-rust/testdict.c" "CMakeFiles/testdict.dir/testdict.c.o" "gcc" "CMakeFiles/testdict.dir/testdict.c.o.d"
+  "/root/code/01/10/libxml2-rust/testdict.c" "CMakeFiles/testdict.dir/testdict.c.o" "gcc" "CMakeFiles/testdict.dir/testdict.c.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/root/code/01/08/libxml2-rust/CMakeFiles/LibXml2.dir/DependInfo.cmake"
+  "/root/code/01/10/libxml2-rust/CMakeFiles/LibXml2.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

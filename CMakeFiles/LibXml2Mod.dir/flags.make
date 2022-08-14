@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = -DCOMPILE_WITH_RUST -DLibXml2Mod_EXPORTS
 
-C_INCLUDES = -I/root/code/01/08/libxml2-rust/python -I/root/code/01/08/libxml2-rust -I/root/code/01/08/libxml2-rust/include -isystem /usr/include/python3.6m
+C_INCLUDES = -I/root/code/01/10/libxml2-rust/python -I/root/code/01/10/libxml2-rust -I/root/code/01/10/libxml2-rust/include -isystem /usr/include/python3.6m
 
 C_FLAGS = -fPIC
 

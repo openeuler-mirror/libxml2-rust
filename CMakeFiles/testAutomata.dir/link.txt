@@ -1,1 +1,1 @@
-/usr/bin/cc CMakeFiles/testAutomata.dir/testAutomata.c.o -o testAutomata   -L/root/code/01/08/libxml2-rust/rust/target/debug  -Wl,-rpath,/root/code/01/08/libxml2-rust/rust/target/debug libxml2.a -lrust_project -ldl -lm -lc /usr/lib64/liblzma.so -lpthread /usr/lib64/libz.so 
+/usr/bin/cc CMakeFiles/testAutomata.dir/testAutomata.c.o -o testAutomata   -L/root/code/01/10/libxml2-rust/rust/target/debug  -Wl,-rpath,/root/code/01/10/libxml2-rust/rust/target/debug libxml2.a -lrust_project -ldl -lm -lc /usr/lib64/liblzma.so -lpthread /usr/lib64/libz.so 

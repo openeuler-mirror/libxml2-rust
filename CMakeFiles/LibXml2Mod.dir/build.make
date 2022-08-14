@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/code/01/08/libxml2-rust
+CMAKE_SOURCE_DIR = /root/code/01/10/libxml2-rust
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/code/01/08/libxml2-rust
+CMAKE_BINARY_DIR = /root/code/01/10/libxml2-rust
 
 # Include any dependencies generated for this target.
 include CMakeFiles/LibXml2Mod.dir/depend.make
@@ -72,44 +72,44 @@ include CMakeFiles/LibXml2Mod.dir/flags.make
 CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o: CMakeFiles/LibXml2Mod.dir/flags.make
 CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o: libxml2-py.c
 CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o: CMakeFiles/LibXml2Mod.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/code/01/08/libxml2-rust/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o -MF CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o.d -o CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o -c /root/code/01/08/libxml2-rust/libxml2-py.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/code/01/10/libxml2-rust/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o -MF CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o.d -o CMakeFiles/LibXml2Mod.dir/libxml2-py.c.o -c /root/code/01/10/libxml2-rust/libxml2-py.c
 
 CMakeFiles/LibXml2Mod.dir/libxml2-py.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/LibXml2Mod.dir/libxml2-py.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/code/01/08/libxml2-rust/libxml2-py.c > CMakeFiles/LibXml2Mod.dir/libxml2-py.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/code/01/10/libxml2-rust/libxml2-py.c > CMakeFiles/LibXml2Mod.dir/libxml2-py.c.i
 
 CMakeFiles/LibXml2Mod.dir/libxml2-py.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/LibXml2Mod.dir/libxml2-py.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/code/01/08/libxml2-rust/libxml2-py.c -o CMakeFiles/LibXml2Mod.dir/libxml2-py.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/code/01/10/libxml2-rust/libxml2-py.c -o CMakeFiles/LibXml2Mod.dir/libxml2-py.c.s
 
 CMakeFiles/LibXml2Mod.dir/python/libxml.c.o: CMakeFiles/LibXml2Mod.dir/flags.make
 CMakeFiles/LibXml2Mod.dir/python/libxml.c.o: python/libxml.c
 CMakeFiles/LibXml2Mod.dir/python/libxml.c.o: CMakeFiles/LibXml2Mod.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/code/01/08/libxml2-rust/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/LibXml2Mod.dir/python/libxml.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/LibXml2Mod.dir/python/libxml.c.o -MF CMakeFiles/LibXml2Mod.dir/python/libxml.c.o.d -o CMakeFiles/LibXml2Mod.dir/python/libxml.c.o -c /root/code/01/08/libxml2-rust/python/libxml.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/code/01/10/libxml2-rust/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/LibXml2Mod.dir/python/libxml.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/LibXml2Mod.dir/python/libxml.c.o -MF CMakeFiles/LibXml2Mod.dir/python/libxml.c.o.d -o CMakeFiles/LibXml2Mod.dir/python/libxml.c.o -c /root/code/01/10/libxml2-rust/python/libxml.c
 
 CMakeFiles/LibXml2Mod.dir/python/libxml.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/LibXml2Mod.dir/python/libxml.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/code/01/08/libxml2-rust/python/libxml.c > CMakeFiles/LibXml2Mod.dir/python/libxml.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/code/01/10/libxml2-rust/python/libxml.c > CMakeFiles/LibXml2Mod.dir/python/libxml.c.i
 
 CMakeFiles/LibXml2Mod.dir/python/libxml.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/LibXml2Mod.dir/python/libxml.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/code/01/08/libxml2-rust/python/libxml.c -o CMakeFiles/LibXml2Mod.dir/python/libxml.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/code/01/10/libxml2-rust/python/libxml.c -o CMakeFiles/LibXml2Mod.dir/python/libxml.c.s
 
 CMakeFiles/LibXml2Mod.dir/python/types.c.o: CMakeFiles/LibXml2Mod.dir/flags.make
 CMakeFiles/LibXml2Mod.dir/python/types.c.o: python/types.c
 CMakeFiles/LibXml2Mod.dir/python/types.c.o: CMakeFiles/LibXml2Mod.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/code/01/08/libxml2-rust/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/LibXml2Mod.dir/python/types.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/LibXml2Mod.dir/python/types.c.o -MF CMakeFiles/LibXml2Mod.dir/python/types.c.o.d -o CMakeFiles/LibXml2Mod.dir/python/types.c.o -c /root/code/01/08/libxml2-rust/python/types.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/code/01/10/libxml2-rust/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/LibXml2Mod.dir/python/types.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/LibXml2Mod.dir/python/types.c.o -MF CMakeFiles/LibXml2Mod.dir/python/types.c.o.d -o CMakeFiles/LibXml2Mod.dir/python/types.c.o -c /root/code/01/10/libxml2-rust/python/types.c
 
 CMakeFiles/LibXml2Mod.dir/python/types.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/LibXml2Mod.dir/python/types.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/code/01/08/libxml2-rust/python/types.c > CMakeFiles/LibXml2Mod.dir/python/types.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/code/01/10/libxml2-rust/python/types.c > CMakeFiles/LibXml2Mod.dir/python/types.c.i
 
 CMakeFiles/LibXml2Mod.dir/python/types.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/LibXml2Mod.dir/python/types.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/code/01/08/libxml2-rust/python/types.c -o CMakeFiles/LibXml2Mod.dir/python/types.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/code/01/10/libxml2-rust/python/types.c -o CMakeFiles/LibXml2Mod.dir/python/types.c.s
 
 # Object files for target LibXml2Mod
 LibXml2Mod_OBJECTS = \
@@ -130,7 +130,7 @@ libxml2mod.so.2.9.10: /usr/lib64/libc.so
 libxml2mod.so.2.9.10: /usr/lib64/liblzma.so
 libxml2mod.so.2.9.10: /usr/lib64/libz.so
 libxml2mod.so.2.9.10: CMakeFiles/LibXml2Mod.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/root/code/01/08/libxml2-rust/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C shared library libxml2mod.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/root/code/01/10/libxml2-rust/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C shared library libxml2mod.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/LibXml2Mod.dir/link.txt --verbose=$(VERBOSE)
 	$(CMAKE_COMMAND) -E cmake_symlink_library libxml2mod.so.2.9.10 libxml2mod.so.2.9.10 libxml2mod.so
 
@@ -146,6 +146,6 @@ CMakeFiles/LibXml2Mod.dir/clean:
 .PHONY : CMakeFiles/LibXml2Mod.dir/clean
 
 CMakeFiles/LibXml2Mod.dir/depend:
-	cd /root/code/01/08/libxml2-rust && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/code/01/08/libxml2-rust /root/code/01/08/libxml2-rust /root/code/01/08/libxml2-rust /root/code/01/08/libxml2-rust /root/code/01/08/libxml2-rust/CMakeFiles/LibXml2Mod.dir/DependInfo.cmake --color=$(COLOR)
+	cd /root/code/01/10/libxml2-rust && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/code/01/10/libxml2-rust /root/code/01/10/libxml2-rust /root/code/01/10/libxml2-rust /root/code/01/10/libxml2-rust /root/code/01/10/libxml2-rust/CMakeFiles/LibXml2Mod.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/LibXml2Mod.dir/depend
 
