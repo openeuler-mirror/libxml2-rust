@@ -14074,7 +14074,7 @@ pub unsafe extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr
                 if ::std::mem::size_of::<xmlChar>() as libc::c_ulong
                     > 1 as libc::c_int as libc::c_ulong
                 {
-                    if 0 != 0 {
+                    if 1 > 2 {
                         let mut __c: libc::c_int =
                             unsafe { *lang.offset(i as isize) as libc::c_int };
                         __res = (if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
@@ -14097,7 +14097,7 @@ pub unsafe extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr
                 if ::std::mem::size_of::<xmlChar>() as libc::c_ulong
                     > 1 as libc::c_int as libc::c_ulong
                 {
-                    if 0 != 0 {
+                    if 1 > 2 {
                         let mut __c: libc::c_int =
                             unsafe { *theLang.offset(i as isize) as libc::c_int };
                         __res = (if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
