@@ -1,5 +1,5 @@
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn toupper_xpath(mut __c: libc::c_int) -> libc::c_int {
+unsafe fn toupper_xpath(mut __c: libc::c_int) -> libc::c_int {
     return if __c >= -(128 as libc::c_int) && __c < 256 as libc::c_int {
         unsafe { *(*__ctype_toupper_loc()).offset(__c as isize) }
     } else {
@@ -23,7 +23,7 @@ fn toupper_xpath(mut __c: libc::c_int) -> libc::c_int {
  *         it's the same node, -1 otherwise
  */
 #[cfg(XP_OPTIMIZED_NON_ELEM_COMPARISON)]
-fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_int {
+unsafe fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_int {
     let mut current_block: u64;
     let mut depth1: libc::c_int = 0;
     let mut depth2: libc::c_int = 0;
@@ -381,7 +381,7 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_
  *         it's the same node, +1 otherwise
  */
 #[cfg(XP_OPTIMIZED_NON_ELEM_COMPARISON)]
-fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> libc::c_int {
+unsafe fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> libc::c_int {
     let mut res: libc::c_int = unsafe { xmlXPathCmpNodesExt(x, y) };
     return if res == -(2 as libc::c_int) {
         res
@@ -390,7 +390,7 @@ fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> libc::c_int {
     };
 }
 #[cfg(not(XP_OPTIMIZED_NON_ELEM_COMPARISON))]
-fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> libc::c_int {
+unsafe fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> libc::c_int {
     let mut res: libc::c_int = unsafe { xmlXPathCmpNodes(x, y) };
     return if res == -(2 as libc::c_int) {
         res
@@ -442,7 +442,7 @@ fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> libc::c_int {
 /* left merge */
 /* right merge */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_tim_sort_collapse(
+unsafe fn libxml_domnode_tim_sort_collapse(
     mut dst: *mut xmlNodePtr,
     mut stack: *mut TIM_SORT_RUN_T,
     mut stack_curr: libc::c_int,
@@ -470,7 +470,11 @@ fn libxml_domnode_tim_sort_collapse(
                     .wrapping_add((*stack.offset(1 as libc::c_int as isize)).length)
                     == size
             }
-        {
+        || stack_curr == 2 as libc::c_int
+        && unsafe {
+            (*stack.offset(0 as libc::c_int as isize)).length
+                <= (*stack.offset(1 as libc::c_int as isize)).length
+        } {
             unsafe { libxml_domnode_tim_sort_merge(dst, stack, stack_curr, store) };
             let ref mut fresh0 = unsafe { (*stack.offset(0 as libc::c_int as isize)).length };
             *fresh0 = (*fresh0 as libc::c_ulong)
@@ -478,20 +482,7 @@ fn libxml_domnode_tim_sort_collapse(
                 as size_t as size_t;
             stack_curr -= 1;
             break;
-        } else if stack_curr == 2 as libc::c_int
-            && unsafe {
-                (*stack.offset(0 as libc::c_int as isize)).length
-                    <= (*stack.offset(1 as libc::c_int as isize)).length
-            }
-        {
-            unsafe { libxml_domnode_tim_sort_merge(dst, stack, stack_curr, store) };
-            let ref mut fresh1 = unsafe { (*stack.offset(0 as libc::c_int as isize)).length };
-            *fresh1 = (*fresh1 as libc::c_ulong)
-                .wrapping_add(unsafe { (*stack.offset(1 as libc::c_int as isize)).length })
-                as size_t as size_t;
-            stack_curr -= 1;
-            break;
-        } else {
+        }  else {
             if stack_curr == 2 as libc::c_int {
                 break;
             }
@@ -542,7 +533,7 @@ fn libxml_domnode_tim_sort_collapse(
 }
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_tim_sort_merge(
+unsafe fn libxml_domnode_tim_sort_merge(
     mut dst: *mut xmlNodePtr,
     mut stack: *const TIM_SORT_RUN_T,
     stack_curr: libc::c_int,
@@ -639,7 +630,7 @@ fn libxml_domnode_tim_sort_merge(
 }
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_tim_sort_resize(mut store: *mut TEMP_STORAGE_T, new_size: size_t) {
+unsafe fn libxml_domnode_tim_sort_resize(mut store: *mut TEMP_STORAGE_T, new_size: size_t) {
     let safe_store = unsafe { &mut *store };
     if safe_store.alloc < new_size {
         let mut tempstore: *mut xmlNodePtr = unsafe {
@@ -664,7 +655,11 @@ fn libxml_domnode_tim_sort_resize(mut store: *mut TEMP_STORAGE_T, new_size: size
     };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_count_run(mut dst: *mut xmlNodePtr, start: size_t, size: size_t) -> size_t {
+unsafe fn libxml_domnode_count_run(
+    mut dst: *mut xmlNodePtr,
+    start: size_t,
+    size: size_t,
+) -> size_t {
     let mut curr: size_t = 0;
     if size.wrapping_sub(start) == 1 as libc::c_int as libc::c_ulong {
         return 1 as libc::c_int as size_t;
@@ -734,14 +729,14 @@ fn libxml_domnode_count_run(mut dst: *mut xmlNodePtr, start: size_t, size: size_
     };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn libxml_domnode_binary_insertion_sort(mut dst: *mut xmlNodePtr, size: size_t) {
+pub unsafe fn libxml_domnode_binary_insertion_sort(mut dst: *mut xmlNodePtr, size: size_t) {
     if size <= 1 as libc::c_int as libc::c_ulong {
         return;
     }
     unsafe { libxml_domnode_binary_insertion_sort_start(dst, 1 as libc::c_int as size_t, size) };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn compute_minrun(size: uint64_t) -> libc::c_int {
+unsafe fn compute_minrun(size: uint64_t) -> libc::c_int {
     let top_bit: libc::c_int =
         64 as libc::c_int - (size as libc::c_ulonglong).leading_zeros() as i32;
     let shift: libc::c_int = (if top_bit > 6 as libc::c_int {
@@ -758,7 +753,7 @@ fn compute_minrun(size: uint64_t) -> libc::c_int {
     return minrun;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_check_invariant(
+unsafe fn libxml_domnode_check_invariant(
     mut stack: *mut TIM_SORT_RUN_T,
     stack_curr: libc::c_int,
 ) -> libc::c_int {
@@ -787,7 +782,7 @@ fn libxml_domnode_check_invariant(
     return 1 as libc::c_int;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_binary_insertion_find(
+unsafe fn libxml_domnode_binary_insertion_find(
     mut dst: *mut xmlNodePtr,
     x: xmlNodePtr,
     size: size_t,
@@ -825,7 +820,7 @@ fn libxml_domnode_binary_insertion_find(
     }
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_binary_insertion_sort_start(
+unsafe fn libxml_domnode_binary_insertion_sort_start(
     mut dst: *mut xmlNodePtr,
     start: size_t,
     size: size_t,
@@ -867,7 +862,11 @@ fn libxml_domnode_binary_insertion_sort_start(
     }
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_reverse_elements(mut dst: *mut xmlNodePtr, mut start: size_t, mut end: size_t) {
+unsafe fn libxml_domnode_reverse_elements(
+    mut dst: *mut xmlNodePtr,
+    mut start: size_t,
+    mut end: size_t,
+) {
     loop {
         if start >= end {
             return;
@@ -884,7 +883,7 @@ fn libxml_domnode_reverse_elements(mut dst: *mut xmlNodePtr, mut start: size_t, 
     }
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn PUSH_NEXT(
+unsafe fn PUSH_NEXT(
     mut dst: *mut xmlNodePtr,
     size: size_t,
     mut store: *mut TEMP_STORAGE_T,
@@ -940,7 +939,7 @@ fn PUSH_NEXT(
     return 1 as libc::c_int;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn libxml_domnode_tim_sort(mut dst: *mut xmlNodePtr, size: size_t) {
+pub unsafe fn libxml_domnode_tim_sort(mut dst: *mut xmlNodePtr, size: size_t) {
     let mut minrun: size_t = 0;
     let mut _store: TEMP_STORAGE_T = TEMP_STORAGE_T {
         alloc: 0,
@@ -1055,7 +1054,7 @@ pub static mut xmlXPathNINF: libc::c_double = 0.;
  * Initialize the XPath environment
  */
 #[cfg(LIBXML_XPATH_ENABLED_OR_LIBXML_SCHEMAS_ENABLED)]
-pub fn xmlXPathInit_xpath() {
+pub unsafe fn xmlXPathInit_xpath() {
     /* MSVC doesn't allow division by zero in constant expressions. */
     let mut zero: libc::c_double = 0.0f64;
     unsafe {
@@ -1070,7 +1069,7 @@ pub fn xmlXPathInit_xpath() {
  * Returns 1 if the value is a NaN, 0 otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED_OR_LIBXML_SCHEMAS_ENABLED)]
-pub fn xmlXPathIsNaN(mut val: libc::c_double) -> libc::c_int {
+pub unsafe fn xmlXPathIsNaN(mut val: libc::c_double) -> libc::c_int {
     match () {
         #[cfg(ISNAN)]
         _ => {
@@ -1102,7 +1101,7 @@ pub fn xmlXPathIsNaN(mut val: libc::c_double) -> libc::c_int {
  * Returns 1 if the value is +Infinite, -1 if -Infinite, 0 otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED_OR_LIBXML_SCHEMAS_ENABLED)]
-pub fn xmlXPathIsInf(mut val: libc::c_double) -> libc::c_int {
+pub unsafe fn xmlXPathIsInf(mut val: libc::c_double) -> libc::c_int {
     match () {
         #[cfg(ISINF)]
         _ => {
@@ -1216,7 +1215,7 @@ static mut xmlXPathErrorMessages: [*const libc::c_char; 28] = [
  * Handle a redefinition of attribute error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathErrMemory(mut ctxt: xmlXPathContextPtr, mut extra: *const libc::c_char) {
+unsafe fn xmlXPathErrMemory(mut ctxt: xmlXPathContextPtr, mut extra: *const libc::c_char) {
     if !ctxt.is_null() {
         let safe_ctxt = unsafe { &mut *ctxt };
         unsafe { xmlResetError(&mut (*ctxt).lastError) };
@@ -1302,7 +1301,7 @@ fn xmlXPathErrMemory(mut ctxt: xmlXPathContextPtr, mut extra: *const libc::c_cha
  * Handle a redefinition of attribute error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathPErrMemory(mut ctxt: xmlXPathParserContextPtr, mut extra: *const libc::c_char) {
+unsafe fn xmlXPathPErrMemory(mut ctxt: xmlXPathParserContextPtr, mut extra: *const libc::c_char) {
     if ctxt.is_null() {
         unsafe { xmlXPathErrMemory(0 as xmlXPathContextPtr, extra) };
     } else {
@@ -1318,7 +1317,7 @@ fn xmlXPathPErrMemory(mut ctxt: xmlXPathParserContextPtr, mut extra: *const libc
  * Handle an XPath error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathErr(mut ctxt: xmlXPathParserContextPtr, mut error: libc::c_int) {
+pub unsafe fn xmlXPathErr(mut ctxt: xmlXPathParserContextPtr, mut error: libc::c_int) {
     let safe_ctxt = unsafe { &mut *ctxt };
     if error < 0 as libc::c_int
         || error
@@ -1438,7 +1437,7 @@ pub fn xmlXPathErr(mut ctxt: xmlXPathParserContextPtr, mut error: libc::c_int) {
  * Formats an error message.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPatherror(
+pub unsafe fn xmlXPatherror(
     mut ctxt: xmlXPathParserContextPtr,
     mut file: *const libc::c_char,
     mut line: libc::c_int,
@@ -1454,7 +1453,7 @@ pub fn xmlXPatherror(
  * operation limit is exceeded. Returns 0 otherwise.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCheckOpLimit(
+unsafe fn xmlXPathCheckOpLimit(
     mut ctxt: xmlXPathParserContextPtr,
     mut opCount: libc::c_ulong,
 ) -> libc::c_int {
@@ -1476,7 +1475,7 @@ fn xmlXPathCheckOpLimit(
 * and here, we should make the functions public.
 */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlPointerListAddSize(
+unsafe fn xmlPointerListAddSize(
     mut list: xmlPointerListPtr,
     mut item: *mut libc::c_void,
     mut initialSize: libc::c_int,
@@ -1551,7 +1550,7 @@ fn xmlPointerListAddSize(
  * Returns a xsltPointerList structure or NULL in case of an error.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlPointerListCreate(mut initialSize: libc::c_int) -> xmlPointerListPtr {
+unsafe fn xmlPointerListCreate(mut initialSize: libc::c_int) -> xmlPointerListPtr {
     let mut ret: xmlPointerListPtr = 0 as *mut xmlPointerList;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -1586,7 +1585,7 @@ fn xmlPointerListCreate(mut initialSize: libc::c_int) -> xmlPointerListPtr {
  * the content of the list.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlPointerListFree(mut list: xmlPointerListPtr) {
+unsafe fn xmlPointerListFree(mut list: xmlPointerListPtr) {
     if list.is_null() {
         return;
     }
@@ -1608,7 +1607,7 @@ fn xmlPointerListFree(mut list: xmlPointerListPtr) {
  * Returns the newly allocated xmlXPathCompExprPtr or NULL in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNewCompExpr() -> xmlXPathCompExprPtr {
+unsafe fn xmlXPathNewCompExpr() -> xmlXPathCompExprPtr {
     let mut cur: xmlXPathCompExprPtr = 0 as *mut xmlXPathCompExpr;
     cur = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -1675,7 +1674,7 @@ fn xmlXPathNewCompExpr() -> xmlXPathCompExprPtr {
  * Free up the memory allocated by @comp
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathFreeCompExpr(mut comp: xmlXPathCompExprPtr) {
+pub unsafe fn xmlXPathFreeCompExpr(mut comp: xmlXPathCompExprPtr) {
     let mut op: xmlXPathStepOpPtr = 0 as *mut xmlXPathStepOp;
     let mut i: libc::c_int = 0;
     if comp.is_null() {
@@ -1759,7 +1758,7 @@ pub fn xmlXPathFreeCompExpr(mut comp: xmlXPathCompExprPtr) {
  * Returns -1 in case of failure, the index otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompExprAdd(
+unsafe fn xmlXPathCompExprAdd(
     mut ctxt: xmlXPathParserContextPtr,
     mut ch1: libc::c_int,
     mut ch2: libc::c_int,
@@ -1871,7 +1870,7 @@ fn xmlXPathCompExprAdd(
  * Swaps 2 operations in the compiled expression
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompSwap(mut op: xmlXPathStepOpPtr) {
+unsafe fn xmlXPathCompSwap(mut op: xmlXPathStepOpPtr) {
     let mut tmp: libc::c_int = 0;
     match () {
         #[cfg(not(LIBXML_THREAD_ENABLED))]
@@ -1895,7 +1894,11 @@ fn xmlXPathCompSwap(mut op: xmlXPathStepOpPtr) {
  ************************************************************************/
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathDebugDumpNode(mut output: *mut FILE, mut cur: xmlNodePtr, mut depth: libc::c_int) {
+unsafe fn xmlXPathDebugDumpNode(
+    mut output: *mut FILE,
+    mut cur: xmlNodePtr,
+    mut depth: libc::c_int,
+) {
     let safe_cur = unsafe { &mut *cur };
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
@@ -1942,7 +1945,11 @@ fn xmlXPathDebugDumpNode(mut output: *mut FILE, mut cur: xmlNodePtr, mut depth: 
 }
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathDebugDumpNodeList(mut output: *mut FILE, mut cur: xmlNodePtr, mut depth: libc::c_int) {
+unsafe fn xmlXPathDebugDumpNodeList(
+    mut output: *mut FILE,
+    mut cur: xmlNodePtr,
+    mut depth: libc::c_int,
+) {
     let mut tmp: xmlNodePtr = 0 as *mut xmlNode;
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
@@ -1980,7 +1987,11 @@ fn xmlXPathDebugDumpNodeList(mut output: *mut FILE, mut cur: xmlNodePtr, mut dep
 }
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathDebugDumpNodeSet(mut output: *mut FILE, mut cur: xmlNodeSetPtr, mut depth: libc::c_int) {
+unsafe fn xmlXPathDebugDumpNodeSet(
+    mut output: *mut FILE,
+    mut cur: xmlNodeSetPtr,
+    mut depth: libc::c_int,
+) {
     let mut i: libc::c_int = 0;
     let mut shift: [libc::c_char; 100] = [0; 100];
     i = 0 as libc::c_int;
@@ -2041,7 +2052,7 @@ fn xmlXPathDebugDumpNodeSet(mut output: *mut FILE, mut cur: xmlNodeSetPtr, mut d
 }
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathDebugDumpValueTree(
+unsafe fn xmlXPathDebugDumpValueTree(
     mut output: *mut FILE,
     mut cur: xmlNodeSetPtr,
     mut depth: libc::c_int,
@@ -2098,7 +2109,7 @@ fn xmlXPathDebugDumpValueTree(
 #[cfg(LIBXML_XPTR_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
 #[cfg(LIBXML_DEBUG_ENABLED)]
-fn xmlXPathDebugDumpLocationSet(
+unsafe fn xmlXPathDebugDumpLocationSet(
     mut output: *mut FILE,
     mut cur: xmlLocationSetPtr,
     mut depth: libc::c_int,
@@ -2161,7 +2172,7 @@ fn xmlXPathDebugDumpLocationSet(
  * Dump the content of the object for debugging purposes
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathDebugDumpObject(
+pub unsafe fn xmlXPathDebugDumpObject(
     mut output: *mut FILE,
     mut cur: xmlXPathObjectPtr,
     mut depth: libc::c_int,
@@ -2417,7 +2428,7 @@ pub fn xmlXPathDebugDumpObject(
     };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathDebugDumpStepOp(
+unsafe fn xmlXPathDebugDumpStepOp(
     mut output: *mut FILE,
     mut comp: xmlXPathCompExprPtr,
     mut op: xmlXPathStepOpPtr,
@@ -2850,7 +2861,7 @@ fn xmlXPathDebugDumpStepOp(
  * Dumps the tree of the compiled XPath expression.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathDebugDumpCompExpr(
+pub unsafe fn xmlXPathDebugDumpCompExpr(
     mut output: *mut FILE,
     mut comp: xmlXPathCompExprPtr,
     mut depth: libc::c_int,
@@ -3367,7 +3378,7 @@ extern "C" fn xmlXPathDebugObjUsageDisplay(mut ctxt: xmlXPathContextPtr) {
  * Returns the xmlXPathCache just allocated.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNewCache() -> xmlXPathContextCachePtr {
+unsafe fn xmlXPathNewCache() -> xmlXPathContextCachePtr {
     let mut ret: xmlXPathContextCachePtr = 0 as *mut xmlXPathContextCache;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -3399,7 +3410,7 @@ fn xmlXPathNewCache() -> xmlXPathContextCachePtr {
     return ret;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheFreeObjectList(mut list: xmlPointerListPtr) {
+unsafe fn xmlXPathCacheFreeObjectList(mut list: xmlPointerListPtr) {
     let mut i: libc::c_int = 0;
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if list.is_null() {
@@ -3440,7 +3451,7 @@ fn xmlXPathCacheFreeObjectList(mut list: xmlPointerListPtr) {
     unsafe { xmlPointerListFree(list) };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathFreeCache(mut cache: xmlXPathContextCachePtr) {
+unsafe fn xmlXPathFreeCache(mut cache: xmlXPathContextCachePtr) {
     if cache.is_null() {
         return;
     }
@@ -3480,7 +3491,7 @@ fn xmlXPathFreeCache(mut cache: xmlXPathContextCachePtr) {
  * Returns 0 if the setting succeeded, and -1 on API or internal errors.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathContextSetCache(
+pub unsafe fn xmlXPathContextSetCache(
     mut ctxt: xmlXPathContextPtr,
     mut active: libc::c_int,
     mut value: libc::c_int,
@@ -3526,7 +3537,7 @@ pub fn xmlXPathContextSetCache(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheWrapNodeSet(
+unsafe fn xmlXPathCacheWrapNodeSet(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlNodeSetPtr,
 ) -> xmlXPathObjectPtr {
@@ -3570,7 +3581,7 @@ fn xmlXPathCacheWrapNodeSet(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheWrapString(
+unsafe fn xmlXPathCacheWrapString(
     mut ctxt: xmlXPathContextPtr,
     mut val: *mut xmlChar,
 ) -> xmlXPathObjectPtr {
@@ -3643,7 +3654,10 @@ fn xmlXPathCacheWrapString(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheNewNodeSet(mut ctxt: xmlXPathContextPtr, mut val: xmlNodePtr) -> xmlXPathObjectPtr {
+unsafe fn xmlXPathCacheNewNodeSet(
+    mut ctxt: xmlXPathContextPtr,
+    mut val: xmlNodePtr,
+) -> xmlXPathObjectPtr {
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3736,7 +3750,7 @@ fn xmlXPathCacheNewNodeSet(mut ctxt: xmlXPathContextPtr, mut val: xmlNodePtr) ->
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheNewCString(
+unsafe fn xmlXPathCacheNewCString(
     mut ctxt: xmlXPathContextPtr,
     mut val: *const libc::c_char,
 ) -> xmlXPathObjectPtr {
@@ -3803,7 +3817,7 @@ fn xmlXPathCacheNewCString(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheNewString(
+unsafe fn xmlXPathCacheNewString(
     mut ctxt: xmlXPathContextPtr,
     mut val: *const xmlChar,
 ) -> xmlXPathObjectPtr {
@@ -3880,7 +3894,7 @@ fn xmlXPathCacheNewString(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheNewBoolean(
+unsafe fn xmlXPathCacheNewBoolean(
     mut ctxt: xmlXPathContextPtr,
     mut val: libc::c_int,
 ) -> xmlXPathObjectPtr {
@@ -3947,7 +3961,7 @@ fn xmlXPathCacheNewBoolean(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheNewFloat(
+unsafe fn xmlXPathCacheNewFloat(
     mut ctxt: xmlXPathContextPtr,
     mut val: libc::c_double,
 ) -> xmlXPathObjectPtr {
@@ -4013,7 +4027,7 @@ fn xmlXPathCacheNewFloat(
  *
  * Returns a created or reused object, the old one is freed (cached) *         (or the operation is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheConvertString(
+unsafe fn xmlXPathCacheConvertString(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
@@ -4073,7 +4087,7 @@ fn xmlXPathCacheConvertString(
  * Returns a created or reused created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheObjectCopy(
+unsafe fn xmlXPathCacheObjectCopy(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
@@ -4110,7 +4124,7 @@ fn xmlXPathCacheObjectCopy(
  * Returns a created or reused object, the old one is freed (or the operation
  *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheConvertBoolean(
+unsafe fn xmlXPathCacheConvertBoolean(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
@@ -4136,7 +4150,7 @@ fn xmlXPathCacheConvertBoolean(
  * Returns a created or reused object, the old one is freed (or the operation
  *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCacheConvertNumber(
+unsafe fn xmlXPathCacheConvertNumber(
     mut ctxt: xmlXPathContextPtr,
     mut val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
@@ -4165,7 +4179,7 @@ fn xmlXPathCacheConvertNumber(
  * Returns the previous frame value to be restored once done
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathSetFrame(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
+unsafe fn xmlXPathSetFrame(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
     let mut ret: libc::c_int = 0;
     if ctxt.is_null() {
         return 0 as libc::c_int;
@@ -4182,7 +4196,7 @@ fn xmlXPathSetFrame(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
  * Remove the callee evaluation frame
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathPopFrame(mut ctxt: xmlXPathParserContextPtr, mut frame: libc::c_int) {
+unsafe fn xmlXPathPopFrame(mut ctxt: xmlXPathParserContextPtr, mut frame: libc::c_int) {
     if ctxt.is_null() {
         return;
     }
@@ -4209,7 +4223,7 @@ fn xmlXPathPopFrame(mut ctxt: xmlXPathParserContextPtr, mut frame: libc::c_int) 
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn valuePop(mut ctxt: xmlXPathParserContextPtr) -> xmlXPathObjectPtr {
+pub unsafe fn valuePop(mut ctxt: xmlXPathParserContextPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.valueNr <= 0 as libc::c_int {
@@ -4253,7 +4267,10 @@ pub fn valuePop(mut ctxt: xmlXPathParserContextPtr) -> xmlXPathObjectPtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn valuePush(mut ctxt: xmlXPathParserContextPtr, mut value: xmlXPathObjectPtr) -> libc::c_int {
+pub unsafe fn valuePush(
+    mut ctxt: xmlXPathParserContextPtr,
+    mut value: xmlXPathObjectPtr,
+) -> libc::c_int {
     if ctxt.is_null() {
         return -(1 as libc::c_int);
     }
@@ -4377,7 +4394,7 @@ pub fn valuePush(mut ctxt: xmlXPathParserContextPtr, mut value: xmlXPathObjectPt
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathPopBoolean(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
+pub unsafe fn xmlXPathPopBoolean(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: libc::c_int = 0;
     obj = valuePop(ctxt);
@@ -4415,7 +4432,7 @@ pub fn xmlXPathPopBoolean(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathPopNumber(mut ctxt: xmlXPathParserContextPtr) -> libc::c_double {
+pub unsafe fn xmlXPathPopNumber(mut ctxt: xmlXPathParserContextPtr) -> libc::c_double {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: libc::c_double = 0.;
     obj = unsafe { valuePop(ctxt) };
@@ -4453,7 +4470,7 @@ pub fn xmlXPathPopNumber(mut ctxt: xmlXPathParserContextPtr) -> libc::c_double {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathPopString(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
+pub unsafe fn xmlXPathPopString(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject; /* this does required strdup */
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     obj = valuePop(ctxt);
@@ -4491,7 +4508,7 @@ pub fn xmlXPathPopString(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeSetPtr {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     if ctxt.is_null() {
@@ -4549,7 +4566,7 @@ pub fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeSetPtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathPopExternal(mut ctxt: xmlXPathParserContextPtr) -> *mut libc::c_void {
+pub unsafe fn xmlXPathPopExternal(mut ctxt: xmlXPathParserContextPtr) -> *mut libc::c_void {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: *mut libc::c_void = 0 as *mut libc::c_void;
     let safe_ctxt = unsafe { &mut *ctxt };
@@ -4598,7 +4615,7 @@ pub fn xmlXPathPopExternal(mut ctxt: xmlXPathParserContextPtr) -> *mut libc::c_v
  * Convert the number into a string representation.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathFormatNumber(
+unsafe fn xmlXPathFormatNumber(
     mut number: libc::c_double,
     mut buffer: *mut libc::c_char,
     mut buffersize: libc::c_int,
@@ -4856,7 +4873,7 @@ fn xmlXPathFormatNumber(
  *    of error.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathOrderDocElems(mut doc: xmlDocPtr) -> libc::c_long {
+pub unsafe fn xmlXPathOrderDocElems(mut doc: xmlDocPtr) -> libc::c_long {
     let mut count: ptrdiff_t = 0 as libc::c_int as ptrdiff_t;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     if doc.is_null() {
@@ -4907,7 +4924,7 @@ pub fn xmlXPathOrderDocElems(mut doc: xmlDocPtr) -> libc::c_long {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_int {
+pub unsafe fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c_int {
     let mut depth1: libc::c_int = 0;
     let mut depth2: libc::c_int = 0;
     let mut attr1: libc::c_int = 0 as libc::c_int;
@@ -5091,7 +5108,7 @@ pub fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> libc::c
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetSort(mut set: xmlNodeSetPtr) {
+pub unsafe fn xmlXPathNodeSetSort(mut set: xmlNodeSetPtr) {
     // #ifndef WITH_TIM_SORT
     let safe_set = unsafe { &mut *set };
     match () {
@@ -5183,7 +5200,7 @@ pub fn xmlXPathNodeSetSort(mut set: xmlNodeSetPtr) {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNodeSetDupNs(mut node: xmlNodePtr, mut ns: xmlNsPtr) -> xmlNodePtr {
+unsafe fn xmlXPathNodeSetDupNs(mut node: xmlNodePtr, mut ns: xmlNsPtr) -> xmlNodePtr {
     let safe_node = unsafe { &mut *node };
     let safe_ns = unsafe { &mut *ns };
     let mut cur: xmlNsPtr = 0 as *mut xmlNs;
@@ -5246,7 +5263,7 @@ fn xmlXPathNodeSetDupNs(mut node: xmlNodePtr, mut ns: xmlNsPtr) -> xmlNodePtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetFreeNs(mut ns: xmlNsPtr) {
+pub unsafe fn xmlXPathNodeSetFreeNs(mut ns: xmlNsPtr) {
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null()
         || safe_ns.type_0 as libc::c_uint != XML_NAMESPACE_DECL as libc::c_int as libc::c_uint
@@ -5284,7 +5301,7 @@ pub fn xmlXPathNodeSetFreeNs(mut ns: xmlNsPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetCreate(mut val: xmlNodePtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathNodeSetCreate(mut val: xmlNodePtr) -> xmlNodeSetPtr {
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -5367,7 +5384,7 @@ pub fn xmlXPathNodeSetCreate(mut val: xmlNodePtr) -> xmlNodeSetPtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetContains(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> libc::c_int {
+pub unsafe fn xmlXPathNodeSetContains(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> libc::c_int {
     let mut i: libc::c_int = 0;
     if cur.is_null() || val.is_null() {
         return 0 as libc::c_int;
@@ -5421,7 +5438,7 @@ pub fn xmlXPathNodeSetContains(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> l
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetAddNs(
+pub unsafe fn xmlXPathNodeSetAddNs(
     mut cur: xmlNodeSetPtr,
     mut node: xmlNodePtr,
     mut ns: xmlNsPtr,
@@ -5536,7 +5553,7 @@ pub fn xmlXPathNodeSetAddNs(
  * Returns 0 in case of success, and -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetAdd(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> libc::c_int {
+pub unsafe fn xmlXPathNodeSetAdd(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> libc::c_int {
     let mut i: libc::c_int = 0;
     if cur.is_null() || val.is_null() {
         return -(1 as libc::c_int);
@@ -5643,7 +5660,7 @@ pub fn xmlXPathNodeSetAdd(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) -> libc::
  * Returns 0 in case of success and -1 in case of failure
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNodeSetAddUnique(
+pub unsafe extern "C" fn xmlXPathNodeSetAddUnique(
     mut cur: xmlNodeSetPtr,
     mut val: xmlNodePtr,
 ) -> libc::c_int {
@@ -5742,7 +5759,10 @@ pub extern "C" fn xmlXPathNodeSetAddUnique(
  * Returns @val1 once extended or NULL in case of error.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, mut val2: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathNodeSetMerge(
+    mut val1: xmlNodeSetPtr,
+    mut val2: xmlNodeSetPtr,
+) -> xmlNodeSetPtr {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut initNr: libc::c_int = 0;
@@ -6121,7 +6141,7 @@ extern "C" fn xmlXPathNodeSetMergeAndClearNoDupls(
  * Removes an xmlNodePtr from an existing NodeSet
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetDel(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) {
+pub unsafe fn xmlXPathNodeSetDel(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) {
     let mut i: libc::c_int = 0;
     if cur.is_null() {
         return;
@@ -6187,7 +6207,7 @@ pub fn xmlXPathNodeSetDel(mut cur: xmlNodeSetPtr, mut val: xmlNodePtr) {
  * Removes an entry from an existing NodeSet list.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeSetRemove(mut cur: xmlNodeSetPtr, mut val: libc::c_int) {
+pub unsafe fn xmlXPathNodeSetRemove(mut cur: xmlNodeSetPtr, mut val: libc::c_int) {
     if cur.is_null() {
         return;
     }
@@ -6221,7 +6241,7 @@ pub fn xmlXPathNodeSetRemove(mut cur: xmlNodeSetPtr, mut val: libc::c_int) {
  * Free the NodeSet compound (not the actual nodes !).
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathFreeNodeSet(mut obj: xmlNodeSetPtr) {
+pub unsafe fn xmlXPathFreeNodeSet(mut obj: xmlNodeSetPtr) {
     if obj.is_null() {
         return;
     }
@@ -6253,7 +6273,7 @@ pub fn xmlXPathFreeNodeSet(mut obj: xmlNodeSetPtr) {
  * itself. Sets the length of the list to @pos.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNodeSetClearFromPos(
+unsafe fn xmlXPathNodeSetClearFromPos(
     mut set: xmlNodeSetPtr,
     mut pos: libc::c_int,
     mut hasNsNodes: libc::c_int,
@@ -6289,7 +6309,7 @@ fn xmlXPathNodeSetClearFromPos(
  * list to 0.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNodeSetClear(mut set: xmlNodeSetPtr, mut hasNsNodes: libc::c_int) {
+unsafe fn xmlXPathNodeSetClear(mut set: xmlNodeSetPtr, mut hasNsNodes: libc::c_int) {
     unsafe { xmlXPathNodeSetClearFromPos(set, 0 as libc::c_int, hasNsNodes) };
 }
 /* *
@@ -6300,7 +6320,7 @@ fn xmlXPathNodeSetClear(mut set: xmlNodeSetPtr, mut hasNsNodes: libc::c_int) {
  * to 1.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNodeSetKeepLast(mut set: xmlNodeSetPtr) {
+unsafe fn xmlXPathNodeSetKeepLast(mut set: xmlNodeSetPtr) {
     let mut i: libc::c_int = 0;
     let mut node: xmlNodePtr = 0 as *mut xmlNode;
     let safe_set = unsafe { &mut *set };
@@ -6338,7 +6358,7 @@ fn xmlXPathNodeSetKeepLast(mut set: xmlNodeSetPtr) {
  * Free the NodeSet compound and the actual tree, this is different
  * from xmlXPathFreeNodeSet() */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathFreeValueTree(mut obj: xmlNodeSetPtr) {
+unsafe fn xmlXPathFreeValueTree(mut obj: xmlNodeSetPtr) {
     let mut i: libc::c_int = 0;
     if obj.is_null() {
         return;
@@ -6374,7 +6394,7 @@ fn xmlXPathFreeValueTree(mut obj: xmlNodeSetPtr) {
  */
 #[cfg(DEBUG_OR_DEBUG_STEP)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlGenericErrorContextNodeSet(mut output: *mut FILE, mut obj: xmlNodeSetPtr) {
+pub unsafe extern "C" fn xmlGenericErrorContextNodeSet(mut output: *mut FILE, mut obj: xmlNodeSetPtr) {
     let mut i: libc::c_int = 0;
     let safe_obj = unsafe { &mut *obj };
     if output.is_null() {
@@ -6445,7 +6465,7 @@ pub extern "C" fn xmlGenericErrorContextNodeSet(mut output: *mut FILE, mut obj: 
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -6494,7 +6514,7 @@ pub fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -6541,7 +6561,7 @@ pub fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNewNodeSetList(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewNodeSetList(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut i: libc::c_int = 0;
     let safe_val = unsafe { &mut *val };
@@ -6575,7 +6595,7 @@ pub fn xmlXPathNewNodeSetList(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathWrapNodeSet(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathWrapNodeSet(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -6617,7 +6637,7 @@ pub fn xmlXPathWrapNodeSet(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
  * the list contrary to xmlXPathFreeObject().
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathFreeNodeSetList(mut obj: xmlXPathObjectPtr) {
+pub unsafe fn xmlXPathFreeNodeSetList(mut obj: xmlXPathObjectPtr) {
     if obj.is_null() {
         return;
     }
@@ -6645,7 +6665,10 @@ pub fn xmlXPathFreeNodeSetList(mut obj: xmlXPathObjectPtr) {
  *         nodes2 is empty
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathDifference(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathDifference(
+    mut nodes1: xmlNodeSetPtr,
+    mut nodes2: xmlNodeSetPtr,
+) -> xmlNodeSetPtr {
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut i: libc::c_int = 0;
     let mut l1: libc::c_int = 0;
@@ -6691,7 +6714,10 @@ pub fn xmlXPathDifference(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) 
  *         node sets passed as arguments
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathIntersection(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathIntersection(
+    mut nodes1: xmlNodeSetPtr,
+    mut nodes2: xmlNodeSetPtr,
+) -> xmlNodeSetPtr {
     let mut ret: xmlNodeSetPtr = unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
     let mut i: libc::c_int = 0;
     let mut l1: libc::c_int = 0;
@@ -6737,7 +6763,7 @@ pub fn xmlXPathIntersection(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr
  *         it is empty
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathDistinctSorted(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathDistinctSorted(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut hash: xmlHashTablePtr = 0 as *mut xmlHashTable;
     let mut i: libc::c_int = 0;
@@ -6798,7 +6824,7 @@ pub fn xmlXPathDistinctSorted(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
  *         it is empty
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathDistinct(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathDistinct(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let safe_nodes = unsafe { &mut *nodes };
     if nodes.is_null() || safe_nodes.nodeNr == 0 as libc::c_int || safe_nodes.nodeTab.is_null() {
         return nodes;
@@ -6814,7 +6840,10 @@ pub fn xmlXPathDistinct(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
  * Returns true (1) if @nodes1 shares any node with @nodes2, false (0) *         otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathHasSameNodes(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> libc::c_int {
+pub unsafe fn xmlXPathHasSameNodes(
+    mut nodes1: xmlNodeSetPtr,
+    mut nodes2: xmlNodeSetPtr,
+) -> libc::c_int {
     let mut i: libc::c_int = 0;
     let mut l: libc::c_int = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
@@ -6857,7 +6886,10 @@ pub fn xmlXPathHasSameNodes(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeLeadingSorted(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathNodeLeadingSorted(
+    mut nodes: xmlNodeSetPtr,
+    mut node: xmlNodePtr,
+) -> xmlNodeSetPtr {
     let mut i: libc::c_int = 0;
     let mut l: libc::c_int = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
@@ -6911,7 +6943,7 @@ pub fn xmlXPathNodeLeadingSorted(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr)
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeLeading(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathNodeLeading(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
     unsafe { xmlXPathNodeSetSort(nodes) };
     return unsafe { xmlXPathNodeLeadingSorted(nodes, node) };
 }
@@ -6925,7 +6957,7 @@ pub fn xmlXPathNodeLeading(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xm
  *         an empty node-set if @nodes1 doesn't contain @nodes2
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathLeadingSorted(
+pub unsafe fn xmlXPathLeadingSorted(
     mut nodes1: xmlNodeSetPtr,
     mut nodes2: xmlNodeSetPtr,
 ) -> xmlNodeSetPtr {
@@ -6960,7 +6992,10 @@ pub fn xmlXPathLeadingSorted(
  *         an empty node-set if @nodes1 doesn't contain @nodes2
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathLeading(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathLeading(
+    mut nodes1: xmlNodeSetPtr,
+    mut nodes2: xmlNodeSetPtr,
+) -> xmlNodeSetPtr {
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if nodes2.is_null() || safe_nodes2.nodeNr == 0 as libc::c_int || safe_nodes2.nodeTab.is_null() {
@@ -6994,7 +7029,10 @@ pub fn xmlXPathLeading(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> 
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeTrailingSorted(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathNodeTrailingSorted(
+    mut nodes: xmlNodeSetPtr,
+    mut node: xmlNodePtr,
+) -> xmlNodeSetPtr {
     let mut i: libc::c_int = 0;
     let mut l: libc::c_int = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
@@ -7049,7 +7087,10 @@ pub fn xmlXPathNodeTrailingSorted(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeTrailing(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathNodeTrailing(
+    mut nodes: xmlNodeSetPtr,
+    mut node: xmlNodePtr,
+) -> xmlNodeSetPtr {
     unsafe { xmlXPathNodeSetSort(nodes) };
     return unsafe { xmlXPathNodeTrailingSorted(nodes, node) };
 }
@@ -7063,7 +7104,7 @@ pub fn xmlXPathNodeTrailing(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> x
  *         an empty node-set if @nodes1 doesn't contain @nodes2
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathTrailingSorted(
+pub unsafe fn xmlXPathTrailingSorted(
     mut nodes1: xmlNodeSetPtr,
     mut nodes2: xmlNodeSetPtr,
 ) -> xmlNodeSetPtr {
@@ -7075,7 +7116,7 @@ pub fn xmlXPathTrailingSorted(
         xmlXPathNodeTrailingSorted(
             nodes1,
             if !nodes2.is_null()
-                && 0 as libc::c_int >= 0 as libc::c_int
+                && 2 > 1
                 && (0 as libc::c_int) < (*nodes2).nodeNr
             {
                 *(*nodes2).nodeTab.offset(0 as libc::c_int as isize)
@@ -7097,7 +7138,10 @@ pub fn xmlXPathTrailingSorted(
  *         an empty node-set if @nodes1 doesn't contain @nodes2
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathTrailing(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathTrailing(
+    mut nodes1: xmlNodeSetPtr,
+    mut nodes2: xmlNodeSetPtr,
+) -> xmlNodeSetPtr {
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if nodes2.is_null() || safe_nodes2.nodeNr == 0 as libc::c_int || safe_nodes2.nodeTab.is_null() {
@@ -7112,7 +7156,7 @@ pub fn xmlXPathTrailing(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) ->
         xmlXPathNodeTrailingSorted(
             nodes1,
             if !nodes2.is_null()
-                && 0 as libc::c_int >= 0 as libc::c_int
+                && 2 > 1
                 && (0 as libc::c_int) < (*nodes2).nodeNr
             {
                 *(*nodes2).nodeTab.offset(0 as libc::c_int as isize)
@@ -7137,7 +7181,7 @@ pub fn xmlXPathTrailing(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) ->
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisterFunc(
+pub unsafe fn xmlXPathRegisterFunc(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
     mut f: xmlXPathFunction,
@@ -7155,7 +7199,7 @@ pub fn xmlXPathRegisterFunc(
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisterFuncNS(
+pub unsafe fn xmlXPathRegisterFuncNS(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
     mut ns_uri: *const xmlChar,
@@ -7197,7 +7241,7 @@ pub fn xmlXPathRegisterFuncNS(
  * Registers an external mechanism to do function lookup.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisterFuncLookup(
+pub unsafe fn xmlXPathRegisterFuncLookup(
     mut ctxt: xmlXPathContextPtr,
     mut f: xmlXPathFuncLookupFunc,
     mut funcCtxt: *mut libc::c_void,
@@ -7220,7 +7264,7 @@ pub fn xmlXPathRegisterFuncLookup(
  * Returns the xmlXPathFunction or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathFunctionLookup(
+pub unsafe fn xmlXPathFunctionLookup(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
 ) -> xmlXPathFunction {
@@ -7252,7 +7296,7 @@ pub fn xmlXPathFunctionLookup(
  * Returns the xmlXPathFunction or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathFunctionLookupNS(
+pub unsafe fn xmlXPathFunctionLookupNS(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
     mut ns_uri: *const xmlChar,
@@ -7291,7 +7335,7 @@ pub fn xmlXPathFunctionLookupNS(
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 #[cfg(DEBUG_STEP)]
-pub extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mut nbNodes: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mut nbNodes: libc::c_int) {
     let safe_op = unsafe { &mut *op };
     unsafe {
         (*__xmlGenericError()).expect("non-null function pointer")(
@@ -7491,7 +7535,7 @@ pub extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mut nbNod
  * Cleanup the XPath context data associated to registered functions
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisteredFuncsCleanup(mut ctxt: xmlXPathContextPtr) {
+pub unsafe fn xmlXPathRegisteredFuncsCleanup(mut ctxt: xmlXPathContextPtr) {
     if ctxt.is_null() {
         return;
     }
@@ -7516,7 +7560,7 @@ pub fn xmlXPathRegisteredFuncsCleanup(mut ctxt: xmlXPathContextPtr) {
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisterVariable(
+pub unsafe fn xmlXPathRegisterVariable(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
     mut value: xmlXPathObjectPtr,
@@ -7535,7 +7579,7 @@ pub fn xmlXPathRegisterVariable(
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisterVariableNS(
+pub unsafe fn xmlXPathRegisterVariableNS(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
     mut ns_uri: *const xmlChar,
@@ -7652,7 +7696,7 @@ pub fn xmlXPathRegisterVariableNS(
  * register an external mechanism to do variable lookup
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisterVariableLookup(
+pub unsafe fn xmlXPathRegisterVariableLookup(
     mut ctxt: xmlXPathContextPtr,
     mut f: xmlXPathVariableLookupFunc,
     mut data: *mut libc::c_void,
@@ -7675,7 +7719,7 @@ pub fn xmlXPathRegisterVariableLookup(
  * Returns a copy of the value or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathVariableLookup(
+pub unsafe fn xmlXPathVariableLookup(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
 ) -> xmlXPathObjectPtr {
@@ -7707,7 +7751,7 @@ pub fn xmlXPathVariableLookup(
  * Returns the a copy of the value or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathVariableLookupNS(
+pub unsafe fn xmlXPathVariableLookupNS(
     mut ctxt: xmlXPathContextPtr,
     mut name: *const xmlChar,
     mut ns_uri: *const xmlChar,
@@ -7748,7 +7792,7 @@ pub fn xmlXPathVariableLookupNS(
  * Cleanup the XPath context data associated to registered variables
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisteredVariablesCleanup(mut ctxt: xmlXPathContextPtr) {
+pub unsafe fn xmlXPathRegisteredVariablesCleanup(mut ctxt: xmlXPathContextPtr) {
     if ctxt.is_null() {
         return;
     }
@@ -7777,7 +7821,7 @@ pub fn xmlXPathRegisteredVariablesCleanup(mut ctxt: xmlXPathContextPtr) {
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisterNs(
+pub unsafe fn xmlXPathRegisterNs(
     mut ctxt: xmlXPathContextPtr,
     mut prefix: *const xmlChar,
     mut ns_uri: *const xmlChar,
@@ -7832,7 +7876,7 @@ pub fn xmlXPathRegisterNs(
  * Returns the value or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNsLookup(
+pub unsafe fn xmlXPathNsLookup(
     mut ctxt: xmlXPathContextPtr,
     mut prefix: *const xmlChar,
 ) -> *const xmlChar {
@@ -7883,7 +7927,7 @@ pub fn xmlXPathNsLookup(
  * Cleanup the XPath context data associated to registered variables
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisteredNsCleanup(mut ctxt: xmlXPathContextPtr) {
+pub unsafe fn xmlXPathRegisteredNsCleanup(mut ctxt: xmlXPathContextPtr) {
     if ctxt.is_null() {
         return;
     }
@@ -7912,7 +7956,7 @@ pub fn xmlXPathRegisteredNsCleanup(mut ctxt: xmlXPathContextPtr) {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNewFloat(mut val: libc::c_double) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewFloat(mut val: libc::c_double) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -7956,7 +8000,7 @@ pub fn xmlXPathNewFloat(mut val: libc::c_double) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNewBoolean(mut val: libc::c_int) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewBoolean(mut val: libc::c_int) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -7999,7 +8043,7 @@ pub fn xmlXPathNewBoolean(mut val: libc::c_int) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNewString(mut val: *const xmlChar) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewString(mut val: *const xmlChar) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8050,7 +8094,7 @@ pub fn xmlXPathNewString(mut val: *const xmlChar) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathWrapString(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathWrapString(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8093,7 +8137,7 @@ pub fn xmlXPathWrapString(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNewCString(mut val: *const libc::c_char) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewCString(mut val: *const libc::c_char) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8136,7 +8180,7 @@ pub fn xmlXPathNewCString(mut val: *const libc::c_char) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathWrapCString(mut val: *mut libc::c_char) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathWrapCString(mut val: *mut libc::c_char) -> xmlXPathObjectPtr {
     return unsafe { xmlXPathWrapString(val as *mut xmlChar) };
 }
 /* *
@@ -8147,7 +8191,7 @@ pub fn xmlXPathWrapCString(mut val: *mut libc::c_char) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathWrapExternal(mut val: *mut libc::c_void) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathWrapExternal(mut val: *mut libc::c_void) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8190,7 +8234,7 @@ pub fn xmlXPathWrapExternal(mut val: *mut libc::c_void) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return 0 as xmlXPathObjectPtr;
@@ -8275,7 +8319,7 @@ pub fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
  * Free up an xmlXPathObjectPtr object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathFreeObject(mut obj: xmlXPathObjectPtr) {
+pub unsafe fn xmlXPathFreeObject(mut obj: xmlXPathObjectPtr) {
     if obj.is_null() {
         return;
     } /* TODO: Just for debugging. */
@@ -8336,7 +8380,7 @@ extern "C" fn xmlXPathFreeObjectEntry(mut obj: *mut libc::c_void, mut name: *con
  * XPath object or stores it in the cache.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathObjectPtr) {
+unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathObjectPtr) {
     let mut current_block: u64;
     if obj.is_null() {
         return;
@@ -8654,7 +8698,7 @@ fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathObjectPt
  * Returns a newly allocated string.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastBooleanToString(mut val: libc::c_int) -> *mut xmlChar {
+pub unsafe fn xmlXPathCastBooleanToString(mut val: libc::c_int) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if val != 0 {
         ret =
@@ -8673,7 +8717,7 @@ pub fn xmlXPathCastBooleanToString(mut val: libc::c_int) -> *mut xmlChar {
  * Returns a newly allocated string.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlChar {
+pub unsafe fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     match unsafe { xmlXPathIsInf(val) } {
         1 => {
@@ -8715,7 +8759,7 @@ pub fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlChar {
  * Returns a newly allocated string.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastNodeToString(mut node: xmlNodePtr) -> *mut xmlChar {
+pub unsafe fn xmlXPathCastNodeToString(mut node: xmlNodePtr) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     ret = unsafe { xmlNodeGetContent(node as *const xmlNode) };
     if ret.is_null() {
@@ -8731,7 +8775,7 @@ pub fn xmlXPathCastNodeToString(mut node: xmlNodePtr) -> *mut xmlChar {
  * Returns a newly allocated string.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastNodeSetToString(mut ns: xmlNodeSetPtr) -> *mut xmlChar {
+pub unsafe fn xmlXPathCastNodeSetToString(mut ns: xmlNodeSetPtr) -> *mut xmlChar {
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null() || safe_ns.nodeNr == 0 as libc::c_int || safe_ns.nodeTab.is_null() {
         return unsafe { xmlStrdup(b"\x00" as *const u8 as *const libc::c_char as *const xmlChar) };
@@ -8750,7 +8794,7 @@ pub fn xmlXPathCastNodeSetToString(mut ns: xmlNodeSetPtr) -> *mut xmlChar {
  *         It's up to the caller to free the string memory with xmlFree().
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastToString(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
+pub unsafe fn xmlXPathCastToString(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if val.is_null() {
         return unsafe { xmlStrdup(b"\x00" as *const u8 as *const libc::c_char as *const xmlChar) };
@@ -8802,7 +8846,7 @@ pub fn xmlXPathCastToString(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
  * Returns the new object, the old one is freed (or the operation
  *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     let mut res: *mut xmlChar = 0 as *mut xmlChar;
     if val.is_null() {
         return unsafe { xmlXPathNewCString(b"\x00" as *const u8 as *const libc::c_char) };
@@ -8854,7 +8898,7 @@ pub fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastBooleanToNumber(mut val: libc::c_int) -> libc::c_double {
+pub unsafe fn xmlXPathCastBooleanToNumber(mut val: libc::c_int) -> libc::c_double {
     if val != 0 {
         return 1.0f64;
     }
@@ -8869,7 +8913,7 @@ pub fn xmlXPathCastBooleanToNumber(mut val: libc::c_int) -> libc::c_double {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastStringToNumber(mut val: *const xmlChar) -> libc::c_double {
+pub unsafe fn xmlXPathCastStringToNumber(mut val: *const xmlChar) -> libc::c_double {
     return unsafe { xmlXPathStringEvalNumber(val) };
 }
 /* *
@@ -8881,7 +8925,7 @@ pub fn xmlXPathCastStringToNumber(mut val: *const xmlChar) -> libc::c_double {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastNodeToNumber(mut node: xmlNodePtr) -> libc::c_double {
+pub unsafe fn xmlXPathCastNodeToNumber(mut node: xmlNodePtr) -> libc::c_double {
     let mut strval: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: libc::c_double = 0.;
     if node.is_null() {
@@ -8904,7 +8948,7 @@ pub fn xmlXPathCastNodeToNumber(mut node: xmlNodePtr) -> libc::c_double {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastNodeSetToNumber(mut ns: xmlNodeSetPtr) -> libc::c_double {
+pub unsafe fn xmlXPathCastNodeSetToNumber(mut ns: xmlNodeSetPtr) -> libc::c_double {
     let mut str: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: libc::c_double = 0.;
     if ns.is_null() {
@@ -8923,7 +8967,7 @@ pub fn xmlXPathCastNodeSetToNumber(mut ns: xmlNodeSetPtr) -> libc::c_double {
  * Returns the number value
  */
 
-pub fn xmlXPathCastToNumber(mut val: xmlXPathObjectPtr) -> libc::c_double {
+pub unsafe fn xmlXPathCastToNumber(mut val: xmlXPathObjectPtr) -> libc::c_double {
     let mut ret: libc::c_double = 0.0f64;
     if val.is_null() {
         return unsafe { xmlXPathNAN };
@@ -8974,7 +9018,7 @@ pub fn xmlXPathCastToNumber(mut val: xmlXPathObjectPtr) -> libc::c_double {
  *         is done directly on @val) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return xmlXPathNewFloat(0.0f64);
@@ -8999,7 +9043,7 @@ pub fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastNumberToBoolean(mut val: libc::c_double) -> libc::c_int {
+pub unsafe fn xmlXPathCastNumberToBoolean(mut val: libc::c_double) -> libc::c_int {
     if unsafe { xmlXPathIsNaN(val) } != 0 || val == 0.0f64 {
         return 0 as libc::c_int;
     }
@@ -9014,7 +9058,7 @@ pub fn xmlXPathCastNumberToBoolean(mut val: libc::c_double) -> libc::c_int {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastStringToBoolean(mut val: *const xmlChar) -> libc::c_int {
+pub unsafe fn xmlXPathCastStringToBoolean(mut val: *const xmlChar) -> libc::c_int {
     if val.is_null() || unsafe { xmlStrlen(val) } == 0 as libc::c_int {
         return 0 as libc::c_int;
     }
@@ -9029,7 +9073,7 @@ pub fn xmlXPathCastStringToBoolean(mut val: *const xmlChar) -> libc::c_int {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCastNodeSetToBoolean(mut ns: xmlNodeSetPtr) -> libc::c_int {
+pub unsafe fn xmlXPathCastNodeSetToBoolean(mut ns: xmlNodeSetPtr) -> libc::c_int {
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null() || safe_ns.nodeNr == 0 as libc::c_int {
         return 0 as libc::c_int;
@@ -9044,7 +9088,7 @@ pub fn xmlXPathCastNodeSetToBoolean(mut ns: xmlNodeSetPtr) -> libc::c_int {
  * Returns the boolean value
  */
 
-pub fn xmlXPathCastToBoolean(mut val: xmlXPathObjectPtr) -> libc::c_int {
+pub unsafe fn xmlXPathCastToBoolean(mut val: xmlXPathObjectPtr) -> libc::c_int {
     let mut ret: libc::c_int = 0 as libc::c_int;
     if val.is_null() {
         return 0 as libc::c_int;
@@ -9095,7 +9139,7 @@ pub fn xmlXPathCastToBoolean(mut val: xmlXPathObjectPtr) -> libc::c_int {
  *         is done directly on @val) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathConvertBoolean(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathConvertBoolean(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return unsafe { xmlXPathNewBoolean(0 as libc::c_int) };
@@ -9124,7 +9168,7 @@ pub fn xmlXPathConvertBoolean(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
  * Returns the xmlXPathContext just allocated. The caller will need to free it.
  */
 
-pub fn xmlXPathNewContext(mut doc: xmlDocPtr) -> xmlXPathContextPtr {
+pub unsafe fn xmlXPathNewContext(mut doc: xmlDocPtr) -> xmlXPathContextPtr {
     let mut ret: xmlXPathContextPtr = 0 as *mut xmlXPathContext;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -9182,7 +9226,7 @@ pub fn xmlXPathNewContext(mut doc: xmlDocPtr) -> xmlXPathContextPtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathFreeContext(mut ctxt: xmlXPathContextPtr) {
+pub unsafe fn xmlXPathFreeContext(mut ctxt: xmlXPathContextPtr) {
     if ctxt.is_null() {
         return;
     }
@@ -9216,7 +9260,7 @@ pub fn xmlXPathFreeContext(mut ctxt: xmlXPathContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNewParserContext(
+pub unsafe fn xmlXPathNewParserContext(
     mut str: *const xmlChar,
     mut ctxt: xmlXPathContextPtr,
 ) -> xmlXPathParserContextPtr {
@@ -9272,7 +9316,7 @@ pub fn xmlXPathNewParserContext(
  * Returns the xmlXPathParserContext just allocated.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompParserContext(
+unsafe fn xmlXPathCompParserContext(
     mut comp: xmlXPathCompExprPtr,
     mut ctxt: xmlXPathContextPtr,
 ) -> xmlXPathParserContextPtr {
@@ -9332,7 +9376,7 @@ fn xmlXPathCompParserContext(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathFreeParserContext(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathFreeParserContext(mut ctxt: xmlXPathParserContextPtr) {
     let mut i: libc::c_int = 0;
     let safe_ctxt = unsafe { &mut *ctxt };
     if !safe_ctxt.valueTab.is_null() {
@@ -9382,7 +9426,7 @@ pub fn xmlXPathFreeParserContext(mut ctxt: xmlXPathParserContextPtr) {
  * Returns an int usable as a hash
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNodeValHash(mut node: xmlNodePtr) -> libc::c_uint {
+unsafe fn xmlXPathNodeValHash(mut node: xmlNodePtr) -> libc::c_uint {
     let mut len: libc::c_int = 2 as libc::c_int;
     let mut string: *const xmlChar = 0 as *const xmlChar;
     let mut tmp: xmlNodePtr = 0 as xmlNodePtr;
@@ -9518,7 +9562,7 @@ fn xmlXPathNodeValHash(mut node: xmlNodePtr) -> libc::c_uint {
  * Returns an int usable as a hash
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathStringHash(mut string: *const xmlChar) -> libc::c_uint {
+unsafe fn xmlXPathStringHash(mut string: *const xmlChar) -> libc::c_uint {
     if string.is_null() {
         return 0 as libc::c_int as libc::c_uint;
     }
@@ -9551,7 +9595,7 @@ fn xmlXPathStringHash(mut string: *const xmlChar) -> libc::c_uint {
  * Returns 0 or 1 depending on the results of the test.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompareNodeSetFloat(
+unsafe fn xmlXPathCompareNodeSetFloat(
     mut ctxt: xmlXPathParserContextPtr,
     mut inf: libc::c_int,
     mut strict: libc::c_int,
@@ -9619,7 +9663,7 @@ fn xmlXPathCompareNodeSetFloat(
  * Returns 0 or 1 depending on the results of the test.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompareNodeSetString(
+unsafe fn xmlXPathCompareNodeSetString(
     mut ctxt: xmlXPathParserContextPtr,
     mut inf: libc::c_int,
     mut strict: libc::c_int,
@@ -9692,7 +9736,7 @@ fn xmlXPathCompareNodeSetString(
  * and then the comparison must be done when possible
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompareNodeSets(
+unsafe fn xmlXPathCompareNodeSets(
     mut inf: libc::c_int,
     mut strict: libc::c_int,
     mut arg1: xmlXPathObjectPtr,
@@ -9822,7 +9866,7 @@ fn xmlXPathCompareNodeSets(
  * Returns 0 or 1 depending on the results of the test.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompareNodeSetValue(
+unsafe fn xmlXPathCompareNodeSetValue(
     mut ctxt: xmlXPathParserContextPtr,
     mut inf: libc::c_int,
     mut strict: libc::c_int,
@@ -9876,7 +9920,7 @@ fn xmlXPathCompareNodeSetValue(
  * Returns 0 or 1 depending on the results of the test.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathEqualNodeSetString(
+unsafe fn xmlXPathEqualNodeSetString(
     mut arg: xmlXPathObjectPtr,
     mut str: *const xmlChar,
     mut neq: libc::c_int,
@@ -9958,7 +10002,7 @@ fn xmlXPathEqualNodeSetString(
  * Returns 0 or 1 depending on the results of the test.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathEqualNodeSetFloat(
+unsafe fn xmlXPathEqualNodeSetFloat(
     mut ctxt: xmlXPathParserContextPtr,
     mut arg: xmlXPathObjectPtr,
     mut f: libc::c_double,
@@ -9996,9 +10040,11 @@ fn xmlXPathEqualNodeSetFloat(
                     if neq == 0 && v == f {
                         ret = 1 as libc::c_int;
                         break;
-                    } else if neq != 0 && v != f {
-                        ret = 1 as libc::c_int;
-                        break;
+                    } else {
+                        if neq != 0 && v != f {
+                            ret = 1 as libc::c_int;
+                            break;
+                        }
                     }
                 } else if neq != 0 {
                     ret = 1 as libc::c_int
@@ -10023,7 +10069,7 @@ fn xmlXPathEqualNodeSetFloat(
  * Returns 0 or 1 depending on the results of the test.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathEqualNodeSets(
+unsafe fn xmlXPathEqualNodeSets(
     mut arg1: xmlXPathObjectPtr,
     mut arg2: xmlXPathObjectPtr,
     mut neq: libc::c_int,
@@ -10243,7 +10289,7 @@ fn xmlXPathEqualNodeSets(
     return ret;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathEqualValuesCommon(
+unsafe fn xmlXPathEqualValuesCommon(
     mut ctxt: xmlXPathParserContextPtr,
     mut arg1: xmlXPathObjectPtr,
     mut arg2: xmlXPathObjectPtr,
@@ -10500,7 +10546,7 @@ fn xmlXPathEqualValuesCommon(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
+pub unsafe fn xmlXPathEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
     let mut arg1: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut arg2: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut argtmp: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
@@ -10623,7 +10669,7 @@ pub fn xmlXPathEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNotEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
+pub unsafe fn xmlXPathNotEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
     let mut arg1: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut arg2: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut argtmp: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
@@ -10759,7 +10805,7 @@ pub fn xmlXPathNotEqualValues(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCompareValues(
+pub unsafe fn xmlXPathCompareValues(
     mut ctxt: xmlXPathParserContextPtr,
     mut inf: libc::c_int,
     mut strict: libc::c_int,
@@ -10907,7 +10953,7 @@ pub fn xmlXPathCompareValues(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathValueFlipSign(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathValueFlipSign(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.context.is_null() {
         return;
@@ -10937,7 +10983,7 @@ pub fn xmlXPathValueFlipSign(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathAddValues(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathAddValues(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut val: libc::c_double = 0.;
@@ -10975,7 +11021,7 @@ pub fn xmlXPathAddValues(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathSubValues(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathSubValues(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut val: libc::c_double = 0.;
@@ -11013,7 +11059,7 @@ pub fn xmlXPathSubValues(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathMultValues(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathMultValues(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut val: libc::c_double = 0.;
@@ -11051,7 +11097,7 @@ pub fn xmlXPathMultValues(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathDivValues(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathDivValues(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut val: libc::c_double = 0.;
@@ -11090,7 +11136,7 @@ pub fn xmlXPathDivValues(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathModValues(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathModValues(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut arg: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut arg1: libc::c_double = 0.;
@@ -11140,7 +11186,7 @@ pub fn xmlXPathModValues(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextSelf(
+pub unsafe extern "C" fn xmlXPathNextSelf(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11164,7 +11210,7 @@ pub extern "C" fn xmlXPathNextSelf(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextChild(
+pub unsafe extern "C" fn xmlXPathNextChild(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11344,7 +11390,7 @@ extern "C" fn xmlXPathNextChildElement(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextDescendant(
+pub unsafe extern "C" fn xmlXPathNextDescendant(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11435,7 +11481,7 @@ pub extern "C" fn xmlXPathNextDescendant(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextDescendantOrSelf(
+pub unsafe extern "C" fn xmlXPathNextDescendantOrSelf(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11469,7 +11515,7 @@ pub extern "C" fn xmlXPathNextDescendantOrSelf(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextParent(
+pub unsafe extern "C" fn xmlXPathNextParent(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11478,10 +11524,10 @@ pub extern "C" fn xmlXPathNextParent(
         return 0 as xmlNodePtr;
     }
     /*
-    * the parent of an attribute or namespace node is the element
-    * to which the attribute or namespace node is attached
-    * Namespace handling !!!
-    */
+     * the parent of an attribute or namespace node is the element
+     * to which the attribute or namespace node is attached
+     * Namespace handling !!!
+     */
     if cur.is_null() {
         if unsafe { (*safe_ctxt.context).node.is_null() } {
             return 0 as xmlNodePtr;
@@ -11544,7 +11590,7 @@ pub extern "C" fn xmlXPathNextParent(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextAncestor(
+pub unsafe extern "C" fn xmlXPathNextAncestor(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11668,7 +11714,7 @@ pub extern "C" fn xmlXPathNextAncestor(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextAncestorOrSelf(
+pub unsafe extern "C" fn xmlXPathNextAncestorOrSelf(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11693,7 +11739,7 @@ pub extern "C" fn xmlXPathNextAncestorOrSelf(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextFollowingSibling(
+pub unsafe extern "C" fn xmlXPathNextFollowingSibling(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11729,7 +11775,7 @@ pub extern "C" fn xmlXPathNextFollowingSibling(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextPrecedingSibling(
+pub unsafe extern "C" fn xmlXPathNextPrecedingSibling(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11775,7 +11821,7 @@ pub extern "C" fn xmlXPathNextPrecedingSibling(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextFollowing(
+pub unsafe extern "C" fn xmlXPathNextFollowing(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -11845,7 +11891,7 @@ pub extern "C" fn xmlXPathNextFollowing(
  * returns 1 if @ancestor is a @node's ancestor, 0 otherwise.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathIsAncestor(mut ancestor: xmlNodePtr, mut node: xmlNodePtr) -> libc::c_int {
+unsafe fn xmlXPathIsAncestor(mut ancestor: xmlNodePtr, mut node: xmlNodePtr) -> libc::c_int {
     let safe_node = unsafe { &mut *node };
     if ancestor.is_null() || node.is_null() {
         return 0 as libc::c_int;
@@ -11891,7 +11937,7 @@ fn xmlXPathIsAncestor(mut ancestor: xmlNodePtr, mut node: xmlNodePtr) -> libc::c
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNextPreceding(
+pub unsafe fn xmlXPathNextPreceding(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -12043,7 +12089,7 @@ extern "C" fn xmlXPathNextPrecedingInternal(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextNamespace(
+pub unsafe extern "C" fn xmlXPathNextNamespace(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -12113,7 +12159,7 @@ pub extern "C" fn xmlXPathNextNamespace(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNextAttribute(
+pub unsafe extern "C" fn xmlXPathNextAttribute(
     mut ctxt: xmlXPathParserContextPtr,
     mut cur: xmlNodePtr,
 ) -> xmlNodePtr {
@@ -12155,7 +12201,7 @@ pub extern "C" fn xmlXPathNextAttribute(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRoot(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathRoot(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.context.is_null() {
         return;
@@ -12186,7 +12232,7 @@ pub fn xmlXPathRoot(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathLastFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathLastFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     if ctxt.is_null() {
         return;
     }
@@ -12239,7 +12285,7 @@ pub extern "C" fn xmlXPathLastFunction(mut ctxt: xmlXPathParserContextPtr, mut n
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathPositionFunction(
+pub unsafe extern "C" fn xmlXPathPositionFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12292,7 +12338,7 @@ pub extern "C" fn xmlXPathPositionFunction(
  *    number count(node-set) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathCountFunction(
+pub unsafe extern "C" fn xmlXPathCountFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12348,7 +12394,7 @@ pub extern "C" fn xmlXPathCountFunction(
  * Returns a node-set of selected elements.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathGetElementsByIds(mut doc: xmlDocPtr, mut ids: *const xmlChar) -> xmlNodeSetPtr {
+unsafe fn xmlXPathGetElementsByIds(mut doc: xmlDocPtr, mut ids: *const xmlChar) -> xmlNodeSetPtr {
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut cur: *const xmlChar = ids;
     let mut ID: *mut xmlChar = 0 as *mut xmlChar;
@@ -12438,7 +12484,7 @@ fn xmlXPathGetElementsByIds(mut doc: xmlDocPtr, mut ids: *const xmlChar) -> xmlN
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathIdFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathIdFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     let mut tokens: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
@@ -12510,7 +12556,7 @@ pub extern "C" fn xmlXPathIdFunction(mut ctxt: xmlXPathParserContextPtr, mut nar
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathLocalNameFunction(
+pub unsafe extern "C" fn xmlXPathLocalNameFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12633,7 +12679,7 @@ pub extern "C" fn xmlXPathLocalNameFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNamespaceURIFunction(
+pub unsafe extern "C" fn xmlXPathNamespaceURIFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12915,7 +12961,7 @@ extern "C" fn xmlXPathNameFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathStringFunction(
+pub unsafe extern "C" fn xmlXPathStringFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -12966,7 +13012,7 @@ pub extern "C" fn xmlXPathStringFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathStringLengthFunction(
+pub unsafe extern "C" fn xmlXPathStringLengthFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13044,7 +13090,7 @@ pub extern "C" fn xmlXPathStringLengthFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathConcatFunction(
+pub unsafe extern "C" fn xmlXPathConcatFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13124,7 +13170,7 @@ pub extern "C" fn xmlXPathConcatFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathContainsFunction(
+pub unsafe extern "C" fn xmlXPathContainsFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13201,7 +13247,7 @@ pub extern "C" fn xmlXPathContainsFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathStartsWithFunction(
+pub unsafe extern "C" fn xmlXPathStartsWithFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13295,7 +13341,7 @@ pub extern "C" fn xmlXPathStartsWithFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathSubstringFunction(
+pub unsafe extern "C" fn xmlXPathSubstringFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13446,7 +13492,7 @@ pub extern "C" fn xmlXPathSubstringFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathSubstringBeforeFunction(
+pub unsafe extern "C" fn xmlXPathSubstringBeforeFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13512,7 +13558,7 @@ pub extern "C" fn xmlXPathSubstringBeforeFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathSubstringAfterFunction(
+pub unsafe extern "C" fn xmlXPathSubstringAfterFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13588,7 +13634,7 @@ pub extern "C" fn xmlXPathSubstringAfterFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNormalizeFunction(
+pub unsafe extern "C" fn xmlXPathNormalizeFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13699,7 +13745,7 @@ pub extern "C" fn xmlXPathNormalizeFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathTranslateFunction(
+pub unsafe extern "C" fn xmlXPathTranslateFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13840,7 +13886,7 @@ pub extern "C" fn xmlXPathTranslateFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathBooleanFunction(
+pub unsafe extern "C" fn xmlXPathBooleanFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13874,7 +13920,7 @@ pub extern "C" fn xmlXPathBooleanFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNotFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathNotFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     if ctxt.is_null() {
         return;
     }
@@ -13910,7 +13956,7 @@ pub extern "C" fn xmlXPathNotFunction(mut ctxt: xmlXPathParserContextPtr, mut na
  *    boolean true() */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathTrueFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathTrueFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     if ctxt.is_null() {
         return;
     }
@@ -13938,7 +13984,7 @@ pub extern "C" fn xmlXPathTrueFunction(mut ctxt: xmlXPathParserContextPtr, mut n
  *    boolean false() */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathFalseFunction(
+pub unsafe extern "C" fn xmlXPathFalseFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -13981,7 +14027,7 @@ pub extern "C" fn xmlXPathFalseFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     let mut current_block: u64;
     let mut val: xmlXPathObjectPtr = 0 as xmlXPathObjectPtr;
     let mut theLang: *const xmlChar = 0 as *const xmlChar;
@@ -14028,7 +14074,7 @@ pub extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut n
                 if ::std::mem::size_of::<xmlChar>() as libc::c_ulong
                     > 1 as libc::c_int as libc::c_ulong
                 {
-                    if 0 != 0 {
+                    if 1 > 2 {
                         let mut __c: libc::c_int =
                             unsafe { *lang.offset(i as isize) as libc::c_int };
                         __res = (if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
@@ -14051,7 +14097,7 @@ pub extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut n
                 if ::std::mem::size_of::<xmlChar>() as libc::c_ulong
                     > 1 as libc::c_int as libc::c_ulong
                 {
-                    if 0 != 0 {
+                    if 1 > 2 {
                         let mut __c: libc::c_int =
                             unsafe { *theLang.offset(i as isize) as libc::c_int };
                         __res = (if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
@@ -14100,7 +14146,7 @@ pub extern "C" fn xmlXPathLangFunction(mut ctxt: xmlXPathParserContextPtr, mut n
  *    number number(object?) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathNumberFunction(
+pub unsafe extern "C" fn xmlXPathNumberFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -14116,7 +14162,7 @@ pub extern "C" fn xmlXPathNumberFunction(
         } else {
             let mut content: *mut xmlChar =
                 unsafe { xmlNodeGetContent((*safe_ctxt.context).node as *const xmlNode) };
-            res = xmlXPathStringEvalNumber(content);
+            unsafe { res = xmlXPathStringEvalNumber(content) };
             unsafe { valuePush(ctxt, xmlXPathCacheNewFloat(safe_ctxt.context, res)) };
             unsafe { xmlFree.expect("non-null function pointer")(content as *mut libc::c_void) };
         }
@@ -14146,7 +14192,7 @@ pub extern "C" fn xmlXPathNumberFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathSumFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
+pub unsafe extern "C" fn xmlXPathSumFunction(mut ctxt: xmlXPathParserContextPtr, mut nargs: libc::c_int) {
     let mut cur: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut i: libc::c_int = 0;
     let mut res: libc::c_double = 0.0f64;
@@ -14195,7 +14241,7 @@ pub extern "C" fn xmlXPathSumFunction(mut ctxt: xmlXPathParserContextPtr, mut na
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathFloorFunction(
+pub unsafe extern "C" fn xmlXPathFloorFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -14237,7 +14283,7 @@ pub extern "C" fn xmlXPathFloorFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathCeilingFunction(
+pub unsafe extern "C" fn xmlXPathCeilingFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -14288,7 +14334,7 @@ pub extern "C" fn xmlXPathCeilingFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub extern "C" fn xmlXPathRoundFunction(
+pub unsafe extern "C" fn xmlXPathRoundFunction(
     mut ctxt: xmlXPathParserContextPtr,
     mut nargs: libc::c_int,
 ) {
@@ -14341,7 +14387,7 @@ pub extern "C" fn xmlXPathRoundFunction(
  * Returns the current char value and its length
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCurrentChar(
+unsafe fn xmlXPathCurrentChar(
     mut ctxt: xmlXPathParserContextPtr,
     mut len: *mut libc::c_int,
 ) -> libc::c_int {
@@ -14494,7 +14540,7 @@ fn xmlXPathCurrentChar(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathParseNCName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
+pub unsafe fn xmlXPathParseNCName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     let mut count: libc::c_int = 0 as libc::c_int;
@@ -14563,7 +14609,7 @@ pub fn xmlXPathParseNCName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
  *   to get the Prefix if any.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathParseQName(
+unsafe fn xmlXPathParseQName(
     mut ctxt: xmlXPathParserContextPtr,
     mut prefix: *mut *mut xmlChar,
 ) -> *mut xmlChar {
@@ -14597,7 +14643,7 @@ fn xmlXPathParseQName(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathParseName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
+pub unsafe fn xmlXPathParseName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     let mut count: size_t = 0 as libc::c_int as size_t;
@@ -14648,7 +14694,7 @@ pub fn xmlXPathParseName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     return unsafe { xmlXPathParseNameComplex(ctxt, 1 as libc::c_int) };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathParseNameComplex(
+unsafe fn xmlXPathParseNameComplex(
     mut ctxt: xmlXPathParserContextPtr,
     mut qualified: libc::c_int,
 ) -> *mut xmlChar {
@@ -14866,7 +14912,7 @@ fn xmlXPathParseNameComplex(
  * Returns the double value.
  */
 
-pub fn xmlXPathStringEvalNumber(mut str: *const xmlChar) -> libc::c_double {
+pub unsafe fn xmlXPathStringEvalNumber(mut str: *const xmlChar) -> libc::c_double {
     let mut cur: *const xmlChar = str;
     let mut ret: libc::c_double = 0.;
     let mut ok: libc::c_int = 0 as libc::c_int;
@@ -15015,7 +15061,7 @@ pub fn xmlXPathStringEvalNumber(mut str: *const xmlChar) -> libc::c_double {
  *
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompNumber(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompNumber(mut ctxt: xmlXPathParserContextPtr) {
     let mut ret: libc::c_double = 0.0f64;
     let mut ok: libc::c_int = 0 as libc::c_int;
     let mut exponent: libc::c_int = 0 as libc::c_int;
@@ -15170,7 +15216,7 @@ fn xmlXPathCompNumber(mut ctxt: xmlXPathParserContextPtr) {
  * Returns the value found or NULL in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathParseLiteral(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
+unsafe fn xmlXPathParseLiteral(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     let mut q: *const xmlChar = 0 as *const xmlChar;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     let safe_ctxt = unsafe { &mut *ctxt };
@@ -15267,7 +15313,7 @@ fn xmlXPathParseLiteral(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
  * TODO: xmlXPathCompLiteral memory allocation could be improved.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompLiteral(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompLiteral(mut ctxt: xmlXPathParserContextPtr) {
     let mut q: *const xmlChar = 0 as *const xmlChar;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     let mut lit: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
@@ -15390,7 +15436,7 @@ fn xmlXPathCompLiteral(mut ctxt: xmlXPathParserContextPtr) {
  *  [36]   VariableReference ::= '$' QName
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompVariableReference(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompVariableReference(mut ctxt: xmlXPathParserContextPtr) {
     let mut name: *mut xmlChar = 0 as *mut xmlChar;
     let mut prefix: *mut xmlChar = 0 as *mut xmlChar;
     let safe_ctxt = unsafe { &mut *ctxt };
@@ -15468,7 +15514,7 @@ fn xmlXPathCompVariableReference(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathIsNodeType(mut name: *const xmlChar) -> libc::c_int {
+pub unsafe fn xmlXPathIsNodeType(mut name: *const xmlChar) -> libc::c_int {
     if name.is_null() {
         return 0 as libc::c_int;
     }
@@ -15516,7 +15562,7 @@ pub fn xmlXPathIsNodeType(mut name: *const xmlChar) -> libc::c_int {
  * pushed on the stack
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompFunctionCall(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompFunctionCall(mut ctxt: xmlXPathParserContextPtr) {
     let mut name: *mut xmlChar = 0 as *mut xmlChar;
     let mut prefix: *mut xmlChar = 0 as *mut xmlChar;
     let mut nbargs: libc::c_int = 0 as libc::c_int;
@@ -15670,7 +15716,7 @@ fn xmlXPathCompFunctionCall(mut ctxt: xmlXPathParserContextPtr) {
  * Compile a primary expression.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompPrimaryExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompPrimaryExpr(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     while unsafe {
         *safe_ctxt.cur as libc::c_int == 0x20 as libc::c_int
@@ -15767,7 +15813,7 @@ fn xmlXPathCompPrimaryExpr(mut ctxt: xmlXPathParserContextPtr) {
  * to be filtered listed in document order.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompFilterExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompFilterExpr(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { xmlXPathCompPrimaryExpr(ctxt) };
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.error != XPATH_EXPRESSION_OK as libc::c_int {
@@ -15815,7 +15861,7 @@ fn xmlXPathCompFilterExpr(mut ctxt: xmlXPathParserContextPtr) {
  * Returns the Name parsed or NULL
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathScanName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
+unsafe fn xmlXPathScanName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     let mut len: libc::c_int = 0 as libc::c_int;
     let mut l: libc::c_int = 0;
     let mut c: libc::c_int = 0;
@@ -15919,7 +15965,7 @@ fn xmlXPathScanName(mut ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
  * /descendant-or-self::node()/.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
     let mut lc: libc::c_int = 1 as libc::c_int; /* Should we branch to LocationPath ?         */
     let mut name: *mut xmlChar = 0 as *mut xmlChar; /* we may have to preparse a name to find out */
     let safe_ctxt = unsafe { &mut *ctxt };
@@ -15934,7 +15980,7 @@ fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
         } else {
         };
     }
-    if unsafe {
+    if (unsafe {
         *safe_ctxt.cur as libc::c_int == '$' as i32
             || *safe_ctxt.cur as libc::c_int == '(' as i32
             || 0x30 as libc::c_int <= *safe_ctxt.cur as libc::c_int
@@ -15946,19 +15992,13 @@ fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
                     <= *safe_ctxt.cur.offset(1 as libc::c_int as isize) as libc::c_int
                     && *safe_ctxt.cur.offset(1 as libc::c_int as isize) as libc::c_int
                         <= 0x39 as libc::c_int)
-    } {
+    }) {
         lc = 0 as libc::c_int
-    } else if unsafe { *safe_ctxt.cur as libc::c_int == '*' as i32 } {
+    } else if (unsafe { *safe_ctxt.cur as libc::c_int == '*' as i32 })
+    || (unsafe { *safe_ctxt.cur as libc::c_int == '/' as i32 })
+    || (unsafe { *safe_ctxt.cur as libc::c_int == '@' as i32 })
+    || (unsafe { *safe_ctxt.cur as libc::c_int == '.' as i32 }) {
         /* relative or absolute location path */
-        lc = 1 as libc::c_int
-    } else if unsafe { *safe_ctxt.cur as libc::c_int == '/' as i32 } {
-        /* relative or absolute location path */
-        lc = 1 as libc::c_int
-    } else if unsafe { *safe_ctxt.cur as libc::c_int == '@' as i32 } {
-        /* relative abbreviated attribute location path */
-        lc = 1 as libc::c_int
-    } else if unsafe { *safe_ctxt.cur as libc::c_int == '.' as i32 } {
-        /* relative abbreviated attribute location path */
         lc = 1 as libc::c_int
     } else {
         /*
@@ -16021,33 +16061,17 @@ fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
                     *safe_ctxt.cur.offset(len as isize) as libc::c_int == '(' as i32
                 } {
                     /* Node Type or Function */
-                    if unsafe { xmlXPathIsNodeType(name) != 0 } {
-                        lc = 1 as libc::c_int
-                    } else if safe_ctxt.xptr != 0
+                    if ((unsafe { xmlXPathIsNodeType(name) != 0 })) || (safe_ctxt.xptr != 0
                         && unsafe {
                             xmlStrEqual(
                                 name,
                                 b"range-to\x00" as *const u8 as *const libc::c_char as *mut xmlChar,
                             ) != 0
-                        }
-                    {
+                        }) {
                         lc = 1 as libc::c_int
                     } else {
                         lc = 0 as libc::c_int
                     }
-                    break;
-                } else if unsafe {
-                    *safe_ctxt.cur.offset(len as isize) as libc::c_int == '[' as i32
-                } {
-                    /* element name */
-                    lc = 1 as libc::c_int;
-                    break;
-                } else if unsafe {
-                    *safe_ctxt.cur.offset(len as isize) as libc::c_int == '<' as i32
-                        || *safe_ctxt.cur.offset(len as isize) as libc::c_int == '>' as i32
-                        || *safe_ctxt.cur.offset(len as isize) as libc::c_int == '=' as i32
-                } {
-                    lc = 1 as libc::c_int;
                     break;
                 } else {
                     lc = 1 as libc::c_int;
@@ -16156,7 +16180,7 @@ fn xmlXPathCompPathExpr(mut ctxt: xmlXPathParserContextPtr) {
  * Compile an union expression.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompUnionExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompUnionExpr(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { xmlXPathCompPathExpr(ctxt) };
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.error != XPATH_EXPRESSION_OK as libc::c_int {
@@ -16239,7 +16263,7 @@ fn xmlXPathCompUnionExpr(mut ctxt: xmlXPathParserContextPtr) {
  * Compile an unary expression.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompUnaryExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompUnaryExpr(mut ctxt: xmlXPathParserContextPtr) {
     let mut minus: libc::c_int = 0 as libc::c_int;
     let mut found: libc::c_int = 0 as libc::c_int;
     let safe_ctxt = unsafe { &mut *ctxt };
@@ -16321,7 +16345,7 @@ fn xmlXPathCompUnaryExpr(mut ctxt: xmlXPathParserContextPtr) {
  * Compile an Additive expression.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompMultiplicativeExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompMultiplicativeExpr(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { xmlXPathCompUnaryExpr(ctxt) };
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.error != XPATH_EXPRESSION_OK as libc::c_int {
@@ -16413,7 +16437,7 @@ fn xmlXPathCompMultiplicativeExpr(mut ctxt: xmlXPathParserContextPtr) {
  * Compile an Additive expression.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompAdditiveExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompAdditiveExpr(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { xmlXPathCompMultiplicativeExpr(ctxt) };
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.error != XPATH_EXPRESSION_OK as libc::c_int {
@@ -16502,7 +16526,7 @@ fn xmlXPathCompAdditiveExpr(mut ctxt: xmlXPathParserContextPtr) {
  * on the stack
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompRelationalExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompRelationalExpr(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { xmlXPathCompAdditiveExpr(ctxt) };
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.error != XPATH_EXPRESSION_OK as libc::c_int {
@@ -16603,7 +16627,7 @@ fn xmlXPathCompRelationalExpr(mut ctxt: xmlXPathParserContextPtr) {
  *
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompEqualityExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompEqualityExpr(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { xmlXPathCompRelationalExpr(ctxt) };
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.error != XPATH_EXPRESSION_OK as libc::c_int {
@@ -16693,7 +16717,7 @@ fn xmlXPathCompEqualityExpr(mut ctxt: xmlXPathParserContextPtr) {
  *
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompAndExpr(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompAndExpr(mut ctxt: xmlXPathParserContextPtr) {
     unsafe { xmlXPathCompEqualityExpr(ctxt) };
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.error != XPATH_EXPRESSION_OK as libc::c_int {
@@ -16779,7 +16803,7 @@ fn xmlXPathCompAndExpr(mut ctxt: xmlXPathParserContextPtr) {
  * Parse and compile an expression
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompileExpr(mut ctxt: xmlXPathParserContextPtr, mut sort: libc::c_int) {
+unsafe fn xmlXPathCompileExpr(mut ctxt: xmlXPathParserContextPtr, mut sort: libc::c_int) {
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut xpctxt: xmlXPathContextPtr = safe_ctxt.context;
     let safe_xpctxt = unsafe { &mut *xpctxt };
@@ -16899,7 +16923,7 @@ fn xmlXPathCompileExpr(mut ctxt: xmlXPathParserContextPtr, mut sort: libc::c_int
  * Compile a predicate expression
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompPredicate(mut ctxt: xmlXPathParserContextPtr, mut filter: libc::c_int) {
+unsafe fn xmlXPathCompPredicate(mut ctxt: xmlXPathParserContextPtr, mut filter: libc::c_int) {
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut op1: libc::c_int = unsafe { (*safe_ctxt.comp).last };
     while unsafe {
@@ -17018,7 +17042,7 @@ fn xmlXPathCompPredicate(mut ctxt: xmlXPathParserContextPtr, mut filter: libc::c
  * Returns the name found and updates @test, @type and @prefix appropriately
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompNodeTest(
+unsafe fn xmlXPathCompNodeTest(
     mut ctxt: xmlXPathParserContextPtr,
     mut test: *mut xmlXPathTestVal,
     mut type_0: *mut xmlXPathTypeVal,
@@ -17249,7 +17273,7 @@ fn xmlXPathCompNodeTest(
  * Returns the axis or 0
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathIsAxisName(mut name: *const xmlChar) -> xmlXPathAxisVal {
+unsafe fn xmlXPathIsAxisName(mut name: *const xmlChar) -> xmlXPathAxisVal {
     let mut ret: xmlXPathAxisVal = 0 as xmlXPathAxisVal;
     match unsafe { *name.offset(0 as libc::c_int as isize) as libc::c_int } {
         97 => {
@@ -17631,7 +17655,10 @@ unsafe fn xmlXPathCompStep(mut ctxt: xmlXPathParserContextPtr) {
             } else {
             };
         }
-        while *(*ctxt).cur as libc::c_int == '[' as i32 {
+        while  1<2 {
+            if (!(*(*ctxt).cur as libc::c_int == '[' as i32)){
+                break;
+            }
             xmlXPathCompPredicate(ctxt, 0 as libc::c_int);
         }
         if rangeto != 0 {
@@ -17674,7 +17701,7 @@ unsafe fn xmlXPathCompStep(mut ctxt: xmlXPathParserContextPtr) {
  * Compile a relative location path.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompRelativeLocationPath(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompRelativeLocationPath(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     while unsafe {
         *safe_ctxt.cur as libc::c_int == 0x20 as libc::c_int
@@ -17829,7 +17856,7 @@ fn xmlXPathCompRelativeLocationPath(mut ctxt: xmlXPathParserContextPtr) {
  * select all para descendants of div children.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompLocationPath(mut ctxt: xmlXPathParserContextPtr) {
+unsafe fn xmlXPathCompLocationPath(mut ctxt: xmlXPathParserContextPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     while unsafe { *safe_ctxt.cur as libc::c_int == 0x20 as libc::c_int }
         || 0x9 as libc::c_int <= unsafe { *safe_ctxt.cur as libc::c_int }
@@ -17921,7 +17948,7 @@ fn xmlXPathCompLocationPath(mut ctxt: xmlXPathParserContextPtr) {
  * filtered result.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNodeSetFilter(
+unsafe fn xmlXPathNodeSetFilter(
     mut ctxt: xmlXPathParserContextPtr,
     mut set: xmlNodeSetPtr,
     mut filterOpIndex: libc::c_int,
@@ -18081,7 +18108,7 @@ fn xmlXPathNodeSetFilter(
  */
 #[cfg(LIBXML_XPTR_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathLocationSetFilter(
+unsafe fn xmlXPathLocationSetFilter(
     mut ctxt: xmlXPathParserContextPtr,
     mut locset: xmlLocationSetPtr,
     mut filterOpIndex: libc::c_int,
@@ -18233,7 +18260,7 @@ fn xmlXPathLocationSetFilter(
  * in the filtered result.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompOpEvalPredicate(
+unsafe fn xmlXPathCompOpEvalPredicate(
     mut ctxt: xmlXPathParserContextPtr,
     mut op: xmlXPathStepOpPtr,
     mut set: xmlNodeSetPtr,
@@ -18288,7 +18315,7 @@ fn xmlXPathCompOpEvalPredicate(
     };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathIsPositionalPredicate(
+unsafe fn xmlXPathIsPositionalPredicate(
     mut ctxt: xmlXPathParserContextPtr,
     mut op: xmlXPathStepOpPtr,
     mut maxPos: *mut libc::c_int,
@@ -18346,7 +18373,7 @@ fn xmlXPathIsPositionalPredicate(
     return 0 as libc::c_int;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathNodeCollectAndTest(
+unsafe fn xmlXPathNodeCollectAndTest(
     mut ctxt: xmlXPathParserContextPtr,
     mut op: xmlXPathStepOpPtr,
     mut first: *mut xmlNodePtr,
@@ -19186,7 +19213,8 @@ fn xmlXPathNodeCollectAndTest(
                         if unsafe { (*cur).type_0 as libc::c_uint }
                             == XML_ATTRIBUTE_NODE as libc::c_int as libc::c_uint
                         {
-                            if prefix.is_null() {
+                            if (prefix.is_null()) || (!unsafe { (*cur).ns.is_null() }
+                            && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0) {
                                 if hasAxisRange != 0 as libc::c_int {
                                     pos += 1;
                                     if pos == maxPos {
@@ -19211,34 +19239,35 @@ fn xmlXPathNodeCollectAndTest(
                                         break;
                                     }
                                 }
-                            } else if !unsafe { (*cur).ns.is_null() }
-                                && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0
-                            {
-                                if hasAxisRange != 0 as libc::c_int {
-                                    pos += 1;
-                                    if pos == maxPos {
-                                        if unsafe {
-                                            addNode.expect("non-null function pointer")(seq, cur)
-                                        } < 0 as libc::c_int
-                                        {
-                                            safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
-                                        }
-                                        current_block = 12278438173206364583;
-                                        break;
-                                    }
-                                } else {
-                                    if unsafe {
-                                        addNode.expect("non-null function pointer")(seq, cur)
-                                    } < 0 as libc::c_int
-                                    {
-                                        safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
-                                    }
-                                    if breakOnFirstHit != 0 {
-                                        current_block = 795179968803393002;
-                                        break;
-                                    }
-                                }
-                            }
+                            } 
+                            // else if !unsafe { (*cur).ns.is_null() }
+                            //     && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0
+                            // {
+                            //     if hasAxisRange != 0 as libc::c_int {
+                            //         pos += 1;
+                            //         if pos == maxPos {
+                            //             if unsafe {
+                            //                 addNode.expect("non-null function pointer")(seq, cur)
+                            //             } < 0 as libc::c_int
+                            //             {
+                            //                 safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
+                            //             }
+                            //             current_block = 12278438173206364583;
+                            //             break;
+                            //         }
+                            //     } else {
+                            //         if unsafe {
+                            //             addNode.expect("non-null function pointer")(seq, cur)
+                            //         } < 0 as libc::c_int
+                            //         {
+                            //             safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
+                            //         }
+                            //         if breakOnFirstHit != 0 {
+                            //             current_block = 795179968803393002;
+                            //             break;
+                            //         }
+                            //     }
+                            // }
                         }
                     } else if axis as libc::c_uint == AXIS_NAMESPACE as libc::c_int as libc::c_uint
                     {
@@ -19275,7 +19304,8 @@ fn xmlXPathNodeCollectAndTest(
                     } else if unsafe { (*cur).type_0 as libc::c_uint }
                         == XML_ELEMENT_NODE as libc::c_int as libc::c_uint
                     {
-                        if prefix.is_null() {
+                        if (prefix.is_null()) || (!unsafe { (*cur).ns.is_null() }
+                        && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0) {
                             if hasAxisRange != 0 as libc::c_int {
                                 pos += 1;
                                 if pos == maxPos {
@@ -19299,33 +19329,34 @@ fn xmlXPathNodeCollectAndTest(
                                     break;
                                 }
                             }
-                        } else if !unsafe { (*cur).ns.is_null() }
-                            && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0
-                        {
-                            if hasAxisRange != 0 as libc::c_int {
-                                pos += 1;
-                                if pos == maxPos {
-                                    if unsafe {
-                                        addNode.expect("non-null function pointer")(seq, cur)
-                                    } < 0 as libc::c_int
-                                    {
-                                        safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
-                                    }
-                                    current_block = 12278438173206364583;
-                                    break;
-                                }
-                            } else {
-                                if unsafe { addNode.expect("non-null function pointer")(seq, cur) }
-                                    < 0 as libc::c_int
-                                {
-                                    safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
-                                }
-                                if breakOnFirstHit != 0 {
-                                    current_block = 795179968803393002;
-                                    break;
-                                }
-                            }
-                        }
+                        } 
+                        // else if !unsafe { (*cur).ns.is_null() }
+                        //     && unsafe { xmlStrEqual(URI, (*(*cur).ns).href) } != 0
+                        // {
+                        //     if hasAxisRange != 0 as libc::c_int {
+                        //         pos += 1;
+                        //         if pos == maxPos {
+                        //             if unsafe {
+                        //                 addNode.expect("non-null function pointer")(seq, cur)
+                        //             } < 0 as libc::c_int
+                        //             {
+                        //                 safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
+                        //             }
+                        //             current_block = 12278438173206364583;
+                        //             break;
+                        //         }
+                        //     } else {
+                        //         if unsafe { addNode.expect("non-null function pointer")(seq, cur) }
+                        //             < 0 as libc::c_int
+                        //         {
+                        //             safe_ctxt.error = XPATH_MEMORY_ERROR as libc::c_int
+                        //         }
+                        //         if breakOnFirstHit != 0 {
+                        //             current_block = 795179968803393002;
+                        //             break;
+                        //         }
+                        //     }
+                        // }
                     }
                 }
                 4 => {
@@ -20175,7 +20206,7 @@ fn xmlXPathNodeCollectAndTest(
  * Returns the number of examined objects.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompOpEvalFirst(
+unsafe fn xmlXPathCompOpEvalFirst(
     mut ctxt: xmlXPathParserContextPtr,
     mut op: xmlXPathStepOpPtr,
     mut first: *mut xmlNodePtr,
@@ -20398,7 +20429,7 @@ fn xmlXPathCompOpEvalFirst(
  * Returns the number of nodes traversed
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompOpEvalLast(
+unsafe fn xmlXPathCompOpEvalLast(
     mut ctxt: xmlXPathParserContextPtr,
     mut op: xmlXPathStepOpPtr,
     mut last: *mut xmlNodePtr,
@@ -20604,7 +20635,7 @@ fn xmlXPathCompOpEvalLast(
 
 #[cfg(XP_OPTIMIZED_FILTER_FIRST)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompOpEvalFilterFirst(
+unsafe fn xmlXPathCompOpEvalFilterFirst(
     mut ctxt: xmlXPathParserContextPtr,
     mut op: xmlXPathStepOpPtr,
     mut first: *mut xmlNodePtr,
@@ -20791,7 +20822,7 @@ fn xmlXPathCompOpEvalFilterFirst(
  * Returns the number of nodes traversed
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompOpEval(
+unsafe fn xmlXPathCompOpEval(
     mut ctxt: xmlXPathParserContextPtr,
     mut op: xmlXPathStepOpPtr,
 ) -> libc::c_int {
@@ -21813,7 +21844,7 @@ fn xmlXPathCompOpEval(
  * Returns 1 if true, 0 if false and -1 on API or internal errors.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompOpEvalToBoolean(
+unsafe fn xmlXPathCompOpEvalToBoolean(
     mut ctxt: xmlXPathParserContextPtr,
     mut op: xmlXPathStepOpPtr,
     mut isPredicate: libc::c_int,
@@ -21923,7 +21954,7 @@ fn xmlXPathCompOpEvalToBoolean(
  */
 #[cfg(XPATH_STREAMING)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathRunStreamEval(
+unsafe fn xmlXPathRunStreamEval(
     mut ctxt: xmlXPathContextPtr,
     mut comp: xmlPatternPtr,
     mut resultSeq: *mut xmlXPathObjectPtr,
@@ -22107,11 +22138,8 @@ fn xmlXPathRunStreamEval(
                                             current_block = 16903048813113120619;
                                             break 'c_52613;
                                         }
-                                        if (*cur).type_0 as libc::c_uint
-                                            == XML_ELEMENT_NODE as libc::c_int as libc::c_uint
-                                        {
-                                            ret = xmlStreamPop(patstream)
-                                        } else if eval_all_nodes != 0
+                                        if ((*cur).type_0 as libc::c_uint
+                                        == XML_ELEMENT_NODE as libc::c_int as libc::c_uint) || (eval_all_nodes != 0
                                             && ((*cur).type_0 as libc::c_uint
                                                 == XML_TEXT_NODE as libc::c_int as libc::c_uint
                                                 || (*cur).type_0 as libc::c_uint
@@ -22121,7 +22149,7 @@ fn xmlXPathRunStreamEval(
                                                     == XML_COMMENT_NODE as libc::c_int
                                                         as libc::c_uint
                                                 || (*cur).type_0 as libc::c_uint
-                                                    == XML_PI_NODE as libc::c_int as libc::c_uint)
+                                                    == XML_PI_NODE as libc::c_int as libc::c_uint))
                                         {
                                             ret = xmlStreamPop(patstream)
                                         }
@@ -22252,7 +22280,10 @@ fn xmlXPathRunStreamEval(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathRunEval(mut ctxt: xmlXPathParserContextPtr, mut toBool: libc::c_int) -> libc::c_int {
+unsafe fn xmlXPathRunEval(
+    mut ctxt: xmlXPathParserContextPtr,
+    mut toBool: libc::c_int,
+) -> libc::c_int {
     let mut comp: xmlXPathCompExprPtr = 0 as *mut xmlXPathCompExpr;
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.comp.is_null() {
@@ -22381,7 +22412,7 @@ fn xmlXPathRunEval(mut ctxt: xmlXPathParserContextPtr, mut toBool: libc::c_int) 
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathEvalPredicate(
+pub unsafe fn xmlXPathEvalPredicate(
     mut ctxt: xmlXPathContextPtr,
     mut res: xmlXPathObjectPtr,
 ) -> libc::c_int {
@@ -22436,7 +22467,7 @@ pub fn xmlXPathEvalPredicate(
  * Returns 1 if predicate is true, 0 otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathEvaluatePredicateResult(
+pub unsafe fn xmlXPathEvaluatePredicateResult(
     mut ctxt: xmlXPathParserContextPtr,
     mut res: xmlXPathObjectPtr,
 ) -> libc::c_int {
@@ -22515,7 +22546,7 @@ pub fn xmlXPathEvaluatePredicateResult(
  */
 #[cfg(XPATH_STREAMING)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathTryStreamCompile(
+unsafe fn xmlXPathTryStreamCompile(
     mut ctxt: xmlXPathContextPtr,
     mut str: *const xmlChar,
 ) -> xmlXPathCompExprPtr {
@@ -22639,7 +22670,10 @@ fn xmlXPathTryStreamCompile(
 }
 /* XPATH_STREAMING */
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathOptimizeExpression(mut pctxt: xmlXPathParserContextPtr, mut op: xmlXPathStepOpPtr) {
+unsafe fn xmlXPathOptimizeExpression(
+    mut pctxt: xmlXPathParserContextPtr,
+    mut op: xmlXPathStepOpPtr,
+) {
     let safe_pctxt = unsafe { &mut *pctxt };
     let mut comp: xmlXPathCompExprPtr = safe_pctxt.comp;
     let mut ctxt: xmlXPathContextPtr = 0 as *mut xmlXPathContext;
@@ -22729,7 +22763,7 @@ fn xmlXPathOptimizeExpression(mut pctxt: xmlXPathParserContextPtr, mut op: xmlXP
  *         the caller has to free the object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCtxtCompile(
+pub unsafe fn xmlXPathCtxtCompile(
     mut ctxt: xmlXPathContextPtr,
     mut str: *const xmlChar,
 ) -> xmlXPathCompExprPtr {
@@ -22824,7 +22858,7 @@ pub fn xmlXPathCtxtCompile(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCompile(mut str: *const xmlChar) -> xmlXPathCompExprPtr {
+pub unsafe fn xmlXPathCompile(mut str: *const xmlChar) -> xmlXPathCompExprPtr {
     return unsafe { xmlXPathCtxtCompile(0 as xmlXPathContextPtr, str) };
 }
 /* *
@@ -22845,7 +22879,7 @@ pub fn xmlXPathCompile(mut str: *const xmlChar) -> xmlXPathCompExprPtr {
 // static mut reentance: libc::c_int = 0;
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn xmlXPathCompiledEvalInternal(
+unsafe fn xmlXPathCompiledEvalInternal(
     mut comp: xmlXPathCompExprPtr,
     mut ctxt: xmlXPathContextPtr,
     mut resObjPtr: *mut xmlXPathObjectPtr,
@@ -22980,7 +23014,7 @@ fn xmlXPathCompiledEvalInternal(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCompiledEval(
+pub unsafe fn xmlXPathCompiledEval(
     mut comp: xmlXPathCompExprPtr,
     mut ctx: xmlXPathContextPtr,
 ) -> xmlXPathObjectPtr {
@@ -23000,7 +23034,7 @@ pub fn xmlXPathCompiledEval(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathCompiledEvalToBoolean(
+pub unsafe fn xmlXPathCompiledEvalToBoolean(
     mut comp: xmlXPathCompExprPtr,
     mut ctxt: xmlXPathContextPtr,
 ) -> libc::c_int {
@@ -23014,7 +23048,7 @@ pub fn xmlXPathCompiledEvalToBoolean(
  * Parse and evaluate an XPath expression in the given context, * then push the result on the context stack
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathEvalExpr(mut ctxt: xmlXPathParserContextPtr) {
+pub unsafe fn xmlXPathEvalExpr(mut ctxt: xmlXPathParserContextPtr) {
     let mut comp: xmlXPathCompExprPtr;
     match () {
         #[cfg(XPATH_STREAMING)]
@@ -23111,7 +23145,10 @@ pub fn xmlXPathEvalExpr(mut ctxt: xmlXPathParserContextPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathEval(mut str: *const xmlChar, mut ctx: xmlXPathContextPtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathEval(
+    mut str: *const xmlChar,
+    mut ctx: xmlXPathContextPtr,
+) -> xmlXPathObjectPtr {
     let mut ctxt: xmlXPathParserContextPtr = 0 as *mut xmlXPathParserContext;
     let mut res: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if ctx.is_null() {
@@ -23185,7 +23222,10 @@ pub fn xmlXPathEval(mut str: *const xmlChar, mut ctx: xmlXPathContextPtr) -> xml
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathSetContextNode(mut node: xmlNodePtr, mut ctx: xmlXPathContextPtr) -> libc::c_int {
+pub unsafe fn xmlXPathSetContextNode(
+    mut node: xmlNodePtr,
+    mut ctx: xmlXPathContextPtr,
+) -> libc::c_int {
     if node.is_null() || ctx.is_null() {
         return -(1 as libc::c_int);
     }
@@ -23210,7 +23250,7 @@ pub fn xmlXPathSetContextNode(mut node: xmlNodePtr, mut ctx: xmlXPathContextPtr)
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathNodeEval(
+pub unsafe fn xmlXPathNodeEval(
     mut node: xmlNodePtr,
     mut str: *const xmlChar,
     mut ctx: xmlXPathContextPtr,
@@ -23234,7 +23274,7 @@ pub fn xmlXPathNodeEval(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathEvalExpression(
+pub unsafe fn xmlXPathEvalExpression(
     mut str: *const xmlChar,
     mut ctxt: xmlXPathContextPtr,
 ) -> xmlXPathObjectPtr {
@@ -23330,7 +23370,10 @@ extern "C" fn xmlXPathEscapeUriFunction(
 
         let safe_cptr = unsafe { *cptr } as libc::c_int;
         let safe_cptr_xmlChar = unsafe { *cptr } as *mut xmlChar;
-        while safe_cptr != 0 {
+        while  1<2 {
+            if safe_cptr == 0 {
+                break;
+            }
             if safe_cptr as libc::c_int >= 'A' as i32 && safe_cptr as libc::c_int <= 'Z' as i32
                 || safe_cptr as libc::c_int >= 'a' as i32 && safe_cptr as libc::c_int <= 'z' as i32
                 || safe_cptr as libc::c_int >= '0' as i32 && safe_cptr as libc::c_int <= '9' as i32
@@ -23438,7 +23481,7 @@ extern "C" fn xmlXPathEscapeUriFunction(
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn xmlXPathRegisterAllFunctions(mut ctxt: xmlXPathContextPtr) {
+pub unsafe fn xmlXPathRegisterAllFunctions(mut ctxt: xmlXPathContextPtr) {
     unsafe {
         xmlXPathRegisterFunc(
             ctxt,

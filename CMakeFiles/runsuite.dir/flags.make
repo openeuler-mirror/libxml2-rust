@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = -DCOMPILE_WITH_RUST
 
-C_INCLUDES = -I/root/code/01/01/libxml2-rust -I/root/code/01/01/libxml2-rust/include
+C_INCLUDES = -I/root/code/01/10/libxml2-rust -I/root/code/01/10/libxml2-rust/include
 
 C_FLAGS = 
 

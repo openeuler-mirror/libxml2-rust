@@ -1,4 +1,4 @@
-fn xmlParserEntityCheck(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlParserEntityCheck(mut ctxt: xmlParserCtxtPtr,
     mut size: size_t,
     mut ent: xmlEntityPtr,
     mut replacement: size_t)
@@ -216,7 +216,7 @@ b"xml-model\x00" as *const u8 as *const libc::c_char,
 *
 * Handle a redefinition of attribute error
 */
-fn xmlErrAttributeDup(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlErrAttributeDup(mut ctxt: xmlParserCtxtPtr,
   mut prefix: *const xmlChar,
   mut localname: *const xmlChar) {
 let mut safe_ctxt  = unsafe{&mut *ctxt};
@@ -270,7 +270,7 @@ if (safe_ctxt).recovery == 0 as libc::c_int {
 *
 * Handle a fatal parser error, i.e. violating Well-Formedness constraints
 */
-fn xmlFatalErr(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlFatalErr(mut ctxt: xmlParserCtxtPtr,
 mut error: xmlParserErrors,
 mut info: *const libc::c_char) {
 
@@ -606,7 +606,7 @@ if (safe_ctxt).recovery == 0 as libc::c_int {
 *
 * Handle a fatal parser error, i.e. violating Well-Formedness constraints
 */
-fn xmlFatalErrMsg(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlFatalErrMsg(mut ctxt: xmlParserCtxtPtr,
 mut error: xmlParserErrors,
 mut msg: *const libc::c_char) {
 let mut safe_ctxt  = unsafe{&mut *ctxt};
@@ -642,7 +642,7 @@ if (safe_ctxt).recovery == 0 as libc::c_int {
 *
 * Handle a warning.
 */
-fn xmlWarningMsg(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlWarningMsg(mut ctxt: xmlParserCtxtPtr,
 mut error: xmlParserErrors,
 mut msg: *const libc::c_char,
 mut str1: *const xmlChar,
@@ -695,7 +695,7 @@ __xmlRaiseError(schannel, None, 0 as *mut libc::c_void,
 *
 * Handle a validity error.
 */
-fn xmlValidityError(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlValidityError(mut ctxt: xmlParserCtxtPtr,
 mut error: xmlParserErrors,
 mut msg: *const libc::c_char,
 mut str1: *const xmlChar,
@@ -749,7 +749,7 @@ __xmlRaiseError(schannel, None, 0 as *mut libc::c_void,
 *
 * Handle a fatal parser error, i.e. violating Well-Formedness constraints
 */
-fn xmlFatalErrMsgInt(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlFatalErrMsgInt(mut ctxt: xmlParserCtxtPtr,
  mut error: xmlParserErrors,
  mut msg: *const libc::c_char,
  mut val: libc::c_int) {
@@ -786,7 +786,7 @@ if (safe_ctxt).recovery == 0 as libc::c_int {
 *
 * Handle a fatal parser error, i.e. violating Well-Formedness constraints
 */
-fn xmlFatalErrMsgStrIntStr(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlFatalErrMsgStrIntStr(mut ctxt: xmlParserCtxtPtr,
        mut error: xmlParserErrors,
        mut msg: *const libc::c_char,
        mut str1: *const xmlChar,
@@ -823,7 +823,7 @@ if (safe_ctxt).recovery == 0 as libc::c_int {
 *
 * Handle a fatal parser error, i.e. violating Well-Formedness constraints
 */
-fn xmlFatalErrMsgStr(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlFatalErrMsgStr(mut ctxt: xmlParserCtxtPtr,
  mut error: xmlParserErrors,
  mut msg: *const libc::c_char,
  mut val: *const xmlChar) {
@@ -858,7 +858,7 @@ if (safe_ctxt).recovery == 0 as libc::c_int {
 *
 * Handle a non fatal parser error
 */
-fn xmlErrMsgStr(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlErrMsgStr(mut ctxt: xmlParserCtxtPtr,
 mut error: xmlParserErrors,
 mut msg: *const libc::c_char,
 mut val: *const xmlChar) {
@@ -888,7 +888,7 @@ __xmlRaiseError(None, None, 0 as *mut libc::c_void,
 *
 * Handle a fatal parser error, i.e. violating Well-Formedness constraints
 */
-fn xmlNsErr(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlNsErr(mut ctxt: xmlParserCtxtPtr,
 mut error: xmlParserErrors,
 mut msg: *const libc::c_char,
 mut info1: *const xmlChar,
@@ -922,7 +922,7 @@ if !ctxt.is_null() { (safe_ctxt).nsWellFormed = 0 as libc::c_int };
 *
 * Handle a namespace warning error
 */
-fn xmlNsWarn(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlNsWarn(mut ctxt: xmlParserCtxtPtr,
 mut error: xmlParserErrors,
 mut msg: *const libc::c_char,
 mut info1: *const xmlChar,
@@ -960,7 +960,7 @@ __xmlRaiseError(None, None, 0 as *mut libc::c_void,
 * unknown feature is requested, non-zero otherwise.
 */
 
-pub fn xmlHasFeature(mut feature: xmlFeature)
+pub unsafe fn xmlHasFeature(mut feature: xmlFeature)
  -> libc::c_int {
 match feature as libc::c_uint {
 1 => { return 1 as libc::c_int }
@@ -1011,7 +1011,7 @@ return 0 as libc::c_int;
 *
 * Do the SAX2 detection and specific initialization
 */
-fn xmlDetectSAX2(mut ctxt: xmlParserCtxtPtr) {
+unsafe fn xmlDetectSAX2(mut ctxt: xmlParserCtxtPtr) {
 let mut safe_ctxt  = unsafe{&mut *ctxt};
 let mut sax: xmlSAXHandlerPtr = 0 as *mut xmlSAXHandler;
 if ctxt.is_null() { return }
@@ -1071,7 +1071,7 @@ unsafe{xmlErrMemory(ctxt, 0 as *const libc::c_char)};
 * Returns a pointer to the normalized value (dst) or NULL if no conversion
 *         is needed.
 */
-fn xmlAttrNormalizeSpace(mut src: *const xmlChar,
+unsafe fn xmlAttrNormalizeSpace(mut src: *const xmlChar,
      mut dst: *mut xmlChar)
      -> *mut xmlChar {
 if src.is_null() || dst.is_null() { return 0 as *mut xmlChar }
@@ -1109,7 +1109,7 @@ return dst;
 * Returns a pointer to the normalized value (dst) or NULL if no conversion
 *         is needed.
 */
-fn xmlAttrNormalizeSpace2(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlAttrNormalizeSpace2(mut ctxt: xmlParserCtxtPtr,
       mut src: *mut xmlChar,
       mut len: *mut libc::c_int)
       -> *const xmlChar {
@@ -1172,7 +1172,7 @@ return 0 as *const xmlChar;
 *
 * Add a defaulted attribute for an element
 */
-fn xmlAddDefAttrs(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlAddDefAttrs(mut ctxt: xmlParserCtxtPtr,
 mut fullname: *const xmlChar,
 mut fullattr: *const xmlChar,
 mut value: *const xmlChar) {
@@ -1391,7 +1391,7 @@ unsafe{xmlErrMemory(ctxt, 0 as *const libc::c_char)};
 *
 * Register this attribute type
 */
-fn xmlAddSpecialAttr(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlAddSpecialAttr(mut ctxt: xmlParserCtxtPtr,
  mut fullname: *const xmlChar,
  mut fullattr: *const xmlChar,
  mut type_0: libc::c_int) {
@@ -1438,7 +1438,7 @@ xmlHashRemoveEntry2_safe((safe_ctxt).attsSpecial, fullname, fullattr, None);
 * CDATA as they are not special. This call should be done when finishing
 * to parse the DTD and before starting to parse the document root.
 */
-fn xmlCleanSpecialAttr(mut ctxt: xmlParserCtxtPtr) {
+unsafe fn xmlCleanSpecialAttr(mut ctxt: xmlParserCtxtPtr) {
 let mut safe_ctxt  = unsafe{&mut *ctxt};
 if (safe_ctxt).attsSpecial.is_null() { return }
 xmlHashScanFull_safe((safe_ctxt).attsSpecial,
@@ -1513,7 +1513,7 @@ xmlHashFree_safe((safe_ctxt).attsSpecial, None);
 * Returns 1 if correct 0 otherwise
 **/
 
-pub fn xmlCheckLanguageID(mut lang: *const xmlChar)
+pub unsafe fn xmlCheckLanguageID(mut lang: *const xmlChar)
              -> libc::c_int {
 let mut current_block: u64;
 let mut cur: *const xmlChar = lang;
@@ -1793,7 +1793,7 @@ return 1 as libc::c_int;
 *	   and the index in the stack otherwise.
 */
 #[cfg(HAVE_parser_SAX2)]
-fn nsPush(mut ctxt: xmlParserCtxtPtr,
+unsafe fn nsPush(mut ctxt: xmlParserCtxtPtr,
 mut prefix: *const xmlChar,
 mut URL: *const xmlChar) -> libc::c_int {
 let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -1870,7 +1870,7 @@ return (safe_ctxt).nsNr;
 * Returns the number of namespaces removed
 */
 #[cfg(HAVE_parser_SAX2)]
-fn nsPop(mut ctxt: xmlParserCtxtPtr, mut nr: libc::c_int)
+unsafe fn nsPop(mut ctxt: xmlParserCtxtPtr, mut nr: libc::c_int)
 -> libc::c_int {
 let mut safe_ctxt = unsafe { &mut *ctxt };
 let mut i: libc::c_int = 0; /* allow for 10 attrs by default */
@@ -1899,7 +1899,7 @@ i += 1
 }
 return nr;
 }
-fn xmlCtxtGrowAttrs(mut ctxt: xmlParserCtxtPtr,
+unsafe fn xmlCtxtGrowAttrs(mut ctxt: xmlParserCtxtPtr,
        mut nr: libc::c_int) -> libc::c_int {
 let mut safe_ctxt = unsafe { &mut *ctxt };
 let mut current_block: u64;
@@ -1990,7 +1990,7 @@ return -(1 as libc::c_int)
 * Returns -1 in case of error, the index in the stack otherwise
 */
 
-pub fn inputPush_parser(mut ctxt: xmlParserCtxtPtr,
+pub unsafe fn inputPush_parser(mut ctxt: xmlParserCtxtPtr,
     mut value: xmlParserInputPtr)
     -> libc::c_int {
 if ctxt.is_null() || value.is_null() { return -(1 as libc::c_int) }
@@ -2034,7 +2034,7 @@ return fresh15;
 * Returns the input just removed
 */
 
-pub fn inputPop_parser(mut ctxt: xmlParserCtxtPtr)
+pub unsafe fn inputPop_parser(mut ctxt: xmlParserCtxtPtr)
    -> xmlParserInputPtr {
 let mut ret: xmlParserInputPtr = 0 as *mut xmlParserInput;
 if ctxt.is_null() { return 0 as xmlParserInputPtr }
@@ -2061,7 +2061,7 @@ return ret;
 * Returns -1 in case of error, the index in the stack otherwise
 */
 
-pub fn nodePush(mut ctxt: xmlParserCtxtPtr,
+pub unsafe fn nodePush(mut ctxt: xmlParserCtxtPtr,
    mut value: xmlNodePtr) -> libc::c_int {
 if ctxt.is_null() { return 0 as libc::c_int }
 let mut safe_ctxt = unsafe { &mut *ctxt };
@@ -2117,7 +2117,7 @@ return fresh18;
 * Returns the node just removed
 */
 
-pub fn nodePop_parser(mut ctxt: xmlParserCtxtPtr) -> xmlNodePtr {
+pub unsafe fn nodePop_parser(mut ctxt: xmlParserCtxtPtr) -> xmlNodePtr {
 let mut ret: xmlNodePtr = 0 as *mut xmlNode;
 if ctxt.is_null() { return 0 as xmlNodePtr }
 let mut safe_ctxt = unsafe { &mut *ctxt };

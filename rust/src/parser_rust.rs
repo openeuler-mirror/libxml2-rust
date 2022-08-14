@@ -6,13 +6,13 @@ pub unsafe extern "C" fn xmlHasFeature_rust(mut feature: xmlFeature) -> libc::c_
 }
 
 #[no_mangle]
-pub extern "C" fn xmlCheckLanguageID_rust(mut lang: *const xmlChar) -> libc::c_int {
+pub unsafe extern "C" fn xmlCheckLanguageID_rust(mut lang: *const xmlChar) -> libc::c_int {
     let res: libc::c_int = unsafe { xmlCheckLanguageID(lang) };
     return res;
 }
 
 #[no_mangle]
-pub extern "C" fn inputPush_rust(
+pub unsafe extern "C" fn inputPush_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut value: xmlParserInputPtr,
 ) -> libc::c_int {
@@ -21,25 +21,25 @@ pub extern "C" fn inputPush_rust(
 }
 
 #[no_mangle]
-pub extern "C" fn inputPop_rust(mut ctxt: xmlParserCtxtPtr) -> xmlParserInputPtr {
+pub unsafe extern "C" fn inputPop_rust(mut ctxt: xmlParserCtxtPtr) -> xmlParserInputPtr {
     let res: xmlParserInputPtr = unsafe { inputPop_parser(ctxt) };
     return res;
 }
 
 #[no_mangle]
-pub extern "C" fn nodePush_rust(mut ctxt: xmlParserCtxtPtr, mut value: xmlNodePtr) -> libc::c_int {
+pub unsafe extern "C" fn nodePush_rust(mut ctxt: xmlParserCtxtPtr, mut value: xmlNodePtr) -> libc::c_int {
     let res: libc::c_int = unsafe { nodePush(ctxt, value) };
     return res;
 }
 
 #[no_mangle]
-pub extern "C" fn nodePop_rust(mut ctxt: xmlParserCtxtPtr) -> xmlNodePtr {
+pub unsafe extern "C" fn nodePop_rust(mut ctxt: xmlParserCtxtPtr) -> xmlNodePtr {
     let res: xmlNodePtr = unsafe { nodePop_parser(ctxt) };
     return res;
 }
 
 #[no_mangle]
-pub extern "C" fn namePush_rust(
+pub unsafe extern "C" fn namePush_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut value: *const xmlChar,
 ) -> libc::c_int {
@@ -48,7 +48,7 @@ pub extern "C" fn namePush_rust(
 }
 
 #[no_mangle]
-pub extern "C" fn namePop_rust(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+pub unsafe extern "C" fn namePop_rust(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let res: *const xmlChar = unsafe { namePop(ctxt) };
     return res;
 }

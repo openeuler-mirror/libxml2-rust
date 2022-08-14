@@ -1,4 +1,4 @@
-pub fn xmlCheckVersion(mut version: libc::c_int) {
+pub unsafe fn xmlCheckVersion(mut version: libc::c_int) {
     let mut safe__xmlGenericError = unsafe { &mut *__xmlGenericError() };
     let mut safe__xmlGenericErrorContext = unsafe { &mut **__xmlGenericErrorContext() };
     let mut myversion: libc::c_int = 20912 as libc::c_int;
@@ -50,7 +50,7 @@ pub fn xmlCheckVersion(mut version: libc::c_int) {
  * Handle a redefinition of attribute error
  */
 
-pub fn xmlErrMemory(mut ctxt: xmlParserCtxtPtr, mut extra: *const libc::c_char) {
+pub unsafe fn xmlErrMemory(mut ctxt: xmlParserCtxtPtr, mut extra: *const libc::c_char) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null()
         && safe_ctxt.disableSAX != 0 as libc::c_int
@@ -120,7 +120,7 @@ pub fn xmlErrMemory(mut ctxt: xmlParserCtxtPtr, mut extra: *const libc::c_char) 
  * Handle an encoding error
  */
 
-pub fn __xmlErrEncoding(
+pub unsafe fn __xmlErrEncoding(
     mut ctxt: xmlParserCtxtPtr,
     mut xmlerr: xmlParserErrors,
     mut msg: *const libc::c_char,
@@ -174,7 +174,7 @@ pub fn __xmlErrEncoding(
  *
  * Handle an internal error
  */
-fn xmlErrInternal(
+unsafe fn xmlErrInternal(
     mut ctxt: xmlParserCtxtPtr,
     mut msg: *const libc::c_char,
     mut str: *const xmlChar,
@@ -226,7 +226,7 @@ fn xmlErrInternal(
  *
  * n encoding error
  */
-fn xmlErrEncodingInt(
+unsafe fn xmlErrEncodingInt(
     mut ctxt: xmlParserCtxtPtr,
     mut error: xmlParserErrors,
     mut msg: *const libc::c_char,
@@ -283,7 +283,7 @@ fn xmlErrEncodingInt(
  * Returns 0 if not, non-zero otherwise
  */
 
-pub fn xmlIsLetter(mut c: libc::c_int) -> libc::c_int {
+pub unsafe fn xmlIsLetter(mut c: libc::c_int) -> libc::c_int {
     return ((if c < 0x100 as libc::c_int {
         (0x41 as libc::c_int <= c && c <= 0x5a as libc::c_int
             || 0x61 as libc::c_int <= c && c <= 0x7a as libc::c_int
@@ -303,7 +303,7 @@ pub fn xmlIsLetter(mut c: libc::c_int) -> libc::c_int {
         }) != 0) as libc::c_int;
 }
 
-pub fn check_buffer(mut in_0: xmlParserInputPtr) {
+pub unsafe fn check_buffer(mut in_0: xmlParserInputPtr) {
     let mut safe_in_0 = unsafe { &mut *in_0 };
     match () {
         #[cfg(HAVE_parserInternals_DEBUG_INPUT)]
@@ -356,7 +356,7 @@ pub fn check_buffer(mut in_0: xmlParserInputPtr) {
  * Returns -1 as this is an error to use it.
  */
 
-pub fn xmlParserInputRead(mut in_0: xmlParserInputPtr, mut len: libc::c_int) -> libc::c_int {
+pub unsafe fn xmlParserInputRead(mut in_0: xmlParserInputPtr, mut len: libc::c_int) -> libc::c_int {
     return -(1 as libc::c_int);
 }
 /* *
@@ -371,7 +371,7 @@ pub fn xmlParserInputRead(mut in_0: xmlParserInputPtr, mut len: libc::c_int) -> 
  * end of this entity
  */
 
-pub fn xmlParserInputGrow_parserInternals(
+pub unsafe fn xmlParserInputGrow_parserInternals(
     mut in_0: xmlParserInputPtr,
     mut len: libc::c_int,
 ) -> libc::c_int {
@@ -455,7 +455,7 @@ pub fn xmlParserInputGrow_parserInternals(
  * This function removes used input for the parser.
  */
 
-pub fn xmlParserInputShrink_parserInternals(mut in_0: xmlParserInputPtr) {
+pub unsafe fn xmlParserInputShrink_parserInternals(mut in_0: xmlParserInputPtr) {
     let mut safe_in_0 = unsafe { &mut *in_0 };
 
     let mut used: size_t = 0;
@@ -548,7 +548,7 @@ pub fn xmlParserInputShrink_parserInternals(mut in_0: xmlParserInputPtr) {
  * Skip to the next char input char.
  */
 
-pub fn xmlNextChar_parserInternals(mut ctxt: xmlParserCtxtPtr) {
+pub unsafe fn xmlNextChar_parserInternals(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     let mut current_block: u64;
     if ctxt.is_null()
@@ -808,7 +808,7 @@ pub fn xmlNextChar_parserInternals(mut ctxt: xmlParserCtxtPtr) {
  * Returns the current char value and its length
  */
 
-pub fn xmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut libc::c_int) -> libc::c_int {
+pub unsafe fn xmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut libc::c_int) -> libc::c_int {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     let mut current_block: u64;
     if ctxt.is_null() || len.is_null() || safe_ctxt.input.is_null() {
@@ -1071,7 +1071,7 @@ pub fn xmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut libc::c_int) -> 
  * Returns the current char value and its length
  */
 
-pub fn xmlStringCurrentChar(
+pub unsafe fn xmlStringCurrentChar(
     mut ctxt: xmlParserCtxtPtr,
     mut cur: *const xmlChar,
     mut len: *mut libc::c_int,
@@ -1260,7 +1260,7 @@ pub fn xmlStringCurrentChar(
  * Returns the number of xmlChar written
  */
 
-pub fn xmlCopyCharMultiByte(mut out: *mut xmlChar, mut val: libc::c_int) -> libc::c_int {
+pub unsafe fn xmlCopyCharMultiByte(mut out: *mut xmlChar, mut val: libc::c_int) -> libc::c_int {
     if out.is_null() {
         return 0 as libc::c_int;
     }
@@ -1342,7 +1342,7 @@ pub fn xmlCopyCharMultiByte(mut out: *mut xmlChar, mut val: libc::c_int) -> libc
  * Returns the number of xmlChar written
  */
 
-pub fn xmlCopyChar_parserInternals(
+pub unsafe fn xmlCopyChar_parserInternals(
     mut len: libc::c_int,
     mut out: *mut xmlChar,
     mut val: libc::c_int,
@@ -1370,7 +1370,7 @@ pub fn xmlCopyChar_parserInternals(
  * Returns 0 in case of success, -1 otherwise
  */
 
-pub fn xmlSwitchEncoding_parserInternals(
+pub unsafe fn xmlSwitchEncoding_parserInternals(
     mut ctxt: xmlParserCtxtPtr,
     mut enc: xmlCharEncoding,
 ) -> libc::c_int {
@@ -1611,7 +1611,7 @@ pub fn xmlSwitchEncoding_parserInternals(
  *
  * Returns 0 in case of success, -1 otherwise
  */
-fn xmlSwitchInputEncodingInt(
+unsafe fn xmlSwitchInputEncodingInt(
     mut ctxt: xmlParserCtxtPtr,
     mut input: xmlParserInputPtr,
     mut handler: xmlCharEncodingHandlerPtr,
@@ -1773,7 +1773,7 @@ fn xmlSwitchInputEncodingInt(
  * Returns 0 in case of success, -1 otherwise
  */
 
-pub fn xmlSwitchInputEncoding(
+pub unsafe fn xmlSwitchInputEncoding(
     mut ctxt: xmlParserCtxtPtr,
     mut input: xmlParserInputPtr,
     mut handler: xmlCharEncodingHandlerPtr,
@@ -1799,7 +1799,7 @@ pub fn xmlSwitchInputEncoding(
  *
  * Returns 0 in case of success, -1 otherwise
  */
-fn xmlSwitchToEncodingInt(
+unsafe fn xmlSwitchToEncodingInt(
     mut ctxt: xmlParserCtxtPtr,
     mut handler: xmlCharEncodingHandlerPtr,
     mut len: libc::c_int,
@@ -1840,7 +1840,7 @@ fn xmlSwitchToEncodingInt(
  * Returns 0 in case of success, -1 otherwise
  */
 
-pub fn xmlSwitchToEncoding_parserInternals(
+pub unsafe fn xmlSwitchToEncoding_parserInternals(
     mut ctxt: xmlParserCtxtPtr,
     mut handler: xmlCharEncodingHandlerPtr,
 ) -> libc::c_int {
@@ -1860,7 +1860,7 @@ pub fn xmlSwitchToEncoding_parserInternals(
  * Free up an input stream.
  */
 
-pub fn xmlFreeInputStream_parserInternals(mut input: xmlParserInputPtr) {
+pub unsafe fn xmlFreeInputStream_parserInternals(mut input: xmlParserInputPtr) {
     if input.is_null() {
         return;
     }
@@ -1898,7 +1898,7 @@ pub fn xmlFreeInputStream_parserInternals(mut input: xmlParserInputPtr) {
  * Returns the new input stream or NULL
  */
 
-pub fn xmlNewInputStream_parserInternals(mut ctxt: xmlParserCtxtPtr) -> xmlParserInputPtr {
+pub unsafe fn xmlNewInputStream_parserInternals(mut ctxt: xmlParserCtxtPtr) -> xmlParserInputPtr {
     let mut safe_ctxt = unsafe { &mut *ctxt };
 
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
@@ -1947,7 +1947,7 @@ pub fn xmlNewInputStream_parserInternals(mut ctxt: xmlParserCtxtPtr) -> xmlParse
  * Returns the new input stream or NULL
  */
 
-pub fn xmlNewIOInputStream_parserInternals(
+pub unsafe fn xmlNewIOInputStream_parserInternals(
     mut ctxt: xmlParserCtxtPtr,
     mut input: xmlParserInputBufferPtr,
     mut enc: xmlCharEncoding,
@@ -1996,7 +1996,7 @@ pub fn xmlNewIOInputStream_parserInternals(
  * Returns the new input stream or NULL
  */
 
-pub fn xmlNewEntityInputStream(
+pub unsafe fn xmlNewEntityInputStream(
     mut ctxt: xmlParserCtxtPtr,
     mut entity: xmlEntityPtr,
 ) -> xmlParserInputPtr {
@@ -2099,7 +2099,7 @@ pub fn xmlNewEntityInputStream(
  * Returns the new input stream
  */
 
-pub fn xmlNewStringInputStream_parserInternals(
+pub unsafe fn xmlNewStringInputStream_parserInternals(
     mut ctxt: xmlParserCtxtPtr,
     mut buffer: *const xmlChar,
 ) -> xmlParserInputPtr {
@@ -2153,7 +2153,7 @@ pub fn xmlNewStringInputStream_parserInternals(
  * Returns the new input stream or NULL in case of error
  */
 
-pub fn xmlNewInputFromFile(
+pub unsafe fn xmlNewInputFromFile(
     mut ctxt: xmlParserCtxtPtr,
     mut filename: *const libc::c_char,
 ) -> xmlParserInputPtr {
@@ -2247,7 +2247,7 @@ pub fn xmlNewInputFromFile(
  * Returns 0 in case of success and -1 in case of error
  */
 
-pub fn xmlInitParserCtxt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
+pub unsafe fn xmlInitParserCtxt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
     let mut safe_ctxt = unsafe { &mut *ctxt };
 
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
@@ -2517,7 +2517,7 @@ pub fn xmlInitParserCtxt(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
  * document in ctxt->myDoc is not freed.
  */
 
-pub fn xmlFreeParserCtxt_parserInternals(mut ctxt: xmlParserCtxtPtr) {
+pub unsafe fn xmlFreeParserCtxt_parserInternals(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
 
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
@@ -2674,7 +2674,7 @@ pub fn xmlFreeParserCtxt_parserInternals(mut ctxt: xmlParserCtxtPtr) {
  * Returns the xmlParserCtxtPtr or NULL
  */
 
-pub fn xmlNewParserCtxt_parserInternals() -> xmlParserCtxtPtr {
+pub unsafe fn xmlNewParserCtxt_parserInternals() -> xmlParserCtxtPtr {
     let mut ctxt: xmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
     let res1: xmlParserCtxtPtr = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -2714,7 +2714,7 @@ pub fn xmlNewParserCtxt_parserInternals() -> xmlParserCtxtPtr {
  * Clear (release owned resources) and reinitialize a parser context
  */
 
-pub fn xmlClearParserCtxt(mut ctxt: xmlParserCtxtPtr) {
+pub unsafe fn xmlClearParserCtxt(mut ctxt: xmlParserCtxtPtr) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
 
     if ctxt.is_null() {
@@ -2733,7 +2733,7 @@ pub fn xmlClearParserCtxt(mut ctxt: xmlParserCtxtPtr) {
  * Returns an xmlParserNodeInfo block pointer or NULL
  */
 
-pub fn xmlParserFindNodeInfo(ctxt: xmlParserCtxtPtr, node: xmlNodePtr) -> *const xmlParserNodeInfo {
+pub unsafe fn xmlParserFindNodeInfo(ctxt: xmlParserCtxtPtr, node: xmlNodePtr) -> *const xmlParserNodeInfo {
     let mut safe_ctxt = unsafe { &mut *ctxt };
 
     let mut pos: libc::c_ulong = 0;
@@ -2759,7 +2759,7 @@ pub fn xmlParserFindNodeInfo(ctxt: xmlParserCtxtPtr, node: xmlNodePtr) -> *const
  * -- Initialize (set to initial state) node info sequence
  */
 
-pub fn xmlInitNodeInfoSeq_parserInternals(mut seq: xmlParserNodeInfoSeqPtr) {
+pub unsafe fn xmlInitNodeInfoSeq_parserInternals(mut seq: xmlParserNodeInfoSeqPtr) {
     if seq.is_null() {
         return;
     }
@@ -2776,7 +2776,7 @@ pub fn xmlInitNodeInfoSeq_parserInternals(mut seq: xmlParserNodeInfoSeqPtr) {
  *   info sequence
  */
 
-pub fn xmlClearNodeInfoSeq(mut seq: xmlParserNodeInfoSeqPtr) {
+pub unsafe fn xmlClearNodeInfoSeq(mut seq: xmlParserNodeInfoSeqPtr) {
     if seq.is_null() {
         return;
     }
@@ -2799,7 +2799,7 @@ pub fn xmlClearNodeInfoSeq(mut seq: xmlParserNodeInfoSeqPtr) {
  * Returns a long indicating the position of the record
  */
 
-pub fn xmlParserFindNodeInfoIndex(seq: xmlParserNodeInfoSeqPtr, node: xmlNodePtr) -> libc::c_ulong {
+pub unsafe fn xmlParserFindNodeInfoIndex(seq: xmlParserNodeInfoSeqPtr, node: xmlNodePtr) -> libc::c_ulong {
     let mut upper: libc::c_ulong = 0;
     let mut lower: libc::c_ulong = 0;
     let mut middle: libc::c_ulong = 0;
@@ -2884,7 +2884,7 @@ pub fn xmlParserFindNodeInfoIndex(seq: xmlParserNodeInfoSeqPtr, node: xmlNodePtr
  * Insert node info record into the sorted sequence
  */
 
-pub fn xmlParserAddNodeInfo_parserInternals(
+pub unsafe fn xmlParserAddNodeInfo_parserInternals(
     mut ctxt: xmlParserCtxtPtr,
     info: xmlParserNodeInfoPtr,
 ) {
@@ -2983,7 +2983,7 @@ pub fn xmlParserAddNodeInfo_parserInternals(
  * Returns the last value for 0 for no substitution, 1 for substitution.
  */
 
-pub fn xmlPedanticParserDefault(mut val: libc::c_int) -> libc::c_int {
+pub unsafe fn xmlPedanticParserDefault(mut val: libc::c_int) -> libc::c_int {
     let mut safe__xmlPedanticParserDefaultValue = unsafe { *__xmlPedanticParserDefaultValue() };
     let mut old: libc::c_int = safe__xmlPedanticParserDefaultValue;
     safe__xmlPedanticParserDefaultValue = val;
@@ -2999,7 +2999,7 @@ pub fn xmlPedanticParserDefault(mut val: libc::c_int) -> libc::c_int {
  * Returns the last value for 0 for no substitution, 1 for substitution.
  */
 
-pub fn xmlLineNumbersDefault(mut val: libc::c_int) -> libc::c_int {
+pub unsafe fn xmlLineNumbersDefault(mut val: libc::c_int) -> libc::c_int {
     let mut safe__xmlLineNumbersDefaultValue = unsafe { *__xmlLineNumbersDefaultValue() };
     let mut old: libc::c_int = safe__xmlLineNumbersDefaultValue;
     safe__xmlLineNumbersDefaultValue = val;
@@ -3019,7 +3019,7 @@ pub fn xmlLineNumbersDefault(mut val: libc::c_int) -> libc::c_int {
  * Returns the last value for 0 for no substitution, 1 for substitution.
  */
 
-pub fn xmlSubstituteEntitiesDefault(mut val: libc::c_int) -> libc::c_int {
+pub unsafe fn xmlSubstituteEntitiesDefault(mut val: libc::c_int) -> libc::c_int {
     let mut safe__xmlSubstituteEntitiesDefaultValue =
         unsafe { *__xmlSubstituteEntitiesDefaultValue() };
     let mut old: libc::c_int = safe__xmlSubstituteEntitiesDefaultValue;
@@ -3027,7 +3027,7 @@ pub fn xmlSubstituteEntitiesDefault(mut val: libc::c_int) -> libc::c_int {
     return old;
 }
 
-pub fn xmlKeepBlanksDefault(mut val: libc::c_int) -> libc::c_int {
+pub unsafe fn xmlKeepBlanksDefault(mut val: libc::c_int) -> libc::c_int {
     let mut safe__xmlKeepBlanksDefaultValue = unsafe { *__xmlKeepBlanksDefaultValue() };
     let mut old: libc::c_int = safe__xmlKeepBlanksDefaultValue;
     safe__xmlKeepBlanksDefaultValue = val;

@@ -1,1 +1,1 @@
-/usr/bin/cc CMakeFiles/runtest.dir/runtest.c.o -o runtest   -L/root/code/01/01/libxml2-rust/rust/target/debug  -Wl,-rpath,/root/code/01/01/libxml2-rust/rust/target/debug libxml2.a -lpthread -lrust_project -ldl -lm -lc /usr/lib64/liblzma.so /usr/lib64/libz.so 
+/usr/bin/cc CMakeFiles/runtest.dir/runtest.c.o -o runtest   -L/root/code/01/10/libxml2-rust/rust/target/debug  -Wl,-rpath,/root/code/01/10/libxml2-rust/rust/target/debug libxml2.a -lpthread -lrust_project -ldl -lm -lc /usr/lib64/liblzma.so /usr/lib64/libz.so 
