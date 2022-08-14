@@ -505,8 +505,12 @@ pub unsafe fn xmlPushInput(
     {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, 0 as *const libc::c_char);
-            while (*ctxt).inputNr > 1 as libc::c_int {
-                xmlFreeInputStream_safe(inputPop_parser(ctxt));
+            while (1 < 2) {
+                if ((*ctxt).inputNr > 1) {
+                    xmlFreeInputStream_safe(inputPop_parser(ctxt));
+                } else {
+                    break;
+                }
             }
         }
         return -(1 as libc::c_int);
