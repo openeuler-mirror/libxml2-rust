@@ -19135,7 +19135,10 @@ unsafe fn xmlHaltParser(mut ctxt: xmlParserCtxtPtr) {
 
     safe_ctxt.instate = XML_PARSER_EOF;
     safe_ctxt.disableSAX = 1 as libc::c_int;
-    while safe_ctxt.inputNr > 1 as libc::c_int {
+    while 1<2 {
+        if (!(safe_ctxt.inputNr > 1 as libc::c_int)){
+            break;
+        }
         xmlFreeInputStream_safe(inputPop_safe(ctxt));
     }
     if !safe_ctxt.input.is_null() {

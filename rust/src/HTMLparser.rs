@@ -664,15 +664,18 @@ unsafe fn htmlFindEncoding(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     }
     start = cur;
     let mut cur_safe = unsafe { *cur };
-    while cur_safe as libc::c_int >= 'A' as i32 && cur_safe as libc::c_int <= 'Z' as i32
-        || cur_safe as libc::c_int >= 'a' as i32 && cur_safe as libc::c_int <= 'z' as i32
-        || cur_safe as libc::c_int >= '0' as i32 && cur_safe as libc::c_int <= '9' as i32
-        || cur_safe as libc::c_int == '-' as i32
-        || cur_safe as libc::c_int == '_' as i32
-        || cur_safe as libc::c_int == ':' as i32
-        || cur_safe as libc::c_int == '/' as i32
+    while 1<2
     {
-        unsafe { cur = cur.offset(1) }
+        if (!((*cur) as libc::c_int >= 'A' as i32 && (*cur) as libc::c_int <= 'Z' as i32
+        || (*cur) as libc::c_int >= 'a' as i32 && (*cur) as libc::c_int <= 'z' as i32
+        || (*cur) as libc::c_int >= '0' as i32 && (*cur) as libc::c_int <= '9' as i32
+        || (*cur) as libc::c_int == '-' as i32
+        || (*cur) as libc::c_int == '_' as i32
+        || (*cur) as libc::c_int == ':' as i32
+        || (*cur) as libc::c_int == '/' as i32)){
+            break;
+        }
+        unsafe { cur = cur.offset(1)}
     }
     if cur == start {
         return 0 as *mut xmlChar;
