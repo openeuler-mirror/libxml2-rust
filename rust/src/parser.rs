@@ -571,7 +571,11 @@ pub unsafe fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
         } {
             xmlGROW(ctxt);
         }
-        while unsafe { *(*(*ctxt).input).cur as libc::c_int != ';' as i32 } {
+
+        while 1<2 {
+            if unsafe { *(*(*ctxt).input).cur as libc::c_int == ';' as i32 }{
+                break;
+            }
             /* loop blocked by count */
             let fresh27 = count;
             count = count + 1;
@@ -653,7 +657,10 @@ pub unsafe fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
         } {
             xmlGROW(ctxt);
         }
-        while unsafe { *(*(*ctxt).input).cur as libc::c_int != ';' as i32 } {
+        while 1<2 {
+            if unsafe { *(*(*ctxt).input).cur as libc::c_int == ';' as i32 }{
+                break;
+            }
             /* loop blocked by count */
             let fresh28 = count;
             count = count + 1;
@@ -7950,9 +7957,12 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
             {
                 xmlGROW(ctxt);
             }
-            while *(*(*ctxt).input).cur as libc::c_int != '>' as i32
-                && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int
+            while 1<2
             {
+                if (!(*(*(*ctxt).input).cur as libc::c_int != '>' as i32
+                && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int)){
+                    break;
+                }
                 let mut type_0: libc::c_int = 0;
                 let mut def: libc::c_int = 0;
                 let mut defaultValue: *mut xmlChar = 0 as *mut xmlChar;
@@ -8208,9 +8218,12 @@ pub unsafe fn xmlParseElementMixedContentDecl(
                     return 0 as xmlElementContentPtr;
                 }
             }
-            while *(*(*ctxt).input).cur as libc::c_int == '|' as i32
-                && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int
+            while 1<2
             {
+                if (!(*(*(*ctxt).input).cur as libc::c_int == '|' as i32
+                && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int)){
+                    break;
+                }
                 xmlNextChar_safe(ctxt);
                 if elem.is_null() {
                     ret = xmlNewDocElementContent_safe(
@@ -8457,10 +8470,13 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
     {
         xmlSHRINK(ctxt);
     }
-    while unsafe {
-        *(*(*ctxt).input).cur as libc::c_int != ')' as i32
-            && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int
-    } {
+    while  1<2 {
+        if(!(unsafe {
+            *(*(*ctxt).input).cur as libc::c_int != ')' as i32
+                && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int
+        })){
+            break;
+        }
         /*
          * Each loop we parse one separator and one element.
          */
@@ -9120,8 +9136,10 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
     let mut inputIdsSize: size_t = 0 as libc::c_int as size_t;
     let mut depth: size_t = 0 as libc::c_int as size_t;
     let mut safe_ctxt = unsafe { &mut *ctxt };
-    's_11: while (safe_ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int {
-        //@todo 削减unsafe范围
+    's_11: while  1<2 {
+        if (!((safe_ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int)){
+            break;
+        }
         unsafe {
             if *(*(*ctxt).input).cur as libc::c_int == '<' as i32
                 && *(*(*ctxt).input).cur.offset(1 as libc::c_int as isize) as libc::c_int
@@ -11652,10 +11670,13 @@ unsafe fn xmlParseInternalSubset(mut ctxt: xmlParserCtxtPtr) {
              * PEReferences.
              * Subsequence (markupdecl | PEReference | S)*
              */
-            while (*(*(*ctxt).input).cur as libc::c_int != ']' as i32
-                || (*ctxt).inputNr > baseInputNr)
-                && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int
+            while 1<2
             {
+                if(!((*(*(*ctxt).input).cur as libc::c_int != ']' as i32
+                || (*ctxt).inputNr > baseInputNr)
+                && (*ctxt).instate as libc::c_int != XML_PARSER_EOF as libc::c_int)){
+                    break;
+                }
                 let mut check: *const xmlChar = (*(*ctxt).input).cur;
                 let mut cons: libc::c_uint = (*(*ctxt).input).consumed as libc::c_uint;
                 xmlSkipBlankChars(ctxt);
