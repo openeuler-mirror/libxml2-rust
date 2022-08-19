@@ -1,0 +1,14 @@
+<!-- 标签不对应 -->
+<?xml version="1.0"?>
+<story>
+  <storyinfo>
+    <author>John Fleck</author>
+    <datewritten>June 2, 2002</keyword>
+    <keyword>example keyword</datewritten>
+  </storyinfo>
+
+  <body>
+    <headline>This is the headline</headline>
+    <para>This is the body text.</para>
+  </body>
+</story>
