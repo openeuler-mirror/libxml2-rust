@@ -593,6 +593,7 @@ if(LIBXML2_WITH_TESTS)
 		testSchemas
 		testURI
 		testXPath
+		testSystem
 	)
 	foreach(TEST ${TESTS})
 		add_executable(${TEST} ${TEST}.c)
@@ -603,6 +604,7 @@ if(LIBXML2_WITH_TESTS)
 	endif()
 	if(NOT WIN32)
 		add_test(NAME testapi COMMAND testapi)
+		add_test(NAME testSystem COMMAND testSystem)
 	endif()
 	add_test(NAME testchar COMMAND testchar)
 	add_test(NAME testdict COMMAND testdict)
