@@ -254,6 +254,19 @@ static int gen_int(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_int(int no ATTRIBUTE_UNUSED, int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_fd 4
+
+static int gen_fd(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(-1);
+    if (no == 1) return(3);
+    if (no == 2) return(4);
+    if (no == 3) return(122);
+    return(-1);
+}
+
+static void des_fd(int no ATTRIBUTE_UNUSED, int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
 #define gen_nb_parseroptions 5
 
 static int gen_parseroptions(int no, int nr ATTRIBUTE_UNUSED) {
@@ -937,11 +950,23 @@ static void desret_htmlParserCtxtPtr(htmlParserCtxtPtr val) {
 #endif
 
 #ifdef LIBXML_XPATH_ENABLED
+static xmlNodeSet test_nodes;
 #define gen_nb_xmlNodeSetPtr 1
 static xmlNodeSetPtr gen_xmlNodeSetPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
+    if(no == 0){
+        return(NULL);
+    }
+    // }else{
+    //     printf("gen_xmlNodeSetPtr get no is 1\n");
+    //     test_nodes.nodeMax = 3;
+    //     test_nodes.nodeNr = 1;
+    //     // test_nodes.nodeTab = &api_root;
+    //     test_nodes.nodeTab = NULL;
+    //     return &test_nodes;
+    // }
 }
 static void des_xmlNodeSetPtr(int no ATTRIBUTE_UNUSED, xmlNodeSetPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    // xmlXPathFreeNodeSet(val);
 }
 #endif
 
@@ -1509,8 +1534,15 @@ test_htmlCreateMemoryParserCtxt(void) {
 
 #ifdef LIBXML_HTML_ENABLED
 
-#define gen_nb_htmlSAXHandlerPtr 1
+#define gen_nb_htmlSAXHandlerPtr 2
 static htmlSAXHandlerPtr gen_htmlSAXHandlerPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) {
+        htmlSAXHandler *sax;
+        sax = (htmlSAXHandler *) xmlMalloc(sizeof(htmlSAXHandler));
+        memset(sax, 0, sizeof(htmlSAXHandler));
+        return sax;
+    }
+    
     return(NULL);
 }
 static void des_htmlSAXHandlerPtr(int no ATTRIBUTE_UNUSED, htmlSAXHandlerPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -1589,6 +1621,60 @@ test_htmlCreatePushParserCtxt(void) {
     return(test_ret);
 }
 
+static int
+test_htmlReadFd(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_HTML_ENABLED)
+    int mem_base;
+    htmlDocPtr ret_val;
+    int n_fd;
+    int fd; /* a file descriptor number */
+    int n_cur;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
+
+    for (n_fd = 0;n_fd < gen_nb_fd;n_fd++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        fd = gen_fd(n_fd, 0);
+        URL = gen_filepath(n_URL, 2);
+        encoding = gen_const_char_ptr(n_encoding, 3);
+        options = gen_int(n_options, 4);
+        ret_val = htmlReadFd(fd, URL, (const char *)encoding, options);
+        desret_htmlDocPtr(ret_val);
+        call_tests++;
+        des_fd(n_fd, fd, 0);
+        des_filepath(n_URL, URL, 2);
+        des_const_char_ptr(n_encoding, (const char *)encoding, 3);
+        des_int(n_options, options, 4);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlReadFd",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_fd);
+            printf(" %d", n_cur);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
 
 static int
 test_htmlCtxtReadDoc(void) {
@@ -1766,6 +1852,67 @@ test_htmlCtxtReadMemory(void) {
     return(test_ret);
 }
 
+static int
+test_htmlCtxtReadFd(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_HTML_ENABLED)
+    int mem_base;
+    htmlDocPtr ret_val;
+    int n_ctxt;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_fd;
+    int fd; /* a file descriptor number */
+    int n_cur;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_htmlParserCtxtPtr;n_ctxt++) {
+    for (n_fd = 0;n_fd < gen_nb_fd;n_fd++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_htmlParserCtxtPtr(n_ctxt, 0);
+        fd = gen_fd(n_fd, 0);
+        URL = gen_filepath(n_URL, 2);
+        encoding = gen_const_char_ptr(n_encoding, 3);
+        options = gen_int(n_options, 4);
+        ret_val = htmlCtxtReadFd(ctxt, fd, URL, (const char *)encoding, options);
+        desret_htmlDocPtr(ret_val);
+        call_tests++;
+        des_htmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        des_fd(n_fd, fd, 0);
+        des_filepath(n_URL, URL, 2);
+        des_const_char_ptr(n_encoding, (const char *)encoding, 3);
+        des_int(n_options, options, 4);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlCtxtReadFd",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_fd);
+            printf(" %d", n_cur);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
 
 static int
 test_htmlCtxtReset(void) {
@@ -2799,9 +2946,11 @@ test_HTMLparser(void) {
     test_ret += test_htmlAutoCloseTag();
     test_ret += test_htmlCreateMemoryParserCtxt();
     test_ret += test_htmlCreatePushParserCtxt();
+    test_ret += test_htmlReadFd();
     test_ret += test_htmlCtxtReadDoc();
     test_ret += test_htmlCtxtReadFile();
     test_ret += test_htmlCtxtReadMemory();
+    test_ret += test_htmlCtxtReadFd();
     test_ret += test_htmlCtxtReset();
     test_ret += test_htmlCtxtUseOptions();
     test_ret += test_htmlElementAllowedHere();
@@ -12674,6 +12823,36 @@ test_xmlByteConsumed(void) {
     return(test_ret);
 }
 
+static int 
+test_xmlParseElementChildrenContentDecl(void){
+    int test_ret = 0;
+    int mem_base;
+    xmlElementContentPtr ret_val;
+    xmlParserCtxtPtr ctxt; /* an XML parser context */
+    int n_ctxt;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+        if(ctxt != NULL && ctxt->input != NULL){
+            ret_val = xmlParseElementChildrenContentDecl(ctxt, ctxt->input->id);
+            desret_xmlElementContentPtr(ret_val);
+        }
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlParseElementChildrenContentDecl",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
 
 static int
 test_xmlClearNodeInfoSeq(void) {
@@ -15489,6 +15668,7 @@ test_parser(void) {
 
     if (quiet == 0) printf("Testing parser : 61 of 70 functions ...\n");
     test_ret += test_xmlByteConsumed();
+    test_ret += test_xmlParseElementChildrenContentDecl();
     test_ret += test_xmlClearNodeInfoSeq();
     test_ret += test_xmlClearParserCtxt();
     test_ret += test_xmlCreateDocParserCtxt();
@@ -50098,6 +50278,39 @@ test_xmlXPathParseName(void) {
     return(test_ret);
 }
 
+static int
+test_xmlXPathNewValueTree(void){
+    int test_ret = 0;
+
+#if defined(LIBXML_XPATH_ENABLED)
+    int mem_base;
+    xmlXPathObjectPtr ret_val;
+    xmlNodePtr node; /* the node to count */
+    int n_node;
+
+    for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
+        mem_base = xmlMemBlocks();
+        node = gen_xmlNodePtr(n_node, 0);
+        
+        ret_val = xmlXPathNewValueTree(node);
+        // des_xmlXPathObjectPtr(n_node, ret_val, 0);
+        call_tests++;
+        des_xmlNodePtr(n_node, node, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlXPathNewValueTree",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_node);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+#endif
+
+    return(test_ret);
+}
 
 static int
 test_xmlXPathPopBoolean(void) {
@@ -51551,6 +51764,7 @@ test_xpathInternals(void) {
     test_ret += test_xmlXPathNumberFunction();
     test_ret += test_xmlXPathParseNCName();
     test_ret += test_xmlXPathParseName();
+    test_ret += test_xmlXPathNewValueTree();
     test_ret += test_xmlXPathPopBoolean();
     test_ret += test_xmlXPathPopExternal();
     test_ret += test_xmlXPathPopNodeSet();
