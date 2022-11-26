@@ -297,17 +297,13 @@ pub unsafe extern "C" fn xmlXPathFreeCompExpr_rust(mut comp: xmlXPathCompExprPtr
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathIsNaN_rust(mut val: libc::c_double) -> libc::c_int {
-    println!("xmlXPathIsNaN_rust pre");
     let res: libc::c_int = unsafe { xmlXPathIsNaN(val) };
-    println!("xmlXPathIsNaN_rust next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathIsInf_rust(mut val: libc::c_double) -> libc::c_int {
-    println!("xmlXPathIsInf_rust pre");
     let res: libc::c_int = unsafe { xmlXPathIsInf(val) };
-    println!("xmlXPathIsInf_rust next");
 
     return res;
 }
@@ -323,45 +319,35 @@ pub unsafe extern "C" fn xmlXPathDebugDumpObject_rust(
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathInit_rust() {
-    println!("xmlXPathInit before");
     unsafe { xmlXPathInit_xpath() };
-    println!("xmlXPathInit after");
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathCastNodeToNumber_rust(mut node: xmlNodePtr) -> libc::c_double {
-    println!("xmlXPathCastNodeToNumber before");
     let res: libc::c_double = unsafe { xmlXPathCastNodeToNumber(node) };
-    println!("xmlXPathCastNodeToNumber after");
 
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathCastNodeSetToNumber_rust(mut ns: xmlNodeSetPtr) -> libc::c_double {
-    println!("xmlXPathCastNodeSetToNumber before");
 
     let res: libc::c_double = unsafe { xmlXPathCastNodeSetToNumber(ns) };
-    println!("xmlXPathCastNodeSetToNumber after");
 
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathStringEvalNumber_rust(mut str: *const xmlChar) -> libc::c_double {
-    println!("xmlXPathStringEvalNumber_rust before");
 
     let res: libc::c_double = unsafe { xmlXPathStringEvalNumber(str) };
-    println!("xmlXPathStringEvalNumber_rust after");
 
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathCastToNumber_rust(mut val: xmlXPathObjectPtr) -> libc::c_double {
-    println!("xmlXPathCastToNumber_rust pre");
     let res: libc::c_double = unsafe { xmlXPathCastToNumber(val) };
-    println!("xmlXPathCastToNumber_rust next");
 
     return res;
 }
@@ -902,17 +888,13 @@ pub unsafe extern "C" fn xmlXPathRegisterAllFunctions_rust(mut ctxt: xmlXPathCon
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathCastToString_rust(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
-    println!("xmlXPathCastToString_rust pre");
     let res: *mut xmlChar = unsafe { xmlXPathCastToString(val) };
-    println!("xmlXPathCastToString_rust next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathConvertString_rust(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathConvertString_rust pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathConvertString(val) };
-    println!("xmlXPathConvertString_rust next");
 
     return res;
 }
@@ -937,32 +919,24 @@ pub unsafe extern "C" fn xmlXPathNextDescendant_rust(
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathNewContext_rust(mut doc: xmlDocPtr) -> xmlXPathContextPtr {
-    println!("xmlXPathNewContext_rust pre");
     let res: xmlXPathContextPtr = unsafe { xmlXPathNewContext(doc) };
-    println!("xmlXPathNewContext_rust next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathFreeParserContext_rust(mut ctxt: xmlXPathParserContextPtr) {
-    println!("xmlXPathFreeParserContext_rust pre");
     unsafe { xmlXPathFreeParserContext(ctxt) };
-    println!("xmlXPathFreeParserContext_rust next");
 }
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathEqualValues_rust(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
-    println!("xmlXPathEqualValues_rust pre");
     let res: libc::c_int = unsafe { xmlXPathEqualValues(ctxt) };
-    println!("xmlXPathEqualValues_rust next");
 
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathNotEqualValues_rust(mut ctxt: xmlXPathParserContextPtr) -> libc::c_int {
-    println!("xmlXPathNotEqualValues_rust pre");
     let res: libc::c_int = unsafe { xmlXPathNotEqualValues(ctxt) };
-    println!("xmlXPathNotEqualValues_rust next");
 
     return res;
 }
@@ -1093,9 +1067,7 @@ pub unsafe extern "C" fn xmlXPathRegisteredNsCleanup_rust(mut ctxt: xmlXPathCont
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathFreeObject_rust(mut obj: xmlXPathObjectPtr) {
-    println!("xmlXPathFreeObject_rust pre");
     unsafe { xmlXPathFreeObject(obj) };
-    println!("xmlXPathFreeObject_rust next");
 }
 
 #[no_mangle]
@@ -1106,112 +1078,84 @@ pub unsafe extern "C" fn xmlXPathNewFloat_rust(mut val: libc::c_double) -> xmlXP
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathNewBoolean_rust(mut val: libc::c_int) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewBoolean_rust pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathNewBoolean(val) };
-    println!("xmlXPathNewBoolean_rust next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathNewString_rust(mut val: *const xmlChar) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewString pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathNewString(val) };
-    println!("xmlXPathNewString next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathWrapString_rust(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
-    println!("xmlXPathWrapString pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathWrapString(val) };
-    println!("xmlXPathWrapString next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathNewCString_rust(mut val: *const libc::c_char) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewCString pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathNewCString(val) };
-    println!("xmlXPathNewCString next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathCastStringToNumber_rust(mut val: *const xmlChar) -> libc::c_double {
-    println!("xmlXPathCastStringToNumber pre");
     let res: libc::c_double = unsafe { xmlXPathCastStringToNumber(val) };
-    println!("xmlXPathCastStringToNumber next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathCastBooleanToNumber_rust(mut val: libc::c_int) -> libc::c_double {
-    println!("xmlXPathCastBooleanToNumber pre");
     let res: libc::c_double = unsafe { xmlXPathCastBooleanToNumber(val) };
-    println!("xmlXPathCastBooleanToNumber next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathCastNodeSetToString_rust(mut ns: xmlNodeSetPtr) -> *mut xmlChar {
-    println!("xmlXPathCastNodeSetToString pre");
     let res: *mut xmlChar = unsafe { xmlXPathCastNodeSetToString(ns) };
-    println!("xmlXPathCastNodeSetToString next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathWrapCString_rust(mut val: *mut libc::c_char) -> xmlXPathObjectPtr {
-    println!("xmlXPathWrapCString pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathWrapCString(val) };
-    println!("xmlXPathWrapCString next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathWrapNodeSet_rust(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathWrapNodeSet pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathWrapNodeSet(val) };
-    println!("xmlXPathWrapNodeSet next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathFreeNodeSetList_rust(mut obj: xmlXPathObjectPtr) {
-    println!("xmlXPathFreeNodeSetList pre");
     unsafe { xmlXPathFreeNodeSetList(obj) };
-    println!("xmlXPathFreeNodeSetList next");
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathNewValueTree_rust(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewValueTree pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathNewValueTree(val) };
-    println!("xmlXPathNewValueTree next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathNewNodeSet_rust(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathNewNodeSet pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathNewNodeSet(val) };
-    println!("xmlXPathNewNodeSet next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathWrapExternal_rust(mut val: *mut libc::c_void) -> xmlXPathObjectPtr {
-    println!("xmlXPathWrapExternal pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathWrapExternal(val) };
-    println!("xmlXPathWrapExternal next");
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlXPathObjectCopy_rust(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
-    println!("xmlXPathObjectCopy pre");
     let res: xmlXPathObjectPtr = unsafe { xmlXPathObjectCopy(val) };
-    println!("xmlXPathObjectCopy next");
     return res;
 }
 
@@ -1221,9 +1165,7 @@ pub unsafe extern "C" fn xmlGenericErrorContextNodeSet_rust(
     mut output: *mut FILE,
     mut obj: xmlNodeSetPtr,
 ) {
-    println!("xmlGenericErrorContextNodeSet pre");
     unsafe { xmlGenericErrorContextNodeSet(output, obj) };
-    println!("xmlGenericErrorContextNodeSet next");
 }
 
 #[no_mangle]
