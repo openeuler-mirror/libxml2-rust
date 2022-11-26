@@ -82,7 +82,7 @@ endif()
 
 1. 通过gitee 获取代码 git clone git@gitee.com:openeuler/libxml2-rust.git
 
-2. 运行libxml2-2.9.12_openEuler_version/build.sh编译代码
+2. 运行build.sh编译代码
 
 3. 运行make install 将代码安装到系统中
 
