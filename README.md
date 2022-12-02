@@ -73,10 +73,13 @@ endif()
 
 
 #### libxml2-rust库的安装教程
-准备make,cmake,rust等环境。版本推荐：
+准备make,cmake,rust,python-devel等环境。版本推荐：
 - cmake:3.22 包地址：http://repo.openeuler.org/openEuler-22.03-LTS/everything/x86_64/Packages/cmake-3.22.0-4.oe2203.x86_64.rpm
 - make: 4.3 包地址：http://repo.openeuler.org/openEuler-22.03-LTS/everything/x86_64/Packages/make-4.3-2.oe2203.x86_64.rpm
 - rust：1.57.0 包地址：http://repo.openeuler.org/openEuler-22.03-LTS/everything/x86_64/Packages/rust-1.57.0-1.oe2203.x86_64.rpm
+- python3-devel 下载命令：
+ - yum -y install python3-devel(CentOS)
+ - apt-get install python3-dev(Ubuntu)
 
 安装步骤如下：
 
