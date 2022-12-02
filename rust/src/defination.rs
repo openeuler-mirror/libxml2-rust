@@ -1,40 +1,40 @@
 /**
 * buf.rs
 **/
-pub type __off_t = libc::c_long;
-pub type __off64_t = libc::c_long;
+pub type __off_t = i64;
+pub type __off64_t = i64;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _IO_FILE {
-    pub _flags: libc::c_int,
-    pub _IO_read_ptr: *mut libc::c_char,
-    pub _IO_read_end: *mut libc::c_char,
-    pub _IO_read_base: *mut libc::c_char,
-    pub _IO_write_base: *mut libc::c_char,
-    pub _IO_write_ptr: *mut libc::c_char,
-    pub _IO_write_end: *mut libc::c_char,
-    pub _IO_buf_base: *mut libc::c_char,
-    pub _IO_buf_end: *mut libc::c_char,
-    pub _IO_save_base: *mut libc::c_char,
-    pub _IO_backup_base: *mut libc::c_char,
-    pub _IO_save_end: *mut libc::c_char,
+    pub _flags: i32,
+    pub _IO_read_ptr: *mut i8,
+    pub _IO_read_end: *mut i8,
+    pub _IO_read_base: *mut i8,
+    pub _IO_write_base: *mut i8,
+    pub _IO_write_ptr: *mut i8,
+    pub _IO_write_end: *mut i8,
+    pub _IO_buf_base: *mut i8,
+    pub _IO_buf_end: *mut i8,
+    pub _IO_save_base: *mut i8,
+    pub _IO_backup_base: *mut i8,
+    pub _IO_save_end: *mut i8,
     pub _markers: *mut _IO_marker,
     pub _chain: *mut _IO_FILE,
-    pub _fileno: libc::c_int,
-    pub _flags2: libc::c_int,
+    pub _fileno: i32,
+    pub _flags2: i32,
     pub _old_offset: __off_t,
-    pub _cur_column: libc::c_ushort,
+    pub _cur_column: u16,
     pub _vtable_offset: libc::c_schar,
-    pub _shortbuf: [libc::c_char; 1],
-    pub _lock: *mut libc::c_void,
+    pub _shortbuf: [i8; 1],
+    pub _lock: *mut (),
     pub _offset: __off64_t,
-    pub __pad1: *mut libc::c_void,
-    pub __pad2: *mut libc::c_void,
-    pub __pad3: *mut libc::c_void,
-    pub __pad4: *mut libc::c_void,
+    pub __pad1: *mut (),
+    pub __pad2: *mut (),
+    pub __pad3: *mut (),
+    pub __pad4: *mut (),
     pub __pad5: size_t,
-    pub _mode: libc::c_int,
-    pub _unused2: [libc::c_char; 20],
+    pub _mode: i32,
+    pub _unused2: [i8; 20],
 }
 pub type _IO_lock_t = ();
 #[derive(Copy, Clone)]
@@ -42,7 +42,7 @@ pub type _IO_lock_t = ();
 pub struct _IO_marker {
     pub _next: *mut _IO_marker,
     pub _sbuf: *mut _IO_FILE,
-    pub _pos: libc::c_int,
+    pub _pos: i32,
 }
 pub type FILE = _IO_FILE;
 
@@ -50,21 +50,21 @@ pub type FILE = _IO_FILE;
 #[repr(C)]
 pub struct _xmlBuf {
     pub content: *mut xmlChar,
-    pub compat_use: libc::c_uint,
-    pub compat_size: libc::c_uint,
+    pub compat_use: u32,
+    pub compat_size: u32,
     pub alloc: xmlBufferAllocationScheme,
     pub contentIO: *mut xmlChar,
     pub use_0: size_t,
     pub size: size_t,
     pub buffer: xmlBufferPtr,
-    pub error: libc::c_int,
+    pub error: i32,
 }
 
 /**
 *   dict.rs
  **/
-pub type __uint32_t = libc::c_uint;
-pub type __time_t = libc::c_long;
+pub type __uint32_t = u32;
+pub type __time_t = i64;
 pub type time_t = __time_t;
 pub type uint32_t = __uint32_t;
 /*
@@ -73,13 +73,13 @@ pub type uint32_t = __uint32_t;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlDict {
-    pub ref_counter: libc::c_int,
+    pub ref_counter: i32,
     pub dict: *mut _xmlDictEntry,
     pub size: size_t,
-    pub nbElems: libc::c_uint,
+    pub nbElems: u32,
     pub strings: xmlDictStringsPtr,
     pub subdict: *mut _xmlDict,
-    pub seed: libc::c_int,
+    pub seed: i32,
     pub limit: size_t,
 }
 pub type xmlDictStringsPtr = *mut xmlDictStrings;
@@ -99,15 +99,15 @@ pub struct _xmlDictStrings {
 pub struct _xmlDictEntry {
     pub next: *mut _xmlDictEntry,
     pub name: *const xmlChar,
-    pub len: libc::c_uint,
-    pub valid: libc::c_int,
-    pub okey: libc::c_ulong,
+    pub len: u32,
+    pub valid: i32,
+    pub okey: u64,
 }
 
 pub type xmlDictEntry = _xmlDictEntry;
 
-static mut xmlDictInitialized: libc::c_int = 0 as libc::c_int;
-static mut rand_seed: libc::c_uint = 0 as libc::c_int as libc::c_uint;
+static mut xmlDictInitialized: i32 = 0 as i32;
+static mut rand_seed: u32 = 0 as i32 as u32;
 
 /**
  * hash.rs
@@ -116,10 +116,10 @@ static mut rand_seed: libc::c_uint = 0 as libc::c_int as libc::c_uint;
 #[repr(C)]
 pub struct _xmlHashTable {
     pub table: *mut _xmlHashEntry,
-    pub size: libc::c_int,
-    pub nbElems: libc::c_int,
+    pub size: i32,
+    pub nbElems: i32,
     pub dict: xmlDictPtr,
-    pub random_seed: libc::c_int,
+    pub random_seed: i32,
 }
 
 #[derive(Copy, Clone)]
@@ -129,14 +129,14 @@ pub struct _xmlHashEntry {
     pub name: *mut xmlChar,
     pub name2: *mut xmlChar,
     pub name3: *mut xmlChar,
-    pub payload: *mut libc::c_void,
-    pub valid: libc::c_int,
+    pub payload: *mut (),
+    pub valid: i32,
 }
 
 pub type xmlHashCopier =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> *mut libc::c_void>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> *mut ()>;
 pub type xmlHashScanner = Option<
-    unsafe extern "C" fn(_: *mut libc::c_void, _: *mut libc::c_void, _: *const xmlChar) -> (),
+    unsafe extern "C" fn(_: *mut (), _: *mut (), _: *const xmlChar) -> (),
 >;
 
 pub type xmlHashEntry = _xmlHashEntry;
@@ -146,7 +146,7 @@ pub type xmlHashEntryPtr = *mut xmlHashEntry;
 #[repr(C)]
 pub struct stubData {
     pub hashscanner: xmlHashScanner,
-    pub data: *mut libc::c_void,
+    pub data: *mut (),
 }
 
 /**
@@ -158,45 +158,45 @@ pub type xmlRegTrans = _xmlRegTrans;
 #[repr(C)]
 pub struct _xmlRegTrans {
     pub atom: xmlRegAtomPtr,
-    pub to: libc::c_int,
-    pub counter: libc::c_int,
-    pub count: libc::c_int,
-    pub nd: libc::c_int,
+    pub to: i32,
+    pub counter: i32,
+    pub count: i32,
+    pub nd: i32,
 }
 pub type xmlRegAtomPtr = *mut xmlRegAtom;
 pub type xmlRegAtom = _xmlRegAtom;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlRegAtom {
-    pub no: libc::c_int,
+    pub no: i32,
     pub type_0: xmlRegAtomType,
     pub quant: xmlRegQuantType,
-    pub min: libc::c_int,
-    pub max: libc::c_int,
-    pub valuep: *mut libc::c_void,
-    pub valuep2: *mut libc::c_void,
-    pub neg: libc::c_int,
-    pub codepoint: libc::c_int,
+    pub min: i32,
+    pub max: i32,
+    pub valuep: *mut (),
+    pub valuep2: *mut (),
+    pub neg: i32,
+    pub codepoint: i32,
     pub start: xmlRegStatePtr,
     pub start0: xmlRegStatePtr,
     pub stop: xmlRegStatePtr,
-    pub maxRanges: libc::c_int,
-    pub nbRanges: libc::c_int,
+    pub maxRanges: i32,
+    pub nbRanges: i32,
     pub ranges: *mut xmlRegRangePtr,
-    pub data: *mut libc::c_void,
+    pub data: *mut (),
 }
 pub type xmlRegRangePtr = *mut xmlRegRange;
 pub type xmlRegRange = _xmlRegRange;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlRegRange {
-    pub neg: libc::c_int,
+    pub neg: i32,
     pub type_0: xmlRegAtomType,
-    pub start: libc::c_int,
-    pub end: libc::c_int,
+    pub start: i32,
+    pub end: i32,
     pub blockName: *mut xmlChar,
 }
-pub type xmlRegAtomType = libc::c_uint;
+pub type xmlRegAtomType = u32;
 pub const XML_REGEXP_BLOCK_NAME: xmlRegAtomType = 136;
 pub const XML_REGEXP_OTHER_NA: xmlRegAtomType = 135;
 pub const XML_REGEXP_OTHER_PRIVATE: xmlRegAtomType = 134;
@@ -252,7 +252,7 @@ pub const XML_REGEXP_CHARVAL: xmlRegAtomType = 2;
 pub const XML_REGEXP_EPSILON: xmlRegAtomType = 1;
 pub type xmlRegStatePtr = *mut xmlRegState;
 pub type xmlRegState = _xmlAutomataState;
-pub type xmlRegQuantType = libc::c_uint;
+pub type xmlRegQuantType = u32;
 pub const XML_REGEXP_QUANT_RANGE: xmlRegQuantType = 8;
 pub const XML_REGEXP_QUANT_ALL: xmlRegQuantType = 7;
 pub const XML_REGEXP_QUANT_ONCEONLY: xmlRegQuantType = 6;
@@ -261,11 +261,11 @@ pub const XML_REGEXP_QUANT_MULT: xmlRegQuantType = 4;
 pub const XML_REGEXP_QUANT_OPT: xmlRegQuantType = 3;
 pub const XML_REGEXP_QUANT_ONCE: xmlRegQuantType = 2;
 pub const XML_REGEXP_QUANT_EPSILON: xmlRegQuantType = 1;
-pub type xmlRegMarkedType = libc::c_uint;
+pub type xmlRegMarkedType = u32;
 pub const XML_REGEXP_MARK_VISITED: xmlRegMarkedType = 2;
 pub const XML_REGEXP_MARK_START: xmlRegMarkedType = 1;
 pub const XML_REGEXP_MARK_NORMAL: xmlRegMarkedType = 0;
-pub type xmlRegStateType = libc::c_uint;
+pub type xmlRegStateType = u32;
 pub const XML_REGEXP_UNREACH_STATE: xmlRegStateType = 5;
 pub const XML_REGEXP_SINK_STATE: xmlRegStateType = 4;
 pub const XML_REGEXP_TRANS_STATE: xmlRegStateType = 3;
@@ -275,25 +275,25 @@ pub type xmlRegCounter = _xmlRegCounter;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlRegCounter {
-    pub min: libc::c_int,
-    pub max: libc::c_int,
+    pub min: i32,
+    pub max: i32,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlRegexp {
     pub string: *mut xmlChar,
-    pub nbStates: libc::c_int,
+    pub nbStates: i32,
     pub states: *mut xmlRegStatePtr,
-    pub nbAtoms: libc::c_int,
+    pub nbAtoms: i32,
     pub atoms: *mut xmlRegAtomPtr,
-    pub nbCounters: libc::c_int,
+    pub nbCounters: i32,
     pub counters: *mut xmlRegCounter,
-    pub determinist: libc::c_int,
-    pub flags: libc::c_int,
-    pub nbstates: libc::c_int,
-    pub compact: *mut libc::c_int,
-    pub transdata: *mut *mut libc::c_void,
-    pub nbstrings: libc::c_int,
+    pub determinist: i32,
+    pub flags: i32,
+    pub nbstates: i32,
+    pub compact: *mut i32,
+    pub transdata: *mut *mut (),
+    pub nbstrings: i32,
     pub stringMap: *mut *mut xmlChar,
 }
 
@@ -302,29 +302,29 @@ pub type xmlRegexpPtr = *mut xmlRegexp;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlRegExecCtxt {
-    pub status: libc::c_int,
-    pub determinist: libc::c_int,
+    pub status: i32,
+    pub determinist: i32,
     pub comp: xmlRegexpPtr,
     pub callback: xmlRegExecCallbacks,
-    pub data: *mut libc::c_void,
+    pub data: *mut (),
     pub state: xmlRegStatePtr,
-    pub transno: libc::c_int,
-    pub transcount: libc::c_int,
-    pub maxRollbacks: libc::c_int,
-    pub nbRollbacks: libc::c_int,
+    pub transno: i32,
+    pub transcount: i32,
+    pub maxRollbacks: i32,
+    pub nbRollbacks: i32,
     pub rollbacks: *mut xmlRegExecRollback,
-    pub counts: *mut libc::c_int,
-    pub inputStackMax: libc::c_int,
-    pub inputStackNr: libc::c_int,
-    pub index: libc::c_int,
-    pub charStack: *mut libc::c_int,
+    pub counts: *mut i32,
+    pub inputStackMax: i32,
+    pub inputStackNr: i32,
+    pub index: i32,
+    pub charStack: *mut i32,
     pub inputString: *const xmlChar,
     pub inputStack: xmlRegInputTokenPtr,
-    pub errStateNo: libc::c_int,
+    pub errStateNo: i32,
     pub errState: xmlRegStatePtr,
     pub errString: *mut xmlChar,
-    pub errCounts: *mut libc::c_int,
-    pub nbPush: libc::c_int,
+    pub errCounts: *mut i32,
+    pub nbPush: i32,
 }
 pub type xmlRegInputTokenPtr = *mut xmlRegInputToken;
 /* save the automata state if it has some */
@@ -333,23 +333,23 @@ pub type xmlRegInputToken = _xmlRegInputToken;
 #[repr(C)]
 pub struct _xmlRegInputToken {
     pub value: *mut xmlChar,
-    pub data: *mut libc::c_void,
+    pub data: *mut (),
 }
 pub type xmlRegExecRollback = _xmlRegExecRollback;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlRegExecRollback {
     pub state: xmlRegStatePtr,
-    pub index: libc::c_int,
-    pub nextbranch: libc::c_int,
-    pub counts: *mut libc::c_int,
+    pub index: i32,
+    pub nextbranch: i32,
+    pub counts: *mut i32,
 }
 pub type xmlRegExecCallbacks = Option<
     unsafe extern "C" fn(
         _: xmlRegExecCtxtPtr,
         _: *const xmlChar,
-        _: *mut libc::c_void,
-        _: *mut libc::c_void,
+        _: *mut (),
+        _: *mut (),
     ) -> (),
 >;
 pub type xmlRegExecCtxtPtr = *mut xmlRegExecCtxt;
@@ -366,13 +366,13 @@ pub struct _xmlAutomataState {
     pub mark: xmlRegMarkedType,
     pub markd: xmlRegMarkedType,
     pub reached: xmlRegMarkedType,
-    pub no: libc::c_int,
-    pub maxTrans: libc::c_int,
-    pub nbTrans: libc::c_int,
+    pub no: i32,
+    pub maxTrans: i32,
+    pub nbTrans: i32,
     pub trans: *mut xmlRegTrans,
-    pub maxTransTo: libc::c_int,
-    pub nbTransTo: libc::c_int,
-    pub transTo: *mut libc::c_int,
+    pub maxTransTo: i32,
+    pub nbTransTo: i32,
+    pub transTo: *mut i32,
 }
 
 /**
@@ -384,25 +384,25 @@ pub struct _xmlAutomataState {
 pub struct _xmlAutomata {
     pub string: *mut xmlChar,
     pub cur: *mut xmlChar,
-    pub error: libc::c_int,
-    pub neg: libc::c_int,
+    pub error: i32,
+    pub neg: i32,
     pub start: xmlRegStatePtr,
     pub end: xmlRegStatePtr,
     pub state: xmlRegStatePtr,
     pub atom: xmlRegAtomPtr,
-    pub maxAtoms: libc::c_int,
-    pub nbAtoms: libc::c_int,
+    pub maxAtoms: i32,
+    pub nbAtoms: i32,
     pub atoms: *mut xmlRegAtomPtr,
-    pub maxStates: libc::c_int,
-    pub nbStates: libc::c_int,
+    pub maxStates: i32,
+    pub nbStates: i32,
     pub states: *mut xmlRegStatePtr,
-    pub maxCounters: libc::c_int,
-    pub nbCounters: libc::c_int,
+    pub maxCounters: i32,
+    pub nbCounters: i32,
     pub counters: *mut xmlRegCounter,
-    pub determinist: libc::c_int,
-    pub negs: libc::c_int,
-    pub flags: libc::c_int,
-    pub depth: libc::c_int,
+    pub determinist: i32,
+    pub negs: i32,
+    pub flags: i32,
+    pub depth: i32,
 }
 
 /**
@@ -422,11 +422,11 @@ pub type xmlElementPtr = *mut xmlElement;
  * An XML Element declaration from a DTD.
  */
 pub type xmlElement = _xmlElement;
-pub type xmlElementTypeVal = libc::c_uint;
+pub type xmlElementTypeVal = u32;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlElement {
-    pub _private: *mut libc::c_void,
+    pub _private: *mut (),
     pub type_0: xmlElementType,
     pub name: *const xmlChar,
     pub children: *mut _xmlNode,
@@ -452,7 +452,7 @@ pub type xmlAttribute = _xmlAttribute;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlAttribute {
-    pub _private: *mut libc::c_void,
+    pub _private: *mut (),
     pub type_0: xmlElementType,
     pub name: *const xmlChar,
     pub children: *mut _xmlNode,
@@ -469,7 +469,7 @@ pub struct _xmlAttribute {
     pub prefix: *const xmlChar,
     pub elem: *const xmlChar,
 }
-pub type xmlAttributeDefault = libc::c_uint;
+pub type xmlAttributeDefault = u32;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -489,7 +489,7 @@ pub struct _xmlID {
     pub value: *const xmlChar,
     pub attr: xmlAttrPtr,
     pub name: *const xmlChar,
-    pub lineno: libc::c_int,
+    pub lineno: i32,
     pub doc: *mut _xmlDoc,
 }
 
@@ -502,7 +502,7 @@ pub struct _xmlRef {
     pub value: *const xmlChar,
     pub attr: xmlAttrPtr,
     pub name: *const xmlChar,
-    pub lineno: libc::c_int,
+    pub lineno: i32,
 }
 /* The document holding the ID */
 /* *
@@ -538,26 +538,26 @@ pub type xmlEntitiesTable = _xmlHashTable;
 * others-rs
 **/
 
-pub type xmlChar = libc::c_uchar;
-pub type size_t = libc::c_ulong;
-pub type ptrdiff_t = libc::c_long;
-pub type xmlFreeFunc = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
-pub type xmlMallocFunc = Option<unsafe extern "C" fn(_: size_t) -> *mut libc::c_void>;
+pub type xmlChar = u8;
+pub type size_t = u64;
+pub type ptrdiff_t = i64;
+pub type xmlFreeFunc = Option<unsafe extern "C" fn(_: *mut ()) -> ()>;
+pub type xmlMallocFunc = Option<unsafe extern "C" fn(_: size_t) -> *mut ()>;
 pub type xmlReallocFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: size_t) -> *mut libc::c_void>;
+    Option<unsafe extern "C" fn(_: *mut (), _: size_t) -> *mut ()>;
 /* LIBXML_OUTPUT_ENABLED */
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlParserInputBuffer {
-    pub context: *mut libc::c_void,
+    pub context: *mut (),
     pub readcallback: xmlInputReadCallback,
     pub closecallback: xmlInputCloseCallback,
     pub encoder: xmlCharEncodingHandlerPtr,
     pub buffer: xmlBufPtr,
     pub raw: xmlBufPtr,
-    pub compressed: libc::c_int,
-    pub error: libc::c_int,
-    pub rawconsumed: libc::c_ulong,
+    pub compressed: i32,
+    pub error: i32,
+    pub rawconsumed: u64,
 }
 pub type xmlBufPtr = *mut xmlBuf;
 pub type xmlBuf = _xmlBuf;
@@ -567,34 +567,34 @@ pub type xmlCharEncodingHandler = _xmlCharEncodingHandler;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlCharEncodingHandler {
-    pub name: *mut libc::c_char,
+    pub name: *mut i8,
     pub input: xmlCharEncodingInputFunc,
     pub output: xmlCharEncodingOutputFunc,
     pub iconv_in: iconv_t,
     pub iconv_out: iconv_t,
 }
-pub type iconv_t = *mut libc::c_void;
+pub type iconv_t = *mut ();
 pub type xmlCharEncodingOutputFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_uchar,
-        _: *mut libc::c_int,
-        _: *const libc::c_uchar,
-        _: *mut libc::c_int,
-    ) -> libc::c_int,
+        _: *mut u8,
+        _: *mut i32,
+        _: *const u8,
+        _: *mut i32,
+    ) -> i32,
 >;
 pub type xmlCharEncodingInputFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_uchar,
-        _: *mut libc::c_int,
-        _: *const libc::c_uchar,
-        _: *mut libc::c_int,
-    ) -> libc::c_int,
+        _: *mut u8,
+        _: *mut i32,
+        _: *const u8,
+        _: *mut i32,
+    ) -> i32,
 >;
 
-pub type xmlInputCloseCallback = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
+pub type xmlInputCloseCallback = Option<unsafe extern "C" fn(_: *mut ()) -> i32>;
 
 pub type xmlInputReadCallback = Option<
-    unsafe extern "C" fn(_: *mut libc::c_void, _: *mut libc::c_char, _: libc::c_int) -> libc::c_int,
+    unsafe extern "C" fn(_: *mut (), _: *mut i8, _: i32) -> i32,
 >;
 pub type xmlParserInputBuffer = _xmlParserInputBuffer;
 pub type xmlParserInputBufferPtr = *mut xmlParserInputBuffer;
@@ -603,20 +603,20 @@ pub type xmlParserInputBufferPtr = *mut xmlParserInputBuffer;
 #[repr(C)]
 pub struct _xmlParserInput {
     pub buf: xmlParserInputBufferPtr,
-    pub filename: *const libc::c_char,
-    pub directory: *const libc::c_char,
+    pub filename: *const i8,
+    pub directory: *const i8,
     pub base: *const xmlChar,
     pub cur: *const xmlChar,
     pub end: *const xmlChar,
-    pub length: libc::c_int,
-    pub line: libc::c_int,
-    pub col: libc::c_int,
-    pub consumed: libc::c_ulong,
+    pub length: i32,
+    pub line: i32,
+    pub col: i32,
+    pub consumed: u64,
     pub free: xmlParserInputDeallocate,
     pub encoding: *const xmlChar,
     pub version: *const xmlChar,
-    pub standalone: libc::c_int,
-    pub id: libc::c_int,
+    pub standalone: i32,
+    pub id: i32,
 }
 
 pub type xmlParserInputDeallocate = Option<unsafe extern "C" fn(_: *mut xmlChar) -> ()>;
@@ -628,94 +628,94 @@ pub type xmlParserInputPtr = *mut xmlParserInput;
 #[repr(C)]
 pub struct _xmlParserCtxt {
     pub sax: *mut _xmlSAXHandler,
-    pub userData: *mut libc::c_void,
+    pub userData: *mut (),
     pub myDoc: xmlDocPtr,
-    pub wellFormed: libc::c_int,
-    pub replaceEntities: libc::c_int,
+    pub wellFormed: i32,
+    pub replaceEntities: i32,
     pub version: *const xmlChar,
     pub encoding: *const xmlChar,
-    pub standalone: libc::c_int,
-    pub html: libc::c_int,
+    pub standalone: i32,
+    pub html: i32,
     pub input: xmlParserInputPtr,
-    pub inputNr: libc::c_int,
-    pub inputMax: libc::c_int,
+    pub inputNr: i32,
+    pub inputMax: i32,
     pub inputTab: *mut xmlParserInputPtr,
     pub node: xmlNodePtr,
-    pub nodeNr: libc::c_int,
-    pub nodeMax: libc::c_int,
+    pub nodeNr: i32,
+    pub nodeMax: i32,
     pub nodeTab: *mut xmlNodePtr,
-    pub record_info: libc::c_int,
+    pub record_info: i32,
     pub node_seq: xmlParserNodeInfoSeq,
-    pub errNo: libc::c_int,
-    pub hasExternalSubset: libc::c_int,
-    pub hasPErefs: libc::c_int,
-    pub external: libc::c_int,
-    pub valid: libc::c_int,
-    pub validate: libc::c_int,
+    pub errNo: i32,
+    pub hasExternalSubset: i32,
+    pub hasPErefs: i32,
+    pub external: i32,
+    pub valid: i32,
+    pub validate: i32,
     pub vctxt: xmlValidCtxt,
     pub instate: xmlParserInputState,
-    pub token: libc::c_int,
-    pub directory: *mut libc::c_char,
+    pub token: i32,
+    pub directory: *mut i8,
     pub name: *const xmlChar,
-    pub nameNr: libc::c_int,
-    pub nameMax: libc::c_int,
+    pub nameNr: i32,
+    pub nameMax: i32,
     pub nameTab: *mut *const xmlChar,
-    pub nbChars: libc::c_long,
-    pub checkIndex: libc::c_long,
-    pub keepBlanks: libc::c_int,
-    pub disableSAX: libc::c_int,
-    pub inSubset: libc::c_int,
+    pub nbChars: i64,
+    pub checkIndex: i64,
+    pub keepBlanks: i32,
+    pub disableSAX: i32,
+    pub inSubset: i32,
     pub intSubName: *const xmlChar,
     pub extSubURI: *mut xmlChar,
     pub extSubSystem: *mut xmlChar,
-    pub space: *mut libc::c_int,
-    pub spaceNr: libc::c_int,
-    pub spaceMax: libc::c_int,
-    pub spaceTab: *mut libc::c_int,
-    pub depth: libc::c_int,
+    pub space: *mut i32,
+    pub spaceNr: i32,
+    pub spaceMax: i32,
+    pub spaceTab: *mut i32,
+    pub depth: i32,
     pub entity: xmlParserInputPtr,
-    pub charset: libc::c_int,
-    pub nodelen: libc::c_int,
-    pub nodemem: libc::c_int,
-    pub pedantic: libc::c_int,
-    pub _private: *mut libc::c_void,
-    pub loadsubset: libc::c_int,
-    pub linenumbers: libc::c_int,
-    pub catalogs: *mut libc::c_void,
-    pub recovery: libc::c_int,
-    pub progressive: libc::c_int,
+    pub charset: i32,
+    pub nodelen: i32,
+    pub nodemem: i32,
+    pub pedantic: i32,
+    pub _private: *mut (),
+    pub loadsubset: i32,
+    pub linenumbers: i32,
+    pub catalogs: *mut (),
+    pub recovery: i32,
+    pub progressive: i32,
     pub dict: xmlDictPtr,
     pub atts: *mut *const xmlChar,
-    pub maxatts: libc::c_int,
-    pub docdict: libc::c_int,
+    pub maxatts: i32,
+    pub docdict: i32,
     pub str_xml: *const xmlChar,
     pub str_xmlns: *const xmlChar,
     pub str_xml_ns: *const xmlChar,
-    pub sax2: libc::c_int,
-    pub nsNr: libc::c_int,
-    pub nsMax: libc::c_int,
+    pub sax2: i32,
+    pub nsNr: i32,
+    pub nsMax: i32,
     pub nsTab: *mut *const xmlChar,
-    pub attallocs: *mut libc::c_int,
+    pub attallocs: *mut i32,
     pub pushTab: *mut xmlStartTag,
     pub attsDefault: xmlHashTablePtr,
     pub attsSpecial: xmlHashTablePtr,
-    pub nsWellFormed: libc::c_int,
-    pub options: libc::c_int,
-    pub dictNames: libc::c_int,
-    pub freeElemsNr: libc::c_int,
+    pub nsWellFormed: i32,
+    pub options: i32,
+    pub dictNames: i32,
+    pub freeElemsNr: i32,
     pub freeElems: xmlNodePtr,
-    pub freeAttrsNr: libc::c_int,
+    pub freeAttrsNr: i32,
     pub freeAttrs: xmlAttrPtr,
     pub lastError: xmlError,
     pub parseMode: xmlParserMode,
-    pub nbentities: libc::c_ulong,
-    pub sizeentities: libc::c_ulong,
+    pub nbentities: u64,
+    pub sizeentities: u64,
     pub nodeInfo: *mut xmlParserNodeInfo,
-    pub nodeInfoNr: libc::c_int,
-    pub nodeInfoMax: libc::c_int,
+    pub nodeInfoNr: i32,
+    pub nodeInfoMax: i32,
     pub nodeInfoTab: *mut xmlParserNodeInfo,
-    pub input_id: libc::c_int,
-    pub sizeentcopy: libc::c_ulong,
+    pub input_id: i32,
+    pub sizeentcopy: u64,
 }
 
 pub type xmlParserNodeInfo = _xmlParserNodeInfo;
@@ -723,15 +723,15 @@ pub type xmlParserNodeInfo = _xmlParserNodeInfo;
 #[repr(C)]
 pub struct _xmlParserNodeInfo {
     pub node: *const _xmlNode,
-    pub begin_pos: libc::c_ulong,
-    pub begin_line: libc::c_ulong,
-    pub end_pos: libc::c_ulong,
-    pub end_line: libc::c_ulong,
+    pub begin_pos: u64,
+    pub begin_line: u64,
+    pub end_pos: u64,
+    pub end_line: u64,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlNode {
-    pub _private: *mut libc::c_void,
+    pub _private: *mut (),
     pub type_0: xmlElementType,
     pub name: *const xmlChar,
     pub children: *mut _xmlNode,
@@ -744,9 +744,9 @@ pub struct _xmlNode {
     pub content: *mut xmlChar,
     pub properties: *mut _xmlAttr,
     pub nsDef: *mut xmlNs,
-    pub psvi: *mut libc::c_void,
-    pub line: libc::c_ushort,
-    pub extra: libc::c_ushort,
+    pub psvi: *mut (),
+    pub line: u16,
+    pub extra: u16,
 }
 
 pub type xmlNs = _xmlNs;
@@ -757,41 +757,41 @@ pub struct _xmlNs {
     pub type_0: xmlNsType,
     pub href: *const xmlChar,
     pub prefix: *const xmlChar,
-    pub _private: *mut libc::c_void,
+    pub _private: *mut (),
     pub context: *mut _xmlDoc,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlDoc {
-    pub _private: *mut libc::c_void,
+    pub _private: *mut (),
     pub type_0: xmlElementType,
-    pub name: *mut libc::c_char,
+    pub name: *mut i8,
     pub children: *mut _xmlNode,
     pub last: *mut _xmlNode,
     pub parent: *mut _xmlNode,
     pub next: *mut _xmlNode,
     pub prev: *mut _xmlNode,
     pub doc: *mut _xmlDoc,
-    pub compression: libc::c_int,
-    pub standalone: libc::c_int,
+    pub compression: i32,
+    pub standalone: i32,
     pub intSubset: *mut _xmlDtd,
     pub extSubset: *mut _xmlDtd,
     pub oldNs: *mut _xmlNs,
     pub version: *const xmlChar,
     pub encoding: *const xmlChar,
-    pub ids: *mut libc::c_void,
-    pub refs: *mut libc::c_void,
+    pub ids: *mut (),
+    pub refs: *mut (),
     pub URL: *const xmlChar,
-    pub charset: libc::c_int,
+    pub charset: i32,
     pub dict: *mut _xmlDict,
-    pub psvi: *mut libc::c_void,
-    pub parseFlags: libc::c_int,
-    pub properties: libc::c_int,
+    pub psvi: *mut (),
+    pub parseFlags: i32,
+    pub properties: i32,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlDtd {
-    pub _private: *mut libc::c_void,
+    pub _private: *mut (),
     pub type_0: xmlElementType,
     pub name: *const xmlChar,
     pub children: *mut _xmlNode,
@@ -800,15 +800,15 @@ pub struct _xmlDtd {
     pub next: *mut _xmlNode,
     pub prev: *mut _xmlNode,
     pub doc: *mut _xmlDoc,
-    pub notations: *mut libc::c_void,
-    pub elements: *mut libc::c_void,
-    pub attributes: *mut libc::c_void,
-    pub entities: *mut libc::c_void,
+    pub notations: *mut (),
+    pub elements: *mut (),
+    pub attributes: *mut (),
+    pub entities: *mut (),
     pub ExternalID: *const xmlChar,
     pub SystemID: *const xmlChar,
-    pub pentities: *mut libc::c_void,
+    pub pentities: *mut (),
 }
-pub type xmlElementType = libc::c_uint;
+pub type xmlElementType = u32;
 pub const XML_DOCB_DOCUMENT_NODE: xmlElementType = 21;
 pub const XML_XINCLUDE_END: xmlElementType = 20;
 pub const XML_XINCLUDE_START: xmlElementType = 19;
@@ -835,7 +835,7 @@ pub type xmlNsType = xmlElementType;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlAttr {
-    pub _private: *mut libc::c_void,
+    pub _private: *mut (),
     pub type_0: xmlElementType,
     pub name: *const xmlChar,
     pub children: *mut _xmlNode,
@@ -846,9 +846,9 @@ pub struct _xmlAttr {
     pub doc: *mut _xmlDoc,
     pub ns: *mut xmlNs,
     pub atype: xmlAttributeType,
-    pub psvi: *mut libc::c_void,
+    pub psvi: *mut (),
 }
-pub type xmlAttributeType = libc::c_uint;
+pub type xmlAttributeType = u32;
 pub const XML_ATTRIBUTE_NOTATION: xmlAttributeType = 10;
 pub const XML_ATTRIBUTE_ENUMERATION: xmlAttributeType = 9;
 pub const XML_ATTRIBUTE_NMTOKENS: xmlAttributeType = 8;
@@ -859,7 +859,7 @@ pub const XML_ATTRIBUTE_IDREFS: xmlAttributeType = 4;
 pub const XML_ATTRIBUTE_IDREF: xmlAttributeType = 3;
 pub const XML_ATTRIBUTE_ID: xmlAttributeType = 2;
 pub const XML_ATTRIBUTE_CDATA: xmlAttributeType = 1;
-pub type xmlParserMode = libc::c_uint;
+pub type xmlParserMode = u32;
 pub const XML_PARSE_READER: xmlParserMode = 5;
 pub const XML_PARSE_PUSH_SAX: xmlParserMode = 4;
 pub const XML_PARSE_PUSH_DOM: xmlParserMode = 3;
@@ -871,21 +871,21 @@ pub type xmlError = _xmlError;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlError {
-    pub domain: libc::c_int,
-    pub code: libc::c_int,
-    pub message: *mut libc::c_char,
+    pub domain: i32,
+    pub code: i32,
+    pub message: *mut i8,
     pub level: xmlErrorLevel,
-    pub file: *mut libc::c_char,
-    pub line: libc::c_int,
-    pub str1: *mut libc::c_char,
-    pub str2: *mut libc::c_char,
-    pub str3: *mut libc::c_char,
-    pub int1: libc::c_int,
-    pub int2: libc::c_int,
-    pub ctxt: *mut libc::c_void,
-    pub node: *mut libc::c_void,
+    pub file: *mut i8,
+    pub line: i32,
+    pub str1: *mut i8,
+    pub str2: *mut i8,
+    pub str3: *mut i8,
+    pub int1: i32,
+    pub int2: i32,
+    pub ctxt: *mut (),
+    pub node: *mut (),
 }
-pub type xmlErrorLevel = libc::c_uint;
+pub type xmlErrorLevel = u32;
 pub const XML_ERR_FATAL: xmlErrorLevel = 3;
 pub const XML_ERR_ERROR: xmlErrorLevel = 2;
 pub const XML_ERR_WARNING: xmlErrorLevel = 1;
@@ -904,12 +904,12 @@ pub type xmlStartTag = _xmlStartTag;
 pub struct _xmlStartTag {
     pub prefix: *const xmlChar,
     pub URI: *const xmlChar,
-    pub line: libc::c_int,
-    pub nsNr: libc::c_int,
+    pub line: i32,
+    pub nsNr: i32,
 }
 pub type xmlDictPtr = *mut xmlDict;
 pub type xmlDict = _xmlDict;
-pub type xmlParserInputState = libc::c_int;
+pub type xmlParserInputState = i32;
 pub const XML_PARSER_PUBLIC_LITERAL: xmlParserInputState = 16;
 pub const XML_PARSER_IGNORE: xmlParserInputState = 15;
 pub const XML_PARSER_EPILOG: xmlParserInputState = 14;
@@ -932,19 +932,19 @@ pub type xmlValidCtxt = _xmlValidCtxt;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlValidCtxt {
-    pub userData: *mut libc::c_void,
+    pub userData: *mut (),
     pub error: xmlValidityErrorFunc,
     pub warning: xmlValidityWarningFunc,
     pub node: xmlNodePtr,
-    pub nodeNr: libc::c_int,
-    pub nodeMax: libc::c_int,
+    pub nodeNr: i32,
+    pub nodeMax: i32,
     pub nodeTab: *mut xmlNodePtr,
-    pub finishDtd: libc::c_uint,
+    pub finishDtd: u32,
     pub doc: xmlDocPtr,
-    pub valid: libc::c_int,
+    pub valid: i32,
     pub vstate: *mut xmlValidState,
-    pub vstateNr: libc::c_int,
-    pub vstateMax: libc::c_int,
+    pub vstateNr: i32,
+    pub vstateMax: i32,
     pub vstateTab: *mut xmlValidState,
     pub am: xmlAutomataPtr,
     pub state: xmlAutomataStatePtr,
@@ -959,15 +959,15 @@ pub type xmlValidState = _xmlValidState;
 pub type xmlDocPtr = *mut xmlDoc;
 pub type xmlDoc = _xmlDoc;
 pub type xmlValidityWarningFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> ()>;
 pub type xmlValidityErrorFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> ()>;
 pub type xmlParserNodeInfoSeq = _xmlParserNodeInfoSeq;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlParserNodeInfoSeq {
-    pub maximum: libc::c_ulong,
-    pub length: libc::c_ulong,
+    pub maximum: u64,
+    pub length: u64,
     pub buffer: *mut xmlParserNodeInfo,
 }
 #[derive(Copy, Clone)]
@@ -1000,19 +1000,19 @@ pub struct _xmlSAXHandler {
     pub getParameterEntity: getParameterEntitySAXFunc,
     pub cdataBlock: cdataBlockSAXFunc,
     pub externalSubset: externalSubsetSAXFunc,
-    pub initialized: libc::c_uint,
-    pub _private: *mut libc::c_void,
+    pub initialized: u32,
+    pub _private: *mut (),
     pub startElementNs: startElementNsSAX2Func,
     pub endElementNs: endElementNsSAX2Func,
     pub serror: xmlStructuredErrorFunc,
 }
 
 pub type xmlStructuredErrorFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: xmlErrorPtr) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: xmlErrorPtr) -> ()>;
 pub type xmlErrorPtr = *mut xmlError;
 pub type endElementNsSAX2Func = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
         _: *const xmlChar,
@@ -1020,36 +1020,36 @@ pub type endElementNsSAX2Func = Option<
 >;
 pub type startElementNsSAX2Func = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
         _: *const xmlChar,
-        _: libc::c_int,
+        _: i32,
         _: *mut *const xmlChar,
-        _: libc::c_int,
-        _: libc::c_int,
+        _: i32,
+        _: i32,
         _: *mut *const xmlChar,
     ) -> (),
 >;
 pub type externalSubsetSAXFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
         _: *const xmlChar,
     ) -> (),
 >;
 pub type cdataBlockSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: libc::c_int) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar, _: i32) -> ()>;
 pub type getParameterEntitySAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> xmlEntityPtr>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> xmlEntityPtr>;
 pub type xmlEntityPtr = *mut xmlEntity;
 pub type xmlEntity = _xmlEntity;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlEntity {
-    pub _private: *mut libc::c_void,
+    pub _private: *mut (),
     pub type_0: xmlElementType,
     pub name: *const xmlChar,
     pub children: *mut _xmlNode,
@@ -1060,16 +1060,16 @@ pub struct _xmlEntity {
     pub doc: *mut _xmlDoc,
     pub orig: *mut xmlChar,
     pub content: *mut xmlChar,
-    pub length: libc::c_int,
+    pub length: i32,
     pub etype: xmlEntityType,
     pub ExternalID: *const xmlChar,
     pub SystemID: *const xmlChar,
     pub nexte: *mut _xmlEntity,
     pub URI: *const xmlChar,
-    pub owner: libc::c_int,
-    pub checked: libc::c_int,
+    pub owner: i32,
+    pub checked: i32,
 }
-pub type xmlEntityType = libc::c_uint;
+pub type xmlEntityType = u32;
 pub const XML_INTERNAL_PREDEFINED_ENTITY: xmlEntityType = 6;
 pub const XML_EXTERNAL_PARAMETER_ENTITY: xmlEntityType = 5;
 pub const XML_INTERNAL_PARAMETER_ENTITY: xmlEntityType = 4;
@@ -1077,43 +1077,43 @@ pub const XML_EXTERNAL_GENERAL_UNPARSED_ENTITY: xmlEntityType = 3;
 pub const XML_EXTERNAL_GENERAL_PARSED_ENTITY: xmlEntityType = 2;
 pub const XML_INTERNAL_GENERAL_ENTITY: xmlEntityType = 1;
 pub type fatalErrorSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> ()>;
 pub type errorSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> ()>;
 pub type warningSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const libc::c_char, _: ...) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> ()>;
 pub type commentSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> ()>;
 pub type processingInstructionSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: *const xmlChar) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar, _: *const xmlChar) -> ()>;
 pub type ignorableWhitespaceSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: libc::c_int) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar, _: i32) -> ()>;
 pub type charactersSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: libc::c_int) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar, _: i32) -> ()>;
 pub type referenceSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> ()>;
 pub type endElementSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> ()>;
 pub type startElementSAXFunc = Option<
-    unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar, _: *mut *const xmlChar) -> (),
+    unsafe extern "C" fn(_: *mut (), _: *const xmlChar, _: *mut *const xmlChar) -> (),
 >;
-pub type endDocumentSAXFunc = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
-pub type startDocumentSAXFunc = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> ()>;
+pub type endDocumentSAXFunc = Option<unsafe extern "C" fn(_: *mut ()) -> ()>;
+pub type startDocumentSAXFunc = Option<unsafe extern "C" fn(_: *mut ()) -> ()>;
 pub type setDocumentLocatorSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: xmlSAXLocatorPtr) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: xmlSAXLocatorPtr) -> ()>;
 pub type xmlSAXLocatorPtr = *mut xmlSAXLocator;
 pub type xmlSAXLocator = _xmlSAXLocator;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlSAXLocator {
-    pub getPublicId: Option<unsafe extern "C" fn(_: *mut libc::c_void) -> *const xmlChar>,
-    pub getSystemId: Option<unsafe extern "C" fn(_: *mut libc::c_void) -> *const xmlChar>,
-    pub getLineNumber: Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>,
-    pub getColumnNumber: Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>,
+    pub getPublicId: Option<unsafe extern "C" fn(_: *mut ()) -> *const xmlChar>,
+    pub getSystemId: Option<unsafe extern "C" fn(_: *mut ()) -> *const xmlChar>,
+    pub getLineNumber: Option<unsafe extern "C" fn(_: *mut ()) -> i32>,
+    pub getColumnNumber: Option<unsafe extern "C" fn(_: *mut ()) -> i32>,
 }
 pub type unparsedEntityDeclSAXFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
         _: *const xmlChar,
@@ -1122,9 +1122,9 @@ pub type unparsedEntityDeclSAXFunc = Option<
 >;
 pub type elementDeclSAXFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
-        _: libc::c_int,
+        _: i32,
         _: xmlElementContentPtr,
     ) -> (),
 >;
@@ -1141,23 +1141,23 @@ pub struct _xmlElementContent {
     pub parent: *mut _xmlElementContent,
     pub prefix: *const xmlChar,
 }
-pub type xmlElementContentOccur = libc::c_uint;
+pub type xmlElementContentOccur = u32;
 pub const XML_ELEMENT_CONTENT_PLUS: xmlElementContentOccur = 4;
 pub const XML_ELEMENT_CONTENT_MULT: xmlElementContentOccur = 3;
 pub const XML_ELEMENT_CONTENT_OPT: xmlElementContentOccur = 2;
 pub const XML_ELEMENT_CONTENT_ONCE: xmlElementContentOccur = 1;
-pub type xmlElementContentType = libc::c_uint;
+pub type xmlElementContentType = u32;
 pub const XML_ELEMENT_CONTENT_OR: xmlElementContentType = 4;
 pub const XML_ELEMENT_CONTENT_SEQ: xmlElementContentType = 3;
 pub const XML_ELEMENT_CONTENT_ELEMENT: xmlElementContentType = 2;
 pub const XML_ELEMENT_CONTENT_PCDATA: xmlElementContentType = 1;
 pub type attributeDeclSAXFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
-        _: libc::c_int,
-        _: libc::c_int,
+        _: i32,
+        _: i32,
         _: *const xmlChar,
         _: xmlEnumerationPtr,
     ) -> (),
@@ -1172,7 +1172,7 @@ pub struct _xmlEnumeration {
 }
 pub type notationDeclSAXFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
         _: *const xmlChar,
@@ -1180,31 +1180,31 @@ pub type notationDeclSAXFunc = Option<
 >;
 pub type entityDeclSAXFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
-        _: libc::c_int,
+        _: i32,
         _: *const xmlChar,
         _: *const xmlChar,
         _: *mut xmlChar,
     ) -> (),
 >;
 pub type getEntitySAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> xmlEntityPtr>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> xmlEntityPtr>;
 pub type resolveEntitySAXFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
     ) -> xmlParserInputPtr,
 >;
 pub type hasExternalSubsetSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
+    Option<unsafe extern "C" fn(_: *mut ()) -> i32>;
 pub type hasInternalSubsetSAXFunc =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
-pub type isStandaloneSAXFunc = Option<unsafe extern "C" fn(_: *mut libc::c_void) -> libc::c_int>;
+    Option<unsafe extern "C" fn(_: *mut ()) -> i32>;
+pub type isStandaloneSAXFunc = Option<unsafe extern "C" fn(_: *mut ()) -> i32>;
 pub type internalSubsetSAXFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
         _: *const xmlChar,
@@ -1214,7 +1214,7 @@ pub type xmlParserCtxt = _xmlParserCtxt;
 pub type xmlParserCtxtPtr = *mut xmlParserCtxt;
 pub type xmlSAXHandler = _xmlSAXHandler;
 pub type xmlSAXHandlerPtr = *mut xmlSAXHandler;
-pub type xmlBufferAllocationScheme = libc::c_uint;
+pub type xmlBufferAllocationScheme = u32;
 pub const XML_BUFFER_ALLOC_BOUNDED: xmlBufferAllocationScheme = 5;
 pub const XML_BUFFER_ALLOC_HYBRID: xmlBufferAllocationScheme = 4;
 pub const XML_BUFFER_ALLOC_IO: xmlBufferAllocationScheme = 3;
@@ -1225,19 +1225,19 @@ pub const XML_BUFFER_ALLOC_DOUBLEIT: xmlBufferAllocationScheme = 0;
 #[repr(C)]
 pub struct _xmlBuffer {
     pub content: *mut xmlChar,
-    pub use_0: libc::c_uint,
-    pub size: libc::c_uint,
+    pub use_0: u32,
+    pub size: u32,
     pub alloc: xmlBufferAllocationScheme,
     pub contentIO: *mut xmlChar,
 }
 pub type xmlBuffer = _xmlBuffer;
 pub type xmlBufferPtr = *mut xmlBuffer;
-pub type C2RustUnnamed = libc::c_uint;
+pub type C2RustUnnamed = u32;
 pub const XML_ATTRIBUTE_FIXED: C2RustUnnamed = 4;
 pub const XML_ATTRIBUTE_IMPLIED: C2RustUnnamed = 3;
 pub const XML_ATTRIBUTE_REQUIRED: C2RustUnnamed = 2;
 pub const XML_ATTRIBUTE_NONE: C2RustUnnamed = 1;
-pub type C2RustUnnamed_0 = libc::c_uint;
+pub type C2RustUnnamed_0 = u32;
 pub const XML_ELEMENT_TYPE_ELEMENT: C2RustUnnamed_0 = 4;
 pub const XML_ELEMENT_TYPE_MIXED: C2RustUnnamed_0 = 3;
 pub const XML_ELEMENT_TYPE_ANY: C2RustUnnamed_0 = 2;
@@ -1246,7 +1246,7 @@ pub const XML_ELEMENT_TYPE_UNDEFINED: C2RustUnnamed_0 = 0;
 pub type xmlNsPtr = *mut xmlNs;
 pub type xmlDtd = _xmlDtd;
 pub type xmlDtdPtr = *mut xmlDtd;
-pub type C2RustUnnamed_1 = libc::c_uint;
+pub type C2RustUnnamed_1 = u32;
 pub const XML_DOC_HTML: C2RustUnnamed_1 = 128;
 pub const XML_DOC_INTERNAL: C2RustUnnamed_1 = 64;
 pub const XML_DOC_USERBUILT: C2RustUnnamed_1 = 32;
@@ -1285,7 +1285,7 @@ pub const XML_DOC_WELLFORMED: C2RustUnnamed_1 = 1;
  * Callback to free data from a hash.
  */
 pub type xmlHashDeallocator =
-    Option<unsafe extern "C" fn(_: *mut libc::c_void, _: *const xmlChar) -> ()>;
+    Option<unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> ()>;
 /* *
  * xmlHashScannerFull:
  * @payload:  the data in the hash
@@ -1298,14 +1298,14 @@ pub type xmlHashDeallocator =
  */
 pub type xmlHashScannerFull = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
-        _: *mut libc::c_void,
+        _: *mut (),
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
         _: *const xmlChar,
     ) -> (),
 >;
-pub type C2RustUnnamed_2 = libc::c_uint;
+pub type C2RustUnnamed_2 = u32;
 pub const XML_FROM_URI: C2RustUnnamed_2 = 30;
 pub const XML_FROM_BUFFER: C2RustUnnamed_2 = 29;
 pub const XML_FROM_SCHEMATRONV: C2RustUnnamed_2 = 28;
@@ -1337,7 +1337,7 @@ pub const XML_FROM_NAMESPACE: C2RustUnnamed_2 = 3;
 pub const XML_FROM_TREE: C2RustUnnamed_2 = 2;
 pub const XML_FROM_PARSER: C2RustUnnamed_2 = 1;
 pub const XML_FROM_NONE: C2RustUnnamed_2 = 0;
-pub type xmlParserErrors = libc::c_uint;
+pub type xmlParserErrors = u32;
 pub const XML_BUF_OVERFLOW: xmlParserErrors = 7000;
 pub const XML_I18N_NO_OUTPUT: xmlParserErrors = 6004;
 pub const XML_I18N_CONV_FAILED: xmlParserErrors = 6003;
@@ -2074,8 +2074,8 @@ pub const XML_ERR_INTERNAL_ERROR: xmlParserErrors = 1;
 pub const XML_ERR_OK: xmlParserErrors = 0;
 pub type xmlGenericErrorFunc = Option<
     unsafe extern "C" fn(
-        arg1: *mut libc::c_void,
-        arg2: *const libc::c_char,
+        arg1: *mut (),
+        arg2: *const i8,
         more_params: ...
     ) -> (),
 >;
@@ -2112,11 +2112,11 @@ pub struct _xmlSAXHandlerV1 {
     pub getParameterEntity: getParameterEntitySAXFunc,
     pub cdataBlock: cdataBlockSAXFunc,
     pub externalSubset: externalSubsetSAXFunc,
-    pub initialized: libc::c_uint,
+    pub initialized: u32,
 }
 pub type xmlSAXHandlerV1 = _xmlSAXHandlerV1;
 
-pub type xmlCharEncoding = libc::c_int;
+pub type xmlCharEncoding = i32;
 /* pure ASCII */
 /* EUC-JP */
 pub const XML_CHAR_ENCODING_ASCII: xmlCharEncoding = 22;
@@ -2168,7 +2168,7 @@ pub const XML_CHAR_ENCODING_ERROR: xmlCharEncoding = -1;
 pub const XML_PARSE_OLD10: C2RustUnnamed_3 = 131072;
 pub const XML_PARSE_HUGE: C2RustUnnamed_3 = 524288;
 pub const XML_CATA_ALLOW_ALL: xmlCatalogAllow = 3;
-pub type xmlCatalogAllow = libc::c_uint;
+pub type xmlCatalogAllow = u32;
 pub const XML_CATA_ALLOW_DOCUMENT: xmlCatalogAllow = 2;
 pub const XML_CATA_ALLOW_GLOBAL: xmlCatalogAllow = 1;
 pub const XML_CATA_ALLOW_NONE: xmlCatalogAllow = 0;
@@ -2181,8 +2181,8 @@ pub type xmlChRangeGroup = _xmlChRangeGroup;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlChRangeGroup {
-    pub nbShortRange: libc::c_int,
-    pub nbLongRange: libc::c_int,
+    pub nbShortRange: i32,
+    pub nbLongRange: i32,
     pub shortRange: *const xmlChSRange,
     pub longRange: *const xmlChLRange,
 }
@@ -2190,15 +2190,15 @@ pub type xmlChLRange = _xmlChLRange;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlChLRange {
-    pub low: libc::c_uint,
-    pub high: libc::c_uint,
+    pub low: u32,
+    pub high: u32,
 }
 pub type xmlChSRange = _xmlChSRange;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlChSRange {
-    pub low: libc::c_ushort,
-    pub high: libc::c_ushort,
+    pub low: u16,
+    pub high: u16,
 }
 pub const XML_PARSE_OLDSAX: C2RustUnnamed_3 = 1048576;
 pub type xmlEntityReferenceFunc =
@@ -2211,16 +2211,16 @@ pub type xmlDefAttrs = _xmlDefAttrs;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlDefAttrs {
-    pub nbAttrs: libc::c_int,
-    pub maxAttrs: libc::c_int,
+    pub nbAttrs: i32,
+    pub maxAttrs: i32,
     pub values: [*const xmlChar; 0],
 }
 #[cfg(not(HAVE_parser_STDC_VERSION_199901))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlDefAttrs {
-    pub nbAttrs: libc::c_int,
-    pub maxAttrs: libc::c_int,
+    pub nbAttrs: i32,
+    pub maxAttrs: i32,
     pub values: [*const xmlChar; 5],
 }
 pub type xmlURIPtr = *mut xmlURI;
@@ -2247,17 +2247,17 @@ pub type xmlURI = _xmlURI;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlURI {
-    pub scheme: *mut libc::c_char,
-    pub opaque: *mut libc::c_char,
-    pub authority: *mut libc::c_char,
-    pub server: *mut libc::c_char,
-    pub user: *mut libc::c_char,
-    pub port: libc::c_int,
-    pub path: *mut libc::c_char,
-    pub query: *mut libc::c_char,
-    pub fragment: *mut libc::c_char,
-    pub cleanup: libc::c_int,
-    pub query_raw: *mut libc::c_char,
+    pub scheme: *mut i8,
+    pub opaque: *mut i8,
+    pub authority: *mut i8,
+    pub server: *mut i8,
+    pub user: *mut i8,
+    pub port: i32,
+    pub path: *mut i8,
+    pub query: *mut i8,
+    pub fragment: *mut i8,
+    pub cleanup: i32,
+    pub query_raw: *mut i8,
 }
 pub const XML_PARSE_BIG_LINES: C2RustUnnamed_3 = 4194304;
 pub const XML_PARSE_NOBASEFIX: C2RustUnnamed_3 = 262144;
@@ -2273,7 +2273,7 @@ pub const XML_PARSE_PEDANTIC: C2RustUnnamed_3 = 128;
 pub const XML_PARSE_RECOVER: C2RustUnnamed_3 = 1;
 pub const HTML_PARSE_NOIMPLIED: C2RustUnnamed_4 = 8192;
 pub type htmlParserCtxtPtr = xmlParserCtxtPtr;
-pub type C2RustUnnamed_3 = libc::c_uint;
+pub type C2RustUnnamed_3 = u32;
 pub const XML_PARSE_NOXINCNODE: C2RustUnnamed_3 = 32768;
 pub const XML_PARSE_XINCLUDE: C2RustUnnamed_3 = 1024;
 /*
@@ -2286,7 +2286,7 @@ pub const XML_PARSE_XINCLUDE: C2RustUnnamed_3 = 1024;
  * or disabled at compile-time.
  * They used to be called XML_FEATURE_xxx but this clashed with Expat
  */
-pub type xmlFeature = libc::c_uint;
+pub type xmlFeature = u32;
 pub const XML_WITH_NONE: xmlFeature = 99999;
 pub const XML_WITH_LZMA: xmlFeature = 33;
 pub const XML_WITH_ICU: xmlFeature = 32;
@@ -2321,7 +2321,7 @@ pub const XML_WITH_PUSH: xmlFeature = 4;
 pub const XML_WITH_OUTPUT: xmlFeature = 3;
 pub const XML_WITH_TREE: xmlFeature = 2;
 pub const XML_WITH_THREAD: xmlFeature = 1;
-pub type C2RustUnnamed_4 = libc::c_uint;
+pub type C2RustUnnamed_4 = u32;
 pub const HTML_PARSE_IGNORE_ENC: C2RustUnnamed_4 = 2097152;
 pub const HTML_PARSE_COMPACT: C2RustUnnamed_4 = 65536;
 pub const HTML_PARSE_NONET: C2RustUnnamed_4 = 2048;
@@ -2335,22 +2335,22 @@ pub const HTML_PARSE_RECOVER: C2RustUnnamed_4 = 1;
 /**
  * htmlparser.rs
  **/
-pub type __int32_t = libc::c_int;
+pub type __int32_t = i32;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct htmlStartCloseEntry {
-    pub oldTag: *const libc::c_char,
-    pub newTag: *const libc::c_char,
+    pub oldTag: *const i8,
+    pub newTag: *const i8,
 }
 pub type __compar_fn_t =
-    Option<unsafe extern "C" fn(_: *const libc::c_void, _: *const libc::c_void) -> libc::c_int>;
+    Option<unsafe extern "C" fn(_: *const (), _: *const ()) -> i32>;
 pub type htmlEntityDesc = _htmlEntityDesc;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _htmlEntityDesc {
-    pub value: libc::c_uint,
-    pub name: *const libc::c_char,
-    pub desc: *const libc::c_char,
+    pub value: u32,
+    pub name: *const i8,
+    pub desc: *const i8,
 }
 pub type htmlEntityDescPtr = *mut htmlEntityDesc;
 
@@ -2359,27 +2359,27 @@ pub type htmlElemDesc = _htmlElemDesc;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _htmlElemDesc {
-    pub name: *const libc::c_char,
-    pub startTag: libc::c_char,
-    pub endTag: libc::c_char,
-    pub saveEndTag: libc::c_char,
-    pub empty: libc::c_char,
-    pub depr: libc::c_char,
-    pub dtd: libc::c_char,
-    pub isinline: libc::c_char,
-    pub desc: *const libc::c_char,
-    pub subelts: *mut *const libc::c_char,
-    pub defaultsubelt: *const libc::c_char,
-    pub attrs_opt: *mut *const libc::c_char,
-    pub attrs_depr: *mut *const libc::c_char,
-    pub attrs_req: *mut *const libc::c_char,
+    pub name: *const i8,
+    pub startTag: i8,
+    pub endTag: i8,
+    pub saveEndTag: i8,
+    pub empty: i8,
+    pub depr: i8,
+    pub dtd: i8,
+    pub isinline: i8,
+    pub desc: *const i8,
+    pub subelts: *mut *const i8,
+    pub defaultsubelt: *const i8,
+    pub attrs_opt: *mut *const i8,
+    pub attrs_depr: *mut *const i8,
+    pub attrs_req: *mut *const i8,
 }
 
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct elementPriority {
-    pub name: *const libc::c_char,
-    pub priority: libc::c_int,
+    pub name: *const i8,
+    pub priority: i32,
 }
 
 pub type htmlParserCtxt = xmlParserCtxt;
@@ -2392,7 +2392,7 @@ pub type htmlNodePtr = xmlNodePtr;
 
 /* NRK/Jan2003: further knowledge of HTML structure
  */
-pub type htmlStatus = libc::c_uint;
+pub type htmlStatus = u32;
 pub const HTML_REQUIRED: htmlStatus = 12;
 pub const HTML_VALID: htmlStatus = 4;
 pub const HTML_DEPRECATED: htmlStatus = 2;
@@ -2417,46 +2417,46 @@ pub struct _xmlStreamCtxt {}
 pub struct _xmlXPathContext {
     pub doc: xmlDocPtr,
     pub node: xmlNodePtr,
-    pub nb_variables_unused: libc::c_int,
-    pub max_variables_unused: libc::c_int,
+    pub nb_variables_unused: i32,
+    pub max_variables_unused: i32,
     pub varHash: xmlHashTablePtr,
-    pub nb_types: libc::c_int,
-    pub max_types: libc::c_int,
+    pub nb_types: i32,
+    pub max_types: i32,
     pub types: xmlXPathTypePtr,
-    pub nb_funcs_unused: libc::c_int,
-    pub max_funcs_unused: libc::c_int,
+    pub nb_funcs_unused: i32,
+    pub max_funcs_unused: i32,
     pub funcHash: xmlHashTablePtr,
-    pub nb_axis: libc::c_int,
-    pub max_axis: libc::c_int,
+    pub nb_axis: i32,
+    pub max_axis: i32,
     pub axis: xmlXPathAxisPtr,
     pub namespaces: *mut xmlNsPtr,
-    pub nsNr: libc::c_int,
-    pub user: *mut libc::c_void,
-    pub contextSize: libc::c_int,
-    pub proximityPosition: libc::c_int,
-    pub xptr: libc::c_int,
+    pub nsNr: i32,
+    pub user: *mut (),
+    pub contextSize: i32,
+    pub proximityPosition: i32,
+    pub xptr: i32,
     pub here: xmlNodePtr,
     pub origin: xmlNodePtr,
     pub nsHash: xmlHashTablePtr,
     pub varLookupFunc: xmlXPathVariableLookupFunc,
-    pub varLookupData: *mut libc::c_void,
-    pub extra: *mut libc::c_void,
+    pub varLookupData: *mut (),
+    pub extra: *mut (),
     pub function: *const xmlChar,
     pub functionURI: *const xmlChar,
     pub funcLookupFunc: xmlXPathFuncLookupFunc,
-    pub funcLookupData: *mut libc::c_void,
+    pub funcLookupData: *mut (),
     pub tmpNsList: *mut xmlNsPtr,
-    pub tmpNsNr: libc::c_int,
-    pub userData: *mut libc::c_void,
+    pub tmpNsNr: i32,
+    pub userData: *mut (),
     pub error: xmlStructuredErrorFunc,
     pub lastError: xmlError,
     pub debugNode: xmlNodePtr,
     pub dict: xmlDictPtr,
-    pub flags: libc::c_int,
-    pub cache: *mut libc::c_void,
-    pub opLimit: libc::c_ulong,
-    pub opCount: libc::c_ulong,
-    pub depth: libc::c_int,
+    pub flags: i32,
+    pub cache: *mut (),
+    pub opLimit: u64,
+    pub opCount: u64,
+    pub depth: i32,
 }
 /* *
  * xmlXPathFuncLookupFunc:
@@ -2471,7 +2471,7 @@ pub struct _xmlXPathContext {
  */
 pub type xmlXPathFuncLookupFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
     ) -> xmlXPathFunction,
@@ -2487,7 +2487,7 @@ pub type xmlXPathFuncLookupFunc = Option<
  * and the result is pushed on the stack.
  */
 pub type xmlXPathFunction =
-    Option<unsafe extern "C" fn(_: xmlXPathParserContextPtr, _: libc::c_int) -> ()>;
+    Option<unsafe extern "C" fn(_: xmlXPathParserContextPtr, _: i32) -> ()>;
 pub type xmlXPathParserContextPtr = *mut xmlXPathParserContext;
 pub type xmlXPathParserContext = _xmlXPathParserContext;
 /* *
@@ -2501,16 +2501,16 @@ pub type xmlXPathParserContext = _xmlXPathParserContext;
 pub struct _xmlXPathParserContext {
     pub cur: *const xmlChar,
     pub base: *const xmlChar,
-    pub error: libc::c_int,
+    pub error: i32,
     pub context: xmlXPathContextPtr,
     pub value: xmlXPathObjectPtr,
-    pub valueNr: libc::c_int,
-    pub valueMax: libc::c_int,
+    pub valueNr: i32,
+    pub valueMax: i32,
     pub valueTab: *mut xmlXPathObjectPtr,
     pub comp: xmlXPathCompExprPtr,
-    pub xptr: libc::c_int,
+    pub xptr: i32,
     pub ancestor: xmlNodePtr,
-    pub valueFrame: libc::c_int,
+    pub valueFrame: i32,
 }
 pub type xmlXPathCompExprPtr = *mut xmlXPathCompExpr;
 /*
@@ -2522,13 +2522,13 @@ pub type xmlXPathCompExpr = _xmlXPathCompExpr;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlXPathCompExpr {
-    pub nbStep: libc::c_int,
-    pub maxStep: libc::c_int,
+    pub nbStep: i32,
+    pub maxStep: i32,
     pub steps: *mut xmlXPathStepOp,
-    pub last: libc::c_int,
+    pub last: i32,
     pub expr: *mut xmlChar,
     pub dict: xmlDictPtr,
-    pub nb: libc::c_int,
+    pub nb: i32,
     pub string: *mut xmlChar,
     pub stream: xmlPatternPtr,
 }
@@ -2537,13 +2537,13 @@ pub struct _xmlXPathCompExpr {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlXPathCompExpr {
-    pub nbStep: libc::c_int,
-    pub maxStep: libc::c_int,
+    pub nbStep: i32,
+    pub maxStep: i32,
     pub steps: *mut xmlXPathStepOp,
-    pub last: libc::c_int,
+    pub last: i32,
     pub expr: *mut xmlChar,
     pub dict: xmlDictPtr,
-    pub nb: libc::c_int,
+    pub nb: i32,
     pub string: *mut xmlChar,
 }
 #[cfg(not(DEBUG_EVAL_COUNTS))]
@@ -2551,10 +2551,10 @@ pub struct _xmlXPathCompExpr {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlXPathCompExpr {
-    pub nbStep: libc::c_int,
-    pub maxStep: libc::c_int,
+    pub nbStep: i32,
+    pub maxStep: i32,
     pub steps: *mut xmlXPathStepOp,
-    pub last: libc::c_int,
+    pub last: i32,
     pub expr: *mut xmlChar,
     pub dict: xmlDictPtr,
     pub stream: xmlPatternPtr,
@@ -2564,10 +2564,10 @@ pub struct _xmlXPathCompExpr {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlXPathCompExpr {
-    pub nbStep: libc::c_int,
-    pub maxStep: libc::c_int,
+    pub nbStep: i32,
+    pub maxStep: i32,
     pub steps: *mut xmlXPathStepOp,
-    pub last: libc::c_int,
+    pub last: i32,
     pub expr: *mut xmlChar,
     pub dict: xmlDictPtr,
 }
@@ -2592,17 +2592,17 @@ pub type xmlXPathStepOp = _xmlXPathStepOp;
 #[repr(C)]
 pub struct _xmlXPathStepOp {
     pub op: xmlXPathOp,
-    pub ch1: libc::c_int,
-    pub ch2: libc::c_int,
-    pub value: libc::c_int,
-    pub value2: libc::c_int,
-    pub value3: libc::c_int,
-    pub value4: *mut libc::c_void,
-    pub value5: *mut libc::c_void,
+    pub ch1: i32,
+    pub ch2: i32,
+    pub value: i32,
+    pub value2: i32,
+    pub value3: i32,
+    pub value4: *mut (),
+    pub value5: *mut (),
     pub cache: xmlXPathFunction,
-    pub cacheURI: *mut libc::c_void,
+    pub cacheURI: *mut (),
 }
-pub type xmlXPathOp = libc::c_uint;
+pub type xmlXPathOp = u32;
 #[cfg(LIBXML_XPTR_ENABLED)]
 pub const XPATH_OP_RANGETO: xmlXPathOp = 18;
 pub const XPATH_OP_SORT: xmlXPathOp = 17;
@@ -2630,13 +2630,13 @@ pub type xmlXPathObject = _xmlXPathObject;
 pub struct _xmlXPathObject {
     pub type_0: xmlXPathObjectType,
     pub nodesetval: xmlNodeSetPtr,
-    pub boolval: libc::c_int,
+    pub boolval: i32,
     pub floatval: libc::c_double,
     pub stringval: *mut xmlChar,
-    pub user: *mut libc::c_void,
-    pub index: libc::c_int,
-    pub user2: *mut libc::c_void,
-    pub index2: libc::c_int,
+    pub user: *mut (),
+    pub index: i32,
+    pub user2: *mut (),
+    pub index2: i32,
 }
 pub type xmlNodeSetPtr = *mut xmlNodeSet;
 /*
@@ -2646,11 +2646,11 @@ pub type xmlNodeSet = _xmlNodeSet;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlNodeSet {
-    pub nodeNr: libc::c_int,
-    pub nodeMax: libc::c_int,
+    pub nodeNr: i32,
+    pub nodeMax: i32,
     pub nodeTab: *mut xmlNodePtr,
 }
-pub type xmlXPathObjectType = libc::c_uint;
+pub type xmlXPathObjectType = u32;
 pub const XPATH_XSLT_TREE: xmlXPathObjectType = 9;
 pub const XPATH_USERS: xmlXPathObjectType = 8;
 pub const XPATH_LOCATIONSET: xmlXPathObjectType = 7;
@@ -2698,7 +2698,7 @@ pub type xmlXPathContext = _xmlXPathContext;
  */
 pub type xmlXPathVariableLookupFunc = Option<
     unsafe extern "C" fn(
-        _: *mut libc::c_void,
+        _: *mut (),
         _: *const xmlChar,
         _: *const xmlChar,
     ) -> xmlXPathObjectPtr,
@@ -2751,7 +2751,7 @@ pub struct _xmlXPathType {
  * Returns -1 in case of error, 0 otherwise
  */
 pub type xmlXPathConvertFunc =
-    Option<unsafe extern "C" fn(_: xmlXPathObjectPtr, _: libc::c_int) -> libc::c_int>;
+    Option<unsafe extern "C" fn(_: xmlXPathObjectPtr, _: i32) -> i32>;
 pub const XPATH_RECURSION_LIMIT_EXCEEDED: C2RustUnnamed_1 = 26;
 pub const XPATH_OP_LIMIT_EXCEEDED: C2RustUnnamed_1 = 25;
 pub const XPATH_FORBID_VARIABLE_ERROR: C2RustUnnamed_1 = 24;
@@ -2802,8 +2802,8 @@ pub type xmlLocationSet = _xmlLocationSet;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlLocationSet {
-    pub locNr: libc::c_int,
-    pub locMax: libc::c_int,
+    pub locNr: i32,
+    pub locMax: i32,
     pub locTab: *mut xmlXPathObjectPtr,
 }
 #[derive(Copy, Clone)]
@@ -2818,7 +2818,7 @@ pub struct TEMP_STORAGE_T {
     pub alloc: size_t,
     pub storage: *mut xmlNodePtr,
 }
-pub type __uint64_t = libc::c_ulong;
+pub type __uint64_t = u64;
 pub type uint64_t = __uint64_t;
 #[cfg(LIBXML_XPATH_ENABLED)]
 pub type xmlPointerListPtr = *mut xmlPointerList;
@@ -2826,9 +2826,9 @@ pub type xmlPointerList = _xmlPointerList;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _xmlPointerList {
-    pub items: *mut *mut libc::c_void,
-    pub number: libc::c_int,
-    pub size: libc::c_int,
+    pub items: *mut *mut (),
+    pub number: i32,
+    pub size: i32,
 }
 pub type xmlXPathContextCachePtr = *mut xmlXPathContextCache;
 pub type xmlXPathContextCache = _xmlXPathContextCache;
@@ -2841,33 +2841,33 @@ pub struct _xmlXPathContextCache {
     pub booleanObjs: xmlPointerListPtr,
     pub numberObjs: xmlPointerListPtr,
     pub miscObjs: xmlPointerListPtr,
-    pub maxNodeset: libc::c_int,
-    pub maxString: libc::c_int,
-    pub maxBoolean: libc::c_int,
-    pub maxNumber: libc::c_int,
-    pub maxMisc: libc::c_int,
-    pub dbgCachedAll: libc::c_int,
-    pub dbgCachedNodeset: libc::c_int,
-    pub dbgCachedString: libc::c_int,
-    pub dbgCachedBool: libc::c_int,
-    pub dbgCachedNumber: libc::c_int,
-    pub dbgCachedPoint: libc::c_int,
-    pub dbgCachedRange: libc::c_int,
-    pub dbgCachedLocset: libc::c_int,
-    pub dbgCachedUsers: libc::c_int,
-    pub dbgCachedXSLTTree: libc::c_int,
-    pub dbgCachedUndefined: libc::c_int,
-    pub dbgReusedAll: libc::c_int,
-    pub dbgReusedNodeset: libc::c_int,
-    pub dbgReusedString: libc::c_int,
-    pub dbgReusedBool: libc::c_int,
-    pub dbgReusedNumber: libc::c_int,
-    pub dbgReusedPoint: libc::c_int,
-    pub dbgReusedRange: libc::c_int,
-    pub dbgReusedLocset: libc::c_int,
-    pub dbgReusedUsers: libc::c_int,
-    pub dbgReusedXSLTTree: libc::c_int,
-    pub dbgReusedUndefined: libc::c_int,
+    pub maxNodeset: i32,
+    pub maxString: i32,
+    pub maxBoolean: i32,
+    pub maxNumber: i32,
+    pub maxMisc: i32,
+    pub dbgCachedAll: i32,
+    pub dbgCachedNodeset: i32,
+    pub dbgCachedString: i32,
+    pub dbgCachedBool: i32,
+    pub dbgCachedNumber: i32,
+    pub dbgCachedPoint: i32,
+    pub dbgCachedRange: i32,
+    pub dbgCachedLocset: i32,
+    pub dbgCachedUsers: i32,
+    pub dbgCachedXSLTTree: i32,
+    pub dbgCachedUndefined: i32,
+    pub dbgReusedAll: i32,
+    pub dbgReusedNodeset: i32,
+    pub dbgReusedString: i32,
+    pub dbgReusedBool: i32,
+    pub dbgReusedNumber: i32,
+    pub dbgReusedPoint: i32,
+    pub dbgReusedRange: i32,
+    pub dbgReusedLocset: i32,
+    pub dbgReusedUsers: i32,
+    pub dbgReusedXSLTTree: i32,
+    pub dbgReusedUndefined: i32,
 }
 
 #[derive(Copy, Clone)]
@@ -2879,11 +2879,11 @@ pub struct _xmlXPathContextCache {
     pub booleanObjs: xmlPointerListPtr,
     pub numberObjs: xmlPointerListPtr,
     pub miscObjs: xmlPointerListPtr,
-    pub maxNodeset: libc::c_int,
-    pub maxString: libc::c_int,
-    pub maxBoolean: libc::c_int,
-    pub maxNumber: libc::c_int,
-    pub maxMisc: libc::c_int,
+    pub maxNodeset: i32,
+    pub maxString: i32,
+    pub maxBoolean: i32,
+    pub maxNumber: i32,
+    pub maxMisc: i32,
 }
 pub type xmlXPathStepOpPtr = *mut xmlXPathStepOp;
 /*
@@ -2893,7 +2893,7 @@ pub type xmlXPathStepOpPtr = *mut xmlXPathStepOp;
 pub type xmlXPathNodeSetMergeFunction =
     Option<unsafe extern "C" fn(_: xmlNodeSetPtr, _: xmlNodeSetPtr) -> xmlNodeSetPtr>;
 pub const AXIS_NAMESPACE: xmlXPathAxisVal = 9;
-pub type xmlXPathAxisVal = libc::c_uint;
+pub type xmlXPathAxisVal = u32;
 pub const AXIS_SELF: xmlXPathAxisVal = 13;
 pub const AXIS_PRECEDING_SIBLING: xmlXPathAxisVal = 12;
 pub const AXIS_PRECEDING: xmlXPathAxisVal = 11;
@@ -2911,13 +2911,13 @@ pub const NODE_TEST_NS: xmlXPathTestVal = 4;
 pub const NODE_TEST_ALL: xmlXPathTestVal = 3;
 pub const NODE_TEST_PI: xmlXPathTestVal = 2;
 pub const NODE_TYPE_TEXT: xmlXPathTypeVal = 3;
-pub type xmlXPathTypeVal = libc::c_uint;
+pub type xmlXPathTypeVal = u32;
 pub const NODE_TYPE_PI: xmlXPathTypeVal = 7;
 pub const NODE_TYPE_COMMENT: xmlXPathTypeVal = 8;
 pub const NODE_TYPE_NODE: xmlXPathTypeVal = 0;
 pub const NODE_TEST_TYPE: xmlXPathTestVal = 1;
 pub const NODE_TEST_NONE: xmlXPathTestVal = 0;
-pub type xmlXPathTestVal = libc::c_uint;
+pub type xmlXPathTestVal = u32;
 pub type xmlXPathTraversalFunction =
     Option<unsafe extern "C" fn(_: xmlXPathParserContextPtr, _: xmlNodePtr) -> xmlNodePtr>;
 pub type xmlStreamCtxtPtr = *mut xmlStreamCtxt;

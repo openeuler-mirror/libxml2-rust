@@ -9,7 +9,7 @@ endif()
 
 set(RUST_PATH "${PROJECT_SOURCE_DIR}/rust")
 
-link_directories(${RUST_PATH}/target/release)
+link_directories(${RUST_PATH}/target/debug)
 
 include(CheckCSourceCompiles)
 include(CheckFunctionExists)

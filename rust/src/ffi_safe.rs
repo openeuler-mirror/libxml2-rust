@@ -6,28 +6,28 @@ fn getStderr() -> *mut _IO_FILE {
 }
 
 //static mut xmlFree: xmlFreeFunc;
-fn xmlFree_safe(arg1: *mut libc::c_void) {
+fn xmlFree_safe(arg1: *mut ()) {
     unsafe {
         xmlFree.expect("non-null function pointer")(arg1);
     }
 }
 
 //static mut xmlMalloc: xmlMallocFunc;
-fn xmlMalloc_safe(arg1: size_t) -> *mut libc::c_void {
+fn xmlMalloc_safe(arg1: size_t) -> *mut () {
     unsafe {
         return xmlMalloc.expect("non-null function pointer")(arg1);
     }
 }
 
 //static mut xmlRealloc: xmlReallocFunc;
-fn xmlRealloc_safe(arg1: *mut libc::c_void, arg2: size_t) -> *mut libc::c_void {
+fn xmlRealloc_safe(arg1: *mut (), arg2: size_t) -> *mut () {
     unsafe {
         return xmlRealloc.expect("non-null function pointer")(arg1, arg2);
     }
 }
 
 //static mut xmlMallocAtomic: xmlMallocFunc;
-fn xmlMallocAtomic_safe(arg1: size_t) -> *mut libc::c_void {
+fn xmlMallocAtomic_safe(arg1: size_t) -> *mut () {
     unsafe {
         return xmlMallocAtomic.expect("non-null function pointer")(arg1);
     }
@@ -61,14 +61,14 @@ fn getXmlIsExtenderGroup() -> &'static xmlChRangeGroup {
     }
 }
 
-//static xmlIsPubidChar_tab: [libc::c_uchar; 256];
-fn getXmlIsPubidChar_tab(index: usize) -> libc::c_int {
+//static xmlIsPubidChar_tab: [u8; 256];
+fn getXmlIsPubidChar_tab(index: usize) -> i32 {
     unsafe {
-        return xmlIsPubidChar_tab[index] as libc::c_int;
+        return xmlIsPubidChar_tab[index] as i32;
     }
 }
 
-fn xmlStrcmp_safe(str1: *const xmlChar, str2: *const xmlChar) -> libc::c_int {
+fn xmlStrcmp_safe(str1: *const xmlChar, str2: *const xmlChar) -> i32 {
     unsafe {
         return xmlStrcmp(str1, str2);
     }
@@ -80,16 +80,16 @@ fn xmlStrdup_safe(cur: *const xmlChar) -> *mut xmlChar {
     }
 }
 
-fn xmlStrlen_safe(str: *const xmlChar) -> libc::c_int {
+fn xmlStrlen_safe(str: *const xmlChar) -> i32 {
     unsafe {
         return xmlStrlen(str);
     }
 }
 
 fn __xmlLoaderErr_safe(
-    ctx: *mut libc::c_void,
-    msg: *const libc::c_char,
-    filename: *const libc::c_char,
+    ctx: *mut (),
+    msg: *const i8,
+    filename: *const i8,
 ) {
     unsafe {
         __xmlLoaderErr(ctx, msg, filename);
@@ -97,16 +97,16 @@ fn __xmlLoaderErr_safe(
 }
 
 fn memset_safe(
-    arg1: *mut libc::c_void,
-    arg2: libc::c_int,
-    arg3: libc::c_ulong,
-) -> *mut libc::c_void {
+    arg1: *mut (),
+    arg2: i32,
+    arg3: u64,
+) -> *mut () {
     unsafe {
         return memset(arg1, arg2, arg3);
     }
 }
 
-fn strcmp_safe(arg1: *const libc::c_char, arg2: *const libc::c_char) -> libc::c_int {
+fn strcmp_safe(arg1: *const i8, arg2: *const i8) -> i32 {
     unsafe {
         return strcmp(arg1, arg2);
     }
@@ -166,7 +166,7 @@ fn xmlHashFree_safe(table: xmlHashTablePtr, f: xmlHashDeallocator) {
     }
 }
 
-fn xmlHashDefaultDeallocator_safe(entry: *mut libc::c_void, name: *const xmlChar) {
+fn xmlHashDefaultDeallocator_safe(entry: *mut (), name: *const xmlChar) {
     unsafe {
         xmlHashDefaultDeallocator(entry, name);
     }
@@ -178,14 +178,14 @@ fn xmlGetCharEncodingHandler_safe(enc: xmlCharEncoding) -> xmlCharEncodingHandle
     }
 }
 
-fn xmlCharEncCloseFunc_safe(handler: *mut xmlCharEncodingHandler) -> libc::c_int {
+fn xmlCharEncCloseFunc_safe(handler: *mut xmlCharEncodingHandler) -> i32 {
     unsafe {
         return xmlCharEncCloseFunc(handler);
     }
 }
 
 fn xmlParserInputBufferCreateFilename_safe(
-    URI: *const libc::c_char,
+    URI: *const i8,
     enc: xmlCharEncoding,
 ) -> xmlParserInputBufferPtr {
     unsafe {
@@ -193,13 +193,13 @@ fn xmlParserInputBufferCreateFilename_safe(
     }
 }
 
-fn xmlParserInputBufferRead_safe(in_0: xmlParserInputBufferPtr, len: libc::c_int) -> libc::c_int {
+fn xmlParserInputBufferRead_safe(in_0: xmlParserInputBufferPtr, len: i32) -> i32 {
     unsafe {
         return xmlParserInputBufferRead(in_0, len);
     }
 }
 
-fn xmlParserInputBufferGrow_safe(in_0: xmlParserInputBufferPtr, len: libc::c_int) -> libc::c_int {
+fn xmlParserInputBufferGrow_safe(in_0: xmlParserInputBufferPtr, len: i32) -> i32 {
     unsafe {
         return xmlParserInputBufferGrow(in_0, len);
     }
@@ -211,7 +211,7 @@ fn xmlFreeParserInputBuffer_safe(in_0: xmlParserInputBufferPtr) {
     }
 }
 
-fn xmlParserGetDirectory_safe(filename: *const libc::c_char) -> *mut libc::c_char {
+fn xmlParserGetDirectory_safe(filename: *const i8) -> *mut i8 {
     unsafe {
         return xmlParserGetDirectory(filename);
     }
@@ -223,31 +223,31 @@ fn xmlCheckHTTPInput_safe(ctxt: xmlParserCtxtPtr, ret: xmlParserInputPtr) -> xml
     }
 }
 
-fn __xmlSubstituteEntitiesDefaultValue_safe() -> *mut libc::c_int {
+fn __xmlSubstituteEntitiesDefaultValue_safe() -> *mut i32 {
     unsafe {
         return __xmlSubstituteEntitiesDefaultValue();
     }
 }
 
-fn __xmlKeepBlanksDefaultValue_safe() -> libc::c_int {
+fn __xmlKeepBlanksDefaultValue_safe() -> i32 {
     unsafe {
         return *__xmlKeepBlanksDefaultValue();
     }
 }
 
-fn __xmlIndentTreeOutput_safe() -> *mut libc::c_int {
+fn __xmlIndentTreeOutput_safe() -> *mut i32 {
     unsafe {
         return __xmlIndentTreeOutput();
     }
 }
 
-fn __xmlPedanticParserDefaultValue_safe() -> *mut libc::c_int {
+fn __xmlPedanticParserDefaultValue_safe() -> *mut i32 {
     unsafe {
         return __xmlPedanticParserDefaultValue();
     }
 }
 
-fn __xmlLineNumbersDefaultValue_safe() -> libc::c_int {
+fn __xmlLineNumbersDefaultValue_safe() -> i32 {
     unsafe {
         return *__xmlLineNumbersDefaultValue();
     }
@@ -259,37 +259,37 @@ fn __xmlDefaultSAXHandler_safe() -> *mut xmlSAXHandlerV1 {
     }
 }
 
-fn __xmlGetWarningsDefaultValue_safe() -> *mut libc::c_int {
+fn __xmlGetWarningsDefaultValue_safe() -> *mut i32 {
     unsafe {
         return __xmlGetWarningsDefaultValue();
     }
 }
 
-fn xmlSAX2IgnorableWhitespace_safe(ctx: *mut libc::c_void, ch: *const xmlChar, len: libc::c_int) {
+fn xmlSAX2IgnorableWhitespace_safe(ctx: *mut (), ch: *const xmlChar, len: i32) {
     unsafe {
         xmlSAX2IgnorableWhitespace(ctx, ch, len);
     }
 }
 
-fn __xmlDoValidityCheckingDefaultValue_safe() -> *mut libc::c_int {
+fn __xmlDoValidityCheckingDefaultValue_safe() -> *mut i32 {
     unsafe {
         return __xmlDoValidityCheckingDefaultValue();
     }
 }
 
-fn __xmlLoadExtDtdDefaultValue_safe() -> *mut libc::c_int {
+fn __xmlLoadExtDtdDefaultValue_safe() -> *mut i32 {
     unsafe {
         return __xmlLoadExtDtdDefaultValue();
     }
 }
 
-fn __xmlGenericErrorContext_safe() -> *mut libc::c_void {
+fn __xmlGenericErrorContext_safe() -> *mut () {
     unsafe {
         return *__xmlGenericErrorContext();
     }
 }
 
-fn xmlSAXVersion_safe(hdlr: *mut xmlSAXHandler, version: libc::c_int) -> libc::c_int {
+fn xmlSAXVersion_safe(hdlr: *mut xmlSAXHandler, version: i32) -> i32 {
     unsafe {
         return xmlSAXVersion(hdlr, version);
     }
@@ -301,15 +301,15 @@ fn xmlDefaultSAXHandlerInit_safe() {
     }
 }
 
-fn __xmlParserDebugEntities_safe() -> *mut libc::c_int {
+fn __xmlParserDebugEntities_safe() -> *mut i32 {
     unsafe {
         return __xmlParserDebugEntities();
     }
 }
 
 fn xmlLoadExternalEntity_safe(
-    URL: *const libc::c_char,
-    ID: *const libc::c_char,
+    URL: *const i8,
+    ID: *const i8,
     ctxt: xmlParserCtxtPtr,
 ) -> xmlParserInputPtr {
     unsafe {
@@ -317,7 +317,7 @@ fn xmlLoadExternalEntity_safe(
     }
 }
 
-fn xmlCharInRange_safe(val: libc::c_uint, group: *const xmlChRangeGroup) -> libc::c_int {
+fn xmlCharInRange_safe(val: u32, group: *const xmlChRangeGroup) -> i32 {
     unsafe {
         return xmlCharInRange(val, group);
     }
@@ -329,7 +329,7 @@ fn xmlCanonicPath_safe(path: *const xmlChar) -> *mut xmlChar {
     }
 }
 
-fn xmlCatalogFreeLocal_safe(catalogs: *mut libc::c_void) {
+fn xmlCatalogFreeLocal_safe(catalogs: *mut ()) {
     unsafe {
         xmlCatalogFreeLocal(catalogs);
     }
@@ -341,43 +341,43 @@ fn xmlBufCreate_safe() -> xmlBufPtr {
     }
 }
 
-fn xmlBufIsEmpty_safe(buf: xmlBufPtr) -> libc::c_int {
+fn xmlBufIsEmpty_safe(buf: xmlBufPtr) -> i32 {
     unsafe {
         return xmlBufIsEmpty(buf);
     }
 }
 
-fn xmlBufResetInput_safe(buf: xmlBufPtr, input: xmlParserInputPtr) -> libc::c_int {
+fn xmlBufResetInput_safe(buf: xmlBufPtr, input: xmlParserInputPtr) -> i32 {
     unsafe {
         return xmlBufResetInput(buf, input);
     }
 }
 
-fn xmlCharEncFirstLineInput_safe(input: xmlParserInputBufferPtr, len: libc::c_int) -> libc::c_int {
+fn xmlCharEncFirstLineInput_safe(input: xmlParserInputBufferPtr, len: i32) -> i32 {
     unsafe {
         return xmlCharEncFirstLineInput(input, len);
     }
 }
 
-fn xmlCharEncInput_safe(input: xmlParserInputBufferPtr, flush: libc::c_int) -> libc::c_int {
+fn xmlCharEncInput_safe(input: xmlParserInputBufferPtr, flush: i32) -> i32 {
     unsafe {
         return xmlCharEncInput(input, flush);
     }
 }
 
-fn xmlStrncmp_safe(str1: *const xmlChar, str2: *const xmlChar, len: libc::c_int) -> libc::c_int {
+fn xmlStrncmp_safe(str1: *const xmlChar, str2: *const xmlChar, len: i32) -> i32 {
     unsafe {
         return xmlStrncmp(str1, str2, len);
     }
 }
 
-fn xmlStrcasecmp_safe(str1: *const xmlChar, str2: *const xmlChar) -> libc::c_int {
+fn xmlStrcasecmp_safe(str1: *const xmlChar, str2: *const xmlChar) -> i32 {
     unsafe {
         return xmlStrcasecmp(str1, str2);
     }
 }
 
-fn xmlStrEqual_safe(str1: *const xmlChar, str2: *const xmlChar) -> libc::c_int {
+fn xmlStrEqual_safe(str1: *const xmlChar, str2: *const xmlChar) -> i32 {
     unsafe {
         return xmlStrEqual(str1, str2);
     }
@@ -395,19 +395,19 @@ fn xmlStrchr_safe(str: *const xmlChar, val: xmlChar) -> *const xmlChar {
     }
 }
 
-fn xmlCharStrdup_safe(cur: *const libc::c_char) -> *mut xmlChar {
+fn xmlCharStrdup_safe(cur: *const i8) -> *mut xmlChar {
     unsafe {
         return xmlCharStrdup(cur);
     }
 }
 
-fn xmlStrndup_safe(cur: *const xmlChar, len: libc::c_int) -> *mut xmlChar {
+fn xmlStrndup_safe(cur: *const xmlChar, len: i32) -> *mut xmlChar {
     unsafe {
         return xmlStrndup(cur, len);
     }
 }
 
-fn __htmlParseContent_safe(ctx: *mut libc::c_void) {
+fn __htmlParseContent_safe(ctx: *mut ()) {
     unsafe {
         __htmlParseContent(ctx);
     }
@@ -426,56 +426,56 @@ fn __xmlGlobalInitMutexUnlock_safe() {
 }
 
 fn xmlInputReadCallbackNop_safe(
-    context: *mut libc::c_void,
-    buffer: *mut libc::c_char,
-    len: libc::c_int,
-) -> libc::c_int {
+    context: *mut (),
+    buffer: *mut i8,
+    len: i32,
+) -> i32 {
     unsafe {
         return xmlInputReadCallbackNop(context, buffer, len);
     }
 }
 
 fn memcpy_safe(
-    arg1: *mut libc::c_void,
-    arg2: *const libc::c_void,
-    arg3: libc::c_ulong,
-) -> *mut libc::c_void {
+    arg1: *mut (),
+    arg2: *const (),
+    arg3: u64,
+) -> *mut () {
     unsafe {
         return memcpy(arg1, arg2, arg3);
     }
 }
 
 fn memmove_safe(
-    arg1: *mut libc::c_void,
-    arg2: *const libc::c_void,
-    arg3: libc::c_ulong,
-) -> *mut libc::c_void {
+    arg1: *mut (),
+    arg2: *const (),
+    arg3: u64,
+) -> *mut () {
     unsafe {
         return memmove(arg1, arg2, arg3);
     }
 }
 
 fn memchr_safe(
-    arg1: *const libc::c_void,
-    arg2: libc::c_int,
-    arg3: libc::c_ulong,
-) -> *mut libc::c_void {
+    arg1: *const (),
+    arg2: i32,
+    arg3: u64,
+) -> *mut () {
     unsafe {
         return memchr(arg1, arg2, arg3);
     }
 }
 
 fn strncmp_safe(
-    arg1: *const libc::c_char,
-    arg2: *const libc::c_char,
-    arg3: libc::c_ulong,
-) -> libc::c_int {
+    arg1: *const i8,
+    arg2: *const i8,
+    arg3: u64,
+) -> i32 {
     unsafe {
         return strncmp(arg1, arg2, arg3);
     }
 }
 
-fn strlen_safe(arg1: *const libc::c_char) -> libc::c_ulong {
+fn strlen_safe(arg1: *const i8) -> u64 {
     unsafe {
         return strlen(arg1);
     }
@@ -500,7 +500,7 @@ fn xmlAllocParserInputBuffer_safe(enc: xmlCharEncoding) -> xmlParserInputBufferP
 }
 
 fn xmlParserInputBufferCreateFd_safe(
-    fd: libc::c_int,
+    fd: i32,
     enc: xmlCharEncoding,
 ) -> xmlParserInputBufferPtr {
     unsafe {
@@ -509,8 +509,8 @@ fn xmlParserInputBufferCreateFd_safe(
 }
 
 fn xmlParserInputBufferCreateMem_safe(
-    mem: *const libc::c_char,
-    size: libc::c_int,
+    mem: *const i8,
+    size: i32,
     enc: xmlCharEncoding,
 ) -> xmlParserInputBufferPtr {
     unsafe {
@@ -521,7 +521,7 @@ fn xmlParserInputBufferCreateMem_safe(
 fn xmlParserInputBufferCreateIO_safe(
     ioread: xmlInputReadCallback,
     ioclose: xmlInputCloseCallback,
-    ioctx: *mut libc::c_void,
+    ioctx: *mut (),
     enc: xmlCharEncoding,
 ) -> xmlParserInputBufferPtr {
     unsafe {
@@ -531,9 +531,9 @@ fn xmlParserInputBufferCreateIO_safe(
 
 fn xmlParserInputBufferPush_safe(
     in_0: xmlParserInputBufferPtr,
-    len: libc::c_int,
-    buf: *const libc::c_char,
-) -> libc::c_int {
+    len: i32,
+    buf: *const i8,
+) -> i32 {
     unsafe {
         return xmlParserInputBufferPush(in_0, len, buf);
     }
@@ -551,25 +551,25 @@ fn xmlRegisterDefaultOutputCallbacks_safe() {
     }
 }
 
-fn xmlInitializeDict_safe() -> libc::c_int {
+fn xmlInitializeDict_safe() -> i32 {
     unsafe {
         return xmlInitializeDict();
     }
 }
 
-fn xmlDictReference_safe(dict: xmlDictPtr) -> libc::c_int {
+fn xmlDictReference_safe(dict: xmlDictPtr) -> i32 {
     unsafe {
         return xmlDictReference(dict);
     }
 }
 
-fn xmlDictLookup_safe(dict: xmlDictPtr, name: *const xmlChar, len: libc::c_int) -> *const xmlChar {
+fn xmlDictLookup_safe(dict: xmlDictPtr, name: *const xmlChar, len: i32) -> *const xmlChar {
     unsafe {
         return xmlDictLookup(dict, name, len);
     }
 }
 
-fn xmlDictOwns_safe(dict: xmlDictPtr, str: *const xmlChar) -> libc::c_int {
+fn xmlDictOwns_safe(dict: xmlDictPtr, str: *const xmlChar) -> i32 {
     unsafe {
         return xmlDictOwns(dict, str);
     }
@@ -585,14 +585,14 @@ fn xmlBuildQName_safe(
     ncname: *const xmlChar,
     prefix: *const xmlChar,
     memory: *mut xmlChar,
-    len: libc::c_int,
+    len: i32,
 ) -> *mut xmlChar {
     unsafe {
         return xmlBuildQName(ncname, prefix, memory, len);
     }
 }
 
-fn xmlSplitQName3_safe(name: *const xmlChar, len: *mut libc::c_int) -> *const xmlChar {
+fn xmlSplitQName3_safe(name: *const xmlChar, len: *mut i32) -> *const xmlChar {
     unsafe {
         return xmlSplitQName3(name, len);
     }
@@ -610,7 +610,7 @@ fn xmlBufferFree_safe(buf: xmlBufferPtr) {
     }
 }
 
-fn xmlBufferAdd_safe(buf: xmlBufferPtr, str: *const xmlChar, len: libc::c_int) -> libc::c_int {
+fn xmlBufferAdd_safe(buf: xmlBufferPtr, str: *const xmlChar, len: i32) -> i32 {
     unsafe {
         return xmlBufferAdd(buf, str, len);
     }
@@ -667,7 +667,7 @@ fn xmlNewComment_safe(content: *const xmlChar) -> xmlNodePtr {
     }
 }
 
-fn xmlDocCopyNode_safe(node: xmlNodePtr, doc: xmlDocPtr, recursive: libc::c_int) -> xmlNodePtr {
+fn xmlDocCopyNode_safe(node: xmlNodePtr, doc: xmlDocPtr, recursive: i32) -> xmlNodePtr {
     unsafe {
         return xmlDocCopyNode(node, doc, recursive);
     }
@@ -679,7 +679,7 @@ fn xmlGetLastChild_safe(parent: *const xmlNode) -> xmlNodePtr {
     }
 }
 
-fn xmlNodeIsText_safe(node: *const xmlNode) -> libc::c_int {
+fn xmlNodeIsText_safe(node: *const xmlNode) -> i32 {
     unsafe {
         return xmlNodeIsText(node);
     }
@@ -727,7 +727,7 @@ fn xmlSearchNsByHref_safe(doc: xmlDocPtr, node: xmlNodePtr, href: *const xmlChar
     }
 }
 
-fn xmlHashCreateDict_safe(size: libc::c_int, dict: xmlDictPtr) -> xmlHashTablePtr {
+fn xmlHashCreateDict_safe(size: i32, dict: xmlDictPtr) -> xmlHashTablePtr {
     unsafe {
         return xmlHashCreateDict(size, dict);
     }
@@ -737,8 +737,8 @@ fn xmlHashAddEntry2_safe(
     table: xmlHashTablePtr,
     name: *const xmlChar,
     name2: *const xmlChar,
-    userdata: *mut libc::c_void,
-) -> libc::c_int {
+    userdata: *mut (),
+) -> i32 {
     unsafe {
         return xmlHashAddEntry2(table, name, name2, userdata);
     }
@@ -748,9 +748,9 @@ fn xmlHashUpdateEntry2_safe(
     table: xmlHashTablePtr,
     name: *const xmlChar,
     name2: *const xmlChar,
-    userdata: *mut libc::c_void,
+    userdata: *mut (),
     f: xmlHashDeallocator,
-) -> libc::c_int {
+) -> i32 {
     unsafe {
         return xmlHashUpdateEntry2(table, name, name2, userdata, f);
     }
@@ -761,7 +761,7 @@ fn xmlHashRemoveEntry2_safe(
     name: *const xmlChar,
     name2: *const xmlChar,
     f: xmlHashDeallocator,
-) -> libc::c_int {
+) -> i32 {
     unsafe {
         return xmlHashRemoveEntry2(table, name, name2, f);
     }
@@ -771,7 +771,7 @@ fn xmlHashLookup2_safe(
     table: xmlHashTablePtr,
     name: *const xmlChar,
     name2: *const xmlChar,
-) -> *mut libc::c_void {
+) -> *mut () {
     unsafe {
         return xmlHashLookup2(table, name, name2);
     }
@@ -783,19 +783,19 @@ fn xmlHashQLookup2_safe(
     prefix: *const xmlChar,
     name2: *const xmlChar,
     prefix2: *const xmlChar,
-) -> *mut libc::c_void {
+) -> *mut () {
     unsafe {
         return xmlHashQLookup2(table, name, prefix, name2, prefix2);
     }
 }
 
-fn xmlHashSize_safe(table: xmlHashTablePtr) -> libc::c_int {
+fn xmlHashSize_safe(table: xmlHashTablePtr) -> i32 {
     unsafe {
         return xmlHashSize(table);
     }
 }
 
-fn xmlHashScanFull_safe(table: xmlHashTablePtr, f: xmlHashScannerFull, data: *mut libc::c_void) {
+fn xmlHashScanFull_safe(table: xmlHashTablePtr, f: xmlHashScannerFull, data: *mut ()) {
     unsafe {
         xmlHashScanFull(table, f, data);
     }
@@ -819,7 +819,7 @@ fn xmlResetError_safe(err: xmlErrorPtr) {
     }
 }
 
-fn xmlCopyError_safe(from: xmlErrorPtr, to: xmlErrorPtr) -> libc::c_int {
+fn xmlCopyError_safe(from: xmlErrorPtr, to: xmlErrorPtr) -> i32 {
     unsafe {
         return xmlCopyError(from, to);
     }
@@ -853,19 +853,19 @@ fn xmlFreeEnumeration_safe(cur: xmlEnumerationPtr) {
     }
 }
 
-fn xmlValidateRoot_safe(ctxt: xmlValidCtxtPtr, doc: xmlDocPtr) -> libc::c_int {
+fn xmlValidateRoot_safe(ctxt: xmlValidCtxtPtr, doc: xmlDocPtr) -> i32 {
     unsafe {
         return xmlValidateRoot(ctxt, doc);
     }
 }
 
-fn xmlValidateElement_safe(ctxt: xmlValidCtxtPtr, doc: xmlDocPtr, elem: xmlNodePtr) -> libc::c_int {
+fn xmlValidateElement_safe(ctxt: xmlValidCtxtPtr, doc: xmlDocPtr, elem: xmlNodePtr) -> i32 {
     unsafe {
         return xmlValidateElement(ctxt, doc, elem);
     }
 }
 
-fn xmlIsMixedElement_safe(doc: xmlDocPtr, name: *const xmlChar) -> libc::c_int {
+fn xmlIsMixedElement_safe(doc: xmlDocPtr, name: *const xmlChar) -> i32 {
     unsafe {
         return xmlIsMixedElement(doc, name);
     }
@@ -889,13 +889,13 @@ fn xmlCleanupCharEncodingHandlers_safe() {
     }
 }
 
-fn xmlFindCharEncodingHandler_safe(name: *const libc::c_char) -> xmlCharEncodingHandlerPtr {
+fn xmlFindCharEncodingHandler_safe(name: *const i8) -> xmlCharEncodingHandlerPtr {
     unsafe {
         return xmlFindCharEncodingHandler(name);
     }
 }
 
-fn xmlDetectCharEncoding_safe(in_0: *const libc::c_uchar, len: libc::c_int) -> xmlCharEncoding {
+fn xmlDetectCharEncoding_safe(in_0: *const u8, len: i32) -> xmlCharEncoding {
     unsafe {
         return xmlDetectCharEncoding(in_0, len);
     }
@@ -907,7 +907,7 @@ fn xmlCleanupMemory_safe() {
     }
 }
 
-fn xmlInitMemory_safe() -> libc::c_int {
+fn xmlInitMemory_safe() -> i32 {
     unsafe {
         return xmlInitMemory();
     }
@@ -943,14 +943,14 @@ fn xmlCleanupGlobals_safe() {
     }
 }
 
-fn xmlSAX2GetEntity_safe(ctx: *mut libc::c_void, name: *const xmlChar) -> xmlEntityPtr {
+fn xmlSAX2GetEntity_safe(ctx: *mut (), name: *const xmlChar) -> xmlEntityPtr {
     unsafe {
         return xmlSAX2GetEntity(ctx, name);
     }
 }
 
 fn xmlSAX2StartElement_safe(
-    ctx: *mut libc::c_void,
+    ctx: *mut (),
     fullname: *const xmlChar,
     atts: *mut *const xmlChar,
 ) {
@@ -959,7 +959,7 @@ fn xmlSAX2StartElement_safe(
     }
 }
 
-fn xmlSAX2EndElement_safe(ctx: *mut libc::c_void, name: *const xmlChar) {
+fn xmlSAX2EndElement_safe(ctx: *mut (), name: *const xmlChar) {
     unsafe {
         xmlSAX2EndElement(ctx, name);
     }
@@ -972,9 +972,9 @@ fn __xmlDefaultSAXLocator_safe() -> *mut xmlSAXLocator {
 }
 
 fn xmlSAX2EntityDecl_safe(
-    ctx: *mut libc::c_void,
+    ctx: *mut (),
     name: *const xmlChar,
-    type_0: libc::c_int,
+    type_0: i32,
     publicId: *const xmlChar,
     systemId: *const xmlChar,
     content: *mut xmlChar,
@@ -985,8 +985,8 @@ fn xmlSAX2EntityDecl_safe(
 }
 
 fn htmlCreateMemoryParserCtxt_safe(
-    buffer: *const libc::c_char,
-    size: libc::c_int,
+    buffer: *const i8,
+    size: i32,
 ) -> htmlParserCtxtPtr {
     unsafe {
         return htmlCreateMemoryParserCtxt(buffer, size);
@@ -1005,7 +1005,7 @@ fn xmlBuildURI_safe(URI: *const xmlChar, base: *const xmlChar) -> *mut xmlChar {
     }
 }
 
-fn xmlParseURI_safe(str: *const libc::c_char) -> xmlURIPtr {
+fn xmlParseURI_safe(str: *const i8) -> xmlURIPtr {
     unsafe {
         return xmlParseURI(str);
     }
@@ -1023,7 +1023,7 @@ fn xmlCatalogCleanup_safe() {
     }
 }
 
-fn xmlCatalogAddLocal_safe(catalogs: *mut libc::c_void, URL: *const xmlChar) -> *mut libc::c_void {
+fn xmlCatalogAddLocal_safe(catalogs: *mut (), URL: *const xmlChar) -> *mut () {
     unsafe {
         return xmlCatalogAddLocal(catalogs, URL);
     }
@@ -1058,7 +1058,7 @@ fn xmlBufSetInputBaseCur_safe(
     input: xmlParserInputPtr,
     base: size_t,
     cur: size_t,
-) -> libc::c_int {
+) -> i32 {
     unsafe {
         return xmlBufSetInputBaseCur(buf, input, base, cur);
     }
@@ -1070,7 +1070,7 @@ fn xmlXPathInit_safe() {
     }
 }
 
-fn xmlParserInputGrow_safe(arg1: xmlParserInputPtr, arg2: libc::c_int) -> libc::c_int {
+fn xmlParserInputGrow_safe(arg1: xmlParserInputPtr, arg2: i32) -> i32 {
     unsafe {
         return xmlParserInputGrow(arg1, arg2);
     }
@@ -1082,7 +1082,7 @@ fn xmlGetIntSubset_safe(arg1: *const xmlDoc) -> xmlDtdPtr {
     }
 }
 
-fn xmlSwitchEncoding_safe(arg1: xmlParserCtxtPtr, arg2: xmlCharEncoding) -> libc::c_int {
+fn xmlSwitchEncoding_safe(arg1: xmlParserCtxtPtr, arg2: xmlCharEncoding) -> i32 {
     unsafe {
         return xmlSwitchEncoding(arg1, arg2);
     }
@@ -1091,7 +1091,7 @@ fn xmlSwitchEncoding_safe(arg1: xmlParserCtxtPtr, arg2: xmlCharEncoding) -> libc
 fn xmlSwitchToEncoding_safe(
     arg1: xmlParserCtxtPtr,
     arg2: xmlCharEncodingHandlerPtr,
-) -> libc::c_int {
+) -> i32 {
     unsafe {
         return xmlSwitchToEncoding(arg1, arg2);
     }
@@ -1103,7 +1103,7 @@ fn xmlParserInputShrink_safe(arg1: xmlParserInputPtr) {
     }
 }
 
-fn xmlCopyChar_safe(arg1: libc::c_int, arg2: *mut xmlChar, arg3: libc::c_int) -> libc::c_int {
+fn xmlCopyChar_safe(arg1: i32, arg2: *mut xmlChar, arg3: i32) -> i32 {
     unsafe {
         return xmlCopyChar(arg1, arg2, arg3);
     }
@@ -1127,7 +1127,7 @@ fn nodePop_safe(arg1: xmlParserCtxtPtr) -> xmlNodePtr {
     }
 }
 
-fn xmlParseCharEncoding_safe(arg1: *const libc::c_char) -> xmlCharEncoding {
+fn xmlParseCharEncoding_safe(arg1: *const i8) -> xmlCharEncoding {
     unsafe {
         return xmlParseCharEncoding(arg1);
     }
@@ -1142,8 +1142,8 @@ fn xmlPopInput_safe(arg1: xmlParserCtxtPtr) -> xmlChar {
 fn xmlStrncasecmp_safe(
     arg1: *const xmlChar,
     arg2: *const xmlChar,
-    arg3: libc::c_int,
-) -> libc::c_int {
+    arg3: i32,
+) -> i32 {
     unsafe {
         return xmlStrncasecmp(arg1, arg2, arg3);
     }
@@ -1155,7 +1155,7 @@ fn __htmlDefaultSAXHandler_safe() -> *mut xmlSAXHandlerV1 {
     }
 }
 
-fn inputPush_safe(arg1: xmlParserCtxtPtr, arg2: xmlParserInputPtr) -> libc::c_int {
+fn inputPush_safe(arg1: xmlParserCtxtPtr, arg2: xmlParserInputPtr) -> i32 {
     unsafe {
         return inputPush(arg1, arg2);
     }
@@ -1220,21 +1220,21 @@ fn xmlNewParserCtxt_safe() -> xmlParserCtxtPtr {
 }
 
 fn xmlCreateMemoryParserCtxt_safe(
-    arg1: *const libc::c_char,
-    arg2: libc::c_int,
+    arg1: *const i8,
+    arg2: i32,
 ) -> xmlParserCtxtPtr {
     unsafe {
         return xmlCreateMemoryParserCtxt(arg1, arg2);
     }
 }
 
-fn strcpy_safe(arg1: *mut libc::c_char, arg2: *const libc::c_char) -> *mut libc::c_char {
+fn strcpy_safe(arg1: *mut i8, arg2: *const i8) -> *mut i8 {
     unsafe {
         return strcpy(arg1, arg2);
     }
 }
 
-fn strcat_safe(arg1: *mut libc::c_char, arg2: *const libc::c_char) -> *mut libc::c_char {
+fn strcat_safe(arg1: *mut i8, arg2: *const i8) -> *mut i8 {
     unsafe {
         return strcat(arg1, arg2);
     }
@@ -1258,31 +1258,31 @@ fn xmlCtxtReset_safe(ctxt: xmlParserCtxtPtr) {
     }
 }
 
-fn xmlUTF8Strsize_safe(utf: *const xmlChar, len: libc::c_int) -> libc::c_int {
+fn xmlUTF8Strsize_safe(utf: *const xmlChar, len: i32) -> i32 {
     unsafe {
         return xmlUTF8Strsize(utf, len);
     }
 }
 
-fn xmlUTF8Strpos_safe(utf: *const xmlChar, pos: libc::c_int) -> *const xmlChar {
+fn xmlUTF8Strpos_safe(utf: *const xmlChar, pos: i32) -> *const xmlChar {
     unsafe {
         return xmlUTF8Strpos(utf, pos);
     }
 }
 
-fn xmlUTF8Strloc_safe(utf: *const xmlChar, utfchar: *const xmlChar) -> libc::c_int {
+fn xmlUTF8Strloc_safe(utf: *const xmlChar, utfchar: *const xmlChar) -> i32 {
     unsafe {
         return xmlUTF8Strloc(utf, utfchar);
     }
 }
 
-fn xmlUTF8Strsub_safe(utf: *const xmlChar, start: libc::c_int, len: libc::c_int) -> *mut xmlChar {
+fn xmlUTF8Strsub_safe(utf: *const xmlChar, start: i32, len: i32) -> *mut xmlChar {
     unsafe {
         return xmlUTF8Strsub(utf, start, len);
     }
 }
 
-fn xmlUTF8Strlen_safe(utf: *const xmlChar) -> libc::c_int {
+fn xmlUTF8Strlen_safe(utf: *const xmlChar) -> i32 {
     unsafe {
         return xmlUTF8Strlen(utf);
     }
@@ -1336,37 +1336,37 @@ fn fmod_safe(arg1: libc::c_double, arg2: libc::c_double) -> libc::c_double {
     }
 }
 
-fn __isinff_safe(__value: libc::c_float) -> libc::c_int {
+fn __isinff_safe(__value: libc::c_float) -> i32 {
     unsafe {
         return __isinff(__value);
     }
 }
 
-fn __isnanf_safe(__value: libc::c_float) -> libc::c_int {
+fn __isnanf_safe(__value: libc::c_float) -> i32 {
     unsafe {
         return __isnanf(__value);
     }
 }
 
-fn __isinfl_safe(__value: libc::c_float) -> libc::c_int {
+fn __isinfl_safe(__value: libc::c_float) -> i32 {
     unsafe {
         return __isinfl(__value);
     }
 }
 
-fn __isnanl_safe(__value: libc::c_float) -> libc::c_int {
+fn __isnanl_safe(__value: libc::c_float) -> i32 {
     unsafe {
         return __isnanl(__value);
     }
 }
 
-fn __isinf_safe(__value: libc::c_double) -> libc::c_int {
+fn __isinf_safe(__value: libc::c_double) -> i32 {
     unsafe {
         return __isinf(__value);
     }
 }
 
-fn __isnan_safe(__value: libc::c_double) -> libc::c_int {
+fn __isnan_safe(__value: libc::c_double) -> i32 {
     unsafe {
         return __isnan(__value);
     }
@@ -1396,7 +1396,7 @@ fn xmlNodeGetLang_safe(cur: *const xmlNode) -> *mut xmlChar {
     }
 }
 
-fn xmlHashCreate_safe(size: libc::c_int) -> xmlHashTablePtr {
+fn xmlHashCreate_safe(size: i32) -> xmlHashTablePtr {
     unsafe {
         return xmlHashCreate(size);
     }
@@ -1405,8 +1405,8 @@ fn xmlHashCreate_safe(size: libc::c_int) -> xmlHashTablePtr {
 fn xmlHashAddEntry_safe(
     table: xmlHashTablePtr,
     name: *const xmlChar,
-    userdata: *mut libc::c_void,
-) -> libc::c_int {
+    userdata: *mut (),
+) -> i32 {
     unsafe {
         return xmlHashAddEntry(table, name, userdata);
     }
@@ -1415,9 +1415,9 @@ fn xmlHashAddEntry_safe(
 fn xmlHashUpdateEntry_safe(
     table: xmlHashTablePtr,
     name: *const xmlChar,
-    userdata: *mut libc::c_void,
+    userdata: *mut (),
     f: xmlHashDeallocator,
-) -> libc::c_int {
+) -> i32 {
     unsafe {
         return xmlHashUpdateEntry(table, name, userdata, f);
     }
@@ -1427,13 +1427,13 @@ fn xmlHashRemoveEntry_safe(
     table: xmlHashTablePtr,
     name: *const xmlChar,
     f: xmlHashDeallocator,
-) -> libc::c_int {
+) -> i32 {
     unsafe {
         return xmlHashRemoveEntry(table, name, f);
     }
 }
 
-fn xmlHashLookup_safe(table: xmlHashTablePtr, name: *const xmlChar) -> *mut libc::c_void {
+fn xmlHashLookup_safe(table: xmlHashTablePtr, name: *const xmlChar) -> *mut () {
     unsafe {
         return xmlHashLookup(table, name);
     }
@@ -1445,19 +1445,19 @@ fn xmlGetID_safe(doc: xmlDocPtr, ID: *const xmlChar) -> xmlAttrPtr {
     }
 }
 
-fn realloc_safe(arg1: *mut libc::c_void, arg2: libc::c_ulong) -> *mut libc::c_void {
+fn realloc_safe(arg1: *mut (), arg2: u64) -> *mut () {
     unsafe {
         return realloc(arg1, arg2);
     }
 }
 
-fn free_safe(__ptr: *mut libc::c_void) {
+fn free_safe(__ptr: *mut ()) {
     unsafe {
         free(__ptr);
     }
 }
 
-fn exit_safe(arg1: libc::c_int) -> ! {
+fn exit_safe(arg1: i32) -> ! {
     unsafe {
         return exit(arg1);
     }
@@ -1486,9 +1486,9 @@ fn xmlXPtrLocationSetMerge_safe(
 
 fn xmlXPtrNewRange_safe(
     start: xmlNodePtr,
-    startindex: libc::c_int,
+    startindex: i32,
     end: xmlNodePtr,
-    endindex: libc::c_int,
+    endindex: i32,
 ) -> xmlXPathObjectPtr {
     unsafe {
         return xmlXPtrNewRange(start, startindex, end, endindex);
@@ -1519,13 +1519,13 @@ fn xmlDebugDumpString_safe(output: *mut FILE, str: *const xmlChar) {
     }
 }
 
-fn xmlDebugDumpAttr_safe(output: *mut FILE, attr: xmlAttrPtr, depth: libc::c_int) {
+fn xmlDebugDumpAttr_safe(output: *mut FILE, attr: xmlAttrPtr, depth: i32) {
     unsafe {
         xmlDebugDumpAttr(output, attr, depth);
     }
 }
 
-fn xmlDebugDumpOneNode_safe(output: *mut FILE, node: xmlNodePtr, depth: libc::c_int) {
+fn xmlDebugDumpOneNode_safe(output: *mut FILE, node: xmlNodePtr, depth: i32) {
     unsafe {
         xmlDebugDumpOneNode(output, node, depth);
     }
@@ -1546,7 +1546,7 @@ fn xmlFreePatternList_safe(comp: xmlPatternPtr) {
 fn xmlPatterncompile_safe(
     pattern: *const xmlChar,
     dict: *mut xmlDict,
-    flags: libc::c_int,
+    flags: i32,
     namespaces: *mut *const xmlChar,
 ) -> xmlPatternPtr {
     unsafe {
@@ -1554,25 +1554,25 @@ fn xmlPatterncompile_safe(
     }
 }
 
-fn xmlPatternStreamable_safe(comp: xmlPatternPtr) -> libc::c_int {
+fn xmlPatternStreamable_safe(comp: xmlPatternPtr) -> i32 {
     unsafe {
         return xmlPatternStreamable(comp);
     }
 }
 
-fn xmlPatternMaxDepth_safe(comp: xmlPatternPtr) -> libc::c_int {
+fn xmlPatternMaxDepth_safe(comp: xmlPatternPtr) -> i32 {
     unsafe {
         return xmlPatternMaxDepth(comp);
     }
 }
 
-fn xmlPatternMinDepth_safe(comp: xmlPatternPtr) -> libc::c_int {
+fn xmlPatternMinDepth_safe(comp: xmlPatternPtr) -> i32 {
     unsafe {
         return xmlPatternMinDepth(comp);
     }
 }
 
-fn xmlPatternFromRoot_safe(comp: xmlPatternPtr) -> libc::c_int {
+fn xmlPatternFromRoot_safe(comp: xmlPatternPtr) -> i32 {
     unsafe {
         return xmlPatternFromRoot(comp);
     }
@@ -1594,8 +1594,8 @@ fn xmlStreamPushNode_safe(
     stream: xmlStreamCtxtPtr,
     name: *const xmlChar,
     ns: *const xmlChar,
-    nodeType: libc::c_int,
-) -> libc::c_int {
+    nodeType: i32,
+) -> i32 {
     unsafe {
         return xmlStreamPushNode(stream, name, ns, nodeType);
     }
@@ -1605,19 +1605,19 @@ fn xmlStreamPush_safe(
     stream: xmlStreamCtxtPtr,
     name: *const xmlChar,
     ns: *const xmlChar,
-) -> libc::c_int {
+) -> i32 {
     unsafe {
         return xmlStreamPush(stream, name, ns);
     }
 }
 
-fn xmlStreamPop_safe(stream: xmlStreamCtxtPtr) -> libc::c_int {
+fn xmlStreamPop_safe(stream: xmlStreamCtxtPtr) -> i32 {
     unsafe {
         return xmlStreamPop(stream);
     }
 }
 
-fn xmlStreamWantsAnyNode_safe(stream: xmlStreamCtxtPtr) -> libc::c_int {
+fn xmlStreamWantsAnyNode_safe(stream: xmlStreamCtxtPtr) -> i32 {
     unsafe {
         return xmlStreamWantsAnyNode(stream);
     }
@@ -1629,7 +1629,7 @@ fn xmlBufFree_safe(buf: xmlBufPtr) {
     }
 }
 
-fn xmlBufAdd_safe(buf: xmlBufPtr, str: *const xmlChar, len: libc::c_int) -> libc::c_int {
+fn xmlBufAdd_safe(buf: xmlBufPtr, str: *const xmlChar, len: i32) -> i32 {
     unsafe {
         return xmlBufAdd(buf, str, len);
     }
@@ -1665,7 +1665,7 @@ macro_rules! __xmlGenericError_safe_macro {
 
 // #[macro_export]
 // macro_rules! fprintf_safe {
-//     () => {return 0 as libc::c_int};
+//     () => {return 0 as i32};
 //     ($arg1:expr, $arg2:expr$(, $more_params:expr)*) => {{
 //         unsafe { return fprintf($arg1, $arg2$(, $more_params)*) }
 //     }};
@@ -1697,7 +1697,7 @@ macro_rules! __xmlGenericError_safe_macro {
 //
 // #[macro_export]
 // macro_rules! xmlStrPrintf_safe {
-//     () => {return 0 as libc::c_int};
+//     () => {return 0 as i32};
 //     ($buf:expr, $len:expr, $msg:expr$(, $more_params:expr)*) => {{
 //         unsafe { return xmlStrPrintf($buf, $len, $msg$(, $more_params)*) }
 //     }};

@@ -4,10 +4,10 @@ cmake -DSTEP="build"
 make
 cd rust_ffi
 cargo clean
-cargo build --release
+cargo build
 cd ../rust
 cargo clean
-cargo build --release
+cargo build
 cd ../
 cmake -DSTEP="link"
 make
