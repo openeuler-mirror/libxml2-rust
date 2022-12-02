@@ -1,10 +1,10 @@
 #[no_mangle]
-pub unsafe extern "C" fn xmlCheckVersion_rust(mut version: libc::c_int) {
+pub unsafe extern "C" fn xmlCheckVersion_rust(mut version: i32) {
     unsafe { xmlCheckVersion(version) };
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn xmlErrMemory_rust(mut ctxt: xmlParserCtxtPtr, mut extra: *const libc::c_char) {
+pub unsafe extern "C" fn xmlErrMemory_rust(mut ctxt: xmlParserCtxtPtr, mut extra: *const i8) {
     unsafe { xmlErrMemory(ctxt, extra) };
 }
 
@@ -12,7 +12,7 @@ pub unsafe extern "C" fn xmlErrMemory_rust(mut ctxt: xmlParserCtxtPtr, mut extra
 pub unsafe extern "C" fn __xmlErrEncoding_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut xmlerr: xmlParserErrors,
-    mut msg: *const libc::c_char,
+    mut msg: *const i8,
     mut str1: *const xmlChar,
     mut str2: *const xmlChar,
 ) {
@@ -23,24 +23,24 @@ pub unsafe extern "C" fn __xmlErrEncoding_rust(
 pub unsafe extern "C" fn xmlErrEncodingInt_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut error: xmlParserErrors,
-    mut msg: *const libc::c_char,
-    mut val: libc::c_int,
+    mut msg: *const i8,
+    mut val: i32,
 ) {
     unsafe { xmlErrEncodingInt(ctxt, error, msg, val) };
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn xmlIsLetter_rust(mut c: libc::c_int) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlIsLetter(c) };
+pub unsafe extern "C" fn xmlIsLetter_rust(mut c: i32) -> i32 {
+    let res: i32 = unsafe { xmlIsLetter(c) };
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlParserInputGrow_rust(
     mut in_0: xmlParserInputPtr,
-    mut l: libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlParserInputGrow_parserInternals(in_0, l) };
+    mut l: i32,
+) -> i32 {
+    let res: i32 = unsafe { xmlParserInputGrow_parserInternals(in_0, l) };
     return res;
 }
 
@@ -57,9 +57,9 @@ pub unsafe extern "C" fn xmlNextChar_rust(mut ctxt: xmlParserCtxtPtr) {
 #[no_mangle]
 pub unsafe extern "C" fn xmlCurrentChar_rust(
     mut ctxt: xmlParserCtxtPtr,
-    mut len: *mut libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlCurrentChar(ctxt, len) };
+    mut len: *mut i32,
+) -> i32 {
+    let res: i32 = unsafe { xmlCurrentChar(ctxt, len) };
     return res;
 }
 
@@ -67,28 +67,28 @@ pub unsafe extern "C" fn xmlCurrentChar_rust(
 pub unsafe extern "C" fn xmlStringCurrentChar_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut cur: *const xmlChar,
-    mut len: *mut libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlStringCurrentChar(ctxt, cur, len) };
+    mut len: *mut i32,
+) -> i32 {
+    let res: i32 = unsafe { xmlStringCurrentChar(ctxt, cur, len) };
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlCopyCharMultiByte_rust(
     mut out: *mut xmlChar,
-    mut val: libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlCopyCharMultiByte(out, val) };
+    mut val: i32,
+) -> i32 {
+    let res: i32 = unsafe { xmlCopyCharMultiByte(out, val) };
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn xmlCopyChar_rust(
-    mut len: libc::c_int,
+    mut len: i32,
     mut out: *mut xmlChar,
-    mut val: libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlCopyChar_parserInternals(len, out, val) };
+    mut val: i32,
+) -> i32 {
+    let res: i32 = unsafe { xmlCopyChar_parserInternals(len, out, val) };
     return res;
 }
 
@@ -96,8 +96,8 @@ pub unsafe extern "C" fn xmlCopyChar_rust(
 pub unsafe extern "C" fn xmlSwitchEncoding_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut enc: xmlCharEncoding,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlSwitchEncoding_parserInternals(ctxt, enc) };
+) -> i32 {
+    let res: i32 = unsafe { xmlSwitchEncoding_parserInternals(ctxt, enc) };
     return res;
 }
 
@@ -106,9 +106,9 @@ pub unsafe extern "C" fn xmlSwitchInputEncodingInt_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut input: xmlParserInputPtr,
     mut handler: xmlCharEncodingHandlerPtr,
-    mut len: libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlSwitchInputEncodingInt(ctxt, input, handler, len) };
+    mut len: i32,
+) -> i32 {
+    let res: i32 = unsafe { xmlSwitchInputEncodingInt(ctxt, input, handler, len) };
     return res;
 }
 
@@ -117,8 +117,8 @@ pub unsafe extern "C" fn xmlSwitchInputEncoding_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut input: xmlParserInputPtr,
     mut handler: xmlCharEncodingHandlerPtr,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlSwitchInputEncoding(ctxt, input, handler) };
+) -> i32 {
+    let res: i32 = unsafe { xmlSwitchInputEncoding(ctxt, input, handler) };
     return res;
 }
 
@@ -126,9 +126,9 @@ pub unsafe extern "C" fn xmlSwitchInputEncoding_rust(
 pub unsafe extern "C" fn xmlSwitchToEncodingInt_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut handler: xmlCharEncodingHandlerPtr,
-    mut len: libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlSwitchToEncodingInt(ctxt, handler, len) };
+    mut len: i32,
+) -> i32 {
+    let res: i32 = unsafe { xmlSwitchToEncodingInt(ctxt, handler, len) };
     return res;
 }
 
@@ -136,8 +136,8 @@ pub unsafe extern "C" fn xmlSwitchToEncodingInt_rust(
 pub unsafe extern "C" fn xmlSwitchToEncoding_rust(
     mut ctxt: xmlParserCtxtPtr,
     mut handler: xmlCharEncodingHandlerPtr,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlSwitchToEncoding_parserInternals(ctxt, handler) };
+) -> i32 {
+    let res: i32 = unsafe { xmlSwitchToEncoding_parserInternals(ctxt, handler) };
     return res;
 }
 
@@ -183,15 +183,15 @@ pub unsafe extern "C" fn xmlNewStringInputStream_rust(
 #[no_mangle]
 pub unsafe extern "C" fn xmlNewInputFromFile_rust(
     mut ctxt: xmlParserCtxtPtr,
-    mut filename: *const libc::c_char,
+    mut filename: *const i8,
 ) -> xmlParserInputPtr {
     let res: xmlParserInputPtr = unsafe { xmlNewInputFromFile(ctxt, filename) };
     return res;
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn xmlInitParserCtxt_rust(mut ctxt: xmlParserCtxtPtr) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlInitParserCtxt(ctxt) };
+pub unsafe extern "C" fn xmlInitParserCtxt_rust(mut ctxt: xmlParserCtxtPtr) -> i32 {
+    let res: i32 = unsafe { xmlInitParserCtxt(ctxt) };
     return res;
 }
 
@@ -234,8 +234,8 @@ pub unsafe fn xmlClearNodeInfoSeq_rust(mut seq: xmlParserNodeInfoSeqPtr) {
 pub unsafe fn xmlParserFindNodeInfoIndex_rust(
     seq: xmlParserNodeInfoSeqPtr,
     node: xmlNodePtr,
-) -> libc::c_ulong {
-    let res: libc::c_ulong = unsafe { xmlParserFindNodeInfoIndex(seq, node) };
+) -> u64 {
+    let res: u64 = unsafe { xmlParserFindNodeInfoIndex(seq, node) };
     return res;
 }
 
@@ -244,25 +244,25 @@ pub unsafe fn xmlParserAddNodeInfo_rust(mut ctxt: xmlParserCtxtPtr, info: xmlPar
     unsafe { xmlParserAddNodeInfo_parserInternals(ctxt, info) };
 }
 #[no_mangle]
-pub unsafe fn xmlPedanticParserDefault_rust(mut val: libc::c_int) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlPedanticParserDefault(val) };
+pub unsafe fn xmlPedanticParserDefault_rust(mut val: i32) -> i32 {
+    let res: i32 = unsafe { xmlPedanticParserDefault(val) };
     return res;
 }
 
 #[no_mangle]
-pub unsafe fn xmlLineNumbersDefault_rust(mut val: libc::c_int) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlLineNumbersDefault(val) };
+pub unsafe fn xmlLineNumbersDefault_rust(mut val: i32) -> i32 {
+    let res: i32 = unsafe { xmlLineNumbersDefault(val) };
     return res;
 }
 
 #[no_mangle]
-pub unsafe fn xmlSubstituteEntitiesDefault_rust(mut val: libc::c_int) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlSubstituteEntitiesDefault(val) };
+pub unsafe fn xmlSubstituteEntitiesDefault_rust(mut val: i32) -> i32 {
+    let res: i32 = unsafe { xmlSubstituteEntitiesDefault(val) };
     return res;
 }
 
 #[no_mangle]
-pub unsafe fn xmlKeepBlanksDefault_rust(mut val: libc::c_int) -> libc::c_int {
-    let res: libc::c_int = unsafe { xmlKeepBlanksDefault(val) };
+pub unsafe fn xmlKeepBlanksDefault_rust(mut val: i32) -> i32 {
+    let res: i32 = unsafe { xmlKeepBlanksDefault(val) };
     return res;
 }

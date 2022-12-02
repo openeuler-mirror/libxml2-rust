@@ -16,20 +16,20 @@ pub unsafe extern "C" fn htmlAutoCloseTag_rust(
     mut doc: htmlDocPtr,
     mut name: *const xmlChar,
     mut elem: htmlNodePtr,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlAutoCloseTag(doc, name, elem) };
+) -> i32 {
+    let res: i32 = unsafe { htmlAutoCloseTag(doc, name, elem) };
     return res;
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn htmlIsAutoClosed_rust(mut doc: htmlDocPtr, mut elem: htmlNodePtr) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlIsAutoClosed(doc, elem) };
+pub unsafe extern "C" fn htmlIsAutoClosed_rust(mut doc: htmlDocPtr, mut elem: htmlNodePtr) -> i32 {
+    let res: i32 = unsafe { htmlIsAutoClosed(doc, elem) };
     return res;
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn htmlIsScriptAttribute_rust(mut name: *const xmlChar) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlIsScriptAttribute(name) };
+pub unsafe extern "C" fn htmlIsScriptAttribute_rust(mut name: *const xmlChar) -> i32 {
+    let res: i32 = unsafe { htmlIsScriptAttribute(name) };
     return res;
 }
 
@@ -40,31 +40,31 @@ pub unsafe extern "C" fn htmlEntityLookup_rust(mut name: *const xmlChar) -> *con
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn htmlEntityValueLookup_rust(mut value: libc::c_uint) -> *const htmlEntityDesc {
+pub unsafe extern "C" fn htmlEntityValueLookup_rust(mut value: u32) -> *const htmlEntityDesc {
     let res: *const htmlEntityDesc = unsafe { htmlEntityValueLookup(value) };
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn UTF8ToHtml_rust(
-    mut out: *mut libc::c_uchar,
-    mut outlen: *mut libc::c_int,
-    mut in_0: *const libc::c_uchar,
-    mut inlen: *mut libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { UTF8ToHtml(out, outlen, in_0, inlen) };
+    mut out: *mut u8,
+    mut outlen: *mut i32,
+    mut in_0: *const u8,
+    mut inlen: *mut i32,
+) -> i32 {
+    let res: i32 = unsafe { UTF8ToHtml(out, outlen, in_0, inlen) };
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn htmlEncodeEntities_rust(
-    mut out: *mut libc::c_uchar,
-    mut outlen: *mut libc::c_int,
-    mut in_0: *const libc::c_uchar,
-    mut inlen: *mut libc::c_int,
-    mut quoteChar: libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlEncodeEntities(out, outlen, in_0, inlen, quoteChar) };
+    mut out: *mut u8,
+    mut outlen: *mut i32,
+    mut in_0: *const u8,
+    mut inlen: *mut i32,
+    mut quoteChar: i32,
+) -> i32 {
+    let res: i32 = unsafe { htmlEncodeEntities(out, outlen, in_0, inlen, quoteChar) };
     return res;
 }
 
@@ -96,8 +96,8 @@ pub unsafe extern "C" fn htmlParseEntityRef_rust(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn htmlParseCharRef_rust(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlParseCharRef(ctxt) };
+pub unsafe extern "C" fn htmlParseCharRef_rust(mut ctxt: htmlParserCtxtPtr) -> i32 {
+    let res: i32 = unsafe { htmlParseCharRef(ctxt) };
     return res;
 }
 
@@ -109,15 +109,15 @@ pub unsafe extern "C" fn htmlParseElement_rust(mut ctxt: htmlParserCtxtPtr) {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn __htmlParseContent_rust(mut ctxt: *mut libc::c_void) {
+pub unsafe extern "C" fn __htmlParseContent_rust(mut ctxt: *mut ()) {
     unsafe {
         __htmlParseContent_htmlparser(ctxt);
     }
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn htmlParseDocument_rust(mut ctxt: htmlParserCtxtPtr) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlParseDocument(ctxt) };
+pub unsafe extern "C" fn htmlParseDocument_rust(mut ctxt: htmlParserCtxtPtr) -> i32 {
+    let res: i32 = unsafe { htmlParseDocument(ctxt) };
     return res;
 }
 
@@ -136,8 +136,8 @@ pub unsafe extern "C" fn htmlNewParserCtxt_rust() -> htmlParserCtxtPtr {
 
 #[no_mangle]
 pub unsafe extern "C" fn htmlCreateMemoryParserCtxt_rust(
-    mut buffer: *const libc::c_char,
-    mut size: libc::c_int,
+    mut buffer: *const i8,
+    mut size: i32,
 ) -> htmlParserCtxtPtr {
     let res: htmlParserCtxtPtr = unsafe { htmlCreateMemoryParserCtxt_htmlparser(buffer, size) };
     return res;
@@ -146,11 +146,11 @@ pub unsafe extern "C" fn htmlCreateMemoryParserCtxt_rust(
 #[no_mangle]
 pub unsafe extern "C" fn htmlParseChunk_rust(
     mut ctxt: htmlParserCtxtPtr,
-    mut chunk: *const libc::c_char,
-    mut size: libc::c_int,
-    mut terminate: libc::c_int,
-) -> libc::c_int {
-    let mut res: libc::c_int = 0 as libc::c_int;
+    mut chunk: *const i8,
+    mut size: i32,
+    mut terminate: i32,
+) -> i32 {
+    let mut res: i32 = 0 as i32;
     match () {
         #[cfg(LIBXML_PUSH_ENABLED)]
         _ => {
@@ -165,10 +165,10 @@ pub unsafe extern "C" fn htmlParseChunk_rust(
 #[no_mangle]
 pub unsafe extern "C" fn htmlCreatePushParserCtxt_rust(
     mut sax: htmlSAXHandlerPtr,
-    mut user_data: *mut libc::c_void,
-    mut chunk: *const libc::c_char,
-    mut size: libc::c_int,
-    mut filename: *const libc::c_char,
+    mut user_data: *mut (),
+    mut chunk: *const i8,
+    mut size: i32,
+    mut filename: *const i8,
     mut enc: xmlCharEncoding,
 ) -> htmlParserCtxtPtr {
     let mut res: htmlParserCtxtPtr = 0 as htmlParserCtxtPtr;
@@ -186,9 +186,9 @@ pub unsafe extern "C" fn htmlCreatePushParserCtxt_rust(
 #[no_mangle]
 pub unsafe extern "C" fn htmlSAXParseDoc_rust(
     mut cur: *const xmlChar,
-    mut encoding: *const libc::c_char,
+    mut encoding: *const i8,
     mut sax: htmlSAXHandlerPtr,
-    mut userData: *mut libc::c_void,
+    mut userData: *mut (),
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlSAXParseDoc(cur, encoding, sax, userData) };
     return res;
@@ -197,7 +197,7 @@ pub unsafe extern "C" fn htmlSAXParseDoc_rust(
 #[no_mangle]
 pub unsafe extern "C" fn htmlParseDoc_rust(
     mut cur: *const xmlChar,
-    mut encoding: *const libc::c_char,
+    mut encoding: *const i8,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlParseDoc(cur, encoding) };
     return res;
@@ -205,8 +205,8 @@ pub unsafe extern "C" fn htmlParseDoc_rust(
 
 #[no_mangle]
 pub unsafe extern "C" fn htmlCreateFileParserCtxt_rust(
-    mut filename: *const libc::c_char,
-    mut encoding: *const libc::c_char,
+    mut filename: *const i8,
+    mut encoding: *const i8,
 ) -> htmlParserCtxtPtr {
     let res: htmlParserCtxtPtr = unsafe { htmlCreateFileParserCtxt(filename, encoding) };
     return res;
@@ -214,10 +214,10 @@ pub unsafe extern "C" fn htmlCreateFileParserCtxt_rust(
 
 #[no_mangle]
 pub unsafe extern "C" fn htmlSAXParseFile_rust(
-    mut filename: *const libc::c_char,
-    mut encoding: *const libc::c_char,
+    mut filename: *const i8,
+    mut encoding: *const i8,
     mut sax: htmlSAXHandlerPtr,
-    mut userData: *mut libc::c_void,
+    mut userData: *mut (),
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlSAXParseFile(filename, encoding, sax, userData) };
     return res;
@@ -225,16 +225,16 @@ pub unsafe extern "C" fn htmlSAXParseFile_rust(
 
 #[no_mangle]
 pub unsafe extern "C" fn htmlParseFile_rust(
-    mut filename: *const libc::c_char,
-    mut encoding: *const libc::c_char,
+    mut filename: *const i8,
+    mut encoding: *const i8,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlParseFile(filename, encoding) };
     return res;
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn htmlHandleOmittedElem_rust(mut val: libc::c_int) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlHandleOmittedElem(val) };
+pub unsafe extern "C" fn htmlHandleOmittedElem_rust(mut val: i32) -> i32 {
+    let res: i32 = unsafe { htmlHandleOmittedElem(val) };
     return res;
 }
 
@@ -242,8 +242,8 @@ pub unsafe extern "C" fn htmlHandleOmittedElem_rust(mut val: libc::c_int) -> lib
 pub unsafe extern "C" fn htmlElementAllowedHere_rust(
     mut parent: *const htmlElemDesc,
     mut elt: *const xmlChar,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlElementAllowedHere(parent, elt) };
+) -> i32 {
+    let res: i32 = unsafe { htmlElementAllowedHere(parent, elt) };
     return res;
 }
 
@@ -260,14 +260,14 @@ pub unsafe extern "C" fn htmlElementStatusHere_rust(
 pub unsafe extern "C" fn htmlAttrAllowed_rust(
     mut elt: *const htmlElemDesc,
     mut attr: *const xmlChar,
-    mut legacy: libc::c_int,
+    mut legacy: i32,
 ) -> htmlStatus {
     let res: htmlStatus = unsafe { htmlAttrAllowed(elt, attr, legacy) };
     return res;
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn htmlNodeStatus_rust(node: htmlNodePtr, mut legacy: libc::c_int) -> htmlStatus {
+pub unsafe extern "C" fn htmlNodeStatus_rust(node: htmlNodePtr, mut legacy: i32) -> htmlStatus {
     let res: htmlStatus = unsafe { htmlNodeStatus(node, legacy) };
     return res;
 }
@@ -282,18 +282,18 @@ pub unsafe extern "C" fn htmlCtxtReset_rust(mut ctxt: htmlParserCtxtPtr) {
 #[no_mangle]
 pub unsafe extern "C" fn htmlCtxtUseOptions_rust(
     mut ctxt: htmlParserCtxtPtr,
-    mut options: libc::c_int,
-) -> libc::c_int {
-    let res: libc::c_int = unsafe { htmlCtxtUseOptions(ctxt, options) };
+    mut options: i32,
+) -> i32 {
+    let res: i32 = unsafe { htmlCtxtUseOptions(ctxt, options) };
     return res;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn htmlReadDoc_rust(
     mut cur: *const xmlChar,
-    mut URL: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut URL: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlReadDoc(cur, URL, encoding, options) };
     return res;
@@ -301,9 +301,9 @@ pub unsafe extern "C" fn htmlReadDoc_rust(
 
 #[no_mangle]
 pub unsafe extern "C" fn htmlReadFile_rust(
-    mut filename: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut filename: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlReadFile(filename, encoding, options) };
     return res;
@@ -311,11 +311,11 @@ pub unsafe extern "C" fn htmlReadFile_rust(
 
 #[no_mangle]
 pub unsafe extern "C" fn htmlReadMemory_rust(
-    mut buffer: *const libc::c_char,
-    mut size: libc::c_int,
-    mut URL: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut buffer: *const i8,
+    mut size: i32,
+    mut URL: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlReadMemory(buffer, size, URL, encoding, options) };
     return res;
@@ -323,10 +323,10 @@ pub unsafe extern "C" fn htmlReadMemory_rust(
 
 #[no_mangle]
 pub unsafe fn htmlReadFd_rust(
-    mut fd: libc::c_int,
-    mut URL: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut fd: i32,
+    mut URL: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlReadFd(fd, URL, encoding, options) };
     return res;
@@ -336,10 +336,10 @@ pub unsafe fn htmlReadFd_rust(
 pub unsafe extern "C" fn htmlReadIO_rust(
     mut ioread: xmlInputReadCallback,
     mut ioclose: xmlInputCloseCallback,
-    mut ioctx: *mut libc::c_void,
-    mut URL: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut ioctx: *mut (),
+    mut URL: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlReadIO(ioread, ioclose, ioctx, URL, encoding, options) };
     return res;
@@ -349,9 +349,9 @@ pub unsafe extern "C" fn htmlReadIO_rust(
 pub unsafe extern "C" fn htmlCtxtReadDoc_rust(
     mut ctxt: htmlParserCtxtPtr,
     mut cur: *const xmlChar,
-    mut URL: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut URL: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlCtxtReadDoc(ctxt, cur, URL, encoding, options) };
     return res;
@@ -360,9 +360,9 @@ pub unsafe extern "C" fn htmlCtxtReadDoc_rust(
 #[no_mangle]
 pub unsafe extern "C" fn htmlCtxtReadFile_rust(
     mut ctxt: htmlParserCtxtPtr,
-    mut filename: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut filename: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlCtxtReadFile(ctxt, filename, encoding, options) };
     return res;
@@ -371,11 +371,11 @@ pub unsafe extern "C" fn htmlCtxtReadFile_rust(
 #[no_mangle]
 pub unsafe extern "C" fn htmlCtxtReadMemory_rust(
     mut ctxt: htmlParserCtxtPtr,
-    mut buffer: *const libc::c_char,
-    mut size: libc::c_int,
-    mut URL: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut buffer: *const i8,
+    mut size: i32,
+    mut URL: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlCtxtReadMemory(ctxt, buffer, size, URL, encoding, options) };
     return res;
@@ -384,10 +384,10 @@ pub unsafe extern "C" fn htmlCtxtReadMemory_rust(
 #[no_mangle]
 pub unsafe extern "C" fn htmlCtxtReadFd_rust(
     mut ctxt: htmlParserCtxtPtr,
-    mut fd: libc::c_int,
-    mut URL: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut fd: i32,
+    mut URL: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr = unsafe { htmlCtxtReadFd(ctxt, fd, URL, encoding, options) };
     return res;
@@ -398,10 +398,10 @@ pub unsafe extern "C" fn htmlCtxtReadIO_rust(
     mut ctxt: htmlParserCtxtPtr,
     mut ioread: xmlInputReadCallback,
     mut ioclose: xmlInputCloseCallback,
-    mut ioctx: *mut libc::c_void,
-    mut URL: *const libc::c_char,
-    mut encoding: *const libc::c_char,
-    mut options: libc::c_int,
+    mut ioctx: *mut (),
+    mut URL: *const i8,
+    mut encoding: *const i8,
+    mut options: i32,
 ) -> htmlDocPtr {
     let res: htmlDocPtr =
         unsafe { htmlCtxtReadIO(ctxt, ioread, ioclose, ioctx, URL, encoding, options) };
@@ -411,9 +411,9 @@ pub unsafe extern "C" fn htmlCtxtReadIO_rust(
 #[no_mangle]
 pub unsafe extern "C" fn htmlParseTryOrFinish_rust(
     mut ctxt: htmlParserCtxtPtr,
-    mut terminate: libc::c_int,
-) -> libc::c_int {
-    let mut res: libc::c_int = 0 as libc::c_int;
+    mut terminate: i32,
+) -> i32 {
+    let mut res: i32 = 0 as i32;
 
     match () {
         #[cfg(LIBXML_PUSH_ENABLED)]
@@ -432,9 +432,9 @@ pub unsafe extern "C" fn htmlParseLookupSequence_rust(
     mut first: xmlChar,
     mut next: xmlChar,
     mut third: xmlChar,
-    mut ignoreattrval: libc::c_int,
-) -> libc::c_int {
-    let mut res: libc::c_int = 0 as libc::c_int;
+    mut ignoreattrval: i32,
+) -> i32 {
+    let mut res: i32 = 0 as i32;
     match () {
         #[cfg(LIBXML_PUSH_ENABLED)]
         _ => {
