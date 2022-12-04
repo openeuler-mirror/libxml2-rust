@@ -422,13 +422,16 @@ if(LIBXML2_WITH_TRIO)
 	list(APPEND LIBXML2_SRCS trio.c triostr.c)
 endif()
 
-#add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
+add_library(LibXml2_shard SHARED ${LIBXML2_SRCS} ${LIBXML2_HDRS})
+set_property(TARGET LibXml2_shard PROPERTY POSITION_INDEPENDENT_CODE ON)
+#SET_TARGET_PROPERTIES(LibXml2_shard PROPERTIES OUTPUT_NAME "LibXml2")
+#SET_TARGET_PROPERTIES(LibXml2_shard PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 # Libarchive is a shared library
-#ADD_LIBRARY(LibXml2 SHARED ${LIBXML2_SRCS} ${LIBXML2_HDRS})
+# ADD_LIBRARY(LibXml2 SHARED ${LIBXML2_SRCS} ${LIBXML2_HDRS})
 # archive_static is a static library
 ADD_LIBRARY(LibXml2 STATIC ${LIBXML2_SRCS} ${LIBXML2_HDRS})
-#SET_TARGET_PROPERTIES(LibXml2_static PROPERTIES OUTPUT_NAME "LibXml2")
+# SET_TARGET_PROPERTIES(LibXml2_static PROPERTIES OUTPUT_NAME "LibXml2")
 
 if(NOT BUILD_SHARED_LIBS)
 	target_compile_definitions(LibXml2 INTERFACE LIBXML_STATIC)
@@ -437,19 +440,28 @@ endif()
 
 if(LIBXML2_WITH_THREADS)
 	target_compile_definitions(LibXml2 PRIVATE _REENTRANT)
+	target_compile_definitions(LibXml2_shard PRIVATE _REENTRANT)
 	if(WIN32)
 		target_compile_definitions(LibXml2 PRIVATE HAVE_WIN32_THREADS)
+		target_compile_definitions(LibXml2_shard PRIVATE HAVE_WIN32_THREADS)
 	endif()
 endif()
 
 if(STEP STREQUAL "link")
-
 target_link_libraries(LibXml2 PRIVATE rust_project)
 
 endif()
 
 target_include_directories(
 	LibXml2
+	PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/libxml2>
+)
+
+target_include_directories(
+	LibXml2_shard
 	PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -463,20 +475,24 @@ endif()
 
 if(HAVE_SHLLOAD)
 	target_link_libraries(LibXml2 PRIVATE dld)
+	target_link_libraries(LibXml2_shard PRIVATE dld)
 	set(MODULE_PLATFORM_LIBS "-ldld")
 endif()
 
 if(UNIX)
 	target_link_libraries(LibXml2 PRIVATE m)
+	target_link_libraries(LibXml2_shard PRIVATE m)
 	set(M_LIBS "-lm")
 endif()
 
 if(WIN32)
 	target_link_libraries(LibXml2 PRIVATE ws2_32)
+	target_link_libraries(LibXml2_shard PRIVATE ws2_32)
 	set(WIN32_EXTRA_LIBADD "-lws2_32")
 endif()
 
 if(LIBXML2_WITH_ICONV)
+	target_link_libraries(LibXml2_shard PUBLIC Iconv::Iconv)
 	target_link_libraries(LibXml2 PUBLIC Iconv::Iconv)
 	if(NOT Iconv_IS_BUILT_IN)
 		set(ICONV_LIBS "-liconv")
@@ -484,6 +500,7 @@ if(LIBXML2_WITH_ICONV)
 endif()
 
 if(LIBXML2_WITH_ICU)
+	target_link_libraries(LibXml2_shard PRIVATE ICU::data ICU::i18n ICU::uc)
 	target_link_libraries(LibXml2 PRIVATE ICU::data ICU::i18n ICU::uc)
 	if(WIN32)
 		set(ICU_LIBS "-licudt -licuin -licuuc")
@@ -493,16 +510,19 @@ if(LIBXML2_WITH_ICU)
 endif()
 
 if(LIBXML2_WITH_LZMA)
+	target_link_libraries(LibXml2_shard PRIVATE LibLZMA::LibLZMA)
 	target_link_libraries(LibXml2 PRIVATE LibLZMA::LibLZMA)
 	set(LZMA_LIBS "-llzma")
 endif()
 
 if(LIBXML2_WITH_THREADS)
+	target_link_libraries(LibXml2_shard PRIVATE Threads::Threads)
 	target_link_libraries(LibXml2 PRIVATE Threads::Threads)
 	set(THREAD_LIBS ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 if(LIBXML2_WITH_ZLIB)
+	target_link_libraries(LibXml2_shard PRIVATE ZLIB::ZLIB)
 	target_link_libraries(LibXml2 PRIVATE ZLIB::ZLIB)
 	set(Z_LIBS "-lz")
 endif()
@@ -517,10 +537,20 @@ set_target_properties(
 	VERSION ${PROJECT_VERSION}
 )
 
+set_target_properties(
+	LibXml2_shard
+	PROPERTIES
+	IMPORT_PREFIX lib
+	OUTPUT_NAME xml2
+	POSITION_INDEPENDENT_CODE ON
+	PREFIX lib
+	VERSION ${PROJECT_VERSION}
+)
+
 if(MSVC)
 	if(BUILD_SHARED_LIBS)
 		set_target_properties(
-			LibXml2
+			LibXml2_shard
 			PROPERTIES
 			DEBUG_POSTFIX d
 		)
@@ -539,7 +569,7 @@ endif()
 install(FILES ${LIBXML2_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 
 install(
-	TARGETS	LibXml2
+	TARGETS	LibXml2 LibXml2_shard
 	EXPORT LibXml2
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_COMPONENT development
@@ -548,6 +578,7 @@ install(
 
 if(MSVC AND BUILD_SHARED_LIBS)
 	install(FILES $<TARGET_PDB_FILE:LibXml2> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+	install(FILES $<TARGET_PDB_FILE:LibXml2_shard> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
 endif()
 
 if(STEP STREQUAL "link")
@@ -561,6 +592,7 @@ if(LIBXML2_WITH_PROGRAMS)
 	foreach(PROGRAM ${PROGRAMS})
 		add_executable(${PROGRAM} ${PROGRAM}.c)
 		target_link_libraries(${PROGRAM} LibXml2)
+		target_link_libraries(${PROGRAM} LibXml2_shard)
 		if(HAVE_LIBHISTORY)
 			target_link_libraries(${PROGRAM} history)
 		endif()
@@ -597,6 +629,7 @@ if(LIBXML2_WITH_TESTS)
 	foreach(TEST ${TESTS})
 		add_executable(${TEST} ${TEST}.c)
 		target_link_libraries(${TEST} LibXml2)
+		target_link_libraries(${TEST} LibXml2_shard)
 	endforeach()
 	if(EXISTS ${LIBXML2_XMLCONF_WORKING_DIR}/xmlconf/xmlconf.xml)
 		add_test(NAME runxmlconf COMMAND runxmlconf WORKING_DIRECTORY ${LIBXML2_XMLCONF_WORKING_DIR})
@@ -619,6 +652,7 @@ if(LIBXML2_WITH_TESTS)
 				target_compile_definitions(${TEST} PRIVATE HAVE_WIN32_THREADS)
 			endif()
 			target_link_libraries(${TEST} LibXml2 Threads::Threads)
+			target_link_libraries(${TEST} LibXml2_shard Threads::Threads)
 		endforeach()
 		add_test(NAME runtest COMMAND runtest --out ${CMAKE_CURRENT_BINARY_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 		add_test(NAME testThreads COMMAND testThreads WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
