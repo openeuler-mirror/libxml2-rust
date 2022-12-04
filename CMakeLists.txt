@@ -747,14 +747,6 @@ install(
 	COMPONENT development
 )
 
-install(
-	EXPORT LibXml2_shard
-	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libxml2-${PROJECT_VERSION}
-	NAMESPACE LibXml2_shard::
-	FILE libxml2-export.cmake
-	COMPONENT development
-)
-
 configure_file(include/libxml/xmlversion.h.in libxml/xmlversion.h)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlversion.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 
