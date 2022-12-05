@@ -23,8 +23,8 @@ cargo clean
 cargo check
 cargo clean
 
-cargo build
-# cargo build --release -v
+# cargo build
+cargo build --release -v
 cd ../
 cmake -DSTEP="link"
 make 
