@@ -8,11 +8,13 @@ build = "src/build.rs"
 
 [dependencies]
 libc = "0.2.9"
-# f128 = "0.2.9"
+rust_ffi = {path = "../rust_ffi"}
+rust_condition = {path = "../rust_condition"}
+
+[build-dependencies]
+rust_ffi = {path = "../rust_ffi"}
+rust_condition = {path = "../rust_condition"}
 
 [lib]
 crate-type = ["staticlib"]
 name = "rust_project"
-
-[build-dependencies]
-rust_ffi = {path = "../rust_ffi"}

@@ -7,5 +7,5 @@ fn main() {
     let archive_path: String = String::from(rust_path.to_string_lossy());
     println!("cargo:rustc-link-lib=static=xml2_static");
     println!("cargo:rustc-link-search=native={}", archive_path);
-    rust_ffi::ffi_defined_param::defined_param::add_cfg();
+    rust_condition::condition_defined::defined_param::add_cfg();
 }

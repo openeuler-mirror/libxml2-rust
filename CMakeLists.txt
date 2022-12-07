@@ -2,14 +2,13 @@ cmake_minimum_required(VERSION 3.15)
 
 project(libxml2 VERSION 2.9.10 LANGUAGES C)
 
+set(RUST_PATH "${PROJECT_SOURCE_DIR}/rust")
+link_directories(${RUST_PATH}/target/release)
+
 set(STEP "${STEP}")
 if(STEP STREQUAL "link")
 	ADD_DEFINITIONS(-DCOMPILE_WITH_RUST)
 endif()
-
-set(RUST_PATH "${PROJECT_SOURCE_DIR}/rust")
-
-link_directories(${RUST_PATH}/target/release)
 
 include(CheckCSourceCompiles)
 include(CheckFunctionExists)
@@ -443,9 +442,7 @@ if(LIBXML2_WITH_THREADS)
 endif()
 
 if(STEP STREQUAL "link")
-
 target_link_libraries(LibXml2 PRIVATE rust_project)
-
 endif()
 
 target_include_directories(

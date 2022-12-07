@@ -1,3 +1,7 @@
+use rust_ffi::ffi_defination::defination::*;
+use rust_ffi::ffi_extern_method::extern_method::*;
+use rust_ffi::ffi_extern_method::extern_method_safe::*;
+
 const HTML_MAX_NAMELEN: i32 = 1000 as i32;
 const HTML_PARSER_BIG_BUFFER_SIZE: i32 = 1000 as i32;
 const HTML_PARSER_BUFFER_SIZE: i32 = 100 as i32;
@@ -264,7 +268,7 @@ unsafe fn bsearch(
 }
 
 #[inline]
-unsafe fn toupper(mut __c: i32) -> i32 {
+pub unsafe fn toupper(mut __c: i32) -> i32 {
     return if __c >= -(128 as i32) && __c < 256 as i32 {
         unsafe { *(*__ctype_toupper_loc_safe()).offset(__c as isize) }
     } else {
@@ -13558,7 +13562,7 @@ unsafe fn htmlCreateDocParserCtxt(
  *      is available, -1 otherwise.
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-unsafe fn htmlParseLookupSequence(
+pub unsafe fn htmlParseLookupSequence(
     mut ctxt: htmlParserCtxtPtr,
     mut first: xmlChar,
     mut next: xmlChar,
@@ -13776,7 +13780,7 @@ unsafe fn htmlParseLookupCommentEnd(mut ctxt: htmlParserCtxtPtr) -> i32 {
  * Returns zero if no parsing was possible
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i32) -> i32 {
+pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i32) -> i32 {
     let mut DEBUG_PUSH: i32 = 0 as i32;
     match () {
         #[cfg(DEBUG_PUSH)]

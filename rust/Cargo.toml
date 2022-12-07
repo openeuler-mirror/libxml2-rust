@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "rust_condition",
     "rust_ffi",
     "rust_project",
 ]

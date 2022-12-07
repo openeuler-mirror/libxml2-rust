@@ -5,4 +5,4 @@ cmake_minimum_required (VERSION 2.8)
 project (rust)
 
 # 项目运行
-execute_process(COMMAND cargo build)
+execute_process(COMMAND cargo build --release)

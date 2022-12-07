@@ -1,5 +1,5 @@
 [package]
-name = "rust_ffi"
+name = "rust_condition"
 version = "0.1.0"
 edition = "2018"
 build = "src/build.rs"
@@ -8,11 +8,7 @@ build = "src/build.rs"
 
 [dependencies]
 libc = "0.2.9"
-rust_condition = {path = "../rust_condition"}
-
-[build-dependencies]
-rust_condition = {path = "../rust_condition"}
 
 [lib]
 crate-type = ["rlib"]
-name = "rust_ffi"
+name = "rust_condition"

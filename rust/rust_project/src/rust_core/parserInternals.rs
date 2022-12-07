@@ -1,3 +1,7 @@
+use rust_ffi::ffi_defination::defination::*;
+use rust_ffi::ffi_extern_method::extern_method::*;
+use rust_ffi::ffi_extern_method::extern_method_safe::*;
+
 pub unsafe fn xmlCheckVersion(mut version: i32) {
     let mut safe__xmlGenericError = unsafe { &mut *__xmlGenericError() };
     let mut safe__xmlGenericErrorContext = unsafe { &mut **__xmlGenericErrorContext() };

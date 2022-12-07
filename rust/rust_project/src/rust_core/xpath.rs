@@ -1,3 +1,8 @@
+use super::HTMLparser::*;
+use rust_ffi::ffi_defination::defination::*;
+use rust_ffi::ffi_extern_method::extern_method::*;
+use rust_ffi::ffi_extern_method::extern_method_safe::*;
+
 #[cfg(LIBXML_XPATH_ENABLED)]
 unsafe fn toupper_xpath(mut __c: i32) -> i32 {
     return if __c >= -(128 as i32) && __c < 256 as i32 {
@@ -18018,7 +18023,7 @@ unsafe fn xmlXPathNodeSetFilter(
             unsafe { xmlXPathErr(ctxt, XPATH_EXPR_ERROR as i32) };
             break;
         } else {
-            if res != 0 as i32 && (pos >= minPos && pos <= maxPos) {
+            if res != 0 && (pos >= minPos && pos <= maxPos) {
                 if i != j {
                     unsafe {
                         let ref mut fresh73 = *(*set).nodeTab.offset(j as isize);

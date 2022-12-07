@@ -5,14 +5,8 @@
     non_snake_case,
     non_upper_case_globals,
     unused_assignments,
-    unused_mut
+    unused_mut,
+    deref_nullptr
 )]
 
-
-extern crate libc;
-#[macro_use]
-extern crate rust_ffi;
-
-mod rust_core;
-mod rust_method;
-
+pub mod condition_defined;
