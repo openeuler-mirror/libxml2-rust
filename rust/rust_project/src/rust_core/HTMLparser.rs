@@ -6093,7 +6093,7 @@ extern "C" fn htmlCompareTags(mut key: *const (), mut member: *const ()) -> i32 
     let mut tag: *const xmlChar = key as *const xmlChar;
     let mut desc: *const htmlElemDesc = member as *const htmlElemDesc;
     let mut descPtr = unsafe { &*desc };
-    return xmlStrcasecmp_safe(tag, descPtr.name as *mut xmlChar);
+    return unsafe { xmlStrcasecmp_safe(tag, descPtr.name as *mut xmlChar) };
 }
 /* *
  * htmlTagLookup:
@@ -6139,9 +6139,9 @@ extern "C" fn htmlCompareStartClose(mut vkey: *const (), mut member: *const ()) 
     let mut ret: i32 = 0;
     let keyPtr = unsafe { &*key };
     let entryPtr = unsafe { &*entry };
-    ret = strcmp_safe(keyPtr.oldTag, entryPtr.oldTag);
+    ret = unsafe { strcmp_safe(keyPtr.oldTag, entryPtr.oldTag) };
     if ret == 0 as i32 {
-        ret = strcmp_safe(keyPtr.newTag, entryPtr.newTag)
+        ret = unsafe { strcmp_safe(keyPtr.newTag, entryPtr.newTag) }
     }
     return ret;
 }

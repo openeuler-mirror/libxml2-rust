@@ -17925,7 +17925,7 @@ pub fn xmlIOParseDTD(
     if input.is_null() {
         return 0 as xmlDtdPtr;
     }
-    ctxt = xmlNewParserCtxt_safe();
+    ctxt = unsafe { xmlNewParserCtxt_safe() };
     if ctxt.is_null() {
         unsafe {
             xmlFreeParserInputBuffer(input);
@@ -17940,7 +17940,7 @@ pub fn xmlIOParseDTD(
      */
     if !sax.is_null() {
         if !safe_ctxt.sax.is_null() {
-            xmlFree_safe(safe_ctxt.sax as *mut ());
+            unsafe { xmlFree_safe(safe_ctxt.sax as *mut ()) };
         }
         safe_ctxt.sax = sax;
         safe_ctxt.userData = ctxt as *mut ()
@@ -17956,8 +17956,8 @@ pub fn xmlIOParseDTD(
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
         }
-        xmlFreeParserInputBuffer_safe(input);
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserInputBuffer_safe(input) };
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as xmlDtdPtr;
     }
     /*
@@ -17967,11 +17967,11 @@ pub fn xmlIOParseDTD(
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
         }
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as xmlDtdPtr;
     }
     if enc as i32 != XML_CHAR_ENCODING_NONE as i32 {
-        xmlSwitchEncoding_safe(ctxt, enc);
+        unsafe { xmlSwitchEncoding_safe(ctxt, enc) };
     }
     let mut safe_pinput = unsafe { *pinput };
 
@@ -18046,13 +18046,13 @@ pub fn xmlIOParseDTD(
         } else {
             ret = 0 as xmlDtdPtr
         }
-        xmlFreeDoc_safe(safe_ctxt.myDoc);
+        unsafe { xmlFreeDoc_safe(safe_ctxt.myDoc) };
         safe_ctxt.myDoc = 0 as xmlDocPtr
     }
     if !sax.is_null() {
         safe_ctxt.sax = 0 as *mut _xmlSAXHandler
     }
-    xmlFreeParserCtxt_safe(ctxt);
+    unsafe { xmlFreeParserCtxt_safe(ctxt) };
     return ret;
 }
 
@@ -18080,7 +18080,7 @@ pub fn xmlSAXParseDTD(
     if ExternalID.is_null() && SystemID.is_null() {
         return 0 as xmlDtdPtr;
     }
-    ctxt = xmlNewParserCtxt_safe();
+    ctxt = unsafe { xmlNewParserCtxt_safe() };
     if ctxt.is_null() {
         return 0 as xmlDtdPtr;
     }
@@ -18093,7 +18093,7 @@ pub fn xmlSAXParseDTD(
      */
     if !sax.is_null() {
         if !safe_ctxt.sax.is_null() {
-            xmlFree_safe(safe_ctxt.sax as *mut ());
+            unsafe { xmlFree_safe(safe_ctxt.sax as *mut ()) };
         }
         safe_ctxt.sax = sax;
         safe_ctxt.userData = ctxt as *mut ()
@@ -18101,9 +18101,9 @@ pub fn xmlSAXParseDTD(
     /*
      * Canonicalise the system ID
      */
-    systemIdCanonic = xmlCanonicPath_safe(SystemID);
+    systemIdCanonic = unsafe { xmlCanonicPath_safe(SystemID) };
     if !SystemID.is_null() && systemIdCanonic.is_null() {
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as xmlDtdPtr;
     }
     /*
@@ -18124,9 +18124,9 @@ pub fn xmlSAXParseDTD(
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
         }
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         if !systemIdCanonic.is_null() {
-            xmlFree_safe(systemIdCanonic as *mut ());
+            unsafe { xmlFree_safe(systemIdCanonic as *mut ()) };
         }
         return 0 as xmlDtdPtr;
     }
@@ -18137,9 +18137,9 @@ pub fn xmlSAXParseDTD(
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
         }
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         if !systemIdCanonic.is_null() {
-            xmlFree_safe(systemIdCanonic as *mut ());
+            unsafe { xmlFree_safe(systemIdCanonic as *mut ()) };
         }
         return 0 as xmlDtdPtr;
     }
@@ -18175,7 +18175,7 @@ pub fn xmlSAXParseDTD(
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
         }
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as xmlDtdPtr;
     }
     unsafe {
@@ -18212,7 +18212,7 @@ pub fn xmlSAXParseDTD(
     if !sax.is_null() {
         safe_ctxt.sax = 0 as *mut _xmlSAXHandler
     }
-    xmlFreeParserCtxt_safe(ctxt);
+    unsafe { xmlFreeParserCtxt_safe(ctxt) };
     return ret;
 }
 /* *
@@ -22814,7 +22814,7 @@ extern "C" fn xmlCleanSpecialAttrCallback(
     let mut ctxt: xmlParserCtxtPtr = data as xmlParserCtxtPtr;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     if payload as ptrdiff_t == XML_ATTRIBUTE_CDATA as i32 as i64 {
-        xmlHashRemoveEntry2_safe((safe_ctxt).attsSpecial, fullname, fullattr, None);
+        unsafe { xmlHashRemoveEntry2_safe((safe_ctxt).attsSpecial, fullname, fullattr, None) };
     };
 }
 /* *
