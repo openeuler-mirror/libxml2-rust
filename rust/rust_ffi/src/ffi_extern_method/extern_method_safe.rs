@@ -89,21 +89,13 @@ pub fn xmlStrlen_safe(str: *const xmlChar) -> i32 {
     }
 }
 
-pub fn __xmlLoaderErr_safe(
-    ctx: *mut (),
-    msg: *const i8,
-    filename: *const i8,
-) {
+pub fn __xmlLoaderErr_safe(ctx: *mut (), msg: *const i8, filename: *const i8) {
     unsafe {
         __xmlLoaderErr(ctx, msg, filename);
     }
 }
 
-pub fn memset_safe(
-    arg1: *mut (),
-    arg2: i32,
-    arg3: u64,
-) -> *mut () {
+pub fn memset_safe(arg1: *mut (), arg2: i32, arg3: u64) -> *mut () {
     unsafe {
         return memset(arg1, arg2, arg3);
     }
@@ -428,51 +420,31 @@ pub fn __xmlGlobalInitMutexUnlock_safe() {
     }
 }
 
-pub fn xmlInputReadCallbackNop_safe(
-    context: *mut (),
-    buffer: *mut i8,
-    len: i32,
-) -> i32 {
+pub fn xmlInputReadCallbackNop_safe(context: *mut (), buffer: *mut i8, len: i32) -> i32 {
     unsafe {
         return xmlInputReadCallbackNop(context, buffer, len);
     }
 }
 
-pub fn memcpy_safe(
-    arg1: *mut (),
-    arg2: *const (),
-    arg3: u64,
-) -> *mut () {
+pub fn memcpy_safe(arg1: *mut (), arg2: *const (), arg3: u64) -> *mut () {
     unsafe {
         return memcpy(arg1, arg2, arg3);
     }
 }
 
-pub fn memmove_safe(
-    arg1: *mut (),
-    arg2: *const (),
-    arg3: u64,
-) -> *mut () {
+pub fn memmove_safe(arg1: *mut (), arg2: *const (), arg3: u64) -> *mut () {
     unsafe {
         return memmove(arg1, arg2, arg3);
     }
 }
 
-pub fn memchr_safe(
-    arg1: *const (),
-    arg2: i32,
-    arg3: u64,
-) -> *mut () {
+pub fn memchr_safe(arg1: *const (), arg2: i32, arg3: u64) -> *mut () {
     unsafe {
         return memchr(arg1, arg2, arg3);
     }
 }
 
-pub fn strncmp_safe(
-    arg1: *const i8,
-    arg2: *const i8,
-    arg3: u64,
-) -> i32 {
+pub fn strncmp_safe(arg1: *const i8, arg2: *const i8, arg3: u64) -> i32 {
     unsafe {
         return strncmp(arg1, arg2, arg3);
     }
@@ -502,10 +474,7 @@ pub fn xmlAllocParserInputBuffer_safe(enc: xmlCharEncoding) -> xmlParserInputBuf
     }
 }
 
-pub fn xmlParserInputBufferCreateFd_safe(
-    fd: i32,
-    enc: xmlCharEncoding,
-) -> xmlParserInputBufferPtr {
+pub fn xmlParserInputBufferCreateFd_safe(fd: i32, enc: xmlCharEncoding) -> xmlParserInputBufferPtr {
     unsafe {
         return xmlParserInputBufferCreateFd(fd, enc);
     }
@@ -952,11 +921,7 @@ pub fn xmlSAX2GetEntity_safe(ctx: *mut (), name: *const xmlChar) -> xmlEntityPtr
     }
 }
 
-pub fn xmlSAX2StartElement_safe(
-    ctx: *mut (),
-    fullname: *const xmlChar,
-    atts: *mut *const xmlChar,
-) {
+pub fn xmlSAX2StartElement_safe(ctx: *mut (), fullname: *const xmlChar, atts: *mut *const xmlChar) {
     unsafe {
         xmlSAX2StartElement(ctx, fullname, atts);
     }
@@ -987,10 +952,7 @@ pub fn xmlSAX2EntityDecl_safe(
     }
 }
 
-pub fn htmlCreateMemoryParserCtxt_safe(
-    buffer: *const i8,
-    size: i32,
-) -> htmlParserCtxtPtr {
+pub fn htmlCreateMemoryParserCtxt_safe(buffer: *const i8, size: i32) -> htmlParserCtxtPtr {
     unsafe {
         return htmlCreateMemoryParserCtxt(buffer, size);
     }
@@ -1091,10 +1053,7 @@ pub fn xmlSwitchEncoding_safe(arg1: xmlParserCtxtPtr, arg2: xmlCharEncoding) -> 
     }
 }
 
-pub fn xmlSwitchToEncoding_safe(
-    arg1: xmlParserCtxtPtr,
-    arg2: xmlCharEncodingHandlerPtr,
-) -> i32 {
+pub fn xmlSwitchToEncoding_safe(arg1: xmlParserCtxtPtr, arg2: xmlCharEncodingHandlerPtr) -> i32 {
     unsafe {
         return xmlSwitchToEncoding(arg1, arg2);
     }
@@ -1142,11 +1101,7 @@ pub fn xmlPopInput_safe(arg1: xmlParserCtxtPtr) -> xmlChar {
     }
 }
 
-pub fn xmlStrncasecmp_safe(
-    arg1: *const xmlChar,
-    arg2: *const xmlChar,
-    arg3: i32,
-) -> i32 {
+pub fn xmlStrncasecmp_safe(arg1: *const xmlChar, arg2: *const xmlChar, arg3: i32) -> i32 {
     unsafe {
         return xmlStrncasecmp(arg1, arg2, arg3);
     }
@@ -1188,7 +1143,10 @@ pub fn xmlInitParser_safe() {
     }
 }
 
-pub fn xmlNewStringInputStream_safe(arg1: xmlParserCtxtPtr, arg2: *const xmlChar) -> xmlParserInputPtr {
+pub fn xmlNewStringInputStream_safe(
+    arg1: xmlParserCtxtPtr,
+    arg2: *const xmlChar,
+) -> xmlParserInputPtr {
     unsafe {
         return xmlNewStringInputStream(arg1, arg2);
     }
@@ -1222,10 +1180,7 @@ pub fn xmlNewParserCtxt_safe() -> xmlParserCtxtPtr {
     }
 }
 
-pub fn xmlCreateMemoryParserCtxt_safe(
-    arg1: *const i8,
-    arg2: i32,
-) -> xmlParserCtxtPtr {
+pub fn xmlCreateMemoryParserCtxt_safe(arg1: *const i8, arg2: i32) -> xmlParserCtxtPtr {
     unsafe {
         return xmlCreateMemoryParserCtxt(arg1, arg2);
     }
@@ -1498,7 +1453,10 @@ pub fn xmlXPtrNewRange_safe(
     }
 }
 
-pub fn xmlXPtrNewRangeNodeObject_safe(start: xmlNodePtr, end: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub fn xmlXPtrNewRangeNodeObject_safe(
+    start: xmlNodePtr,
+    end: xmlXPathObjectPtr,
+) -> xmlXPathObjectPtr {
     unsafe {
         return xmlXPtrNewRangeNodeObject(start, end);
     }

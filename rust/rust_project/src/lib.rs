@@ -8,11 +8,9 @@
     unused_mut
 )]
 
-
 extern crate libc;
 #[macro_use]
 extern crate rust_ffi;
 
 mod rust_core;
 mod rust_method;
-

@@ -7,7 +7,6 @@ const HTML_PARSER_BIG_BUFFER_SIZE: i32 = 1000 as i32;
 const HTML_PARSER_BUFFER_SIZE: i32 = 100 as i32;
 const INPUT_CHUNK: i32 = 250 as i32;
 
-
 unsafe fn UPPER(mut ctxt: htmlParserCtxtPtr) -> i32 {
     let mut __res: i32 = 0;
     if ::std::mem::size_of::<xmlChar>() as u64 > 1 as i32 as u64 {
@@ -23,8 +22,7 @@ unsafe fn UPPER(mut ctxt: htmlParserCtxtPtr) -> i32 {
         }
     } else {
         unsafe {
-            __res =
-                *(*__ctype_toupper_loc_safe()).offset(*(*(*ctxt).input).cur as i32 as isize)
+            __res = *(*__ctype_toupper_loc_safe()).offset(*(*(*ctxt).input).cur as i32 as isize)
         }
     }
     __res
@@ -48,21 +46,18 @@ unsafe fn NXT(mut ctxt: htmlParserCtxtPtr, mut val: i32) -> i32 {
 }
 
 unsafe fn SHRINK_bool1(mut ctxt: htmlParserCtxtPtr, mut num: i64) -> bool {
-    let mut result: i64 =
-        unsafe { (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) } as i64;
+    let mut result: i64 = unsafe { (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) } as i64;
     result > num
 }
 
 unsafe fn SHRINK_bool2(mut ctxt: htmlParserCtxtPtr, mut num: i64) -> bool {
-    let mut result: i64 =
-        unsafe { (*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) } as i64;
+    let mut result: i64 = unsafe { (*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) } as i64;
     result < num
 }
 
 unsafe fn SHRINK(mut ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
-    if SHRINK_bool1(ctxt, (2 * INPUT_CHUNK) as i64)
-        && SHRINK_bool2(ctxt, (2 * INPUT_CHUNK) as i64)
+    if SHRINK_bool1(ctxt, (2 * INPUT_CHUNK) as i64) && SHRINK_bool2(ctxt, (2 * INPUT_CHUNK) as i64)
     {
         xmlParserInputShrink_safe(ctxtPtr.input);
     }
@@ -100,9 +95,7 @@ unsafe fn GROW(mut ctxt: htmlParserCtxtPtr) {
 
 unsafe fn IS_CHAR(mut q: i32) -> bool {
     if q < 0x100 as i32 {
-        (0x9 as i32 <= q && q <= 0xa as i32)
-            || q == 0xd as i32
-            || 0x20 as i32 <= q
+        (0x9 as i32 <= q && q <= 0xa as i32) || q == 0xd as i32 || 0x20 as i32 <= q
     } else {
         (0x100 as i32 <= q && q <= 0xd7ff as i32)
             || (0xe000 as i32 <= q && q <= 0xfffd as i32)
@@ -111,22 +104,16 @@ unsafe fn IS_CHAR(mut q: i32) -> bool {
 }
 
 unsafe fn IS_CHAR_CH(mut c: i32) -> bool {
-    (0x9 as i32 <= c && c <= 0xa as i32)
-        || c == 0xd as i32
-        || 0x20 as i32 <= c
+    (0x9 as i32 <= c && c <= 0xa as i32) || c == 0xd as i32 || 0x20 as i32 <= c
 }
 
 unsafe fn IS_BLANK_CH(c: i32) -> bool {
-    (c == 0x20 as i32)
-        || ((c >= 0x9 as i32) && (c <= 0xa as i32))
-        || (c == 0xd as i32)
+    (c == 0x20 as i32) || ((c >= 0x9 as i32) && (c <= 0xa as i32)) || (c == 0xd as i32)
 }
 
 unsafe fn IS_BLANK(cur: i32) -> bool {
     (if cur < 0x100 as i32 {
-        (cur == 0x20 as i32
-            || 0x9 as i32 <= cur && cur <= 0xa as i32
-            || cur == 0xd as i32) as i32
+        (cur == 0x20 as i32 || 0x9 as i32 <= cur && cur <= 0xa as i32 || cur == 0xd as i32) as i32
     } else {
         0 as i32
     }) != 0
@@ -147,8 +134,7 @@ unsafe fn IS_LETTER(c: i32, group: *const xmlChRangeGroup) -> bool {
         } else {
             (0x4e00 as i32 <= c && c <= 0x9fa5 as i32
                 || c == 0x3007 as i32
-                || 0x3021 as i32 <= c && c <= 0x3029 as i32)
-                as i32
+                || 0x3021 as i32 <= c && c <= 0x3029 as i32) as i32
         }) != 0)
 }
 
@@ -176,12 +162,7 @@ unsafe fn IS_EXTENDER(c: i32, group: *const xmlChRangeGroup) -> bool {
     }) != 0
 }
 
-unsafe fn COPY_BUF(
-    mut ql: i32,
-    mut buf: *mut xmlChar,
-    mut len: i32,
-    mut q: i32,
-) -> i32 {
+unsafe fn COPY_BUF(mut ql: i32, mut buf: *mut xmlChar, mut len: i32, mut q: i32) -> i32 {
     if ql == 1 as i32 {
         let fresh40 = len;
         len = len + 1;
@@ -197,8 +178,7 @@ unsafe fn COPY_BUF(
 }
 
 unsafe fn IS_ASCII_LETTER(c: i32) -> bool {
-    ((c >= 0x41 as i32) && (c <= 0x5a as i32))
-        || ((c >= 0x61 as i32) && (c <= 0x7a as i32))
+    ((c >= 0x41 as i32) && (c <= 0x5a as i32)) || ((c >= 0x61 as i32) && (c <= 0x7a as i32))
 }
 
 unsafe fn IS_ASCII_DIGIT(c: i32) -> bool {
@@ -209,7 +189,7 @@ unsafe fn UPP(ctxt: htmlParserCtxtPtr, val: i32) -> i32 {
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut __res: i32 = 0;
     if ::std::mem::size_of::<xmlChar>() as u64 > 1 as i32 as u64 {
-        if 0 > 1{
+        if 0 > 1 {
             let mut __c: i32 = unsafe { *inputPtr.cur.offset(val as isize) } as i32;
             __res = (if __c < -(128 as i32) || __c > 255 as i32 {
                 __c
@@ -244,12 +224,9 @@ unsafe fn bsearch(
     __l = 0 as i32 as size_t;
     __u = __nmemb;
     while __l < __u {
-        __idx = __l
-            .wrapping_add(__u)
-            .wrapping_div(2 as i32 as u64);
+        __idx = __l.wrapping_add(__u).wrapping_div(2 as i32 as u64);
         unsafe {
-            __p = (__base as *const i8).offset(__idx.wrapping_mul(__size) as isize)
-                as *mut ();
+            __p = (__base as *const i8).offset(__idx.wrapping_mul(__size) as isize) as *mut ();
         }
         __comparison = unsafe {
             Some(__compar.expect("non-null function pointer")).expect("non-null function pointer")(
@@ -463,18 +440,12 @@ unsafe fn htmlParseErrInt(
 unsafe fn htmlnamePush(mut ctxt: htmlParserCtxtPtr, mut value: *const xmlChar) -> i32 {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.html < 3 as i32
-        && xmlStrEqual_safe(
-            value,
-            b"head\x00" as *const u8 as *const i8 as *mut xmlChar,
-        ) != 0
+        && xmlStrEqual_safe(value, b"head\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
     {
         ctxtPtr.html = 3 as i32
     }
     if ctxtPtr.html < 10 as i32
-        && xmlStrEqual_safe(
-            value,
-            b"body\x00" as *const u8 as *const i8 as *mut xmlChar,
-        ) != 0
+        && xmlStrEqual_safe(value, b"body\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
     {
         ctxtPtr.html = 10 as i32
     }
@@ -482,8 +453,7 @@ unsafe fn htmlnamePush(mut ctxt: htmlParserCtxtPtr, mut value: *const xmlChar) -
         ctxtPtr.nameMax *= 2 as i32;
         ctxtPtr.nameTab = xmlRealloc_safe(
             ctxtPtr.nameTab as *mut *mut xmlChar as *mut (),
-            (ctxtPtr.nameMax as u64)
-                .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
+            (ctxtPtr.nameMax as u64).wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
         ) as *mut *const xmlChar;
         if ctxtPtr.nameTab.is_null() {
             htmlErrMemory(ctxt, 0 as *const i8);
@@ -516,11 +486,7 @@ unsafe fn htmlnamePop(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
         return 0 as *const xmlChar;
     }
     if ctxtPtr.nameNr > 0 as i32 {
-        unsafe {
-            ctxtPtr.name = *ctxtPtr
-                .nameTab
-                .offset((ctxtPtr.nameNr - 1 as i32) as isize)
-        }
+        unsafe { ctxtPtr.name = *ctxtPtr.nameTab.offset((ctxtPtr.nameNr - 1 as i32) as isize) }
     } else {
         ctxtPtr.name = 0 as *const xmlChar
     }
@@ -540,10 +506,7 @@ unsafe fn htmlnamePop(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
  *
  * Returns 0 in case of error, the index in the stack otherwise
  */
-unsafe fn htmlNodeInfoPush(
-    mut ctxt: htmlParserCtxtPtr,
-    mut value: *mut htmlParserNodeInfo,
-) -> i32 {
+unsafe fn htmlNodeInfoPush(mut ctxt: htmlParserCtxtPtr, mut value: *mut htmlParserNodeInfo) -> i32 {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.nodeInfoNr >= ctxtPtr.nodeInfoMax {
         if ctxtPtr.nodeInfoMax == 0 as i32 {
@@ -668,18 +631,18 @@ unsafe fn htmlFindEncoding(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     }
     start = cur;
     let mut cur_safe = unsafe { *cur };
-    while 1<2
-    {
+    while 1 < 2 {
         if (!((*cur) as i32 >= 'A' as i32 && (*cur) as i32 <= 'Z' as i32
-        || (*cur) as i32 >= 'a' as i32 && (*cur) as i32 <= 'z' as i32
-        || (*cur) as i32 >= '0' as i32 && (*cur) as i32 <= '9' as i32
-        || (*cur) as i32 == '-' as i32
-        || (*cur) as i32 == '_' as i32
-        || (*cur) as i32 == ':' as i32
-        || (*cur) as i32 == '/' as i32)){
+            || (*cur) as i32 >= 'a' as i32 && (*cur) as i32 <= 'z' as i32
+            || (*cur) as i32 >= '0' as i32 && (*cur) as i32 <= '9' as i32
+            || (*cur) as i32 == '-' as i32
+            || (*cur) as i32 == '_' as i32
+            || (*cur) as i32 == ':' as i32
+            || (*cur) as i32 == '/' as i32))
+        {
             break;
         }
-        unsafe { cur = cur.offset(1)}
+        unsafe { cur = cur.offset(1) }
     }
     if cur == start {
         return 0 as *mut xmlChar;
@@ -801,51 +764,34 @@ unsafe fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut i32) -> i32 
                 }
             }
             unsafe {
-                if !(*cur.offset(1 as i32 as isize) as i32 & 0xc0 as i32
-                    != 0x80 as i32)
-                {
+                if !(*cur.offset(1 as i32 as isize) as i32 & 0xc0 as i32 != 0x80 as i32) {
                     if c as i32 & 0xe0 as i32 == 0xe0 as i32 {
-                        if *cur.offset(2 as i32 as isize) as i32 == 0 as i32
-                        {
+                        if *cur.offset(2 as i32 as isize) as i32 == 0 as i32 {
                             xmlParserInputGrow_safe(ctxtPtr.input, INPUT_CHUNK);
                             cur = inputPtr.cur
                         }
-                        if *cur.offset(2 as i32 as isize) as i32
-                            & 0xc0 as i32
-                            != 0x80 as i32
-                        {
+                        if *cur.offset(2 as i32 as isize) as i32 & 0xc0 as i32 != 0x80 as i32 {
                             current_block = 1;
                         } else if c as i32 & 0xf0 as i32 == 0xf0 as i32 {
-                            if *cur.offset(3 as i32 as isize) as i32
-                                == 0 as i32
-                            {
+                            if *cur.offset(3 as i32 as isize) as i32 == 0 as i32 {
                                 xmlParserInputGrow_safe(ctxtPtr.input, INPUT_CHUNK);
                                 cur = inputPtr.cur
                             }
                             if c as i32 & 0xf8 as i32 != 0xf0 as i32
-                                || *cur.offset(3 as i32 as isize) as i32
-                                    & 0xc0 as i32
+                                || *cur.offset(3 as i32 as isize) as i32 & 0xc0 as i32
                                     != 0x80 as i32
                             {
                                 current_block = 1;
                             } else {
                                 /* 4-byte code */
                                 *len = 4 as i32;
-                                val = ((*cur.offset(0 as i32 as isize) as i32
-                                    & 0x7 as i32)
-                                    << 18 as i32)
-                                    as u32;
-                                val |= ((*cur.offset(1 as i32 as isize) as i32
-                                    & 0x3f as i32)
-                                    << 12 as i32)
-                                    as u32;
-                                val |= ((*cur.offset(2 as i32 as isize) as i32
-                                    & 0x3f as i32)
-                                    << 6 as i32)
-                                    as u32;
-                                val |= (*cur.offset(3 as i32 as isize) as i32
-                                    & 0x3f as i32)
-                                    as u32;
+                                val = ((*cur.offset(0 as i32 as isize) as i32 & 0x7 as i32)
+                                    << 18 as i32) as u32;
+                                val |= ((*cur.offset(1 as i32 as isize) as i32 & 0x3f as i32)
+                                    << 12 as i32) as u32;
+                                val |= ((*cur.offset(2 as i32 as isize) as i32 & 0x3f as i32)
+                                    << 6 as i32) as u32;
+                                val |= (*cur.offset(3 as i32 as isize) as i32 & 0x3f as i32) as u32;
                                 if val < 0x10000 as i32 as u32 {
                                     current_block = 1;
                                 } else {
@@ -855,17 +801,11 @@ unsafe fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut i32) -> i32 
                         } else {
                             /* 3-byte code */
                             *len = 3 as i32;
-                            val = ((*cur.offset(0 as i32 as isize) as i32
-                                & 0xf as i32)
-                                << 12 as i32)
-                                as u32;
-                            val |= ((*cur.offset(1 as i32 as isize) as i32
-                                & 0x3f as i32)
-                                << 6 as i32)
-                                as u32;
-                            val |= (*cur.offset(2 as i32 as isize) as i32
-                                & 0x3f as i32)
-                                as u32;
+                            val = ((*cur.offset(0 as i32 as isize) as i32 & 0xf as i32)
+                                << 12 as i32) as u32;
+                            val |= ((*cur.offset(1 as i32 as isize) as i32 & 0x3f as i32)
+                                << 6 as i32) as u32;
+                            val |= (*cur.offset(2 as i32 as isize) as i32 & 0x3f as i32) as u32;
                             if val < 0x800 as i32 as u32 {
                                 current_block = 1;
                             } else {
@@ -875,11 +815,9 @@ unsafe fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut i32) -> i32 
                     } else {
                         /* 2-byte code */
                         *len = 2 as i32;
-                        val = ((*cur.offset(0 as i32 as isize) as i32
-                            & 0x1f as i32)
-                            << 6 as i32) as u32;
-                        val |= (*cur.offset(1 as i32 as isize) as i32
-                            & 0x3f as i32) as u32;
+                        val = ((*cur.offset(0 as i32 as isize) as i32 & 0x1f as i32) << 6 as i32)
+                            as u32;
+                        val |= (*cur.offset(1 as i32 as isize) as i32 & 0x3f as i32) as u32;
                         if val < 0x80 as i32 as u32 {
                             current_block = 1;
                         } else {
@@ -890,16 +828,13 @@ unsafe fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut i32) -> i32 
                         1 => {}
                         _ => {
                             if if val < 0x100 as i32 as u32 {
-                                (0x9 as i32 as u32 <= val
-                                    && val <= 0xa as i32 as u32
+                                (0x9 as i32 as u32 <= val && val <= 0xa as i32 as u32
                                     || val == 0xd as i32 as u32
                                     || 0x20 as i32 as u32 <= val)
                                     as i32
                             } else {
-                                (0x100 as i32 as u32 <= val
-                                    && val <= 0xd7ff as i32 as u32
-                                    || 0xe000 as i32 as u32 <= val
-                                        && val <= 0xfffd as i32 as u32
+                                (0x100 as i32 as u32 <= val && val <= 0xd7ff as i32 as u32
+                                    || 0xe000 as i32 as u32 <= val && val <= 0xfffd as i32 as u32
                                     || 0x10000 as i32 as u32 <= val
                                         && val <= 0x10ffff as i32 as u32)
                                     as i32
@@ -928,9 +863,7 @@ unsafe fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut i32) -> i32 
          */
         let mut buffer: [i8; 150] = [0; 150];
         unsafe {
-            if inputPtr.end.offset_from(inputPtr.cur) as i64
-                >= 4 as i32 as i64
-            {
+            if inputPtr.end.offset_from(inputPtr.cur) as i64 >= 4 as i32 as i64 {
                 snprintf_safe_macro!(
                     buffer.as_mut_ptr(),
                     149 as i32 as u64,
@@ -952,8 +885,7 @@ unsafe fn htmlCurrentChar(mut ctxt: xmlParserCtxtPtr, mut len: *mut i32) -> i32 
         htmlParseErr(
             ctxt,
             XML_ERR_INVALID_ENCODING,
-            b"Input is not proper UTF-8, indicate encoding !\n\x00" as *const u8
-                as *const i8,
+            b"Input is not proper UTF-8, indicate encoding !\n\x00" as *const u8 as *const i8,
             buffer.as_mut_ptr() as *mut xmlChar,
             0 as *const xmlChar,
         );
@@ -1006,8 +938,7 @@ unsafe fn htmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> i32 {
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut res: i32 = 0 as i32;
     while IS_BLANK_CH(CUR(ctxt)) {
-        if CUR(ctxt) == 0 as i32
-            && xmlParserInputGrow_safe(ctxtPtr.input, INPUT_CHUNK) <= 0 as i32
+        if CUR(ctxt) == 0 as i32 && xmlParserInputGrow_safe(ctxtPtr.input, INPUT_CHUNK) <= 0 as i32
         {
             xmlPopInput_safe(ctxt);
         } else {
@@ -1210,32 +1141,20 @@ static mut a_attrs: [*const i8; 29] = [
     b"onblur\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut target_attr: [*const i8; 2] = [
-    b"target\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut target_attr: [*const i8; 2] = [b"target\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut rows_cols_attr: [*const i8; 3] = [
     b"rows\x00" as *const u8 as *const i8,
     b"cols\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut alt_attr: [*const i8; 2] = [
-    b"alt\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut alt_attr: [*const i8; 2] = [b"alt\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut src_alt_attrs: [*const i8; 3] = [
     b"src\x00" as *const u8 as *const i8,
     b"alt\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut href_attrs: [*const i8; 2] = [
-    b"href\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
-static mut clear_attrs: [*const i8; 2] = [
-    b"clear\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut href_attrs: [*const i8; 2] = [b"href\x00" as *const u8 as *const i8, 0 as *const i8];
+static mut clear_attrs: [*const i8; 2] = [b"clear\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut inline_p: [*const i8; 41] = [
     b"tt\x00" as *const u8 as *const i8,
     b"i\x00" as *const u8 as *const i8,
@@ -1546,10 +1465,7 @@ static mut col_attrs: [*const i8; 22] = [
     b"valign\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut col_elt: [*const i8; 2] = [
-    b"col\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut col_elt: [*const i8; 2] = [b"col\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut edit_attrs: [*const i8; 18] = [
     b"id\x00" as *const u8 as *const i8,
     b"class\x00" as *const u8 as *const i8,
@@ -1594,14 +1510,9 @@ static mut dl_contents: [*const i8; 3] = [
     b"dd\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut compact_attr: [*const i8; 2] = [
-    b"compact\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
-static mut label_attr: [*const i8; 2] = [
-    b"label\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut compact_attr: [*const i8; 2] =
+    [b"compact\x00" as *const u8 as *const i8, 0 as *const i8];
+static mut label_attr: [*const i8; 2] = [b"label\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut fieldset_contents: [*const i8; 64] = [
     b"h1\x00" as *const u8 as *const i8,
     b"h2\x00" as *const u8 as *const i8,
@@ -1825,10 +1736,8 @@ static mut hr_depr: [*const i8; 5] = [
     b"width\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut version_attr: [*const i8; 2] = [
-    b"version\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut version_attr: [*const i8; 2] =
+    [b"version\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut html_content: [*const i8; 4] = [
     b"head\x00" as *const u8 as *const i8,
     b"body\x00" as *const u8 as *const i8,
@@ -1989,10 +1898,7 @@ static mut legend_attrs: [*const i8; 17] = [
     b"accesskey\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut align_attr: [*const i8; 2] = [
-    b"align\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut align_attr: [*const i8; 2] = [b"align\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut link_attrs: [*const i8; 23] = [
     b"id\x00" as *const u8 as *const i8,
     b"class\x00" as *const u8 as *const i8,
@@ -2046,14 +1952,8 @@ static mut map_contents: [*const i8; 26] = [
     b"area\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut name_attr: [*const i8; 2] = [
-    b"name\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
-static mut action_attr: [*const i8; 2] = [
-    b"action\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut name_attr: [*const i8; 2] = [b"name\x00" as *const u8 as *const i8, 0 as *const i8];
+static mut action_attr: [*const i8; 2] = [b"action\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut blockli_elt: [*const i8; 26] = [
     b"h1\x00" as *const u8 as *const i8,
     b"h2\x00" as *const u8 as *const i8,
@@ -2091,14 +1991,9 @@ static mut meta_attrs: [*const i8; 7] = [
     b"charset\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut content_attr: [*const i8; 2] = [
-    b"content\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
-static mut type_attr: [*const i8; 2] = [
-    b"type\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut content_attr: [*const i8; 2] =
+    [b"content\x00" as *const u8 as *const i8, 0 as *const i8];
+static mut type_attr: [*const i8; 2] = [b"type\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut noframes_content: [*const i8; 65] = [
     b"body\x00" as *const u8 as *const i8,
     b"h1\x00" as *const u8 as *const i8,
@@ -2277,10 +2172,7 @@ static mut ol_attrs: [*const i8; 4] = [
     b"start\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut option_elt: [*const i8; 2] = [
-    b"option\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut option_elt: [*const i8; 2] = [b"option\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut optgroup_attrs: [*const i8; 17] = [
     b"id\x00" as *const u8 as *const i8,
     b"class\x00" as *const u8 as *const i8,
@@ -2329,10 +2221,7 @@ static mut param_attrs: [*const i8; 5] = [
     b"type\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut width_attr: [*const i8; 2] = [
-    b"width\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut width_attr: [*const i8; 2] = [b"width\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut pre_content: [*const i8; 25] = [
     b"em\x00" as *const u8 as *const i8,
     b"strong\x00" as *const u8 as *const i8,
@@ -2368,10 +2257,8 @@ static mut script_attrs: [*const i8; 6] = [
     b"for\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut language_attr: [*const i8; 2] = [
-    b"language\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut language_attr: [*const i8; 2] =
+    [b"language\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut select_content: [*const i8; 3] = [
     b"optgroup\x00" as *const u8 as *const i8,
     b"option\x00" as *const u8 as *const i8,
@@ -2451,10 +2338,7 @@ static mut table_contents: [*const i8; 8] = [
     b"tr\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut tr_elt: [*const i8; 2] = [
-    b"tr\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut tr_elt: [*const i8; 2] = [b"tr\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut talign_attrs: [*const i8; 20] = [
     b"id\x00" as *const u8 as *const i8,
     b"class\x00" as *const u8 as *const i8,
@@ -2544,23 +2428,15 @@ static mut tr_contents: [*const i8; 3] = [
     b"td\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut bgcolor_attr: [*const i8; 2] = [
-    b"bgcolor\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
-static mut li_elt: [*const i8; 2] = [
-    b"li\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut bgcolor_attr: [*const i8; 2] =
+    [b"bgcolor\x00" as *const u8 as *const i8, 0 as *const i8];
+static mut li_elt: [*const i8; 2] = [b"li\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut ul_depr: [*const i8; 3] = [
     b"type\x00" as *const u8 as *const i8,
     b"compact\x00" as *const u8 as *const i8,
     0 as *const i8,
 ];
-static mut dir_attr: [*const i8; 2] = [
-    b"dir\x00" as *const u8 as *const i8,
-    0 as *const i8,
-];
+static mut dir_attr: [*const i8; 2] = [b"dir\x00" as *const u8 as *const i8, 0 as *const i8];
 static mut html40ElementTable: [htmlElemDesc; 92] = unsafe {
     [
         {
@@ -3886,8 +3762,7 @@ static mut html40ElementTable: [htmlElemDesc; 92] = unsafe {
                 depr: 0 as i32 as i8,
                 dtd: 0 as i32 as i8,
                 isinline: 1 as i32 as i8,
-                desc: b"sample program output, scripts, etc.\x00" as *const u8
-                    as *const i8,
+                desc: b"sample program output, scripts, etc.\x00" as *const u8 as *const i8,
                 subelts: html_inline.as_ptr() as *mut *const i8,
                 defaultsubelt: 0 as *const i8,
                 attrs_opt: html_attrs.as_ptr() as *mut *const i8,
@@ -4305,8 +4180,7 @@ static mut html40ElementTable: [htmlElemDesc; 92] = unsafe {
                 depr: 0 as i32 as i8,
                 dtd: 0 as i32 as i8,
                 isinline: 1 as i32 as i8,
-                desc: b"instance of a variable or program argument\x00" as *const u8
-                    as *const i8,
+                desc: b"instance of a variable or program argument\x00" as *const u8 as *const i8,
                 subelts: html_inline.as_ptr() as *mut *const i8,
                 defaultsubelt: 0 as *const i8,
                 attrs_opt: html_attrs.as_ptr() as *mut *const i8,
@@ -6215,10 +6089,7 @@ static mut htmlEndPriority: [elementPriority; 12] = [
 
 pub unsafe fn htmlInitAutoClose_htmlparser() {}
 
-extern "C" fn htmlCompareTags(
-    mut key: *const (),
-    mut member: *const (),
-) -> i32 {
+extern "C" fn htmlCompareTags(mut key: *const (), mut member: *const ()) -> i32 {
     let mut tag: *const xmlChar = key as *const xmlChar;
     let mut desc: *const htmlElemDesc = member as *const htmlElemDesc;
     let mut descPtr = unsafe { &*desc };
@@ -6234,23 +6105,17 @@ extern "C" fn htmlCompareTags(
  */
 
 pub unsafe fn htmlTagLookup(mut tag: *const xmlChar) -> *const htmlElemDesc {
-        if tag.is_null() {
-            return 0 as *const htmlElemDesc;
-        }
-        return bsearch(
-            tag as *const (),
-            html40ElementTable.as_ptr() as *const (),
-            (::std::mem::size_of::<[htmlElemDesc; 92]>() as u64)
-                .wrapping_div(::std::mem::size_of::<htmlElemDesc>() as u64),
-            ::std::mem::size_of::<htmlElemDesc>() as u64,
-            Some(
-                htmlCompareTags
-                    as unsafe extern "C" fn(
-                        _: *const (),
-                        _: *const (),
-                    ) -> i32,
-            ),
-        ) as *const htmlElemDesc;
+    if tag.is_null() {
+        return 0 as *const htmlElemDesc;
+    }
+    return bsearch(
+        tag as *const (),
+        html40ElementTable.as_ptr() as *const (),
+        (::std::mem::size_of::<[htmlElemDesc; 92]>() as u64)
+            .wrapping_div(::std::mem::size_of::<htmlElemDesc>() as u64),
+        ::std::mem::size_of::<htmlElemDesc>() as u64,
+        Some(htmlCompareTags as unsafe extern "C" fn(_: *const (), _: *const ()) -> i32),
+    ) as *const htmlElemDesc;
 }
 /* *
  * htmlGetEndPriority:
@@ -6268,10 +6133,7 @@ unsafe fn htmlGetEndPriority(mut name: *const xmlChar) -> i32 {
     return getHtmlEndPriority(i as usize).priority;
 }
 
-extern "C" fn htmlCompareStartClose(
-    mut vkey: *const (),
-    mut member: *const (),
-) -> i32 {
+extern "C" fn htmlCompareStartClose(mut vkey: *const (), mut member: *const ()) -> i32 {
     let mut key: *const htmlStartCloseEntry = vkey as *const htmlStartCloseEntry;
     let mut entry: *const htmlStartCloseEntry = member as *const htmlStartCloseEntry;
     let mut ret: i32 = 0;
@@ -6308,13 +6170,7 @@ unsafe fn htmlCheckAutoClose(mut newtag: *const xmlChar, mut oldtag: *const xmlC
             (::std::mem::size_of::<[htmlStartCloseEntry; 251]>() as u64)
                 .wrapping_div(::std::mem::size_of::<htmlStartCloseEntry>() as u64),
             ::std::mem::size_of::<htmlStartCloseEntry>() as u64,
-            Some(
-                htmlCompareStartClose
-                    as unsafe extern "C" fn(
-                        _: *const (),
-                        _: *const (),
-                    ) -> i32,
-            ),
+            Some(htmlCompareStartClose as unsafe extern "C" fn(_: *const (), _: *const ()) -> i32),
         );
     }
     return (res != 0 as *mut ()) as i32;
@@ -6359,14 +6215,12 @@ unsafe fn htmlAutoCloseOnClose(mut ctxt: htmlParserCtxtPtr, mut newtag: *const x
 
     while xmlStrEqual_safe(newtag, ctxtPtr.name) == 0 {
         info = htmlTagLookup(ctxtPtr.name);
-        let info_condition =
-            unsafe { !info.is_null() && (*info).endTag as i32 == 3 as i32 };
+        let info_condition = unsafe { !info.is_null() && (*info).endTag as i32 == 3 as i32 };
         if info_condition {
             htmlParseErr(
                 ctxt,
                 XML_ERR_TAG_NAME_MISMATCH,
-                b"Opening and ending tag mismatch: %s and %s\n\x00" as *const u8
-                    as *const i8,
+                b"Opening and ending tag mismatch: %s and %s\n\x00" as *const u8 as *const i8,
                 newtag,
                 ctxtPtr.name,
             );
@@ -6550,10 +6404,7 @@ unsafe fn htmlCheckImplied(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlCh
     }
     let mut sax_condition = false;
     if ctxtPtr.nameNr <= 0 as i32 {
-        htmlnamePush(
-            ctxt,
-            b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
-        );
+        htmlnamePush(ctxt, b"html\x00" as *const u8 as *const i8 as *mut xmlChar);
         sax_condition = unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).startElement.is_some() };
         if sax_condition {
             let mut saxPtr = unsafe { &mut *(*ctxt).sax };
@@ -6610,10 +6461,7 @@ unsafe fn htmlCheckImplied(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlCh
          * dropped OBJECT ... i you put it first BODY will be
          * assumed !
          */
-        htmlnamePush(
-            ctxt,
-            b"head\x00" as *const u8 as *const i8 as *mut xmlChar,
-        );
+        htmlnamePush(ctxt, b"head\x00" as *const u8 as *const i8 as *mut xmlChar);
         sax_condition = unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).startElement.is_some() };
         if sax_condition {
             let mut saxPtr = unsafe { &mut *(*ctxt).sax };
@@ -6663,10 +6511,7 @@ unsafe fn htmlCheckImplied(mut ctxt: htmlParserCtxtPtr, mut newtag: *const xmlCh
             }
             i += 1
         }
-        htmlnamePush(
-            ctxt,
-            b"body\x00" as *const u8 as *const i8 as *mut xmlChar,
-        );
+        htmlnamePush(ctxt, b"body\x00" as *const u8 as *const i8 as *mut xmlChar);
         sax_condition = unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).startElement.is_some() };
         if sax_condition {
             let mut saxPtr = unsafe { &mut *(*ctxt).sax };
@@ -6699,18 +6544,9 @@ unsafe fn htmlCheckParagraph(mut ctxt: htmlParserCtxtPtr) -> i32 {
     tag = ctxtPtr.name;
     let mut sax_condition = false;
     if tag.is_null() {
-        htmlAutoClose(
-            ctxt,
-            b"p\x00" as *const u8 as *const i8 as *mut xmlChar,
-        );
-        htmlCheckImplied(
-            ctxt,
-            b"p\x00" as *const u8 as *const i8 as *mut xmlChar,
-        );
-        htmlnamePush(
-            ctxt,
-            b"p\x00" as *const u8 as *const i8 as *mut xmlChar,
-        );
+        htmlAutoClose(ctxt, b"p\x00" as *const u8 as *const i8 as *mut xmlChar);
+        htmlCheckImplied(ctxt, b"p\x00" as *const u8 as *const i8 as *mut xmlChar);
+        htmlnamePush(ctxt, b"p\x00" as *const u8 as *const i8 as *mut xmlChar);
         sax_condition = unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).startElement.is_some() };
         if sax_condition {
             let mut saxPtr = unsafe { &mut *(*ctxt).sax };
@@ -6729,18 +6565,9 @@ unsafe fn htmlCheckParagraph(mut ctxt: htmlParserCtxtPtr) -> i32 {
     i = 0 as i32;
     while !getHtmlNoContentElements(i as usize).is_null() {
         if xmlStrEqual_safe(tag, getHtmlNoContentElements(i as usize) as *mut xmlChar) != 0 {
-            htmlAutoClose(
-                ctxt,
-                b"p\x00" as *const u8 as *const i8 as *mut xmlChar,
-            );
-            htmlCheckImplied(
-                ctxt,
-                b"p\x00" as *const u8 as *const i8 as *mut xmlChar,
-            );
-            htmlnamePush(
-                ctxt,
-                b"p\x00" as *const u8 as *const i8 as *mut xmlChar,
-            );
+            htmlAutoClose(ctxt, b"p\x00" as *const u8 as *const i8 as *mut xmlChar);
+            htmlCheckImplied(ctxt, b"p\x00" as *const u8 as *const i8 as *mut xmlChar);
+            htmlnamePush(ctxt, b"p\x00" as *const u8 as *const i8 as *mut xmlChar);
             sax_condition =
                 unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).startElement.is_some() };
             if sax_condition {
@@ -6804,8 +6631,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 34 as i32 as u32,
             name: b"quot\x00" as *const u8 as *const i8,
-            desc: b"quotation mark = APL quote, U+0022 ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"quotation mark = APL quote, U+0022 ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -6854,8 +6680,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 161 as i32 as u32,
             name: b"iexcl\x00" as *const u8 as *const i8,
-            desc: b"inverted exclamation mark, U+00A1 ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"inverted exclamation mark, U+00A1 ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -6895,8 +6720,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 166 as i32 as u32,
             name: b"brvbar\x00" as *const u8 as *const i8,
-            desc: b"broken bar = broken vertical bar, U+00A6 ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"broken bar = broken vertical bar, U+00A6 ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -6912,8 +6736,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 168 as i32 as u32,
             name: b"uml\x00" as *const u8 as *const i8,
-            desc: b"diaeresis = spacing diaeresis, U+00A8 ISOdia\x00" as *const u8
-                as *const i8,
+            desc: b"diaeresis = spacing diaeresis, U+00A8 ISOdia\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -6929,8 +6752,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 170 as i32 as u32,
             name: b"ordf\x00" as *const u8 as *const i8,
-            desc: b"feminine ordinal indicator, U+00AA ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"feminine ordinal indicator, U+00AA ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7019,8 +6841,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 180 as i32 as u32,
             name: b"acute\x00" as *const u8 as *const i8,
-            desc: b"acute accent = spacing acute, U+00B4 ISOdia\x00" as *const u8
-                as *const i8,
+            desc: b"acute accent = spacing acute, U+00B4 ISOdia\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7036,8 +6857,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 182 as i32 as u32,
             name: b"para\x00" as *const u8 as *const i8,
-            desc: b"pilcrow sign = paragraph sign, U+00B6 ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"pilcrow sign = paragraph sign, U+00B6 ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7054,8 +6874,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 184 as i32 as u32,
             name: b"cedil\x00" as *const u8 as *const i8,
-            desc: b"cedilla = spacing cedilla, U+00B8 ISOdia\x00" as *const u8
-                as *const i8,
+            desc: b"cedilla = spacing cedilla, U+00B8 ISOdia\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7072,8 +6891,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 186 as i32 as u32,
             name: b"ordm\x00" as *const u8 as *const i8,
-            desc: b"masculine ordinal indicator, U+00BA ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"masculine ordinal indicator, U+00BA ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7276,8 +7094,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 208 as i32 as u32,
             name: b"ETH\x00" as *const u8 as *const i8,
-            desc: b"latin capital letter ETH, U+00D0 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin capital letter ETH, U+00D0 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7403,8 +7220,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 222 as i32 as u32,
             name: b"THORN\x00" as *const u8 as *const i8,
-            desc: b"latin capital letter THORN, U+00DE ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin capital letter THORN, U+00DE ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7431,8 +7247,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 225 as i32 as u32,
             name: b"aacute\x00" as *const u8 as *const i8,
-            desc: b"latin small letter a with acute, U+00E1 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter a with acute, U+00E1 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7449,8 +7264,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 227 as i32 as u32,
             name: b"atilde\x00" as *const u8 as *const i8,
-            desc: b"latin small letter a with tilde, U+00E3 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter a with tilde, U+00E3 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7496,8 +7310,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 232 as i32 as u32,
             name: b"egrave\x00" as *const u8 as *const i8,
-            desc: b"latin small letter e with grave, U+00E8 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter e with grave, U+00E8 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7505,8 +7318,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 233 as i32 as u32,
             name: b"eacute\x00" as *const u8 as *const i8,
-            desc: b"latin small letter e with acute, U+00E9 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter e with acute, U+00E9 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7532,8 +7344,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 236 as i32 as u32,
             name: b"igrave\x00" as *const u8 as *const i8,
-            desc: b"latin small letter i with grave, U+00EC ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter i with grave, U+00EC ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7541,8 +7352,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 237 as i32 as u32,
             name: b"iacute\x00" as *const u8 as *const i8,
-            desc: b"latin small letter i with acute, U+00ED ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter i with acute, U+00ED ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7576,8 +7386,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 241 as i32 as u32,
             name: b"ntilde\x00" as *const u8 as *const i8,
-            desc: b"latin small letter n with tilde, U+00F1 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter n with tilde, U+00F1 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7585,8 +7394,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 242 as i32 as u32,
             name: b"ograve\x00" as *const u8 as *const i8,
-            desc: b"latin small letter o with grave, U+00F2 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter o with grave, U+00F2 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7594,8 +7402,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 243 as i32 as u32,
             name: b"oacute\x00" as *const u8 as *const i8,
-            desc: b"latin small letter o with acute, U+00F3 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter o with acute, U+00F3 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7612,8 +7419,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 245 as i32 as u32,
             name: b"otilde\x00" as *const u8 as *const i8,
-            desc: b"latin small letter o with tilde, U+00F5 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter o with tilde, U+00F5 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7649,8 +7455,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 249 as i32 as u32,
             name: b"ugrave\x00" as *const u8 as *const i8,
-            desc: b"latin small letter u with grave, U+00F9 ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter u with grave, U+00F9 ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7658,8 +7463,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 250 as i32 as u32,
             name: b"uacute\x00" as *const u8 as *const i8,
-            desc: b"latin small letter u with acute, U+00FA ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter u with acute, U+00FA ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7685,8 +7489,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 253 as i32 as u32,
             name: b"yacute\x00" as *const u8 as *const i8,
-            desc: b"latin small letter y with acute, U+00FD ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter y with acute, U+00FD ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7694,8 +7497,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 254 as i32 as u32,
             name: b"thorn\x00" as *const u8 as *const i8,
-            desc: b"latin small letter thorn with, U+00FE ISOlat1\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter thorn with, U+00FE ISOlat1\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7712,8 +7514,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 338 as i32 as u32,
             name: b"OElig\x00" as *const u8 as *const i8,
-            desc: b"latin capital ligature OE, U+0152 ISOlat2\x00" as *const u8
-                as *const i8,
+            desc: b"latin capital ligature OE, U+0152 ISOlat2\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7721,8 +7522,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 339 as i32 as u32,
             name: b"oelig\x00" as *const u8 as *const i8,
-            desc: b"latin small ligature oe, U+0153 ISOlat2\x00" as *const u8
-                as *const i8,
+            desc: b"latin small ligature oe, U+0153 ISOlat2\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7739,8 +7539,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 353 as i32 as u32,
             name: b"scaron\x00" as *const u8 as *const i8,
-            desc: b"latin small letter s with caron, U+0161 ISOlat2\x00" as *const u8
-                as *const i8,
+            desc: b"latin small letter s with caron, U+0161 ISOlat2\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7766,8 +7565,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 710 as i32 as u32,
             name: b"circ\x00" as *const u8 as *const i8,
-            desc: b"modifier letter circumflex accent, U+02C6 ISOpub\x00" as *const u8
-                as *const i8,
+            desc: b"modifier letter circumflex accent, U+02C6 ISOpub\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7799,8 +7597,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 915 as i32 as u32,
             name: b"Gamma\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter gamma, U+0393 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter gamma, U+0393 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7808,8 +7605,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 916 as i32 as u32,
             name: b"Delta\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter delta, U+0394 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter delta, U+0394 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7841,8 +7637,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 920 as i32 as u32,
             name: b"Theta\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter theta, U+0398 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter theta, U+0398 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7866,8 +7661,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 923 as i32 as u32,
             name: b"Lambda\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter lambda, U+039B ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter lambda, U+039B ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7891,8 +7685,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 926 as i32 as u32,
             name: b"Xi\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter xi, U+039E ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter xi, U+039E ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7908,8 +7701,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 928 as i32 as u32,
             name: b"Pi\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter pi, U+03A0 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter pi, U+03A0 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7925,8 +7717,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 931 as i32 as u32,
             name: b"Sigma\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter sigma, U+03A3 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter sigma, U+03A3 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7942,8 +7733,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 933 as i32 as u32,
             name: b"Upsilon\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter upsilon, U+03A5 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter upsilon, U+03A5 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7951,8 +7741,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 934 as i32 as u32,
             name: b"Phi\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter phi, U+03A6 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter phi, U+03A6 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7968,8 +7757,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 936 as i32 as u32,
             name: b"Psi\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter psi, U+03A8 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter psi, U+03A8 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7977,8 +7765,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 937 as i32 as u32,
             name: b"Omega\x00" as *const u8 as *const i8,
-            desc: b"greek capital letter omega, U+03A9 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek capital letter omega, U+03A9 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7986,8 +7773,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 945 as i32 as u32,
             name: b"alpha\x00" as *const u8 as *const i8,
-            desc: b"greek small letter alpha, U+03B1 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter alpha, U+03B1 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -7995,8 +7781,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 946 as i32 as u32,
             name: b"beta\x00" as *const u8 as *const i8,
-            desc: b"greek small letter beta, U+03B2 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter beta, U+03B2 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8004,8 +7789,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 947 as i32 as u32,
             name: b"gamma\x00" as *const u8 as *const i8,
-            desc: b"greek small letter gamma, U+03B3 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter gamma, U+03B3 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8013,8 +7797,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 948 as i32 as u32,
             name: b"delta\x00" as *const u8 as *const i8,
-            desc: b"greek small letter delta, U+03B4 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter delta, U+03B4 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8022,8 +7805,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 949 as i32 as u32,
             name: b"epsilon\x00" as *const u8 as *const i8,
-            desc: b"greek small letter epsilon, U+03B5 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter epsilon, U+03B5 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8031,8 +7813,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 950 as i32 as u32,
             name: b"zeta\x00" as *const u8 as *const i8,
-            desc: b"greek small letter zeta, U+03B6 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter zeta, U+03B6 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8048,8 +7829,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 952 as i32 as u32,
             name: b"theta\x00" as *const u8 as *const i8,
-            desc: b"greek small letter theta, U+03B8 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter theta, U+03B8 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8057,8 +7837,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 953 as i32 as u32,
             name: b"iota\x00" as *const u8 as *const i8,
-            desc: b"greek small letter iota, U+03B9 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter iota, U+03B9 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8066,8 +7845,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 954 as i32 as u32,
             name: b"kappa\x00" as *const u8 as *const i8,
-            desc: b"greek small letter kappa, U+03BA ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter kappa, U+03BA ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8075,8 +7853,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 955 as i32 as u32,
             name: b"lambda\x00" as *const u8 as *const i8,
-            desc: b"greek small letter lambda, U+03BB ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter lambda, U+03BB ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8132,8 +7909,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 962 as i32 as u32,
             name: b"sigmaf\x00" as *const u8 as *const i8,
-            desc: b"greek small letter final sigma, U+03C2 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter final sigma, U+03C2 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8141,8 +7917,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 963 as i32 as u32,
             name: b"sigma\x00" as *const u8 as *const i8,
-            desc: b"greek small letter sigma, U+03C3 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter sigma, U+03C3 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8158,8 +7933,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 965 as i32 as u32,
             name: b"upsilon\x00" as *const u8 as *const i8,
-            desc: b"greek small letter upsilon, U+03C5 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter upsilon, U+03C5 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8191,8 +7965,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 969 as i32 as u32,
             name: b"omega\x00" as *const u8 as *const i8,
-            desc: b"greek small letter omega, U+03C9 ISOgrk3\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter omega, U+03C9 ISOgrk3\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8200,8 +7973,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 977 as i32 as u32,
             name: b"thetasym\x00" as *const u8 as *const i8,
-            desc: b"greek small letter theta symbol, U+03D1 NEW\x00" as *const u8
-                as *const i8,
+            desc: b"greek small letter theta symbol, U+03D1 NEW\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8209,8 +7981,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 978 as i32 as u32,
             name: b"upsih\x00" as *const u8 as *const i8,
-            desc: b"greek upsilon with hook symbol, U+03D2 NEW\x00" as *const u8
-                as *const i8,
+            desc: b"greek upsilon with hook symbol, U+03D2 NEW\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8250,8 +8021,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8204 as i32 as u32,
             name: b"zwnj\x00" as *const u8 as *const i8,
-            desc: b"zero width non-joiner, U+200C NEW RFC 2070\x00" as *const u8
-                as *const i8,
+            desc: b"zero width non-joiner, U+200C NEW RFC 2070\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8267,8 +8037,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8206 as i32 as u32,
             name: b"lrm\x00" as *const u8 as *const i8,
-            desc: b"left-to-right mark, U+200E NEW RFC 2070\x00" as *const u8
-                as *const i8,
+            desc: b"left-to-right mark, U+200E NEW RFC 2070\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8276,8 +8045,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8207 as i32 as u32,
             name: b"rlm\x00" as *const u8 as *const i8,
-            desc: b"right-to-left mark, U+200F NEW RFC 2070\x00" as *const u8
-                as *const i8,
+            desc: b"right-to-left mark, U+200F NEW RFC 2070\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8301,8 +8069,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8216 as i32 as u32,
             name: b"lsquo\x00" as *const u8 as *const i8,
-            desc: b"left single quotation mark, U+2018 ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"left single quotation mark, U+2018 ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8310,8 +8077,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8217 as i32 as u32,
             name: b"rsquo\x00" as *const u8 as *const i8,
-            desc: b"right single quotation mark, U+2019 ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"right single quotation mark, U+2019 ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8319,8 +8085,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8218 as i32 as u32,
             name: b"sbquo\x00" as *const u8 as *const i8,
-            desc: b"single low-9 quotation mark, U+201A NEW\x00" as *const u8
-                as *const i8,
+            desc: b"single low-9 quotation mark, U+201A NEW\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8328,8 +8093,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8220 as i32 as u32,
             name: b"ldquo\x00" as *const u8 as *const i8,
-            desc: b"left double quotation mark, U+201C ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"left double quotation mark, U+201C ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8337,8 +8101,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8221 as i32 as u32,
             name: b"rdquo\x00" as *const u8 as *const i8,
-            desc: b"right double quotation mark, U+201D ISOnum\x00" as *const u8
-                as *const i8,
+            desc: b"right double quotation mark, U+201D ISOnum\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8346,8 +8109,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8222 as i32 as u32,
             name: b"bdquo\x00" as *const u8 as *const i8,
-            desc: b"double low-9 quotation mark, U+201E NEW\x00" as *const u8
-                as *const i8,
+            desc: b"double low-9 quotation mark, U+201E NEW\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8371,8 +8133,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8226 as i32 as u32,
             name: b"bull\x00" as *const u8 as *const i8,
-            desc: b"bullet = black small circle, U+2022 ISOpub\x00" as *const u8
-                as *const i8,
+            desc: b"bullet = black small circle, U+2022 ISOpub\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8405,8 +8166,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8243 as i32 as u32,
             name: b"Prime\x00" as *const u8 as *const i8,
-            desc: b"double prime = seconds = inches, U+2033 ISOtech\x00" as *const u8
-                as *const i8,
+            desc: b"double prime = seconds = inches, U+2033 ISOtech\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8432,8 +8192,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8254 as i32 as u32,
             name: b"oline\x00" as *const u8 as *const i8,
-            desc: b"overline = spacing overscore, U+203E NEW\x00" as *const u8
-                as *const i8,
+            desc: b"overline = spacing overscore, U+203E NEW\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8566,8 +8325,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8658 as i32 as u32,
             name: b"rArr\x00" as *const u8 as *const i8,
-            desc: b"rightwards double arrow, U+21D2 ISOtech\x00" as *const u8
-                as *const i8,
+            desc: b"rightwards double arrow, U+21D2 ISOtech\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8583,8 +8341,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8660 as i32 as u32,
             name: b"hArr\x00" as *const u8 as *const i8,
-            desc: b"left right double arrow, U+21D4 ISOamsa\x00" as *const u8
-                as *const i8,
+            desc: b"left right double arrow, U+21D4 ISOamsa\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8616,8 +8373,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8709 as i32 as u32,
             name: b"empty\x00" as *const u8 as *const i8,
-            desc: b"empty set = null set = diameter, U+2205 ISOamso\x00" as *const u8
-                as *const i8,
+            desc: b"empty set = null set = diameter, U+2205 ISOamso\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8625,8 +8381,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8711 as i32 as u32,
             name: b"nabla\x00" as *const u8 as *const i8,
-            desc: b"nabla = backward difference, U+2207 ISOtech\x00" as *const u8
-                as *const i8,
+            desc: b"nabla = backward difference, U+2207 ISOtech\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8658,8 +8413,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8719 as i32 as u32,
             name: b"prod\x00" as *const u8 as *const i8,
-            desc: b"n-ary product = product sign, U+220F ISOamsb\x00" as *const u8
-                as *const i8,
+            desc: b"n-ary product = product sign, U+220F ISOamsb\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8691,8 +8445,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8730 as i32 as u32,
             name: b"radic\x00" as *const u8 as *const i8,
-            desc: b"square root = radical sign, U+221A ISOtech\x00" as *const u8
-                as *const i8,
+            desc: b"square root = radical sign, U+221A ISOtech\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8789,8 +8542,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8776 as i32 as u32,
             name: b"asymp\x00" as *const u8 as *const i8,
-            desc: b"almost equal to = asymptotic to, U+2248 ISOamsr\x00" as *const u8
-                as *const i8,
+            desc: b"almost equal to = asymptotic to, U+2248 ISOamsr\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8822,8 +8574,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8805 as i32 as u32,
             name: b"ge\x00" as *const u8 as *const i8,
-            desc: b"greater-than or equal to, U+2265 ISOtech\x00" as *const u8
-                as *const i8,
+            desc: b"greater-than or equal to, U+2265 ISOtech\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8863,8 +8614,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8839 as i32 as u32,
             name: b"supe\x00" as *const u8 as *const i8,
-            desc: b"superset of or equal to, U+2287 ISOtech\x00" as *const u8
-                as *const i8,
+            desc: b"superset of or equal to, U+2287 ISOtech\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8872,8 +8622,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8853 as i32 as u32,
             name: b"oplus\x00" as *const u8 as *const i8,
-            desc: b"circled plus = direct sum, U+2295 ISOamsb\x00" as *const u8
-                as *const i8,
+            desc: b"circled plus = direct sum, U+2295 ISOamsb\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8881,8 +8630,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8855 as i32 as u32,
             name: b"otimes\x00" as *const u8 as *const i8,
-            desc: b"circled times = vector product, U+2297 ISOamsb\x00" as *const u8
-                as *const i8,
+            desc: b"circled times = vector product, U+2297 ISOamsb\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8907,8 +8655,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8968 as i32 as u32,
             name: b"lceil\x00" as *const u8 as *const i8,
-            desc: b"left ceiling = apl upstile, U+2308 ISOamsc\x00" as *const u8
-                as *const i8,
+            desc: b"left ceiling = apl upstile, U+2308 ISOamsc\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8924,8 +8671,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 8970 as i32 as u32,
             name: b"lfloor\x00" as *const u8 as *const i8,
-            desc: b"left floor = apl downstile, U+230A ISOamsc\x00" as *const u8
-                as *const i8,
+            desc: b"left floor = apl downstile, U+230A ISOamsc\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8975,8 +8721,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 9827 as i32 as u32,
             name: b"clubs\x00" as *const u8 as *const i8,
-            desc: b"black club suit = shamrock, U+2663 ISOpub\x00" as *const u8
-                as *const i8,
+            desc: b"black club suit = shamrock, U+2663 ISOpub\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -8984,8 +8729,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
         let mut init = _htmlEntityDesc {
             value: 9829 as i32 as u32,
             name: b"hearts\x00" as *const u8 as *const i8,
-            desc: b"black heart suit = valentine, U+2665 ISOpub\x00" as *const u8
-                as *const i8,
+            desc: b"black heart suit = valentine, U+2665 ISOpub\x00" as *const u8 as *const i8,
         };
         init
     },
@@ -9221,9 +8965,7 @@ pub unsafe fn UTF8ToHtml(
             }
             len = strlen_safe(cp) as i32;
             unsafe {
-                if out.offset(2 as i32 as isize).offset(len as isize)
-                    >= outend as *mut u8
-                {
+                if out.offset(2 as i32 as isize).offset(len as isize) >= outend as *mut u8 {
                     break;
                 }
             }
@@ -9234,11 +8976,7 @@ pub unsafe fn UTF8ToHtml(
             unsafe {
                 *fresh7 = '&' as i32 as u8;
             }
-            memcpy_safe(
-                out as *mut (),
-                cp as *const (),
-                len as u64,
-            );
+            memcpy_safe(out as *mut (), cp as *const (), len as u64);
             unsafe {
                 out = out.offset(len as isize);
             }
@@ -9406,9 +9144,7 @@ pub unsafe fn htmlEncodeEntities(
             }
             len = strlen_safe(cp) as i32;
             unsafe {
-                if out.offset(2 as i32 as isize).offset(len as isize)
-                    > outend as *mut u8
-                {
+                if out.offset(2 as i32 as isize).offset(len as isize) > outend as *mut u8 {
                     break;
                 }
             }
@@ -9419,11 +9155,7 @@ pub unsafe fn htmlEncodeEntities(
             unsafe {
                 *fresh13 = '&' as i32 as u8;
             }
-            memcpy_safe(
-                out as *mut (),
-                cp as *const (),
-                len as u64,
-            );
+            memcpy_safe(out as *mut (), cp as *const (), len as u64);
             unsafe {
                 out = out.offset(len as isize);
             }
@@ -9458,8 +9190,7 @@ pub unsafe fn htmlEncodeEntities(
 #[cfg(LIBXML_PUSH_ENABLED)]
 unsafe fn htmlNewInputStream(mut ctxt: htmlParserCtxtPtr) -> htmlParserInputPtr {
     let mut input: htmlParserInputPtr = 0 as *mut xmlParserInput;
-    input = xmlMalloc_safe(::std::mem::size_of::<htmlParserInput>() as u64)
-        as xmlParserInputPtr;
+    input = xmlMalloc_safe(::std::mem::size_of::<htmlParserInput>() as u64) as xmlParserInputPtr;
     if input.is_null() {
         htmlErrMemory(
             ctxt,
@@ -9618,13 +9349,11 @@ unsafe fn areBlanks_htmlparser(
             let mut dtdPtr = unsafe { &mut *dtd };
             if xmlStrcasecmp_safe(
                 dtdPtr.ExternalID,
-                b"-//W3C//DTD HTML 4.01//EN\x00" as *const u8 as *const i8
-                    as *mut xmlChar,
+                b"-//W3C//DTD HTML 4.01//EN\x00" as *const u8 as *const i8 as *mut xmlChar,
             ) == 0
                 || xmlStrcasecmp_safe(
                     dtdPtr.ExternalID,
-                    b"-//W3C//DTD HTML 4//EN\x00" as *const u8 as *const i8
-                        as *mut xmlChar,
+                    b"-//W3C//DTD HTML 4//EN\x00" as *const u8 as *const i8 as *mut xmlChar,
                 ) == 0
             {
                 return 1 as i32;
@@ -9636,18 +9365,13 @@ unsafe fn areBlanks_htmlparser(
     }
     lastChild = xmlGetLastChild_safe(ctxtPtr.node as *const xmlNode);
     unsafe {
-        while !lastChild.is_null()
-            && (*lastChild).type_0 as u32
-                == XML_COMMENT_NODE as i32 as u32
-        {
+        while !lastChild.is_null() && (*lastChild).type_0 as u32 == XML_COMMENT_NODE as i32 as u32 {
             lastChild = (*lastChild).prev
         }
     }
     if lastChild.is_null() {
         let mut nodePtr = unsafe { &mut *(*ctxt).node };
-        if nodePtr.type_0 as u32 != XML_ELEMENT_NODE as i32 as u32
-            && !nodePtr.content.is_null()
-        {
+        if nodePtr.type_0 as u32 != XML_ELEMENT_NODE as i32 as u32 && !nodePtr.content.is_null() {
             return 0 as i32;
         }
         /* keep ws in constructs like ...<b> </b>...
@@ -9697,7 +9421,10 @@ unsafe fn areBlanks_htmlparser(
  * Returns a new document, do not initialize the DTD if not provided
  */
 
-pub unsafe fn htmlNewDocNoDtD(mut URI: *const xmlChar, mut ExternalID: *const xmlChar) -> htmlDocPtr {
+pub unsafe fn htmlNewDocNoDtD(
+    mut URI: *const xmlChar,
+    mut ExternalID: *const xmlChar,
+) -> htmlDocPtr {
     let mut cur: xmlDocPtr = 0 as *mut xmlDoc;
     /*
      * Allocate a new document and fill the fields.
@@ -9757,8 +9484,7 @@ pub unsafe fn htmlNewDoc(mut URI: *const xmlChar, mut ExternalID: *const xmlChar
         return htmlNewDocNoDtD(
             b"http://www.w3.org/TR/REC-html40/loose.dtd\x00" as *const u8 as *const i8
                 as *mut xmlChar,
-            b"-//W3C//DTD HTML 4.0 Transitional//EN\x00" as *const u8 as *const i8
-                as *mut xmlChar,
+            b"-//W3C//DTD HTML 4.0 Transitional//EN\x00" as *const u8 as *const i8 as *mut xmlChar,
         );
     }
     return htmlNewDocNoDtD(URI, ExternalID);
@@ -9827,9 +9553,7 @@ unsafe fn htmlParseHTMLName_nonInvasive(mut ctxt: htmlParserCtxtPtr) -> *const x
             || NXT(ctxt, 1 as i32 + i) == '-' as i32
             || NXT(ctxt, 1 as i32 + i) == '_' as i32)
     {
-        if NXT(ctxt, 1 as i32 + i) >= 'A' as i32
-            && NXT(ctxt, 1 as i32 + i) <= 'Z' as i32
-        {
+        if NXT(ctxt, 1 as i32 + i) >= 'A' as i32 && NXT(ctxt, 1 as i32 + i) <= 'Z' as i32 {
             loc[i as usize] = (NXT(ctxt, 1 as i32 + i) + 0x20 as i32) as xmlChar
         } else {
             loc[i as usize] = NXT(ctxt, 1 as i32 + i) as xmlChar
@@ -9859,10 +9583,8 @@ unsafe fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
      */
     in_0 = inputPtr.cur;
     let mut in_0_safe = unsafe { *in_0 };
-    if in_0_safe as i32 >= 0x61 as i32
-        && in_0_safe as i32 <= 0x7a as i32
-        || in_0_safe as i32 >= 0x41 as i32
-            && in_0_safe as i32 <= 0x5a as i32
+    if in_0_safe as i32 >= 0x61 as i32 && in_0_safe as i32 <= 0x7a as i32
+        || in_0_safe as i32 >= 0x41 as i32 && in_0_safe as i32 <= 0x5a as i32
         || in_0_safe as i32 == '_' as i32
         || in_0_safe as i32 == ':' as i32
     {
@@ -9870,12 +9592,9 @@ unsafe fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
             in_0 = in_0.offset(1);
         }
         in_0_safe = unsafe { *in_0 };
-        while in_0_safe as i32 >= 0x61 as i32
-            && in_0_safe as i32 <= 0x7a as i32
-            || in_0_safe as i32 >= 0x41 as i32
-                && in_0_safe as i32 <= 0x5a as i32
-            || in_0_safe as i32 >= 0x30 as i32
-                && in_0_safe as i32 <= 0x39 as i32
+        while in_0_safe as i32 >= 0x61 as i32 && in_0_safe as i32 <= 0x7a as i32
+            || in_0_safe as i32 >= 0x41 as i32 && in_0_safe as i32 <= 0x5a as i32
+            || in_0_safe as i32 >= 0x30 as i32 && in_0_safe as i32 <= 0x39 as i32
             || in_0_safe as i32 == '_' as i32
             || in_0_safe as i32 == '-' as i32
             || in_0_safe as i32 == ':' as i32
@@ -9887,9 +9606,7 @@ unsafe fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
         if in_0 == inputPtr.end {
             return 0 as *const xmlChar;
         }
-        if in_0_safe as i32 > 0 as i32
-            && (in_0_safe as i32) < 0x80 as i32
-        {
+        if in_0_safe as i32 > 0 as i32 && (in_0_safe as i32) < 0x80 as i32 {
             unsafe {
                 count = in_0.offset_from(inputPtr.cur) as i64 as i32;
             }
@@ -10000,8 +9717,7 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
      */
     buffer_size = 100 as i32;
     buffer = xmlMallocAtomic_safe(
-        (buffer_size as u64)
-            .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+        (buffer_size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
     ) as *mut xmlChar;
     if buffer.is_null() {
         htmlErrMemory(
@@ -10042,8 +9758,7 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                             out = out.offset(1);
                         }
                         unsafe {
-                            *fresh17 = (c >> 6 as i32 & 0x1f as i32 as u32
-                                | 0xc0 as i32 as u32)
+                            *fresh17 = (c >> 6 as i32 & 0x1f as i32 as u32 | 0xc0 as i32 as u32)
                                 as xmlChar;
                         }
                         bits = 0 as i32
@@ -10053,8 +9768,7 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                             out = out.offset(1);
                         }
                         unsafe {
-                            *fresh18 = (c >> 12 as i32 & 0xf as i32 as u32
-                                | 0xe0 as i32 as u32)
+                            *fresh18 = (c >> 12 as i32 & 0xf as i32 as u32 | 0xe0 as i32 as u32)
                                 as xmlChar;
                         }
                         bits = 6 as i32
@@ -10064,8 +9778,7 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                             out = out.offset(1);
                         }
                         unsafe {
-                            *fresh19 = (c >> 18 as i32 & 0x7 as i32 as u32
-                                | 0xf0 as i32 as u32)
+                            *fresh19 = (c >> 18 as i32 & 0x7 as i32 as u32 | 0xf0 as i32 as u32)
                                 as xmlChar;
                         }
                         bits = 12 as i32
@@ -10076,17 +9789,13 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                             out = out.offset(1);
                         }
                         unsafe {
-                            *fresh20 = (c >> bits & 0x3f as i32 as u32
-                                | 0x80 as i32 as u32)
-                                as xmlChar;
+                            *fresh20 =
+                                (c >> bits & 0x3f as i32 as u32 | 0x80 as i32 as u32) as xmlChar;
                         }
                         bits -= 6 as i32
                     }
-                    if out.offset_from(buffer) as i64
-                        > (buffer_size - 100 as i32) as i64
-                    {
-                        let mut indx: i32 =
-                            out.offset_from(buffer) as i64 as i32;
+                    if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                        let mut indx: i32 = out.offset_from(buffer) as i64 as i32;
                         let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
                         buffer_size *= 2 as i32;
                         tmp = xmlRealloc_safe(
@@ -10095,10 +9804,7 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                                 .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
                         ) as *mut xmlChar;
                         if tmp.is_null() {
-                            htmlErrMemory(
-                                ctxt,
-                                b"growing buffer\n\x00" as *const u8 as *const i8,
-                            );
+                            htmlErrMemory(ctxt, b"growing buffer\n\x00" as *const u8 as *const i8);
                             xmlFree_safe(buffer as *mut ());
                             return 0 as *mut xmlChar;
                         }
@@ -10111,20 +9817,15 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                         let fresh21 = out;
                         out = out.offset(1);
                         *fresh21 = '&' as i32 as xmlChar;
-                        if out.offset_from(buffer) as i64
-                            > (buffer_size - 100 as i32) as i64
-                        {
-                            let mut indx_0: i32 =
-                                out.offset_from(buffer) as i64 as i32;
+                        if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                            let mut indx_0: i32 = out.offset_from(buffer) as i64 as i32;
                             let mut tmp_0: *mut xmlChar = 0 as *mut xmlChar;
                             buffer_size *= 2 as i32;
-                            tmp_0 =
-                                xmlRealloc_safe(
-                                    buffer as *mut (),
-                                    (buffer_size as u64).wrapping_mul(
-                                        ::std::mem::size_of::<xmlChar>() as u64,
-                                    ),
-                                ) as *mut xmlChar;
+                            tmp_0 = xmlRealloc_safe(
+                                buffer as *mut (),
+                                (buffer_size as u64)
+                                    .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                            ) as *mut xmlChar;
                             if tmp_0.is_null() {
                                 htmlErrMemory(
                                     ctxt,
@@ -10142,18 +9843,14 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                         *fresh22 = '&' as i32 as xmlChar;
                         cur = name;
                         while *cur as i32 != 0 as i32 {
-                            if out.offset_from(buffer) as i64
-                                > (buffer_size - 100 as i32) as i64
-                            {
-                                let mut indx_1: i32 =
-                                    out.offset_from(buffer) as i64 as i32;
+                            if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                                let mut indx_1: i32 = out.offset_from(buffer) as i64 as i32;
                                 let mut tmp_1: *mut xmlChar = 0 as *mut xmlChar;
                                 buffer_size *= 2 as i32;
                                 tmp_1 = xmlRealloc_safe(
                                     buffer as *mut (),
-                                    (buffer_size as u64).wrapping_mul(
-                                        ::std::mem::size_of::<xmlChar>() as u64,
-                                    ),
+                                    (buffer_size as u64)
+                                        .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
                                 ) as *mut xmlChar;
                                 if tmp_1.is_null() {
                                     htmlErrMemory(
@@ -10175,20 +9872,15 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                     } else {
                         let mut c_0: u32 = 0;
                         let mut bits_0: i32 = 0;
-                        if out.offset_from(buffer) as i64
-                            > (buffer_size - 100 as i32) as i64
-                        {
-                            let mut indx_2: i32 =
-                                out.offset_from(buffer) as i64 as i32;
+                        if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                            let mut indx_2: i32 = out.offset_from(buffer) as i64 as i32;
                             let mut tmp_2: *mut xmlChar = 0 as *mut xmlChar;
                             buffer_size *= 2 as i32;
-                            tmp_2 =
-                                xmlRealloc_safe(
-                                    buffer as *mut (),
-                                    (buffer_size as u64).wrapping_mul(
-                                        ::std::mem::size_of::<xmlChar>() as u64,
-                                    ),
-                                ) as *mut xmlChar;
+                            tmp_2 = xmlRealloc_safe(
+                                buffer as *mut (),
+                                (buffer_size as u64)
+                                    .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                            ) as *mut xmlChar;
                             if tmp_2.is_null() {
                                 htmlErrMemory(
                                     ctxt,
@@ -10209,33 +9901,26 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                         } else if c_0 < 0x800 as i32 as u32 {
                             let fresh26 = out;
                             out = out.offset(1);
-                            *fresh26 = (c_0 >> 6 as i32
-                                & 0x1f as i32 as u32
-                                | 0xc0 as i32 as u32)
+                            *fresh26 = (c_0 >> 6 as i32 & 0x1f as i32 as u32 | 0xc0 as i32 as u32)
                                 as xmlChar;
                             bits_0 = 0 as i32
                         } else if c_0 < 0x10000 as i32 as u32 {
                             let fresh27 = out;
                             out = out.offset(1);
-                            *fresh27 = (c_0 >> 12 as i32
-                                & 0xf as i32 as u32
-                                | 0xe0 as i32 as u32)
+                            *fresh27 = (c_0 >> 12 as i32 & 0xf as i32 as u32 | 0xe0 as i32 as u32)
                                 as xmlChar;
                             bits_0 = 6 as i32
                         } else {
                             let fresh28 = out;
                             out = out.offset(1);
-                            *fresh28 = (c_0 >> 18 as i32
-                                & 0x7 as i32 as u32
-                                | 0xf0 as i32 as u32)
+                            *fresh28 = (c_0 >> 18 as i32 & 0x7 as i32 as u32 | 0xf0 as i32 as u32)
                                 as xmlChar;
                             bits_0 = 12 as i32
                         }
                         while bits_0 >= 0 as i32 {
                             let fresh29 = out;
                             out = out.offset(1);
-                            *fresh29 = (c_0 >> bits_0 & 0x3f as i32 as u32
-                                | 0x80 as i32 as u32)
+                            *fresh29 = (c_0 >> bits_0 & 0x3f as i32 as u32 | 0x80 as i32 as u32)
                                 as xmlChar;
                             bits_0 -= 6 as i32
                         }
@@ -10245,23 +9930,16 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                 let mut c_1: u32 = 0;
                 let mut bits_1: i32 = 0;
                 let mut l: i32 = 0;
-                if out.offset_from(buffer) as i64
-                    > (buffer_size - 100 as i32) as i64
-                {
-                    let mut indx_3: i32 =
-                        out.offset_from(buffer) as i64 as i32;
+                if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                    let mut indx_3: i32 = out.offset_from(buffer) as i64 as i32;
                     let mut tmp_3: *mut xmlChar = 0 as *mut xmlChar;
                     buffer_size *= 2 as i32;
                     tmp_3 = xmlRealloc_safe(
                         buffer as *mut (),
-                        (buffer_size as u64)
-                            .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                        (buffer_size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
                     ) as *mut xmlChar;
                     if tmp_3.is_null() {
-                        htmlErrMemory(
-                            ctxt,
-                            b"growing buffer\n\x00" as *const u8 as *const i8,
-                        );
+                        htmlErrMemory(ctxt, b"growing buffer\n\x00" as *const u8 as *const i8);
                         xmlFree_safe(buffer as *mut ());
                         return 0 as *mut xmlChar;
                     }
@@ -10277,31 +9955,26 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                 } else if c_1 < 0x800 as i32 as u32 {
                     let fresh31 = out;
                     out = out.offset(1);
-                    *fresh31 = (c_1 >> 6 as i32 & 0x1f as i32 as u32
-                        | 0xc0 as i32 as u32)
-                        as xmlChar;
+                    *fresh31 =
+                        (c_1 >> 6 as i32 & 0x1f as i32 as u32 | 0xc0 as i32 as u32) as xmlChar;
                     bits_1 = 0 as i32
                 } else if c_1 < 0x10000 as i32 as u32 {
                     let fresh32 = out;
                     out = out.offset(1);
-                    *fresh32 = (c_1 >> 12 as i32 & 0xf as i32 as u32
-                        | 0xe0 as i32 as u32)
-                        as xmlChar;
+                    *fresh32 =
+                        (c_1 >> 12 as i32 & 0xf as i32 as u32 | 0xe0 as i32 as u32) as xmlChar;
                     bits_1 = 6 as i32
                 } else {
                     let fresh33 = out;
                     out = out.offset(1);
-                    *fresh33 = (c_1 >> 18 as i32 & 0x7 as i32 as u32
-                        | 0xf0 as i32 as u32)
-                        as xmlChar;
+                    *fresh33 =
+                        (c_1 >> 18 as i32 & 0x7 as i32 as u32 | 0xf0 as i32 as u32) as xmlChar;
                     bits_1 = 12 as i32
                 }
                 while bits_1 >= 0 as i32 {
                     let fresh34 = out;
                     out = out.offset(1);
-                    *fresh34 = (c_1 >> bits_1 & 0x3f as i32 as u32
-                        | 0x80 as i32 as u32)
-                        as xmlChar;
+                    *fresh34 = (c_1 >> bits_1 & 0x3f as i32 as u32 | 0x80 as i32 as u32) as xmlChar;
                     bits_1 -= 6 as i32
                 }
                 xmlNextChar_safe(ctxt);
@@ -10369,8 +10042,7 @@ pub unsafe fn htmlParseEntityRef(
                 htmlParseErr(
                     ctxt,
                     XML_ERR_ENTITYREF_SEMICOL_MISSING,
-                    b"htmlParseEntityRef: expecting \';\'\n\x00" as *const u8
-                        as *const i8,
+                    b"htmlParseEntityRef: expecting \';\'\n\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                     0 as *const xmlChar,
                 );
@@ -10500,10 +10172,7 @@ unsafe fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
         xmlNextChar_safe(ctxt);
         if err == 0 as i32 {
             unsafe {
-                ret = xmlStrndup_safe(
-                    inputPtr.base.offset(startPosition as isize),
-                    len as i32,
-                )
+                ret = xmlStrndup_safe(inputPtr.base.offset(startPosition as isize), len as i32)
             }
         }
     }
@@ -10572,10 +10241,7 @@ unsafe fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
         xmlNextChar_safe(ctxt);
         if err == 0 as i32 {
             unsafe {
-                ret = xmlStrndup_safe(
-                    inputPtr.base.offset(startPosition as isize),
-                    len as i32,
-                )
+                ret = xmlStrndup_safe(inputPtr.base.offset(startPosition as isize), len as i32)
             }
         }
     }
@@ -10637,17 +10303,14 @@ unsafe fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
                         htmlParseErr(
                             ctxt,
                             XML_ERR_TAG_NAME_MISMATCH,
-                            b"Element %s embeds close tag\n\x00" as *const u8
-                                as *const i8,
+                            b"Element %s embeds close tag\n\x00" as *const u8 as *const i8,
                             ctxtPtr.name,
                             0 as *const xmlChar,
                         );
                     }
                 }
-            } else if NXT(ctxt, 2 as i32) >= 'A' as i32
-                && NXT(ctxt, 2 as i32) <= 'Z' as i32
-                || NXT(ctxt, 2 as i32) >= 'a' as i32
-                    && NXT(ctxt, 2 as i32) <= 'z' as i32
+            } else if NXT(ctxt, 2 as i32) >= 'A' as i32 && NXT(ctxt, 2 as i32) <= 'Z' as i32
+                || NXT(ctxt, 2 as i32) >= 'a' as i32 && NXT(ctxt, 2 as i32) <= 'z' as i32
             {
                 break;
             }
@@ -11011,8 +10674,7 @@ unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
                 return;
             }
             buf = xmlMallocAtomic_safe(
-                (size as u64)
-                    .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
             ) as *mut xmlChar;
             if buf.is_null() {
                 htmlErrMemory(ctxt, 0 as *const i8);
@@ -11037,8 +10699,7 @@ unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
                     size *= 2 as i32;
                     tmp = xmlRealloc_safe(
                         buf as *mut (),
-                        (size as u64)
-                            .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                        (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
                     ) as *mut xmlChar;
                     if tmp.is_null() {
                         htmlErrMemory(ctxt, 0 as *const i8);
@@ -11153,9 +10814,8 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
     ctxtPtr.instate = XML_PARSER_COMMENT;
     SHRINK(ctxt);
     SKIP(ctxt, 4 as i32);
-    buf = xmlMallocAtomic_safe(
-        (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-    ) as *mut xmlChar;
+    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+        as *mut xmlChar;
     if buf.is_null() {
         htmlErrMemory(
             ctxt,
@@ -11219,8 +10879,7 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
             size *= 2 as i32;
             tmp = xmlRealloc_safe(
                 buf as *mut (),
-                (size as u64)
-                    .wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
             ) as *mut xmlChar;
             if tmp.is_null() {
                 xmlFree_safe(buf as *mut ());
@@ -11324,8 +10983,7 @@ pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
                 htmlParseErr(
                     ctxt,
                     XML_ERR_INVALID_HEX_CHARREF,
-                    b"htmlParseCharRef: missing semicolon\n\x00" as *const u8
-                        as *const i8,
+                    b"htmlParseCharRef: missing semicolon\n\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                     0 as *const xmlChar,
                 );
@@ -11348,8 +11006,7 @@ pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
                 htmlParseErr(
                     ctxt,
                     XML_ERR_INVALID_DEC_CHARREF,
-                    b"htmlParseCharRef: missing semicolon\n\x00" as *const u8
-                        as *const i8,
+                    b"htmlParseCharRef: missing semicolon\n\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                     0 as *const xmlChar,
                 );
@@ -11386,8 +11043,7 @@ pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
             htmlParseErrInt(
                 ctxt,
                 XML_ERR_INVALID_CHAR,
-                b"htmlParseCharRef: invalid xmlChar value %d\n\x00" as *const u8
-                    as *const i8,
+                b"htmlParseCharRef: invalid xmlChar value %d\n\x00" as *const u8 as *const i8,
                 val,
             );
         }
@@ -11500,7 +11156,10 @@ unsafe fn htmlParseDocTypeDecl(mut ctxt: htmlParserCtxtPtr) {
  *
  * Returns the attribute name, and the value in *value.
  */
-unsafe fn htmlParseAttribute(mut ctxt: htmlParserCtxtPtr, mut value: *mut *mut xmlChar) -> *const xmlChar {
+unsafe fn htmlParseAttribute(
+    mut ctxt: htmlParserCtxtPtr,
+    mut value: *mut *mut xmlChar,
+) -> *const xmlChar {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut val: *mut xmlChar = 0 as *mut xmlChar;
     unsafe {
@@ -11561,10 +11220,8 @@ unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *co
         let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
         let mut handler: xmlCharEncodingHandlerPtr = 0 as *mut xmlCharEncodingHandler;
         let mut encoding_safe = unsafe { *encoding };
-        while 1<2
-        {
-            if (!(encoding_safe as i32 == ' ' as i32
-            || encoding_safe as i32 == '\t' as i32)){
+        while 1 < 2 {
+            if (!(encoding_safe as i32 == ' ' as i32 || encoding_safe as i32 == '\t' as i32)) {
                 break;
             }
             unsafe { encoding = encoding.offset(1) }
@@ -11589,8 +11246,7 @@ unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *co
                 htmlParseErr(
                     ctxt,
                     XML_ERR_INVALID_ENCODING,
-                    b"htmlCheckEncoding: wrong encoding meta\n\x00" as *const u8
-                        as *const i8,
+                    b"htmlCheckEncoding: wrong encoding meta\n\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                     0 as *const xmlChar,
                 );
@@ -11610,8 +11266,7 @@ unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *co
                 htmlParseErr(
                     ctxt,
                     XML_ERR_UNSUPPORTED_ENCODING,
-                    b"htmlCheckEncoding: unknown encoding %s\n\x00" as *const u8
-                        as *const i8,
+                    b"htmlCheckEncoding: unknown encoding %s\n\x00" as *const u8 as *const i8,
                     encoding,
                     0 as *const xmlChar,
                 );
@@ -11675,10 +11330,8 @@ unsafe fn htmlCheckEncoding(mut ctxt: htmlParserCtxtPtr, mut attvalue: *const xm
      */
     unsafe {
         if !encoding.is_null() && IS_BLANK_CH((*encoding) as i32) {
-            encoding = xmlStrcasestr_safe(
-                attvalue,
-                b"=\x00" as *const u8 as *const i8 as *mut xmlChar,
-            )
+            encoding =
+                xmlStrcasestr_safe(attvalue, b"=\x00" as *const u8 as *const i8 as *mut xmlChar)
         }
     }
 
@@ -11834,11 +11487,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
         }
         return -(1 as i32);
     }
-    if xmlStrEqual_safe(
-        name,
-        b"meta\x00" as *const u8 as *const i8 as *mut xmlChar,
-    ) != 0
-    {
+    if xmlStrEqual_safe(name, b"meta\x00" as *const u8 as *const i8 as *mut xmlChar) != 0 {
         meta = 1 as i32
     }
     /*
@@ -11854,10 +11503,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
      * or any attempt to recurse body
      */
     if ctxtPtr.nameNr > 0 as i32
-        && xmlStrEqual_safe(
-            name,
-            b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
-        ) != 0
+        && xmlStrEqual_safe(name, b"html\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
     {
         htmlParseErr(
             ctxt,
@@ -11870,10 +11516,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
         ctxtPtr.depth += 1
     }
     if ctxtPtr.nameNr != 1 as i32
-        && xmlStrEqual_safe(
-            name,
-            b"head\x00" as *const u8 as *const i8 as *mut xmlChar,
-        ) != 0
+        && xmlStrEqual_safe(name, b"head\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
     {
         htmlParseErr(
             ctxt,
@@ -11885,11 +11528,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
         discardtag = 1 as i32;
         ctxtPtr.depth += 1
     }
-    if xmlStrEqual_safe(
-        name,
-        b"body\x00" as *const u8 as *const i8 as *mut xmlChar,
-    ) != 0
-    {
+    if xmlStrEqual_safe(name, b"body\x00" as *const u8 as *const i8 as *mut xmlChar) != 0 {
         let mut indx: i32 = 0;
         indx = 0 as i32;
         while indx < ctxtPtr.nameNr {
@@ -11902,8 +11541,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                     htmlParseErr(
                         ctxt,
                         XML_HTML_STRUCURE_ERROR,
-                        b"htmlParseStartTag: misplaced <body> tag\n\x00" as *const u8
-                            as *const i8,
+                        b"htmlParseStartTag: misplaced <body> tag\n\x00" as *const u8 as *const i8,
                         name,
                         0 as *const xmlChar,
                     );
@@ -11964,10 +11602,11 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                 {
                     if atts.is_null() {
                         maxatts = 22 as i32; /* allow for 10 attrs by default */
-                        atts =
-                            xmlMalloc_safe((maxatts as u64).wrapping_mul(
-                                ::std::mem::size_of::<*mut xmlChar>() as u64,
-                            )) as *mut *const xmlChar;
+                        atts = xmlMalloc_safe((maxatts as u64).wrapping_mul(::std::mem::size_of::<
+                            *mut xmlChar,
+                        >(
+                        )
+                            as u64)) as *mut *const xmlChar;
                         if atts.is_null() {
                             htmlErrMemory(ctxt, 0 as *const i8);
                             if !attvalue.is_null() {
@@ -11985,9 +11624,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                         n = xmlRealloc_safe(
                             atts as *mut (),
                             (maxatts as u64)
-                                .wrapping_mul(
-                                    ::std::mem::size_of::<*const xmlChar>() as u64
-                                ),
+                                .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
                         ) as *mut *const xmlChar;
                         if n.is_null() {
                             htmlErrMemory(ctxt, 0 as *const i8);
@@ -12018,8 +11655,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                                 *fresh46 = attvalue;
                                 let ref mut fresh47 = *atts.offset(nbatts as isize);
                                 *fresh47 = 0 as *const xmlChar;
-                                let ref mut fresh48 =
-                                    *atts.offset((nbatts + 1 as i32) as isize);
+                                let ref mut fresh48 = *atts.offset((nbatts + 1 as i32) as isize);
                                 *fresh48 = 0 as *const xmlChar
                             }
                         }
@@ -12142,18 +11778,9 @@ unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
      */
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.depth > 0 as i32
-        && (xmlStrEqual_safe(
-            name,
-            b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
-        ) != 0
-            || xmlStrEqual_safe(
-                name,
-                b"body\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ) != 0
-            || xmlStrEqual_safe(
-                name,
-                b"head\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ) != 0)
+        && (xmlStrEqual_safe(name, b"html\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
+            || xmlStrEqual_safe(name, b"body\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
+            || xmlStrEqual_safe(name, b"head\x00" as *const u8 as *const i8 as *mut xmlChar) != 0)
     {
         ctxtPtr.depth -= 1;
         return 0 as i32;
@@ -12251,31 +11878,27 @@ unsafe fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
         } else if c < 0x800 as i32 as u32 {
             let fresh50 = i;
             i = i + 1;
-            out[fresh50 as usize] = (c >> 6 as i32 & 0x1f as i32 as u32
-                | 0xc0 as i32 as u32)
-                as xmlChar;
+            out[fresh50 as usize] =
+                (c >> 6 as i32 & 0x1f as i32 as u32 | 0xc0 as i32 as u32) as xmlChar;
             bits = 0 as i32
         } else if c < 0x10000 as i32 as u32 {
             let fresh51 = i;
             i = i + 1;
-            out[fresh51 as usize] = (c >> 12 as i32 & 0xf as i32 as u32
-                | 0xe0 as i32 as u32)
-                as xmlChar;
+            out[fresh51 as usize] =
+                (c >> 12 as i32 & 0xf as i32 as u32 | 0xe0 as i32 as u32) as xmlChar;
             bits = 6 as i32
         } else {
             let fresh52 = i;
             i = i + 1;
-            out[fresh52 as usize] = (c >> 18 as i32 & 0x7 as i32 as u32
-                | 0xf0 as i32 as u32)
-                as xmlChar;
+            out[fresh52 as usize] =
+                (c >> 18 as i32 & 0x7 as i32 as u32 | 0xf0 as i32 as u32) as xmlChar;
             bits = 12 as i32
         }
         while bits >= 0 as i32 {
             let fresh53 = i;
             i = i + 1;
-            out[fresh53 as usize] = (c >> bits & 0x3f as i32 as u32
-                | 0x80 as i32 as u32)
-                as xmlChar;
+            out[fresh53 as usize] =
+                (c >> bits & 0x3f as i32 as u32 | 0x80 as i32 as u32) as xmlChar;
             bits -= 6 as i32
         }
         out[i as usize] = 0 as i32 as xmlChar;
@@ -12339,30 +11962,26 @@ unsafe fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
                 let fresh55 = i_0;
                 i_0 = i_0 + 1;
                 out[fresh55 as usize] =
-                    (c_0 >> 6 as i32 & 0x1f as i32 as u32
-                        | 0xc0 as i32 as u32) as xmlChar;
+                    (c_0 >> 6 as i32 & 0x1f as i32 as u32 | 0xc0 as i32 as u32) as xmlChar;
                 bits_0 = 0 as i32
             } else if c_0 < 0x10000 as i32 as u32 {
                 let fresh56 = i_0;
                 i_0 = i_0 + 1;
                 out[fresh56 as usize] =
-                    (c_0 >> 12 as i32 & 0xf as i32 as u32
-                        | 0xe0 as i32 as u32) as xmlChar;
+                    (c_0 >> 12 as i32 & 0xf as i32 as u32 | 0xe0 as i32 as u32) as xmlChar;
                 bits_0 = 6 as i32
             } else {
                 let fresh57 = i_0;
                 i_0 = i_0 + 1;
                 out[fresh57 as usize] =
-                    (c_0 >> 18 as i32 & 0x7 as i32 as u32
-                        | 0xf0 as i32 as u32) as xmlChar;
+                    (c_0 >> 18 as i32 & 0x7 as i32 as u32 | 0xf0 as i32 as u32) as xmlChar;
                 bits_0 = 12 as i32
             }
             while bits_0 >= 0 as i32 {
                 let fresh58 = i_0;
                 i_0 = i_0 + 1;
-                out[fresh58 as usize] = (c_0 >> bits_0 & 0x3f as i32 as u32
-                    | 0x80 as i32 as u32)
-                    as xmlChar;
+                out[fresh58 as usize] =
+                    (c_0 >> bits_0 & 0x3f as i32 as u32 | 0x80 as i32 as u32) as xmlChar;
                 bits_0 -= 6 as i32
             }
             out[i_0 as usize] = 0 as i32 as xmlChar;
@@ -12404,8 +12023,7 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
          * Our tag or one of it's parent or children is ending.
          */
         if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '/' as i32 {
-            if htmlParseEndTag(ctxt) != 0
-                && (!currentNode.is_null() || ctxtPtr.nameNr == 0 as i32)
+            if htmlParseEndTag(ctxt) != 0 && (!currentNode.is_null() || ctxtPtr.nameNr == 0 as i32)
             {
                 if !currentNode.is_null() {
                     xmlFree_safe(currentNode as *mut ());
@@ -12424,8 +12042,7 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
                     htmlParseErr(
                         ctxt,
                         XML_ERR_NAME_REQUIRED,
-                        b"htmlParseStartTag: invalid element name\n\x00" as *const u8
-                            as *const i8,
+                        b"htmlParseStartTag: invalid element name\n\x00" as *const u8 as *const i8,
                         0 as *const xmlChar,
                         0 as *const xmlChar,
                     );
@@ -12586,12 +12203,9 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     if ctxtPtr.record_info != 0 {
         unsafe {
-            node_info.begin_pos =
-                inputPtr
-                    .consumed
-                    .wrapping_add(
-                        inputPtr.cur.offset_from(inputPtr.base) as i64 as u64
-                    );
+            node_info.begin_pos = inputPtr
+                .consumed
+                .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
         }
         node_info.begin_line = inputPtr.line as u64
     }
@@ -12653,11 +12267,9 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
          */
         if ctxtPtr.record_info != 0 {
             unsafe {
-                node_info.end_pos =
-                    inputPtr
-                        .consumed
-                        .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64
-                            as u64);
+                node_info.end_pos = inputPtr
+                    .consumed
+                    .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
             }
             node_info.end_line = inputPtr.line as u64;
             node_info.node = ctxtPtr.node as *const _xmlNode;
@@ -12701,12 +12313,9 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
      */
     if !currentNode.is_null() && ctxtPtr.record_info != 0 {
         unsafe {
-            node_info.end_pos =
-                inputPtr
-                    .consumed
-                    .wrapping_add(
-                        inputPtr.cur.offset_from(inputPtr.base) as i64 as u64
-                    );
+            node_info.end_pos = inputPtr
+                .consumed
+                .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
         }
         node_info.end_line = inputPtr.line as u64;
         node_info.node = ctxtPtr.node as *const _xmlNode;
@@ -12729,12 +12338,9 @@ unsafe fn htmlParserFinishElementParsing(mut ctxt: htmlParserCtxtPtr) {
         let mut inputPtr = unsafe { &mut *(*ctxt).input };
         let mut nodeInfoPtr = unsafe { &mut *(*ctxt).nodeInfo };
         unsafe {
-            nodeInfoPtr.end_pos =
-                inputPtr
-                    .consumed
-                    .wrapping_add(
-                        inputPtr.cur.offset_from(inputPtr.base) as i64 as u64
-                    );
+            nodeInfoPtr.end_pos = inputPtr
+                .consumed
+                .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
         }
         nodeInfoPtr.end_line = inputPtr.line as u64;
         nodeInfoPtr.node = ctxtPtr.node as *const _xmlNode;
@@ -12774,8 +12380,7 @@ unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
             htmlParseErr(
                 ctxt,
                 XML_ERR_INTERNAL_ERROR,
-                b"htmlParseElementInternal: context error\n\x00" as *const u8
-                    as *const i8,
+                b"htmlParseElementInternal: context error\n\x00" as *const u8 as *const i8,
                 0 as *const xmlChar,
                 0 as *const xmlChar,
             );
@@ -12790,12 +12395,9 @@ unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     if ctxtPtr.record_info != 0 {
         unsafe {
-            node_info.begin_pos =
-                inputPtr
-                    .consumed
-                    .wrapping_add(
-                        inputPtr.cur.offset_from(inputPtr.base) as i64 as u64
-                    );
+            node_info.begin_pos = inputPtr
+                .consumed
+                .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
         }
         node_info.begin_line = inputPtr.line as u64
     }
@@ -12898,8 +12500,7 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
          * Our tag or one of it's parent or children is ending.
          */
         if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '/' as i32 {
-            if htmlParseEndTag(ctxt) != 0
-                && (!currentNode.is_null() || ctxtPtr.nameNr == 0 as i32)
+            if htmlParseEndTag(ctxt) != 0 && (!currentNode.is_null() || ctxtPtr.nameNr == 0 as i32)
             {
                 if !currentNode.is_null() {
                     xmlFree_safe(currentNode as *mut ());
@@ -12919,8 +12520,7 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
                     htmlParseErr(
                         ctxt,
                         XML_ERR_NAME_REQUIRED,
-                        b"htmlParseStartTag: invalid element name\n\x00" as *const u8
-                            as *const i8,
+                        b"htmlParseStartTag: invalid element name\n\x00" as *const u8 as *const i8,
                         0 as *const xmlChar,
                         0 as *const xmlChar,
                     );
@@ -12988,8 +12588,7 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
                         htmlParseErr(
                             ctxt,
                             XML_HTML_STRUCURE_ERROR,
-                            b"Misplaced DOCTYPE declaration\n\x00" as *const u8
-                                as *const i8,
+                            b"Misplaced DOCTYPE declaration\n\x00" as *const u8 as *const i8,
                             b"DOCTYPE\x00" as *const u8 as *const i8 as *mut xmlChar,
                             0 as *const xmlChar,
                         );
@@ -13112,8 +12711,7 @@ pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     unsafe {
         if ctxtPtr.encoding.is_null()
-            && inputPtr.end.offset_from(inputPtr.cur) as i64
-                >= 4 as i32 as i64
+            && inputPtr.end.offset_from(inputPtr.cur) as i64 >= 4 as i32 as i64
         {
             /*
              * Get the 4 first bytes and decode the charset
@@ -13265,8 +12863,7 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
         );
         return -(1 as i32);
     }
-    sax = xmlMalloc_safe(::std::mem::size_of::<htmlSAXHandler>() as u64)
-        as *mut htmlSAXHandler;
+    sax = xmlMalloc_safe(::std::mem::size_of::<htmlSAXHandler>() as u64) as *mut htmlSAXHandler;
     if sax.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
@@ -13282,8 +12879,7 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
     }
     /* Allocate the Input stack */
     ctxtPtr.inputTab = xmlMalloc_safe(
-        (5 as i32 as u64)
-            .wrapping_mul(::std::mem::size_of::<htmlParserInputPtr>() as u64),
+        (5 as i32 as u64).wrapping_mul(::std::mem::size_of::<htmlParserInputPtr>() as u64),
     ) as *mut htmlParserInputPtr;
     if ctxtPtr.inputTab.is_null() {
         htmlErrMemory(
@@ -13304,8 +12900,7 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
     ctxtPtr.instate = XML_PARSER_START;
     /* Allocate the Node stack */
     ctxtPtr.nodeTab = xmlMalloc_safe(
-        (10 as i32 as u64)
-            .wrapping_mul(::std::mem::size_of::<htmlNodePtr>() as u64),
+        (10 as i32 as u64).wrapping_mul(::std::mem::size_of::<htmlNodePtr>() as u64),
     ) as *mut htmlNodePtr;
     if ctxtPtr.nodeTab.is_null() {
         htmlErrMemory(
@@ -13325,8 +12920,7 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
     ctxtPtr.node = 0 as xmlNodePtr;
     /* Allocate the Name stack */
     ctxtPtr.nameTab = xmlMalloc_safe(
-        (10 as i32 as u64)
-            .wrapping_mul(::std::mem::size_of::<*mut xmlChar>() as u64),
+        (10 as i32 as u64).wrapping_mul(::std::mem::size_of::<*mut xmlChar>() as u64),
     ) as *mut *const xmlChar;
     if ctxtPtr.nameTab.is_null() {
         htmlErrMemory(
@@ -13370,12 +12964,10 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
     ctxtPtr.vctxt.finishDtd = 0xabcd1234 as u32;
     ctxtPtr.vctxt.userData = ctxt as *mut ();
     ctxtPtr.vctxt.error = Some(
-        xmlParserValidityError
-            as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
+        xmlParserValidityError as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
     );
     ctxtPtr.vctxt.warning = Some(
-        xmlParserValidityWarning
-            as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
+        xmlParserValidityWarning as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
     );
     ctxtPtr.record_info = 0 as i32;
     ctxtPtr.validate = 0 as i32;
@@ -13405,8 +12997,7 @@ pub unsafe fn htmlFreeParserCtxt(mut ctxt: htmlParserCtxtPtr) {
 
 pub unsafe fn htmlNewParserCtxt() -> htmlParserCtxtPtr {
     let mut ctxt: xmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    ctxt =
-        xmlMalloc_safe(::std::mem::size_of::<xmlParserCtxt>() as u64) as xmlParserCtxtPtr;
+    ctxt = xmlMalloc_safe(::std::mem::size_of::<xmlParserCtxt>() as u64) as xmlParserCtxtPtr;
     if ctxt.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
@@ -13646,18 +13237,14 @@ pub unsafe fn htmlParseLookupSequence(
         unsafe {
             if *buf.offset(base as isize) as i32 == first as i32 {
                 if third as i32 != 0 as i32 {
-                    if *buf.offset((base + 1 as i32) as isize) as i32
-                        != next as i32
-                        || *buf.offset((base + 2 as i32) as isize) as i32
-                            != third as i32
+                    if *buf.offset((base + 1 as i32) as isize) as i32 != next as i32
+                        || *buf.offset((base + 2 as i32) as isize) as i32 != third as i32
                     {
                         base += 1 as i32;
                         continue;
                     }
                 } else if next as i32 != 0 as i32 {
-                    if *buf.offset((base + 1 as i32) as isize) as i32
-                        != next as i32
-                    {
+                    if *buf.offset((base + 1 as i32) as isize) as i32 != next as i32 {
                         base += 1 as i32;
                         continue;
                     }
@@ -13682,8 +13269,7 @@ pub unsafe fn htmlParseLookupSequence(
                     } else {
                         __xmlGenericError_safe_macro!(
                             __xmlGenericErrorContext_safe(),
-                            b"HPP: lookup '%c%c%c' found at %d\n" as *const u8
-                                as *const i8,
+                            b"HPP: lookup '%c%c%c' found at %d\n" as *const u8 as *const i8,
                             first as u32,
                             next as u32,
                             third as u32,
@@ -13691,9 +13277,7 @@ pub unsafe fn htmlParseLookupSequence(
                         );
                     }
                 }
-                return (base as i64
-                    - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64)
-                    as i32;
+                return (base as i64 - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64) as i32;
             }
         }
         base += 1 as i32;
@@ -13749,8 +13333,7 @@ unsafe fn htmlParseLookupCommentEnd(mut ctxt: htmlParserCtxtPtr) -> i32 {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     let mut mark: i32 = 0 as i32;
-    let mut cur: i32 =
-        unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as i32 };
+    let mut cur: i32 = unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as i32 };
     while mark >= 0 as i32 {
         mark = htmlParseLookupSequence(
             ctxt,
@@ -13912,10 +13495,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
         }
         let mut in_0Ptr = unsafe { &mut *in_0 };
         if in_0Ptr.buf.is_null() {
-            unsafe {
-                avail = in_0Ptr.length as i64
-                    - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
-            }
+            unsafe { avail = in_0Ptr.length as i64 - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64 }
         } else {
             unsafe {
                 avail = xmlBufUse_safe((*(*in_0).buf).buffer) as ptrdiff_t
@@ -13924,9 +13504,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
         }
         if avail == 0 as i32 as i64 && terminate != 0 {
             htmlAutoCloseOnEnd(ctxt);
-            if ctxtPtr.nameNr == 0 as i32
-                && ctxtPtr.instate as i32 != XML_PARSER_EOF as i32
-            {
+            if ctxtPtr.nameNr == 0 as i32 && ctxtPtr.instate as i32 != XML_PARSER_EOF as i32 {
                 /*
                  * SAX: end of the document processing.
                  */
@@ -13969,8 +13547,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     htmlSkipBlankChars(ctxt);
                     if in_0Ptr.buf.is_null() {
                         unsafe {
-                            avail = in_0Ptr.length as i64
-                                - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
+                            avail =
+                                in_0Ptr.length as i64 - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
                         }
                     } else {
                         unsafe {
@@ -14030,8 +13608,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         unsafe {
                             __xmlGenericError_safe_macro!(
                                 __xmlGenericErrorContext_safe(),
-                                b"HPP: Parsing internal subset\n" as *const u8
-                                    as *const i8
+                                b"HPP: Parsing internal subset\n" as *const u8 as *const i8
                             );
                         }
                     }
@@ -14057,8 +13634,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 htmlSkipBlankChars(ctxt);
                 if in_0Ptr.buf.is_null() {
                     unsafe {
-                        avail = in_0Ptr.length as i64
-                            - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
+                        avail = in_0Ptr.length as i64 - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
                     }
                 } else {
                     unsafe {
@@ -14084,10 +13660,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 unsafe {
                     if cur as i32 == '<' as i32
                         && next as i32 == '!' as i32
-                        && *in_0Ptr.cur.offset(2 as i32 as isize) as i32
-                            == '-' as i32
-                        && *in_0Ptr.cur.offset(3 as i32 as isize) as i32
-                            == '-' as i32
+                        && *in_0Ptr.cur.offset(2 as i32 as isize) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(3 as i32 as isize) as i32 == '-' as i32
                     {
                         if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 as i32 {
                             break;
@@ -14100,8 +13674,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         }
                         htmlParseComment(ctxt);
                         ctxtPtr.instate = XML_PARSER_MISC;
-                    } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32
-                    {
+                    } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32 {
                         if terminate == 0
                             && htmlParseLookupSequence(
                                 ctxt,
@@ -14145,8 +13718,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         if DEBUG_PUSH != 0 as i32 {
                             __xmlGenericError_safe_macro!(
                                 __xmlGenericErrorContext_safe(),
-                                b"HPP: Parsing internal subset\n" as *const u8
-                                    as *const i8
+                                b"HPP: Parsing internal subset\n" as *const u8 as *const i8
                             );
                         }
                         htmlParseDocTypeDecl(ctxt);
@@ -14177,8 +13749,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 htmlSkipBlankChars(ctxt);
                 if in_0Ptr.buf.is_null() {
                     unsafe {
-                        avail = in_0Ptr.length as i64
-                            - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
+                        avail = in_0Ptr.length as i64 - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
                     }
                 } else {
                     unsafe {
@@ -14198,10 +13769,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 unsafe {
                     if cur as i32 == '<' as i32
                         && next as i32 == '!' as i32
-                        && *in_0Ptr.cur.offset(2 as i32 as isize) as i32
-                            == '-' as i32
-                        && *in_0Ptr.cur.offset(3 as i32 as isize) as i32
-                            == '-' as i32
+                        && *in_0Ptr.cur.offset(2 as i32 as isize) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(3 as i32 as isize) as i32 == '-' as i32
                     {
                         if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 as i32 {
                             break;
@@ -14214,8 +13783,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         }
                         htmlParseComment(ctxt);
                         ctxtPtr.instate = XML_PARSER_PROLOG;
-                    } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32
-                    {
+                    } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32 {
                         if terminate == 0
                             && htmlParseLookupSequence(
                                 ctxt,
@@ -14254,8 +13822,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
             XML_PARSER_EPILOG => {
                 if in_0Ptr.buf.is_null() {
                     unsafe {
-                        avail = in_0Ptr.length as i64
-                            - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
+                        avail = in_0Ptr.length as i64 - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
                     }
                 } else {
                     unsafe {
@@ -14282,10 +13849,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 unsafe {
                     if cur as i32 == '<' as i32
                         && next as i32 == '!' as i32
-                        && *in_0Ptr.cur.offset(2 as i32 as isize) as i32
-                            == '-' as i32
-                        && *in_0Ptr.cur.offset(3 as i32 as isize) as i32
-                            == '-' as i32
+                        && *in_0Ptr.cur.offset(2 as i32 as isize) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(3 as i32 as isize) as i32 == '-' as i32
                     {
                         if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 as i32 {
                             break;
@@ -14298,8 +13863,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         }
                         htmlParseComment(ctxt);
                         ctxtPtr.instate = XML_PARSER_EPILOG;
-                    } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32
-                    {
+                    } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32 {
                         if terminate == 0
                             && htmlParseLookupSequence(
                                 ctxt,
@@ -14402,8 +13966,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     unsafe {
                         node_info.begin_pos = inputPtr
                             .consumed
-                            .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64
-                                as u64);
+                            .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
                     }
                     node_info.begin_line = inputPtr.line as u64;
                 }
@@ -14416,8 +13979,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     continue;
                 }
                 /*
-                * Lookup the info for that element.
-                */
+                 * Lookup the info for that element.
+                 */
                 info = htmlTagLookup(name);
                 if info.is_null() {
                     htmlParseErr(
@@ -14452,8 +14015,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     htmlParseErr(
                         ctxt,
                         XML_ERR_GT_REQUIRED,
-                        b"Couldn\'t find end of Start Tag %s\n\x00" as *const u8
-                            as *const i8,
+                        b"Couldn\'t find end of Start Tag %s\n\x00" as *const u8 as *const i8,
                         name,
                         0 as *const xmlChar,
                     );
@@ -14499,8 +14061,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 }
             }
             XML_PARSER_CONTENT => {
-                let mut chr: [xmlChar; 2] =
-                    [0 as i32 as xmlChar, 0 as i32 as xmlChar];
+                let mut chr: [xmlChar; 2] = [0 as i32 as xmlChar, 0 as i32 as xmlChar];
                 if ctxtPtr.token != 0 as i32 {
                     chr[0 as i32 as usize] = ctxtPtr.token as xmlChar;
                     htmlCheckParagraph(ctxt);
@@ -14646,21 +14207,17 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             htmlParseErr(
                                 ctxt,
                                 XML_HTML_STRUCURE_ERROR,
-                                b"Misplaced DOCTYPE declaration\n\x00" as *const u8
-                                    as *const i8,
+                                b"Misplaced DOCTYPE declaration\n\x00" as *const u8 as *const i8,
                                 b"DOCTYPE\x00" as *const u8 as *const i8 as *mut xmlChar,
                                 0 as *const xmlChar,
                             );
                             htmlParseDocTypeDecl(ctxt);
                         } else if cur as i32 == '<' as i32
                             && next as i32 == '!' as i32
-                            && *in_0Ptr.cur.offset(2 as i32 as isize) as i32
-                                == '-' as i32
-                            && *in_0Ptr.cur.offset(3 as i32 as isize) as i32
-                                == '-' as i32
+                            && *in_0Ptr.cur.offset(2 as i32 as isize) as i32 == '-' as i32
+                            && *in_0Ptr.cur.offset(3 as i32 as isize) as i32 == '-' as i32
                         {
-                            if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 as i32
-                            {
+                            if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 as i32 {
                                 break;
                             }
                             if DEBUG_PUSH != 0 as i32 {
@@ -14671,9 +14228,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             }
                             htmlParseComment(ctxt);
                             ctxtPtr.instate = XML_PARSER_CONTENT;
-                        } else if cur as i32 == '<' as i32
-                            && next as i32 == '?' as i32
-                        {
+                        } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32 {
                             if terminate == 0
                                 && htmlParseLookupSequence(
                                     ctxt,
@@ -14698,9 +14253,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             && avail < 4 as i32 as i64
                         {
                             break;
-                        } else if cur as i32 == '<' as i32
-                            && next as i32 == '/' as i32
-                        {
+                        } else if cur as i32 == '<' as i32 && next as i32 == '/' as i32 {
                             ctxtPtr.instate = XML_PARSER_END_TAG;
                             ctxtPtr.checkIndex = 0 as i32 as i64;
                             if DEBUG_PUSH != 0 as i32 {
@@ -14724,8 +14277,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                 if DEBUG_PUSH != 0 as i32 {
                                     __xmlGenericError_safe_macro!(
                                         __xmlGenericErrorContext_safe(),
-                                        b"HPP: entering START_TAG\n" as *const u8
-                                            as *const i8
+                                        b"HPP: entering START_TAG\n" as *const u8 as *const i8
                                     );
                                 }
                             } else {
@@ -14822,8 +14374,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 htmlParseErr(
                     ctxt,
                     XML_ERR_INTERNAL_ERROR,
-                    b"HPP: internal error, state == CDATA\n\x00" as *const u8
-                        as *const i8,
+                    b"HPP: internal error, state == CDATA\n\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                     0 as *const xmlChar,
                 );
@@ -14857,8 +14408,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 htmlParseErr(
                     ctxt,
                     XML_ERR_INTERNAL_ERROR,
-                    b"HPP: internal error, state == COMMENT\n\x00" as *const u8
-                        as *const i8,
+                    b"HPP: internal error, state == COMMENT\n\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                     0 as *const xmlChar,
                 );
@@ -14892,8 +14442,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 htmlParseErr(
                     ctxt,
                     XML_ERR_INTERNAL_ERROR,
-                    b"HPP: internal error, state == ENTITY_DECL\n\x00" as *const u8
-                        as *const i8,
+                    b"HPP: internal error, state == ENTITY_DECL\n\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                     0 as *const xmlChar,
                 );
@@ -14910,8 +14459,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 htmlParseErr(
                     ctxt,
                     XML_ERR_INTERNAL_ERROR,
-                    b"HPP: internal error, state == ENTITY_VALUE\n\x00" as *const u8
-                        as *const i8,
+                    b"HPP: internal error, state == ENTITY_VALUE\n\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                     0 as *const xmlChar,
                 );
@@ -15002,9 +14550,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
     /* bad cut of input */
     if avail == 0 as i32 as i64 && terminate != 0 {
         htmlAutoCloseOnEnd(ctxt);
-        if ctxtPtr.nameNr == 0 as i32
-            && ctxtPtr.instate as i32 != XML_PARSER_EOF as i32
-        {
+        if ctxtPtr.nameNr == 0 as i32 && ctxtPtr.instate as i32 != XML_PARSER_EOF as i32 {
             /*
              * SAX: end of the document processing.
              */
@@ -15097,8 +14643,7 @@ pub unsafe fn htmlParseChunk(
         let mut inputPtr = unsafe { &mut *(*ctxt).input };
         let mut bufPtr = unsafe { &mut *(*(*ctxt).input).buf };
         let mut base: size_t = xmlBufGetInputBase_safe(bufPtr.buffer, ctxtPtr.input);
-        let mut cur: size_t =
-            unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t };
+        let mut cur: size_t = unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t };
         let mut res: i32 = 0;
         res = xmlParserInputBufferPush_safe(inputPtr.buf, size, chunk);
         xmlBufSetInputBaseCur_safe(bufPtr.buffer, ctxtPtr.input, base, cur);
@@ -15221,8 +14766,8 @@ pub unsafe fn htmlCreatePushParserCtxt(
         if ctxtPtr.sax != __htmlDefaultSAXHandler_safe() as xmlSAXHandlerPtr {
             xmlFree_safe(ctxtPtr.sax as *mut ());
         }
-        ctxtPtr.sax = xmlMalloc_safe(::std::mem::size_of::<htmlSAXHandler>() as u64)
-            as htmlSAXHandlerPtr;
+        ctxtPtr.sax =
+            xmlMalloc_safe(::std::mem::size_of::<htmlSAXHandler>() as u64) as htmlSAXHandlerPtr;
         if ctxtPtr.sax.is_null() {
             xmlFree_safe(buf as *mut ());
             xmlFree_safe(ctxt as *mut ());
@@ -15252,8 +14797,7 @@ pub unsafe fn htmlCreatePushParserCtxt(
     if filename.is_null() {
         inputStreamPtr.filename = 0 as *const i8
     } else {
-        inputStreamPtr.filename =
-            xmlCanonicPath_safe(filename as *const xmlChar) as *mut i8
+        inputStreamPtr.filename = xmlCanonicPath_safe(filename as *const xmlChar) as *mut i8
     }
     inputStreamPtr.buf = buf;
     xmlBufResetInput_safe(bufPtr.buffer, inputStream);
@@ -15268,8 +14812,7 @@ pub unsafe fn htmlCreatePushParserCtxt(
         let mut inputPtr = unsafe { &mut *(*ctxt).input };
         let mut bufPtr = unsafe { &mut *(*(*ctxt).input).buf };
         let mut base: size_t = xmlBufGetInputBase_safe(bufPtr.buffer, ctxtPtr.input);
-        let mut cur: size_t =
-            unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t };
+        let mut cur: size_t = unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t };
         xmlParserInputBufferPush_safe(inputPtr.buf, size, chunk);
         xmlBufSetInputBaseCur_safe(bufPtr.buffer, ctxtPtr.input, base, cur);
         if DEBUG_PUSH != 0 {
@@ -15343,12 +14886,7 @@ pub unsafe fn htmlSAXParseDoc(
  */
 
 pub unsafe fn htmlParseDoc(mut cur: *const xmlChar, mut encoding: *const i8) -> htmlDocPtr {
-    return htmlSAXParseDoc(
-        cur,
-        encoding,
-        0 as htmlSAXHandlerPtr,
-        0 as *mut (),
-    );
+    return htmlSAXParseDoc(cur, encoding, 0 as htmlSAXHandlerPtr, 0 as *mut ());
 }
 /* *
  * htmlCreateFileParserCtxt:
@@ -15371,8 +14909,7 @@ pub unsafe fn htmlCreateFileParserCtxt(
     let mut canonicFilename: *mut i8 = 0 as *mut i8;
     /* htmlCharEncoding enc; */
     let mut content: *mut xmlChar = 0 as *mut xmlChar;
-    let mut content_line: *mut xmlChar =
-        b"charset=\x00" as *const u8 as *const i8 as *mut xmlChar;
+    let mut content_line: *mut xmlChar = b"charset=\x00" as *const u8 as *const i8 as *mut xmlChar;
     if filename.is_null() {
         return 0 as htmlParserCtxtPtr;
     }
@@ -15420,10 +14957,7 @@ pub unsafe fn htmlCreateFileParserCtxt(
                     .wrapping_add(1 as i32 as u64),
             ) as *mut xmlChar;
             if !content.is_null() {
-                strcpy_safe(
-                    content as *mut i8,
-                    content_line as *mut i8,
-                );
+                strcpy_safe(content as *mut i8, content_line as *mut i8);
                 strcat_safe(content as *mut i8, encoding as *mut i8);
                 htmlCheckEncoding(ctxt, content);
                 xmlFree_safe(content as *mut ());
@@ -15488,16 +15022,8 @@ pub unsafe fn htmlSAXParseFile(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlParseFile(
-    mut filename: *const i8,
-    mut encoding: *const i8,
-) -> htmlDocPtr {
-    return htmlSAXParseFile(
-        filename,
-        encoding,
-        0 as htmlSAXHandlerPtr,
-        0 as *mut (),
-    );
+pub unsafe fn htmlParseFile(mut filename: *const i8, mut encoding: *const i8) -> htmlDocPtr {
+    return htmlSAXParseFile(filename, encoding, 0 as htmlSAXHandlerPtr, 0 as *mut ());
 }
 /* *
  * htmlHandleOmittedElem:
@@ -15714,10 +15240,7 @@ pub unsafe fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
         unsafe {
             *ctxtPtr.spaceTab.offset(0 as i32 as isize) = -(1 as i32);
         }
-        unsafe {
-            ctxtPtr.space =
-                &mut *ctxtPtr.spaceTab.offset(0 as i32 as isize) as *mut i32
-        }
+        unsafe { ctxtPtr.space = &mut *ctxtPtr.spaceTab.offset(0 as i32 as isize) as *mut i32 }
     } else {
         ctxtPtr.space = 0 as *mut i32
     }
@@ -15775,12 +15298,10 @@ pub unsafe fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
     ctxtPtr.valid = 1 as i32;
     ctxtPtr.vctxt.userData = ctxt as *mut ();
     ctxtPtr.vctxt.error = Some(
-        xmlParserValidityError
-            as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
+        xmlParserValidityError as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
     );
     ctxtPtr.vctxt.warning = Some(
-        xmlParserValidityWarning
-            as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
+        xmlParserValidityWarning as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
     );
     ctxtPtr.record_info = 0 as i32;
     ctxtPtr.checkIndex = 0 as i32 as i64;
@@ -15846,11 +15367,7 @@ pub unsafe fn htmlCtxtUseOptions(mut ctxt: htmlParserCtxtPtr, mut options: i32) 
         ctxtPtr.keepBlanks = 0 as i32;
         saxPtr.ignorableWhitespace = Some(
             xmlSAX2IgnorableWhitespace
-                as unsafe extern "C" fn(
-                    _: *mut (),
-                    _: *const xmlChar,
-                    _: i32,
-                ) -> (),
+                as unsafe extern "C" fn(_: *mut (), _: *const xmlChar, _: i32) -> (),
         );
         options -= XML_PARSE_NOBLANKS as i32;
         ctxtPtr.options |= XML_PARSE_NOBLANKS as i32
@@ -15992,13 +15509,7 @@ pub unsafe fn htmlReadFile(
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    return htmlDoRead(
-        ctxt,
-        0 as *const i8,
-        0 as *const i8,
-        options,
-        0 as i32,
-    );
+    return htmlDoRead(ctxt, 0 as *const i8, 0 as *const i8, options, 0 as i32);
 }
 /* *
  * htmlReadMemory:
@@ -16201,13 +15712,7 @@ pub unsafe fn htmlCtxtReadFile(
         return 0 as htmlDocPtr;
     }
     inputPush_safe(ctxt, stream);
-    return htmlDoRead(
-        ctxt,
-        0 as *const i8,
-        encoding,
-        options,
-        1 as i32,
-    );
+    return htmlDoRead(ctxt, 0 as *const i8, encoding, options, 1 as i32);
 }
 /* *
  * htmlCtxtReadMemory:

@@ -17913,9 +17913,9 @@ pub unsafe fn xmlCreateIOParserCtxt(
 * @input will be freed by the function in any case.
 */
 #[cfg(HAVE_parser_LIBXML_VALID_ENABLED)]
-pub unsafe fn xmlIOParseDTD(
-    mut sax: xmlSAXHandlerPtr,
-    mut input: xmlParserInputBufferPtr,
+pub fn xmlIOParseDTD(
+    sax: xmlSAXHandlerPtr,
+    input: xmlParserInputBufferPtr,
     mut enc: xmlCharEncoding,
 ) -> xmlDtdPtr {
     let mut ret: xmlDtdPtr = 0 as xmlDtdPtr;
@@ -17963,7 +17963,7 @@ pub unsafe fn xmlIOParseDTD(
     /*
      * plug some encoding conversion routines here.
      */
-    if unsafe { xmlPushInput(ctxt, pinput) < 0 as i32 } {
+    if unsafe { xmlPushInput(ctxt, pinput) < 0 } {
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
         }
@@ -17976,8 +17976,8 @@ pub unsafe fn xmlIOParseDTD(
     let mut safe_pinput = unsafe { *pinput };
 
     safe_pinput.filename = 0 as *const i8;
-    safe_pinput.line = 1 as i32;
-    safe_pinput.col = 1 as i32;
+    safe_pinput.line = 1;
+    safe_pinput.col = 1;
     unsafe {
         safe_pinput.base = (*safe_ctxt.input).cur;
         safe_pinput.cur = (*safe_ctxt.input).cur;
@@ -17986,12 +17986,14 @@ pub unsafe fn xmlIOParseDTD(
     /*
      * let's parse that entity knowing it's an external subset.
      */
-    safe_ctxt.inSubset = 2 as i32;
+    safe_ctxt.inSubset = 2;
     unsafe {
         safe_ctxt.myDoc = xmlNewDoc(b"1.0\x00" as *const u8 as *const i8 as *mut xmlChar);
     }
     if safe_ctxt.myDoc.is_null() {
-        xmlErrMemory(ctxt, b"New Doc failed\x00" as *const u8 as *const i8);
+        unsafe {
+            xmlErrMemory(ctxt, b"New Doc failed\x00" as *const u8 as *const i8);
+        }
         return 0 as xmlDtdPtr;
     }
     unsafe {
@@ -18003,18 +18005,18 @@ pub unsafe fn xmlIOParseDTD(
             b"none\x00" as *const u8 as *const i8 as *mut xmlChar,
         );
         if enc as i32 == XML_CHAR_ENCODING_NONE as i32
-            && (*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64 >= 4 as i32 as i64
+            && (*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64 >= 4
         {
             /*
              * Get the 4 first bytes and decode the charset
              * if enc != XML_CHAR_ENCODING_NONE
              * plug some encoding conversion routines.
              */
-            start[0 as i32 as usize] = *(*safe_ctxt.input).cur;
-            start[1 as i32 as usize] = *(*safe_ctxt.input).cur.offset(1 as i32 as isize);
-            start[2 as i32 as usize] = *(*safe_ctxt.input).cur.offset(2 as i32 as isize);
-            start[3 as i32 as usize] = *(*safe_ctxt.input).cur.offset(3 as i32 as isize);
-            enc = xmlDetectCharEncoding(start.as_mut_ptr(), 4 as i32);
+            start[0] = *(*safe_ctxt.input).cur;
+            start[1] = *(*safe_ctxt.input).cur.offset(1);
+            start[2] = *(*safe_ctxt.input).cur.offset(2);
+            start[3] = *(*safe_ctxt.input).cur.offset(3);
+            enc = xmlDetectCharEncoding(start.as_mut_ptr(), 4);
             if enc as i32 != XML_CHAR_ENCODING_NONE as i32 {
                 xmlSwitchEncoding(ctxt, enc);
             }
@@ -18065,15 +18067,15 @@ pub unsafe fn xmlIOParseDTD(
 * Returns the resulting xmlDtdPtr or NULL in case of error.
 */
 #[cfg(HAVE_parser_LIBXML_VALID_ENABLED)]
-pub unsafe fn xmlSAXParseDTD(
-    mut sax: xmlSAXHandlerPtr,
-    mut ExternalID: *const xmlChar,
-    mut SystemID: *const xmlChar,
+pub fn xmlSAXParseDTD(
+    sax: xmlSAXHandlerPtr,
+    ExternalID: *const xmlChar,
+    SystemID: *const xmlChar,
 ) -> xmlDtdPtr {
     let mut ret: xmlDtdPtr = 0 as xmlDtdPtr;
-    let mut ctxt: xmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
+    let mut ctxt: xmlParserCtxtPtr;
     let mut input: xmlParserInputPtr = 0 as xmlParserInputPtr;
-    let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
+    let mut enc: xmlCharEncoding;
     let mut systemIdCanonic: *mut xmlChar = 0 as *mut xmlChar;
     if ExternalID.is_null() && SystemID.is_null() {
         return 0 as xmlDtdPtr;
@@ -18131,7 +18133,7 @@ pub unsafe fn xmlSAXParseDTD(
     /*
      * plug some encoding conversion routines here.
      */
-    if unsafe { xmlPushInput(ctxt, input) < 0 as i32 } {
+    if unsafe { xmlPushInput(ctxt, input) < 0 } {
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
         }
@@ -18142,8 +18144,8 @@ pub unsafe fn xmlSAXParseDTD(
         return 0 as xmlDtdPtr;
     }
     unsafe {
-        if (*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64 >= 4 as i32 as i64 {
-            enc = xmlDetectCharEncoding((*safe_ctxt.input).cur, 4 as i32);
+        if (*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64 >= 4 {
+            enc = xmlDetectCharEncoding((*safe_ctxt.input).cur, 4);
             xmlSwitchEncoding(ctxt, enc);
         }
     }
@@ -18153,8 +18155,8 @@ pub unsafe fn xmlSAXParseDTD(
         } else {
             xmlFree_safe(systemIdCanonic as *mut ());
         }
-        (*input).line = 1 as i32;
-        (*input).col = 1 as i32;
+        (*input).line = 1;
+        (*input).col = 1;
         (*input).base = (*safe_ctxt.input).cur;
         (*input).cur = (*safe_ctxt.input).cur;
         (*input).free = None;
@@ -18162,12 +18164,14 @@ pub unsafe fn xmlSAXParseDTD(
     /*
      * let's parse that entity knowing it's an external subset.
      */
-    safe_ctxt.inSubset = 2 as i32;
+    safe_ctxt.inSubset = 2;
     unsafe {
         safe_ctxt.myDoc = xmlNewDoc(b"1.0\x00" as *const u8 as *const i8 as *mut xmlChar);
     }
     if safe_ctxt.myDoc.is_null() {
-        xmlErrMemory(ctxt, b"New Doc failed\x00" as *const u8 as *const i8);
+        unsafe {
+            xmlErrMemory(ctxt, b"New Doc failed\x00" as *const u8 as *const i8);
+        }
         if !sax.is_null() {
             safe_ctxt.sax = 0 as *mut _xmlSAXHandler
         }
@@ -18221,10 +18225,7 @@ pub unsafe fn xmlSAXParseDTD(
 * Returns the resulting xmlDtdPtr or NULL in case of error.
 */
 #[cfg(HAVE_parser_LIBXML_VALID_ENABLED)]
-pub unsafe fn xmlParseDTD(
-    mut ExternalID: *const xmlChar,
-    mut SystemID: *const xmlChar,
-) -> xmlDtdPtr {
+pub fn xmlParseDTD(ExternalID: *const xmlChar, SystemID: *const xmlChar) -> xmlDtdPtr {
     return xmlSAXParseDTD(0 as xmlSAXHandlerPtr, ExternalID, SystemID);
 }
 /* LIBXML_VALID_ENABLED */
@@ -18250,15 +18251,15 @@ pub unsafe fn xmlParseDTD(
 *    the parser error code otherwise
 */
 
-pub unsafe fn xmlParseCtxtExternalEntity(
-    mut ctx: xmlParserCtxtPtr,
-    mut URL: *const xmlChar,
-    mut ID: *const xmlChar,
-    mut lst: *mut xmlNodePtr,
+pub fn xmlParseCtxtExternalEntity(
+    ctx: xmlParserCtxtPtr,
+    URL: *const xmlChar,
+    ID: *const xmlChar,
+    lst: *mut xmlNodePtr,
 ) -> i32 {
     let mut userData: *mut () = 0 as *mut ();
     if ctx.is_null() {
-        return -(1 as i32);
+        return -1;
     }
     /*
      * If the user provided their own SAX callbacks, then reuse the
@@ -18272,16 +18273,18 @@ pub unsafe fn xmlParseCtxtExternalEntity(
     } else {
         userData = safe_ctx.userData
     }
-    return xmlParseExternalEntityPrivate(
-        safe_ctx.myDoc,
-        ctx,
-        safe_ctx.sax,
-        userData,
-        safe_ctx.depth + 1 as i32,
-        URL,
-        ID,
-        lst,
-    ) as i32;
+    return unsafe {
+        xmlParseExternalEntityPrivate(
+            safe_ctx.myDoc,
+            ctx,
+            safe_ctx.sax,
+            userData,
+            safe_ctx.depth + 1 as i32,
+            URL,
+            ID,
+            lst,
+        ) as i32
+    };
 }
 
 /* *
@@ -21402,9 +21405,9 @@ unsafe fn xmlParserEntityCheck(
         return 1 as i32;
     }
     /*
-    * This may look absurd but is needed to detect
-    * entities problems
-    */
+     * This may look absurd but is needed to detect
+     * entities problems
+     */
     if !ent.is_null()
         && (safe_ent).etype as u32 != XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
         && !(safe_ent).content.is_null()
@@ -21449,10 +21452,10 @@ unsafe fn xmlParserEntityCheck(
         }
     }
     /*
-    * Prevent entity exponential check, not just replacement while
-    * parsing the DTD
-    * The check is potentially costly so do that only once in a thousand
-    */
+     * Prevent entity exponential check, not just replacement while
+     * parsing the DTD
+     * The check is potentially costly so do that only once in a thousand
+     */
     if (safe_ctxt).instate as i32 == XML_PARSER_DTD as i32
         && (safe_ctxt).nbentities > 10000 as i32 as u64
         && (safe_ctxt).nbentities.wrapping_rem(1024 as i32 as u64) == 0 as i32 as u64
@@ -21487,10 +21490,10 @@ unsafe fn xmlParserEntityCheck(
             return 0 as i32;
         }
         /*
-        * If the volume of entity copy reaches 10 times the
-        * amount of parsed data and over the large text threshold
-        * then that's very likely to be an abuse.
-        */
+         * If the volume of entity copy reaches 10 times the
+         * amount of parsed data and over the large text threshold
+         * then that's very likely to be an abuse.
+         */
         if !(safe_ctxt).input.is_null() {
             consumed = unsafe {
                 (*(safe_ctxt).input).consumed.wrapping_add(
@@ -21506,14 +21509,14 @@ unsafe fn xmlParserEntityCheck(
         }
     } else if size != 0 as i32 as u64 {
         /*
-        * Do the check based on the replacement size of the entity
-        */
+         * Do the check based on the replacement size of the entity
+         */
         if size < 1000 as i32 as u64 {
             return 0 as i32;
         }
         /*
-        * A limit on the amount of text data reasonably used
-        */
+         * A limit on the amount of text data reasonably used
+         */
         if !(safe_ctxt).input.is_null() {
             consumed = unsafe {
                 (*(safe_ctxt).input).consumed.wrapping_add(
@@ -21532,12 +21535,12 @@ unsafe fn xmlParserEntityCheck(
         }
     } else if !ent.is_null() {
         /*
-        * use the number of parsed entities in the replacement
-        */
+         * use the number of parsed entities in the replacement
+         */
         size = ((safe_ent).checked / 2 as i32) as size_t;
         /*
-        * The amount of data parsed counting entities size only once
-        */
+         * The amount of data parsed counting entities size only once
+         */
         if !(safe_ctxt).input.is_null() {
             consumed = unsafe {
                 (*(safe_ctxt).input).consumed.wrapping_add(
@@ -21549,9 +21552,9 @@ unsafe fn xmlParserEntityCheck(
         }
         consumed = (consumed as u64).wrapping_add((safe_ctxt).sizeentities) as size_t as size_t;
         /*
-        * Check the density of entities for the amount of data
-        * knowing an entity reference will take at least 3 bytes
-        */
+         * Check the density of entities for the amount of data
+         * knowing an entity reference will take at least 3 bytes
+         */
         if size.wrapping_mul(3 as i32 as u64) < consumed.wrapping_mul(10 as i32 as u64) {
             return 0 as i32;
         }
@@ -22604,8 +22607,8 @@ unsafe fn xmlAddDefAttrs(
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut prefix: *const xmlChar = 0 as *const xmlChar;
     /*
-    * Allows to detect attribute redefinitions
-    */
+     * Allows to detect attribute redefinitions
+     */
     if unsafe { !(*ctxt).attsSpecial.is_null() } {
         if !xmlHashLookup2_safe(unsafe { (*ctxt).attsSpecial }, fullname, fullattr).is_null() {
             return;
@@ -22626,9 +22629,9 @@ unsafe fn xmlAddDefAttrs(
         match current_block {
             13183875560443969876 => {
                 /*
-                * split the element name into prefix:localname , the string found
-                * are within the DTD and then not associated to namespace names.
-                */
+                 * split the element name into prefix:localname , the string found
+                 * are within the DTD and then not associated to namespace names.
+                 */
                 name = xmlSplitQName3(fullname, &mut len);
                 if name.is_null() {
                     name = xmlDictLookup_safe((*ctxt).dict, fullname, -(1 as i32));
@@ -22638,8 +22641,8 @@ unsafe fn xmlAddDefAttrs(
                     prefix = xmlDictLookup_safe((*ctxt).dict, fullname, len)
                 }
                 /*
-                * make sure there is some storage
-                */
+                 * make sure there is some storage
+                 */
                 defaults = xmlHashLookup2_safe((*ctxt).attsDefault, name, prefix) as xmlDefAttrsPtr;
                 if defaults.is_null() {
                     defaults =
@@ -22704,9 +22707,9 @@ unsafe fn xmlAddDefAttrs(
                     2968889880470072775 => {}
                     _ => {
                         /*
-                        * Split the element name into prefix:localname , the string found
-                        * are within the DTD and hen not associated to namespace names.
-                        */
+                         * Split the element name into prefix:localname , the string found
+                         * are within the DTD and hen not associated to namespace names.
+                         */
                         name = xmlSplitQName3(fullattr, &mut len);
                         if name.is_null() {
                             name = xmlDictLookup_safe((*ctxt).dict, fullattr, -(1 as i32));
@@ -22923,10 +22926,10 @@ pub unsafe fn xmlCheckLanguageID(mut lang: *const xmlChar) -> i32 {
                 && *cur.offset(1 as i32 as isize) as i32 == '-' as i32
     } {
         /*
-        * Still allow IANA code and user code which were coming
-        * from the previous version of the XML-1.0 specification
-        * it's deprecated but we should not fail
-        */
+         * Still allow IANA code and user code which were coming
+         * from the previous version of the XML-1.0 specification
+         * it's deprecated but we should not fail
+         */
         cur = unsafe { cur.offset(2 as i32 as isize) };
         while unsafe {
             *cur.offset(0 as i32 as isize) as i32 >= 'A' as i32
@@ -22949,8 +22952,8 @@ pub unsafe fn xmlCheckLanguageID(mut lang: *const xmlChar) -> i32 {
     }
     if unsafe { nxt.offset_from(cur) as i64 >= 4 as i32 as i64 } {
         /*
-        * Reserved
-        */
+         * Reserved
+         */
         if unsafe {
             nxt.offset_from(cur) as i64 > 8 as i32 as i64
                 || *nxt.offset(0 as i32 as isize) as i32 != 0 as i32
