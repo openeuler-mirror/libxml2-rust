@@ -9,6 +9,7 @@ rm -rf CMakeFiles
 rm -rf Makefile
 cmake -DSTEP="build"
 make
+cp libxml2.a ./libxml2_static.a
 
 cd ./rust
 
