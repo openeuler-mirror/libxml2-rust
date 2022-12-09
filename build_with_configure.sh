@@ -7,19 +7,19 @@ make clean
 # 执行编译，在.libs下生成libxml2.a静态库
 make
 
+cd .libs
 # 将生成的.a文件放置在项目根目录，使得cargo build能够搜索到
-cp -r .libs/libxml2.a .
-
+ar x libxml2.a
+ar r libxml2_static.a *.o
+cp -r ./libxml2_static.a ../
+cd ..
 # rust编译，生成.a静态库
-cd rust_ffi 
-cargo clean 
-cargo build 
-cd ../rust
+cd rust
 cargo clean
 cargo build --release -v
 cd ..
 
-rm -rf libxml2.a
+mv libxml2_static.a ./.libs
 
 # 开启COMPILE_WITH_RUST宏，并且链接librust_project.a
 # 在.libs下生成libxml2.a和libxml2.so
