@@ -14,7 +14,7 @@ cp libxml2.a ./libxml2_static.a
 cd ./rust
 
 #开始检查
-# cargo fmt --all -- --check -v
+cargo fmt --all -- --check -v
 cargo clean
 
 #cargo clippy --all-targets --all-features --tests --benches -- -D warnings
