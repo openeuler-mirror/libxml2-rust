@@ -16,62 +16,62 @@ use rust_ffi::ffi_extern_method::extern_method_safe::*;
 *
 * Returns -1 in case of error, the index in the stack otherwise
 */
-unsafe fn nameNsPush(
-    mut ctxt: xmlParserCtxtPtr,
-    mut value: *const xmlChar,
-    mut prefix: *const xmlChar,
-    mut URI: *const xmlChar,
-    mut line: i32,
-    mut nsNr: i32,
+fn nameNsPush(
+    ctxt: xmlParserCtxtPtr,
+    value: *const xmlChar,
+    prefix: *const xmlChar,
+    URI: *const xmlChar,
+    line: i32,
+    nsNr: i32,
 ) -> i32 {
-    let mut current_block: u64;
+    let current_block: u64;
     let mut tag: *mut xmlStartTag = 0 as *mut xmlStartTag;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     if (safe_ctxt).nameNr >= (safe_ctxt).nameMax {
         let mut tmp: *mut *const xmlChar = 0 as *mut *const xmlChar;
         let mut tmp2: *mut xmlStartTag = 0 as *mut xmlStartTag;
-        (safe_ctxt).nameMax *= 2 as i32;
-        tmp = xmlRealloc_safe(
+        (safe_ctxt).nameMax *= 2;
+        tmp = unsafe{xmlRealloc_safe(
             (safe_ctxt).nameTab as *mut *mut xmlChar as *mut (),
             ((safe_ctxt).nameMax as u64)
                 .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
-        ) as *mut *const xmlChar;
+        )} as *mut *const xmlChar;
         if tmp.is_null() {
-            (safe_ctxt).nameMax /= 2 as i32;
-            current_block = 678931122879618765;
+            (safe_ctxt).nameMax /= 2;
+            current_block = 1;
         } else {
             (safe_ctxt).nameTab = tmp;
-            tmp2 = xmlRealloc_safe(
+            tmp2 = unsafe{xmlRealloc_safe(
                 (safe_ctxt).pushTab as *mut *mut () as *mut (),
                 ((safe_ctxt).nameMax as u64)
                     .wrapping_mul(::std::mem::size_of::<xmlStartTag>() as u64),
-            ) as *mut xmlStartTag;
+            )} as *mut xmlStartTag;
             if tmp2.is_null() {
-                (safe_ctxt).nameMax /= 2 as i32;
-                current_block = 678931122879618765;
+                (safe_ctxt).nameMax /= 2;
+                current_block = 1;
             } else {
                 (safe_ctxt).pushTab = tmp2;
-                current_block = 1054647088692577877;
+                current_block = 2;
             }
         }
     } else if (safe_ctxt).pushTab.is_null() {
-        (safe_ctxt).pushTab = xmlMalloc_safe(
+        (safe_ctxt).pushTab = unsafe{xmlMalloc_safe(
             ((safe_ctxt).nameMax as u64).wrapping_mul(::std::mem::size_of::<xmlStartTag>() as u64),
-        ) as *mut xmlStartTag;
+        )} as *mut xmlStartTag;
         if (safe_ctxt).pushTab.is_null() {
-            current_block = 678931122879618765;
+            current_block = 1;
         } else {
-            current_block = 1054647088692577877;
+            current_block = 2;
         }
     } else {
-        current_block = 1054647088692577877;
+        current_block = 2;
     }
     match current_block {
-        678931122879618765 => {
+        1 => {
             unsafe {
                 xmlErrMemory(ctxt, 0 as *const i8);
             }
-            return -(1 as i32);
+            return -(1);
         }
         _ => {
             unsafe {
@@ -99,19 +99,15 @@ unsafe fn nameNsPush(
 * Returns the name just removed
 */
 #[cfg(HAVE_parser_LIBXML_PUSH_ENABLED)]
-unsafe fn nameNsPop(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+fn nameNsPop(ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut ret: *const xmlChar = 0 as *const xmlChar;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).nameNr <= 0 as i32 {
+    let safe_ctxt = unsafe { &mut *ctxt };
+    if (safe_ctxt).nameNr <= 0 {
         return 0 as *const xmlChar;
     }
     (safe_ctxt).nameNr -= 1;
-    if (safe_ctxt).nameNr > 0 as i32 {
-        (safe_ctxt).name = unsafe {
-            *(*ctxt)
-                .nameTab
-                .offset(((safe_ctxt).nameNr - 1 as i32) as isize)
-        };
+    if (safe_ctxt).nameNr > 0 {
+        (safe_ctxt).name = unsafe { *(*ctxt).nameTab.offset(((safe_ctxt).nameNr - 1) as isize) };
     } else {
         (safe_ctxt).name = 0 as *const xmlChar
     }
@@ -133,26 +129,26 @@ unsafe fn nameNsPop(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 * Returns -1 in case of error, the index in the stack otherwise
 */
 
-pub unsafe fn namePush(mut ctxt: xmlParserCtxtPtr, mut value: *const xmlChar) -> i32 {
+pub fn namePush(ctxt: xmlParserCtxtPtr, value: *const xmlChar) -> i32 {
     if ctxt.is_null() {
-        return -(1 as i32);
+        return -(1);
     }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     if (safe_ctxt).nameNr >= (safe_ctxt).nameMax {
         let mut tmp: *mut *const xmlChar = 0 as *mut *const xmlChar;
-        tmp = xmlRealloc_safe(
+        tmp = unsafe{xmlRealloc_safe(
             (safe_ctxt).nameTab as *mut *mut xmlChar as *mut (),
-            (((safe_ctxt).nameMax * 2 as i32) as u64)
+            (((safe_ctxt).nameMax * 2) as u64)
                 .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
-        ) as *mut *const xmlChar;
+        )} as *mut *const xmlChar;
         if tmp.is_null() {
             unsafe {
                 xmlErrMemory(ctxt, 0 as *const i8);
             }
-            return -(1 as i32);
+            return -(1);
         } else {
             (safe_ctxt).nameTab = tmp;
-            (safe_ctxt).nameMax *= 2 as i32
+            (safe_ctxt).nameMax *= 2
         }
     }
     unsafe {
@@ -173,19 +169,15 @@ pub unsafe fn namePush(mut ctxt: xmlParserCtxtPtr, mut value: *const xmlChar) ->
 * Returns the name just removed
 */
 
-pub unsafe fn namePop(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+pub fn namePop(ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut ret: *const xmlChar = 0 as *const xmlChar;
-    if ctxt.is_null() || unsafe { (*ctxt).nameNr <= 0 as i32 } {
+    if ctxt.is_null() || unsafe { (*ctxt).nameNr <= 0 } {
         return 0 as *const xmlChar;
     }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     (safe_ctxt).nameNr -= 1;
-    if (safe_ctxt).nameNr > 0 as i32 {
-        (safe_ctxt).name = unsafe {
-            *(*ctxt)
-                .nameTab
-                .offset(((safe_ctxt).nameNr - 1 as i32) as isize)
-        };
+    if (safe_ctxt).nameNr > 0 {
+        (safe_ctxt).name = unsafe { *(*ctxt).nameTab.offset(((safe_ctxt).nameNr - 1) as isize) };
     } else {
         (safe_ctxt).name = 0 as *const xmlChar
     }
@@ -196,21 +188,21 @@ pub unsafe fn namePop(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     }
     return ret;
 }
-unsafe fn spacePush(mut ctxt: xmlParserCtxtPtr, mut val: i32) -> i32 {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+fn spacePush(ctxt: xmlParserCtxtPtr, val: i32) -> i32 {
+    let safe_ctxt = unsafe { &mut *ctxt };
     if (safe_ctxt).spaceNr >= (safe_ctxt).spaceMax {
         let mut tmp: *mut i32 = 0 as *mut i32;
-        (safe_ctxt).spaceMax *= 2 as i32;
-        tmp = xmlRealloc_safe(
+        (safe_ctxt).spaceMax *= 2;
+        tmp = unsafe{xmlRealloc_safe(
             (safe_ctxt).spaceTab as *mut (),
             ((safe_ctxt).spaceMax as u64).wrapping_mul(::std::mem::size_of::<i32>() as u64),
-        ) as *mut i32;
+        )} as *mut i32;
         if tmp.is_null() {
             unsafe {
                 xmlErrMemory(ctxt, 0 as *const i8);
             }
-            (safe_ctxt).spaceMax /= 2 as i32;
-            return -(1 as i32);
+            (safe_ctxt).spaceMax /= 2;
+            return -(1);
         }
         (safe_ctxt).spaceTab = tmp
     }
@@ -222,42 +214,40 @@ unsafe fn spacePush(mut ctxt: xmlParserCtxtPtr, mut val: i32) -> i32 {
     (safe_ctxt).spaceNr = (safe_ctxt).spaceNr + 1;
     return fresh26;
 }
-unsafe fn spacePop(mut ctxt: xmlParserCtxtPtr) -> i32 {
+fn spacePop(ctxt: xmlParserCtxtPtr) -> i32 {
     let mut ret: i32 = 0;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).spaceNr <= 0 as i32 {
-        return 0 as i32;
+    let safe_ctxt = unsafe { &mut *ctxt };
+    if (safe_ctxt).spaceNr <= 0 {
+        return 0;
     }
     (safe_ctxt).spaceNr -= 1;
-    if (safe_ctxt).spaceNr > 0 as i32 {
+    if (safe_ctxt).spaceNr > 0 {
         (safe_ctxt).space = unsafe {
-            &mut *(*ctxt)
-                .spaceTab
-                .offset(((safe_ctxt).spaceNr - 1 as i32) as isize) as *mut i32
+            &mut *(*ctxt).spaceTab.offset(((safe_ctxt).spaceNr - 1) as isize) as *mut i32
         };
     } else {
-        (safe_ctxt).space = unsafe { &mut *(*ctxt).spaceTab.offset(0 as i32 as isize) as *mut i32 };
+        (safe_ctxt).space = unsafe { &mut *(*ctxt).spaceTab.offset(0) as *mut i32 };
     }
     unsafe {
         ret = *(*ctxt).spaceTab.offset((safe_ctxt).spaceNr as isize);
-        *(*ctxt).spaceTab.offset((safe_ctxt).spaceNr as isize) = -(1 as i32);
+        *(*ctxt).spaceTab.offset((safe_ctxt).spaceNr as isize) = -(1);
     }
     return ret;
 }
-unsafe fn xmlSHRINK(mut ctxt: xmlParserCtxtPtr) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    xmlParserInputShrink_safe((safe_ctxt).input);
-    if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-        xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+fn xmlSHRINK(ctxt: xmlParserCtxtPtr) {
+    let safe_ctxt = unsafe { &mut *ctxt };
+    unsafe{xmlParserInputShrink_safe((safe_ctxt).input)};
+    if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+        unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 0)};
     };
 }
-unsafe fn xmlGROW(mut ctxt: xmlParserCtxtPtr) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut curEnd: ptrdiff_t =
+fn xmlGROW(ctxt: xmlParserCtxtPtr) {
+    let safe_ctxt = unsafe { &mut *ctxt };
+    let curEnd: ptrdiff_t =
         unsafe { (*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64 };
-    let mut curBase: ptrdiff_t =
+    let curBase: ptrdiff_t =
         unsafe { (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 };
-    if (curEnd > 10000000 as i32 as i64 || curBase > 10000000 as i32 as i64)
+    if (curEnd > 10000000 || curBase > 10000000)
         && unsafe {
             (!(*(*ctxt).input).buf.is_null()
                 && (*(*(*ctxt).input).buf).readcallback
@@ -266,7 +256,7 @@ unsafe fn xmlGROW(mut ctxt: xmlParserCtxtPtr) {
                             as unsafe extern "C" fn(_: *mut (), _: *mut i8, _: i32) -> i32,
                     ))
         }
-        && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
+        && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0
     {
         unsafe {
             xmlFatalErr(
@@ -278,7 +268,7 @@ unsafe fn xmlGROW(mut ctxt: xmlParserCtxtPtr) {
         }
         return;
     }
-    xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+    unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
     if unsafe {
         (*(*ctxt).input).cur > (*(*ctxt).input).end || (*(*ctxt).input).cur < (*(*ctxt).input).base
     } {
@@ -292,8 +282,8 @@ unsafe fn xmlGROW(mut ctxt: xmlParserCtxtPtr) {
         }
         return;
     }
-    if unsafe { !(*(*ctxt).input).cur.is_null() && *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-        xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+    if unsafe { !(*(*ctxt).input).cur.is_null() && *(*(*ctxt).input).cur as i32 == 0 } {
+        unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
     };
 }
 /* *
@@ -306,9 +296,9 @@ unsafe fn xmlGROW(mut ctxt: xmlParserCtxtPtr) {
 * Returns the number of space chars skipped
 */
 
-pub unsafe fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> i32 {
-    let mut res: i32 = 0 as i32;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+pub fn xmlSkipBlankChars(ctxt: xmlParserCtxtPtr) -> i32 {
+    let mut res: i32 = 0;
+    let safe_ctxt = unsafe { &mut *ctxt };
     /*
      * It's Okay to use CUR/NEXT here since all the blanks are on
      * the ASCII range.
@@ -326,17 +316,17 @@ pub unsafe fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> i32 {
             if unsafe { *cur } as i32 == '\n' as i32 {
                 unsafe {
                     (*(*ctxt).input).line += 1;
-                    (*(*ctxt).input).col = 1 as i32;
+                    (*(*ctxt).input).col = 1;
                 }
             } else {
                 unsafe { (*(*ctxt).input).col += 1 }
             }
             cur = unsafe { cur.offset(1) };
             res += 1;
-            if unsafe { *cur } as i32 == 0 as i32 {
+            if unsafe { *cur } as i32 == 0 {
                 unsafe {
                     (*(*ctxt).input).cur = cur;
-                    xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+                    xmlParserInputGrow_safe((safe_ctxt).input, 250);
                     cur = (*(*ctxt).input).cur;
                 }
             }
@@ -345,8 +335,7 @@ pub unsafe fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> i32 {
             (*(*ctxt).input).cur = cur;
         }
     } else {
-        let mut expandPE: i32 =
-            ((safe_ctxt).external != 0 as i32 || (safe_ctxt).inputNr != 1 as i32) as i32;
+        let expandPE: i32 = ((safe_ctxt).external != 0 || (safe_ctxt).inputNr != 1) as i32;
         loop {
             if unsafe {
                 *(*(*ctxt).input).cur as i32 == 0x20 as i32
@@ -355,19 +344,18 @@ pub unsafe fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> i32 {
                     || *(*(*ctxt).input).cur as i32 == 0xd as i32
             } {
                 /* CHECKED tstblanks.xml */
-                xmlNextChar_safe(ctxt);
+                unsafe{xmlNextChar_safe(ctxt)};
             } else if unsafe { *(*(*ctxt).input).cur as i32 == '%' as i32 } {
                 /*
                  * Need to handle support of entities branching here
                  */
-                if expandPE == 0 as i32
+                if expandPE == 0
                     || unsafe {
-                        (*(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == 0x20 as i32
-                            || 0x9 as i32 <= *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32
-                                && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32
-                                    <= 0xa as i32
-                            || *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == 0xd as i32)
-                            || *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == 0 as i32
+                        (*(*(*ctxt).input).cur.offset(1) as i32 == 0x20 as i32
+                            || 0x9 as i32 <= *(*(*ctxt).input).cur.offset(1) as i32
+                                && *(*(*ctxt).input).cur.offset(1) as i32 <= 0xa as i32
+                            || *(*(*ctxt).input).cur.offset(1) as i32 == 0xd as i32)
+                            || *(*(*ctxt).input).cur.offset(1) as i32 == 0
                     }
                 {
                     break;
@@ -376,13 +364,13 @@ pub unsafe fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> i32 {
                     xmlParsePEReference(ctxt);
                 }
             } else {
-                if unsafe { !(*(*(*ctxt).input).cur as i32 == 0 as i32) } {
+                if unsafe { !(*(*(*ctxt).input).cur as i32 == 0) } {
                     break;
                 }
-                if (safe_ctxt).inputNr <= 1 as i32 {
+                if (safe_ctxt).inputNr <= 1 {
                     break;
                 }
-                xmlPopInput_safe(ctxt);
+                unsafe{xmlPopInput_safe(ctxt)};
             }
             /*
              * Also increase the counter when entering or exiting a PERef.
@@ -411,11 +399,11 @@ pub unsafe fn xmlSkipBlankChars(mut ctxt: xmlParserCtxtPtr) -> i32 {
 * Returns the current xmlChar in the parser context
 */
 
-pub unsafe fn xmlPopInput_parser(mut ctxt: xmlParserCtxtPtr) -> xmlChar {
-    if ctxt.is_null() || unsafe { (*ctxt).inputNr <= 1 as i32 } {
-        return 0 as i32 as xmlChar;
+pub fn xmlPopInput_parser(ctxt: xmlParserCtxtPtr) -> xmlChar {
+    if ctxt.is_null() || unsafe { (*ctxt).inputNr <= 1 } {
+        return 0 as xmlChar;
     }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     if unsafe { *__xmlParserDebugEntities() != 0 } {
         unsafe {
             (*__xmlGenericError()).expect("non-null function pointer")(
@@ -425,8 +413,8 @@ pub unsafe fn xmlPopInput_parser(mut ctxt: xmlParserCtxtPtr) -> xmlChar {
             );
         }
     }
-    if (safe_ctxt).inputNr > 1 as i32
-        && (safe_ctxt).inSubset == 0 as i32
+    if (safe_ctxt).inputNr > 1
+        && (safe_ctxt).inSubset == 0
         && (safe_ctxt).instate as i32 != XML_PARSER_EOF as i32
     {
         unsafe {
@@ -437,9 +425,9 @@ pub unsafe fn xmlPopInput_parser(mut ctxt: xmlParserCtxtPtr) -> xmlChar {
             );
         }
     }
-    xmlFreeInputStream_safe(inputPop_parser(ctxt));
-    if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-        xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+    unsafe{xmlFreeInputStream_safe(unsafe { inputPop_parser(ctxt) })};
+    if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+        unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
     }
     return unsafe { *(*(*ctxt).input).cur };
 }
@@ -453,11 +441,11 @@ pub unsafe fn xmlPopInput_parser(mut ctxt: xmlParserCtxtPtr) -> xmlChar {
 * Returns -1 in case of error or the index in the input stack
 */
 
-pub unsafe fn xmlPushInput(mut ctxt: xmlParserCtxtPtr, mut input: xmlParserInputPtr) -> i32 {
+pub fn xmlPushInput(ctxt: xmlParserCtxtPtr, input: xmlParserInputPtr) -> i32 {
     let mut ret: i32 = 0;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     if input.is_null() {
-        return -(1 as i32);
+        return -(1);
     }
     if unsafe { *__xmlParserDebugEntities() != 0 } {
         if !(safe_ctxt).input.is_null() && unsafe { !(*(*ctxt).input).filename.is_null() } {
@@ -474,13 +462,13 @@ pub unsafe fn xmlPushInput(mut ctxt: xmlParserCtxtPtr, mut input: xmlParserInput
             (*__xmlGenericError()).expect("non-null function pointer")(
                 *__xmlGenericErrorContext(),
                 b"Pushing input %d : %.30s\n\x00" as *const u8 as *const i8,
-                (safe_ctxt).inputNr + 1 as i32,
+                (safe_ctxt).inputNr + 1,
                 (*input).cur,
             );
         }
     }
-    if (safe_ctxt).inputNr > 40 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-        || (safe_ctxt).inputNr > 1024 as i32
+    if (safe_ctxt).inputNr > 40 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0
+        || (safe_ctxt).inputNr > 1024
     {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, 0 as *const i8);
@@ -492,16 +480,14 @@ pub unsafe fn xmlPushInput(mut ctxt: xmlParserCtxtPtr, mut input: xmlParserInput
                 }
             }
         }
-        return -(1 as i32);
+        return -(1);
     }
-    ret = inputPush_safe(ctxt, input);
+    ret = unsafe{inputPush_safe(ctxt, input)};
     if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-        return -(1 as i32);
+        return -(1);
     }
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
@@ -523,29 +509,28 @@ pub unsafe fn xmlPushInput(mut ctxt: xmlParserCtxtPtr, mut input: xmlParserInput
 * Returns the value parsed (as an int), 0 in case of error
 */
 
-pub unsafe fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> i32 {
-    let mut val: i32 = 0 as i32;
-    let mut count: i32 = 0 as i32;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+pub fn xmlParseCharRef(ctxt: xmlParserCtxtPtr) -> i32 {
+    let mut val: i32 = 0;
+    let mut count: i32 = 0;
+    let safe_ctxt = unsafe { &mut *ctxt };
     /*
      * Using RAW/CUR/NEXT is okay since we are working on ASCII range here
      */
     if unsafe {
         *(*(*ctxt).input).cur as i32 == '&' as i32
-            && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '#' as i32
-            && *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32 == 'x' as i32
+            && *(*(*ctxt).input).cur.offset(1) as i32 == '#' as i32
+            && *(*(*ctxt).input).cur.offset(2) as i32 == 'x' as i32
     } {
         unsafe {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3 as i32 as isize);
-            (*(*ctxt).input).col += 3 as i32;
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
+            (*(*ctxt).input).col += 3;
         }
-        if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-            xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+        if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+            unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
         }
         if unsafe {
-            (*ctxt).progressive == 0 as i32
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < 250 as i32 as i64
+            (*ctxt).progressive == 0
+                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
         } {
             xmlGROW(ctxt);
         }
@@ -557,51 +542,46 @@ pub unsafe fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> i32 {
             /* loop blocked by count */
             let fresh27 = count;
             count = count + 1;
-            if fresh27 > 20 as i32 {
-                count = 0 as i32;
+            if fresh27 > 20 {
+                count = 0;
                 if unsafe {
-                    (safe_ctxt).progressive == 0 as i32
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < 250 as i32 as i64
+                    (safe_ctxt).progressive == 0
+                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                 } {
                     xmlGROW(ctxt);
                 }
                 if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-                    return 0 as i32;
+                    return 0;
                 }
             }
             if unsafe {
                 *(*(*ctxt).input).cur as i32 >= '0' as i32
                     && *(*(*ctxt).input).cur as i32 <= '9' as i32
             } {
-                val = val * 16 as i32 + unsafe { (*(*(*ctxt).input).cur as i32 - '0' as i32) };
+                val = val * 16 + unsafe { (*(*(*ctxt).input).cur as i32 - '0' as i32) };
             } else if unsafe {
                 *(*(*ctxt).input).cur as i32 >= 'a' as i32
                     && *(*(*ctxt).input).cur as i32 <= 'f' as i32
-            } && count < 20 as i32
+            } && count < 20
             {
-                val = unsafe {
-                    val * 16 as i32 + (*(*(*ctxt).input).cur as i32 - 'a' as i32) + 10 as i32
-                };
+                val = unsafe { val * 16 + (*(*(*ctxt).input).cur as i32 - 'a' as i32) + 10 };
             } else if unsafe {
                 *(*(*ctxt).input).cur as i32 >= 'A' as i32
                     && *(*(*ctxt).input).cur as i32 <= 'F' as i32
-            } && count < 20 as i32
+            } && count < 20
             {
-                val = unsafe {
-                    val * 16 as i32 + (*(*(*ctxt).input).cur as i32 - 'A' as i32) + 10 as i32
-                }
+                val = unsafe { val * 16 + (*(*(*ctxt).input).cur as i32 - 'A' as i32) + 10 }
             } else {
                 unsafe {
                     xmlFatalErr(ctxt, XML_ERR_INVALID_HEX_CHARREF, 0 as *const i8);
                 }
-                val = 0 as i32;
+                val = 0;
                 break;
             }
             if val > 0x110000 as i32 {
                 val = 0x110000 as i32
             }
-            xmlNextChar_safe(ctxt);
+            unsafe{xmlNextChar_safe(ctxt)};
             count += 1
         }
         if unsafe { *(*(*ctxt).input).cur as i32 == ';' as i32 } {
@@ -613,20 +593,19 @@ pub unsafe fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> i32 {
         }
     } else if unsafe {
         *(*(*ctxt).input).cur as i32 == '&' as i32
-            && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '#' as i32
+            && *(*(*ctxt).input).cur.offset(1) as i32 == '#' as i32
     } {
         unsafe {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as i32 as isize);
-            (*(*ctxt).input).col += 2 as i32;
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
+            (*(*ctxt).input).col += 2;
         }
 
-        if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-            xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+        if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+            unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
         }
         if unsafe {
-            (*ctxt).progressive == 0 as i32
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < 250 as i32 as i64
+            (*ctxt).progressive == 0
+                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
         } {
             xmlGROW(ctxt);
         }
@@ -637,34 +616,33 @@ pub unsafe fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> i32 {
             /* loop blocked by count */
             let fresh28 = count;
             count = count + 1;
-            if fresh28 > 20 as i32 {
-                count = 0 as i32;
+            if fresh28 > 20 {
+                count = 0;
                 if unsafe {
-                    (*ctxt).progressive == 0 as i32
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < 250 as i32 as i64
+                    (*ctxt).progressive == 0
+                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                 } {
                     xmlGROW(ctxt);
                 }
                 if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-                    return 0 as i32;
+                    return 0;
                 }
             }
             if unsafe {
                 *(*(*ctxt).input).cur as i32 >= '0' as i32
                     && *(*(*ctxt).input).cur as i32 <= '9' as i32
             } {
-                val = unsafe { val * 10 as i32 + (*(*(*ctxt).input).cur as i32 - '0' as i32) };
+                val = unsafe { val * 10 + (*(*(*ctxt).input).cur as i32 - '0' as i32) };
                 if val > 0x110000 as i32 {
                     val = 0x110000 as i32
                 }
-                xmlNextChar_safe(ctxt);
+                unsafe{xmlNextChar_safe(ctxt)};
                 count += 1
             } else {
                 unsafe {
                     xmlFatalErr(ctxt, XML_ERR_INVALID_DEC_CHARREF, 0 as *const i8);
                 }
-                val = 0 as i32;
+                val = 0;
                 break;
             }
         }
@@ -714,7 +692,7 @@ pub unsafe fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> i32 {
             );
         }
     }
-    return 0 as i32;
+    return 0;
 }
 /* *
 * xmlParseStringCharRef:
@@ -734,40 +712,37 @@ pub unsafe fn xmlParseCharRef(mut ctxt: xmlParserCtxtPtr) -> i32 {
 * Returns the value parsed (as an int), 0 in case of error, str will be
 *         updated to the current value of the index
 */
-unsafe fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const xmlChar) -> i32 {
+fn xmlParseStringCharRef(ctxt: xmlParserCtxtPtr, str: *mut *const xmlChar) -> i32 {
     let mut ptr: *const xmlChar = 0 as *const xmlChar;
     let mut cur: xmlChar = 0;
-    let mut val: i32 = 0 as i32;
+    let mut val: i32 = 0;
     if str.is_null() || unsafe { (*str).is_null() } {
-        return 0 as i32;
+        return 0;
     }
     unsafe {
         ptr = *str;
         cur = *ptr;
     }
     if cur as i32 == '&' as i32
-        && unsafe {
-            *ptr.offset(1 as i32 as isize) as i32 == '#' as i32
-                && *ptr.offset(2 as i32 as isize) as i32 == 'x' as i32
-        }
+        && unsafe { *ptr.offset(1) as i32 == '#' as i32 && *ptr.offset(2) as i32 == 'x' as i32 }
     {
         unsafe {
-            ptr = ptr.offset(3 as i32 as isize);
+            ptr = ptr.offset(3);
             cur = *ptr;
         }
         while cur as i32 != ';' as i32 {
             /* Non input consuming loop */
             if cur as i32 >= '0' as i32 && cur as i32 <= '9' as i32 {
-                val = val * 16 as i32 + (cur as i32 - '0' as i32)
+                val = val * 16 + (cur as i32 - '0' as i32)
             } else if cur as i32 >= 'a' as i32 && cur as i32 <= 'f' as i32 {
-                val = val * 16 as i32 + (cur as i32 - 'a' as i32) + 10 as i32
+                val = val * 16 + (cur as i32 - 'a' as i32) + 10
             } else if cur as i32 >= 'A' as i32 && cur as i32 <= 'F' as i32 {
-                val = val * 16 as i32 + (cur as i32 - 'A' as i32) + 10 as i32
+                val = val * 16 + (cur as i32 - 'A' as i32) + 10
             } else {
                 unsafe {
                     xmlFatalErr(ctxt, XML_ERR_INVALID_HEX_CHARREF, 0 as *const i8);
                 }
-                val = 0 as i32;
+                val = 0;
                 break;
             }
             if val > 0x110000 as i32 {
@@ -781,17 +756,15 @@ unsafe fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const
         if cur as i32 == ';' as i32 {
             ptr = unsafe { ptr.offset(1) }
         }
-    } else if cur as i32 == '&' as i32
-        && unsafe { *ptr.offset(1 as i32 as isize) as i32 == '#' as i32 }
-    {
+    } else if cur as i32 == '&' as i32 && unsafe { *ptr.offset(1) as i32 == '#' as i32 } {
         unsafe {
-            ptr = ptr.offset(2 as i32 as isize);
+            ptr = ptr.offset(2);
             cur = *ptr;
         }
         while cur as i32 != ';' as i32 {
             /* Non input consuming loops */
             if cur as i32 >= '0' as i32 && cur as i32 <= '9' as i32 {
-                val = val * 10 as i32 + (cur as i32 - '0' as i32);
+                val = val * 10 + (cur as i32 - '0' as i32);
                 if val > 0x110000 as i32 {
                     val = 0x110000 as i32
                 }
@@ -803,7 +776,7 @@ unsafe fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const
                 unsafe {
                     xmlFatalErr(ctxt, XML_ERR_INVALID_DEC_CHARREF, 0 as *const i8);
                 }
-                val = 0 as i32;
+                val = 0;
                 break;
             }
         }
@@ -814,7 +787,7 @@ unsafe fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_INVALID_CHARREF, 0 as *const i8);
         }
-        return 0 as i32;
+        return 0;
     }
     unsafe { *str = ptr };
     /*
@@ -851,7 +824,7 @@ unsafe fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const
             );
         }
     }
-    return 0 as i32;
+    return 0;
 }
 /* *
 * xmlParserHandlePEReference:
@@ -886,8 +859,8 @@ unsafe fn xmlParseStringCharRef(mut ctxt: xmlParserCtxtPtr, mut str: *mut *const
 *   - Included as Parameter Entity reference within DTDs
 */
 
-pub unsafe fn xmlParserHandlePEReference(mut ctxt: xmlParserCtxtPtr) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+pub fn xmlParserHandlePEReference(ctxt: xmlParserCtxtPtr) {
+    let safe_ctxt = unsafe { &mut *ctxt };
     match (safe_ctxt).instate as i32 {
         8 => return,
         5 => return,
@@ -933,15 +906,15 @@ pub unsafe fn xmlParserHandlePEReference(mut ctxt: xmlParserCtxtPtr) {
              * within markup declarations.
              * In that case this is handled in xmlParseMarkupDecl
              */
-            if (safe_ctxt).external == 0 as i32 && (safe_ctxt).inputNr == 1 as i32 {
+            if (safe_ctxt).external == 0 && (safe_ctxt).inputNr == 1 {
                 return;
             }
             if unsafe {
-                *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == 0x20 as i32
-                    || 0x9 as i32 <= *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32
-                        && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 <= 0xa as i32
-                    || *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == 0xd as i32
-                    || *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == 0 as i32
+                *(*(*ctxt).input).cur.offset(1) as i32 == 0x20 as i32
+                    || 0x9 as i32 <= *(*(*ctxt).input).cur.offset(1) as i32
+                        && *(*(*ctxt).input).cur.offset(1) as i32 <= 0xa as i32
+                    || *(*(*ctxt).input).cur.offset(1) as i32 == 0xd as i32
+                    || *(*(*ctxt).input).cur.offset(1) as i32 == 0
             } {
                 return;
             }
@@ -978,32 +951,32 @@ pub unsafe fn xmlParserHandlePEReference(mut ctxt: xmlParserCtxtPtr) {
 *      must deallocate it !
 */
 
-pub unsafe fn xmlStringLenDecodeEntities(
-    mut ctxt: xmlParserCtxtPtr,
+pub fn xmlStringLenDecodeEntities(
+    ctxt: xmlParserCtxtPtr,
     mut str: *const xmlChar,
-    mut len: i32,
-    mut what: i32,
-    mut end: xmlChar,
-    mut end2: xmlChar,
-    mut end3: xmlChar,
+    len: i32,
+    what: i32,
+    end: xmlChar,
+    end2: xmlChar,
+    end3: xmlChar,
 ) -> *mut xmlChar {
-    let mut current_block: u64;
+    let current_block: u64;
     let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
-    let mut buffer_size: size_t = 0 as i32 as size_t;
-    let mut nbchars: size_t = 0 as i32 as size_t;
+    let mut buffer_size: size_t = 0;
+    let mut nbchars: size_t = 0;
     let mut current: *mut xmlChar = 0 as *mut xmlChar;
     let mut rep: *mut xmlChar = 0 as *mut xmlChar;
     let mut last: *const xmlChar = 0 as *const xmlChar;
     let mut ent: xmlEntityPtr = 0 as *mut xmlEntity;
     let mut c: i32 = 0;
     let mut l: i32 = 0;
-    if ctxt.is_null() || str.is_null() || len < 0 as i32 {
+    if ctxt.is_null() || str.is_null() || len < 0 {
         return 0 as *mut xmlChar;
     }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     last = unsafe { str.offset(len as isize) };
-    if (safe_ctxt).depth > 40 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-        || (safe_ctxt).depth > 1024 as i32
+    if (safe_ctxt).depth > 40 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0
+        || (safe_ctxt).depth > 1024
     {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, 0 as *const i8);
@@ -1013,8 +986,8 @@ pub unsafe fn xmlStringLenDecodeEntities(
     /*
      * allocate a translation buffer.
      */
-    buffer_size = 300 as i32 as size_t;
-    buffer = xmlMallocAtomic_safe(buffer_size) as *mut xmlChar;
+    buffer_size = 300;
+    buffer = unsafe{xmlMallocAtomic_safe(buffer_size)} as *mut xmlChar;
     if buffer.is_null() {
         current_block = 13264933720371784297;
     } else {
@@ -1027,10 +1000,10 @@ pub unsafe fn xmlStringLenDecodeEntities(
                 c = xmlStringCurrentChar(ctxt, str, &mut l);
             }
         } else {
-            c = 0 as i32
+            c = 0
         }
         's_81: loop {
-            if !(c != 0 as i32
+            if !(c != 0
                 && c != end as i32
                 && c != end2 as i32
                 && c != end3 as i32
@@ -1039,17 +1012,17 @@ pub unsafe fn xmlStringLenDecodeEntities(
                 current_block = 13810333397648094191;
                 break;
             }
-            if c == 0 as i32 {
+            if c == 0 {
                 current_block = 13810333397648094191;
                 break;
             }
-            if c == '&' as i32 && unsafe { *str.offset(1 as i32 as isize) as i32 == '#' as i32 } {
-                let mut val: i32 = xmlParseStringCharRef(ctxt, &mut str);
-                if val == 0 as i32 {
+            if c == '&' as i32 && unsafe { *str.offset(1) as i32 == '#' as i32 } {
+                let val: i32 = xmlParseStringCharRef(ctxt, &mut str);
+                if val == 0 {
                     current_block = 7451279748152143041;
                     break;
                 }
-                if 0 as i32 == 1 as i32 {
+                if 0 == 1 {
                     let fresh29 = nbchars;
                     nbchars = nbchars.wrapping_add(1);
                     unsafe { *buffer.offset(fresh29 as isize) = val as xmlChar }
@@ -1058,19 +1031,17 @@ pub unsafe fn xmlStringLenDecodeEntities(
                         (nbchars as u64).wrapping_add(xmlCopyCharMultiByte(
                             &mut *buffer.offset(nbchars as isize),
                             val,
-                        ) as u64) as size_t as size_t
+                        ) as u64) as size_t
                     };
                 }
-                if nbchars.wrapping_add(100 as i32 as u64) > buffer_size {
+                if nbchars.wrapping_add(100) > buffer_size {
                     let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                    let mut new_size: size_t = buffer_size
-                        .wrapping_mul(2 as i32 as u64)
-                        .wrapping_add(100 as i32 as u64);
+                    let new_size: size_t = buffer_size.wrapping_mul(2).wrapping_add(100);
                     if new_size < buffer_size {
                         current_block = 13264933720371784297;
                         break;
                     }
-                    tmp = xmlRealloc_safe(buffer as *mut (), new_size) as *mut xmlChar;
+                    tmp = unsafe{xmlRealloc_safe(buffer as *mut (), new_size)} as *mut xmlChar;
                     if tmp.is_null() {
                         current_block = 13264933720371784297;
                         break;
@@ -1078,7 +1049,7 @@ pub unsafe fn xmlStringLenDecodeEntities(
                     buffer = tmp;
                     buffer_size = new_size
                 }
-            } else if c == '&' as i32 && what & 1 as i32 != 0 {
+            } else if c == '&' as i32 && what & 1 != 0 {
                 if unsafe { *__xmlParserDebugEntities() != 0 } {
                     unsafe {
                         (*__xmlGenericError()).expect("non-null function pointer")(
@@ -1091,47 +1062,42 @@ pub unsafe fn xmlStringLenDecodeEntities(
                 }
                 unsafe {
                     ent = xmlParseStringEntityRef(ctxt, &mut str);
-                    xmlParserEntityCheck(ctxt, 0 as i32 as size_t, ent, 0 as i32 as size_t);
+                    unsafe { xmlParserEntityCheck(ctxt, 0, ent, 0) };
                 }
                 if !ent.is_null() {
                     (safe_ctxt).nbentities = unsafe {
                         (safe_ctxt)
                             .nbentities
-                            .wrapping_add(((*ent).checked / 2 as i32) as u64)
+                            .wrapping_add(((*ent).checked / 2) as u64)
                     }
                 }
                 if !ent.is_null()
-                    && unsafe {
-                        (*ent).etype as u32 == XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
-                    }
+                    && unsafe { (*ent).etype as u32 == XML_INTERNAL_PREDEFINED_ENTITY as u32 }
                 {
                     if unsafe { !(*ent).content.is_null() } {
-                        if 0 as i32 == 1 as i32 {
+                        if 0 == 1 {
                             let fresh30 = nbchars;
                             nbchars = nbchars.wrapping_add(1);
                             unsafe {
-                                *buffer.offset(fresh30 as isize) =
-                                    *(*ent).content.offset(0 as i32 as isize);
+                                *buffer.offset(fresh30 as isize) = *(*ent).content.offset(0);
                             }
                         } else {
                             nbchars = unsafe {
                                 (nbchars as u64).wrapping_add(xmlCopyCharMultiByte(
                                     &mut *buffer.offset(nbchars as isize),
-                                    *(*ent).content.offset(0 as i32 as isize) as i32,
+                                    *(*ent).content.offset(0) as i32,
                                 )
                                     as u64) as size_t as size_t
                             }
                         }
-                        if nbchars.wrapping_add(100 as i32 as u64) > buffer_size {
+                        if nbchars.wrapping_add(100) > buffer_size {
                             let mut tmp_0: *mut xmlChar = 0 as *mut xmlChar;
-                            let mut new_size_0: size_t = buffer_size
-                                .wrapping_mul(2 as i32 as u64)
-                                .wrapping_add(100 as i32 as u64);
+                            let new_size_0: size_t = buffer_size.wrapping_mul(2).wrapping_add(100);
                             if new_size_0 < buffer_size {
                                 current_block = 13264933720371784297;
                                 break;
                             }
-                            tmp_0 = xmlRealloc_safe(buffer as *mut (), new_size_0) as *mut xmlChar;
+                            tmp_0 = unsafe{xmlRealloc_safe(buffer as *mut (), new_size_0)} as *mut xmlChar;
                             if tmp_0.is_null() {
                                 current_block = 13264933720371784297;
                                 break;
@@ -1157,43 +1123,41 @@ pub unsafe fn xmlStringLenDecodeEntities(
                             ctxt,
                             (*ent).content,
                             what,
-                            0 as i32 as xmlChar,
-                            0 as i32 as xmlChar,
-                            0 as i32 as xmlChar,
+                            0 as xmlChar,
+                            0 as xmlChar,
+                            0 as xmlChar,
                         )
                     };
                     (safe_ctxt).depth -= 1;
                     if rep.is_null() {
                         unsafe {
-                            *(*ent).content.offset(0 as i32 as isize) = 0 as i32 as xmlChar;
+                            *(*ent).content.offset(0) = 0 as xmlChar;
                         }
                         current_block = 7451279748152143041;
                         break;
                     } else {
                         current = rep;
-                        while unsafe { *current } as i32 != 0 as i32 {
+                        while unsafe { *current } as i32 != 0 {
                             /* non input consuming loop */
                             let fresh31 = current;
                             current = unsafe { current.offset(1) };
                             let fresh32 = nbchars;
                             nbchars = nbchars.wrapping_add(1);
                             unsafe { *buffer.offset(fresh32 as isize) = *fresh31 };
-                            if !(nbchars.wrapping_add(100 as i32 as u64) > buffer_size) {
+                            if !(nbchars.wrapping_add(100) > buffer_size) {
                                 continue;
                             }
-                            if xmlParserEntityCheck(ctxt, nbchars, ent, 0 as i32 as size_t) != 0 {
+                            if unsafe { xmlParserEntityCheck(ctxt, nbchars, ent, 0) } != 0 {
                                 current_block = 7451279748152143041;
                                 break 's_81;
                             }
                             let mut tmp_1: *mut xmlChar = 0 as *mut xmlChar;
-                            let mut new_size_1: size_t = buffer_size
-                                .wrapping_mul(2 as i32 as u64)
-                                .wrapping_add(100 as i32 as u64);
+                            let new_size_1: size_t = buffer_size.wrapping_mul(2).wrapping_add(100);
                             if new_size_1 < buffer_size {
                                 current_block = 13264933720371784297;
                                 break 's_81;
                             }
-                            tmp_1 = xmlRealloc_safe(buffer as *mut (), new_size_1) as *mut xmlChar;
+                            tmp_1 = unsafe{xmlRealloc_safe(buffer as *mut (), new_size_1)} as *mut xmlChar;
                             if tmp_1.is_null() {
                                 current_block = 13264933720371784297;
                                 break 's_81;
@@ -1201,32 +1165,28 @@ pub unsafe fn xmlStringLenDecodeEntities(
                             buffer = tmp_1;
                             buffer_size = new_size_1
                         }
-                        xmlFree_safe(rep as *mut ());
+                        unsafe{xmlFree_safe(rep as *mut ())};
                         rep = 0 as *mut xmlChar
                     }
                 } else if !ent.is_null() {
-                    let mut i: i32 = xmlStrlen_safe(unsafe { (*ent).name });
+                    let mut i: i32 = unsafe{xmlStrlen_safe(unsafe { (*ent).name })};
                     let mut cur: *const xmlChar = unsafe { (*ent).name };
                     let fresh33 = nbchars;
                     nbchars = nbchars.wrapping_add(1);
                     unsafe {
-                        *buffer.offset(fresh33 as isize) = '&' as i32 as xmlChar;
+                        *buffer.offset(fresh33 as isize) = '&' as xmlChar;
                     }
-                    if nbchars
-                        .wrapping_add(i as u64)
-                        .wrapping_add(100 as i32 as u64)
-                        > buffer_size
-                    {
+                    if nbchars.wrapping_add(i as u64).wrapping_add(100) > buffer_size {
                         let mut tmp_2: *mut xmlChar = 0 as *mut xmlChar;
-                        let mut new_size_2: size_t = buffer_size
-                            .wrapping_mul(2 as i32 as u64)
+                        let new_size_2: size_t = buffer_size
+                            .wrapping_mul(2)
                             .wrapping_add(i as u64)
-                            .wrapping_add(100 as i32 as u64);
+                            .wrapping_add(100);
                         if new_size_2 < buffer_size {
                             current_block = 13264933720371784297;
                             break;
                         }
-                        tmp_2 = xmlRealloc_safe(buffer as *mut (), new_size_2) as *mut xmlChar;
+                        tmp_2 = unsafe{xmlRealloc_safe(buffer as *mut (), new_size_2)} as *mut xmlChar;
                         if tmp_2.is_null() {
                             current_block = 13264933720371784297;
                             break;
@@ -1234,7 +1194,7 @@ pub unsafe fn xmlStringLenDecodeEntities(
                         buffer = tmp_2;
                         buffer_size = new_size_2
                     }
-                    while i > 0 as i32 {
+                    while i > 0 {
                         let fresh34 = cur;
                         cur = unsafe { cur.offset(1) };
                         let fresh35 = nbchars;
@@ -1244,9 +1204,9 @@ pub unsafe fn xmlStringLenDecodeEntities(
                     }
                     let fresh36 = nbchars;
                     nbchars = nbchars.wrapping_add(1);
-                    unsafe { *buffer.offset(fresh36 as isize) = ';' as i32 as xmlChar }
+                    unsafe { *buffer.offset(fresh36 as isize) = ';' as xmlChar }
                 }
-            } else if c == '%' as i32 && what & 2 as i32 != 0 {
+            } else if c == '%' as i32 && what & 2 != 0 {
                 if unsafe { *__xmlParserDebugEntities() != 0 } {
                     unsafe {
                         (*__xmlGenericError()).expect("non-null function pointer")(
@@ -1257,12 +1217,12 @@ pub unsafe fn xmlStringLenDecodeEntities(
                     }
                 }
                 ent = unsafe { xmlParseStringPEReference(ctxt, &mut str) };
-                xmlParserEntityCheck(ctxt, 0 as i32 as size_t, ent, 0 as i32 as size_t);
+                unsafe { xmlParserEntityCheck(ctxt, 0, ent, 0) };
                 if !ent.is_null() {
                     (safe_ctxt).nbentities = unsafe {
                         (safe_ctxt)
                             .nbentities
-                            .wrapping_add(((*ent).checked / 2 as i32) as u64)
+                            .wrapping_add(((*ent).checked / 2) as u64)
                     };
                 }
                 if !ent.is_null() {
@@ -1273,9 +1233,9 @@ pub unsafe fn xmlStringLenDecodeEntities(
                          * complete external PEReferences coming from the
                          * internal subset
                          */
-                        if (safe_ctxt).options & XML_PARSE_NOENT as i32 != 0 as i32
-                            || (safe_ctxt).options & XML_PARSE_DTDVALID as i32 != 0 as i32
-                            || (safe_ctxt).validate != 0 as i32
+                        if (safe_ctxt).options & XML_PARSE_NOENT as i32 != 0
+                            || (safe_ctxt).options & XML_PARSE_DTDVALID as i32 != 0
+                            || (safe_ctxt).validate != 0
                         {
                             unsafe {
                                 xmlLoadEntityContent(ctxt, ent);
@@ -1300,46 +1260,42 @@ pub unsafe fn xmlStringLenDecodeEntities(
                             ctxt,
                             (*ent).content,
                             what,
-                            0 as i32 as xmlChar,
-                            0 as i32 as xmlChar,
-                            0 as i32 as xmlChar,
+                            0 as xmlChar,
+                            0 as xmlChar,
+                            0 as xmlChar,
                         )
                     };
 
                     (safe_ctxt).depth -= 1;
                     if rep.is_null() {
                         if unsafe { !(*ent).content.is_null() } {
-                            unsafe {
-                                *(*ent).content.offset(0 as i32 as isize) = 0 as i32 as xmlChar
-                            }
+                            unsafe { *(*ent).content.offset(0) = 0 as xmlChar }
                         }
                         current_block = 7451279748152143041;
                         break;
                     } else {
                         current = rep;
-                        while unsafe { *current as i32 != 0 as i32 } {
+                        while unsafe { *current as i32 != 0 } {
                             /* non input consuming loop */
                             let fresh37 = current;
                             current = unsafe { current.offset(1) };
                             let fresh38 = nbchars;
                             nbchars = nbchars.wrapping_add(1);
                             unsafe { *buffer.offset(fresh38 as isize) = *fresh37 };
-                            if !(nbchars.wrapping_add(100 as i32 as u64) > buffer_size) {
+                            if !(nbchars.wrapping_add(100) > buffer_size) {
                                 continue;
                             }
-                            if xmlParserEntityCheck(ctxt, nbchars, ent, 0 as i32 as size_t) != 0 {
+                            if unsafe { xmlParserEntityCheck(ctxt, nbchars, ent, 0) } != 0 {
                                 current_block = 7451279748152143041;
                                 break 's_81;
                             }
                             let mut tmp_3: *mut xmlChar = 0 as *mut xmlChar;
-                            let mut new_size_3: size_t = buffer_size
-                                .wrapping_mul(2 as i32 as u64)
-                                .wrapping_add(100 as i32 as u64);
+                            let new_size_3: size_t = buffer_size.wrapping_mul(2).wrapping_add(100);
                             if new_size_3 < buffer_size {
                                 current_block = 13264933720371784297;
                                 break 's_81;
                             }
-                            tmp_3 = xmlRealloc_safe(buffer as *mut (), new_size_3) as *mut xmlChar;
+                            tmp_3 = unsafe{xmlRealloc_safe(buffer as *mut (), new_size_3)} as *mut xmlChar;
                             if tmp_3.is_null() {
                                 current_block = 13264933720371784297;
                                 break 's_81;
@@ -1347,12 +1303,12 @@ pub unsafe fn xmlStringLenDecodeEntities(
                             buffer = tmp_3;
                             buffer_size = new_size_3
                         }
-                        xmlFree_safe(rep as *mut ());
+                        unsafe{xmlFree_safe(rep as *mut ())};
                         rep = 0 as *mut xmlChar
                     }
                 }
             } else {
-                if l == 1 as i32 {
+                if l == 1 {
                     let fresh39 = nbchars;
                     nbchars = nbchars.wrapping_add(1);
                     unsafe { *buffer.offset(fresh39 as isize) = c as xmlChar }
@@ -1361,20 +1317,18 @@ pub unsafe fn xmlStringLenDecodeEntities(
                         (nbchars as u64).wrapping_add(xmlCopyCharMultiByte(
                             &mut *buffer.offset(nbchars as isize),
                             c,
-                        ) as u64) as size_t as size_t
+                        ) as u64) as size_t
                     }
                 }
                 str = unsafe { str.offset(l as isize) };
-                if nbchars.wrapping_add(100 as i32 as u64) > buffer_size {
+                if nbchars.wrapping_add(100) > buffer_size {
                     let mut tmp_4: *mut xmlChar = 0 as *mut xmlChar;
-                    let mut new_size_4: size_t = buffer_size
-                        .wrapping_mul(2 as i32 as u64)
-                        .wrapping_add(100 as i32 as u64);
+                    let new_size_4: size_t = buffer_size.wrapping_mul(2).wrapping_add(100);
                     if new_size_4 < buffer_size {
                         current_block = 13264933720371784297;
                         break;
                     }
-                    tmp_4 = xmlRealloc_safe(buffer as *mut (), new_size_4) as *mut xmlChar;
+                    tmp_4 = unsafe{xmlRealloc_safe(buffer as *mut (), new_size_4)} as *mut xmlChar;
                     if tmp_4.is_null() {
                         current_block = 13264933720371784297;
                         break;
@@ -1386,7 +1340,7 @@ pub unsafe fn xmlStringLenDecodeEntities(
             if str < last {
                 unsafe { c = xmlStringCurrentChar(ctxt, str, &mut l) }
             } else {
-                c = 0 as i32
+                c = 0
             }
         }
         match current_block {
@@ -1394,7 +1348,7 @@ pub unsafe fn xmlStringLenDecodeEntities(
             7451279748152143041 => {}
             _ => {
                 unsafe {
-                    *buffer.offset(nbchars as isize) = 0 as i32 as xmlChar;
+                    *buffer.offset(nbchars as isize) = 0 as xmlChar;
                 }
                 return buffer;
             }
@@ -1407,10 +1361,10 @@ pub unsafe fn xmlStringLenDecodeEntities(
         _ => {}
     }
     if !rep.is_null() {
-        xmlFree_safe(rep as *mut ());
+        unsafe{xmlFree_safe(rep as *mut ())};
     }
     if !buffer.is_null() {
-        xmlFree_safe(buffer as *mut ());
+        unsafe{xmlFree_safe(buffer as *mut ())};
     }
     return 0 as *mut xmlChar;
 }
@@ -1433,18 +1387,18 @@ pub unsafe fn xmlStringLenDecodeEntities(
 *      must deallocate it !
 */
 
-pub unsafe fn xmlStringDecodeEntities(
-    mut ctxt: xmlParserCtxtPtr,
-    mut str: *const xmlChar,
-    mut what: i32,
-    mut end: xmlChar,
-    mut end2: xmlChar,
-    mut end3: xmlChar,
+pub fn xmlStringDecodeEntities(
+    ctxt: xmlParserCtxtPtr,
+    str: *const xmlChar,
+    what: i32,
+    end: xmlChar,
+    end2: xmlChar,
+    end3: xmlChar,
 ) -> *mut xmlChar {
     if ctxt.is_null() || str.is_null() {
         return 0 as *mut xmlChar;
     }
-    return xmlStringLenDecodeEntities(ctxt, str, xmlStrlen_safe(str), what, end, end2, end3);
+    return xmlStringLenDecodeEntities(ctxt, str, unsafe{xmlStrlen_safe(str)}, what, end, end2, end3);
 }
 /* ***********************************************************************
 *									*
@@ -1462,12 +1416,7 @@ pub unsafe fn xmlStringDecodeEntities(
 *
 * Returns 1 if ignorable 0 otherwise.
 */
-unsafe fn areBlanks(
-    mut ctxt: xmlParserCtxtPtr,
-    mut str: *const xmlChar,
-    mut len: i32,
-    mut blank_chars: i32,
-) -> i32 {
+fn areBlanks(ctxt: xmlParserCtxtPtr, str: *const xmlChar, len: i32, blank_chars: i32) -> i32 {
     let mut i: i32 = 0;
     let mut ret: i32 = 0;
     let mut lastChild: xmlNodePtr = 0 as *mut xmlNode;
@@ -1476,22 +1425,20 @@ unsafe fn areBlanks(
      * used !
      */
     if unsafe { (*(*ctxt).sax).ignorableWhitespace == (*(*ctxt).sax).characters } {
-        return 0 as i32;
+        return 0;
     }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     /*
      * Check for xml:space value.
      */
-    if unsafe {
-        (*ctxt).space.is_null() || *(*ctxt).space == 1 as i32 || *(*ctxt).space == -(2 as i32)
-    } {
-        return 0 as i32;
+    if unsafe { (*ctxt).space.is_null() || *(*ctxt).space == 1 || *(*ctxt).space == -(2) } {
+        return 0;
     }
     /*
      * Check that the string is made of blanks
      */
-    if blank_chars == 0 as i32 {
-        i = 0 as i32;
+    if blank_chars == 0 {
+        i = 0;
         while i < len {
             if unsafe {
                 !(*str.offset(i as isize) as i32 == 0x20 as i32
@@ -1499,7 +1446,7 @@ unsafe fn areBlanks(
                         && *str.offset(i as isize) as i32 <= 0xa as i32
                     || *str.offset(i as isize) as i32 == 0xd as i32)
             } {
-                return 0 as i32;
+                return 0;
             }
             i += 1
         }
@@ -1508,15 +1455,15 @@ unsafe fn areBlanks(
      * Look if the element is mixed content in the DTD if available
      */
     if (safe_ctxt).node.is_null() {
-        return 0 as i32;
+        return 0;
     }
     if !(safe_ctxt).myDoc.is_null() {
         ret = unsafe { xmlIsMixedElement((safe_ctxt).myDoc, (*(*ctxt).node).name) };
-        if ret == 0 as i32 {
-            return 1 as i32;
+        if ret == 0 {
+            return 1;
         }
-        if ret == 1 as i32 {
-            return 0 as i32;
+        if ret == 1 {
+            return 0;
         }
     }
     /*
@@ -1525,40 +1472,40 @@ unsafe fn areBlanks(
     if unsafe {
         *(*(*ctxt).input).cur as i32 != '<' as i32 && *(*(*ctxt).input).cur as i32 != 0xd as i32
     } {
-        return 0 as i32;
+        return 0;
     }
     if unsafe {
         (*(*ctxt).node).children.is_null()
             && *(*(*ctxt).input).cur as i32 == '<' as i32
-            && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '/' as i32
+            && *(*(*ctxt).input).cur.offset(1) as i32 == '/' as i32
     } {
-        return 0 as i32;
+        return 0;
     }
-    lastChild = xmlGetLastChild_safe((safe_ctxt).node as *const xmlNode);
+    lastChild = unsafe{xmlGetLastChild_safe((safe_ctxt).node as *const xmlNode)};
     if lastChild.is_null() {
         if unsafe {
-            (*(*ctxt).node).type_0 as u32 != XML_ELEMENT_NODE as i32 as u32
+            (*(*ctxt).node).type_0 as u32 != XML_ELEMENT_NODE as u32
                 && !(*(*ctxt).node).content.is_null()
         } {
-            return 0 as i32;
+            return 0;
         }
-    } else if xmlNodeIsText_safe(lastChild as *const xmlNode) != 0 {
-        return 0 as i32;
+    } else if unsafe{xmlNodeIsText_safe(lastChild as *const xmlNode)} != 0 {
+        return 0;
     } else {
         if unsafe {
             !(*(*ctxt).node).children.is_null() && xmlNodeIsText((*(*ctxt).node).children) != 0
         } {
-            return 0 as i32;
+            return 0;
         }
     }
-    return 1 as i32;
+    return 1;
 }
 /* ***********************************************************************
 *									*
 *		Extra stuff for namespace support			*
 *	Relates to http://www.w3.org/TR/WD-xml-names			*
 *									*
-************************************************************************/
+ ************************************************************************/
 /* *
 * xmlSplitQName:
 * @ctxt:  an XML parser context
@@ -1577,15 +1524,15 @@ unsafe fn areBlanks(
 *   to get the Prefix if any.
 */
 
-pub unsafe fn xmlSplitQName(
-    mut ctxt: xmlParserCtxtPtr,
-    mut name: *const xmlChar,
-    mut prefix: *mut *mut xmlChar,
+pub fn xmlSplitQName(
+    ctxt: xmlParserCtxtPtr,
+    name: *const xmlChar,
+    prefix: *mut *mut xmlChar,
 ) -> *mut xmlChar {
     let mut buf: [xmlChar; 105] = [0; 105];
     let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
-    let mut len: i32 = 0 as i32;
-    let mut max: i32 = 100 as i32;
+    let mut len: i32 = 0;
+    let mut max: i32 = 100;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     let mut cur: *const xmlChar = name;
     let mut c: i32 = 0;
@@ -1602,11 +1549,11 @@ pub unsafe fn xmlSplitQName(
         _ => {}
         #[cfg(not(HAVE_parser_XML_XML_NAMESPACE))]
         _ => {
-            if unsafe { *cur.offset(0 as i32 as isize) as i32 == 'x' as i32 } {
-                if unsafe { *cur.offset(1 as i32 as isize) as i32 == 'm' as i32 } {
-                    if unsafe { *cur.offset(2 as i32 as isize) as i32 == 'l' as i32 } {
-                        if unsafe { *cur.offset(3 as i32 as isize) as i32 == ':' as i32 } {
-                            return xmlStrdup_safe(name);
+            if unsafe { *cur.offset(0) as i32 == 'x' as i32 } {
+                if unsafe { *cur.offset(1) as i32 == 'm' as i32 } {
+                    if unsafe { *cur.offset(2) as i32 == 'l' as i32 } {
+                        if unsafe { *cur.offset(3) as i32 == ':' as i32 } {
+                            return unsafe{xmlStrdup_safe(name)};
                         }
                     }
                 }
@@ -1615,15 +1562,15 @@ pub unsafe fn xmlSplitQName(
     };
 
     /* nasty but well=formed */
-    if unsafe { *cur.offset(0 as i32 as isize) as i32 == ':' as i32 } {
-        return xmlStrdup_safe(name);
+    if unsafe { *cur.offset(0) as i32 == ':' as i32 } {
+        return unsafe{xmlStrdup_safe(name)};
     }
     let fresh40 = cur;
     unsafe {
         cur = cur.offset(1);
         c = *fresh40 as i32;
     }
-    while c != 0 as i32 && c != ':' as i32 && len < max {
+    while c != 0 && c != ':' as i32 && len < max {
         /* tested bigname.xml */
         let fresh41 = len;
         len = len + 1;
@@ -1639,28 +1586,28 @@ pub unsafe fn xmlSplitQName(
          * Okay someone managed to make a huge name, so he's ready to pay
          * for the processing speed.
          */
-        max = len * 2 as i32;
-        buffer = xmlMallocAtomic_safe(
+        max = len * 2;
+        buffer = unsafe{xmlMallocAtomic_safe(
             (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-        ) as *mut xmlChar;
+        )} as *mut xmlChar;
         if buffer.is_null() {
             unsafe {
                 xmlErrMemory(ctxt, 0 as *const i8);
             }
             return 0 as *mut xmlChar;
         }
-        memcpy_safe(buffer as *mut (), buf.as_mut_ptr() as *const (), len as u64);
-        while c != 0 as i32 && c != ':' as i32 {
+        unsafe{memcpy_safe(buffer as *mut (), buf.as_mut_ptr() as *const (), len as u64)};
+        while c != 0 && c != ':' as i32 {
             /* tested bigname.xml */
-            if len + 10 as i32 > max {
+            if len + 10 > max {
                 let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                max *= 2 as i32;
-                tmp = xmlRealloc_safe(
+                max *= 2;
+                tmp = unsafe{xmlRealloc_safe(
                     buffer as *mut (),
                     (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                ) as *mut xmlChar;
+                )} as *mut xmlChar;
                 if tmp.is_null() {
-                    xmlFree_safe(buffer as *mut ());
+                    unsafe{xmlFree_safe(buffer as *mut ())};
                     unsafe {
                         xmlErrMemory(ctxt, 0 as *const i8);
                     }
@@ -1679,33 +1626,33 @@ pub unsafe fn xmlSplitQName(
                 c = *fresh44 as i32;
             }
         }
-        unsafe { *buffer.offset(len as isize) = 0 as i32 as xmlChar }
+        unsafe { *buffer.offset(len as isize) = 0 as xmlChar }
     }
-    if c == ':' as i32 && unsafe { *cur as i32 == 0 as i32 } {
+    if c == ':' as i32 && unsafe { *cur as i32 == 0 } {
         if !buffer.is_null() {
-            xmlFree_safe(buffer as *mut ());
+            unsafe{xmlFree_safe(buffer as *mut ())};
         }
         unsafe {
             *prefix = 0 as *mut xmlChar;
         }
-        return xmlStrdup_safe(name);
+        return unsafe{xmlStrdup_safe(name)};
     }
     if buffer.is_null() {
-        ret = xmlStrndup_safe(buf.as_mut_ptr(), len)
+        ret = unsafe{xmlStrndup_safe(buf.as_mut_ptr(), len)}
     } else {
         ret = buffer;
         buffer = 0 as *mut xmlChar;
-        max = 100 as i32
+        max = 100
     }
     if c == ':' as i32 {
         unsafe {
             c = *cur as i32;
             *prefix = ret;
         }
-        if c == 0 as i32 {
-            return xmlStrndup_safe(b"\x00" as *const u8 as *const i8 as *mut xmlChar, 0 as i32);
+        if c == 0 {
+            return unsafe{xmlStrndup_safe(b"\x00" as *const u8 as *const i8 as *mut xmlChar, 0)};
         }
-        len = 0 as i32;
+        len = 0;
         /*
          * Check that the first character is proper to start
          * a new name
@@ -1716,7 +1663,7 @@ pub unsafe fn xmlSplitQName(
             || c == ':' as i32)
         {
             let mut l: i32 = 0;
-            let mut first: i32 = unsafe { xmlStringCurrentChar(ctxt, cur, &mut l) };
+            let first: i32 = unsafe { xmlStringCurrentChar(ctxt, cur, &mut l) };
             if !((if first < 0x100 as i32 {
                 (0x41 as i32 <= first && first <= 0x5a as i32
                     || 0x61 as i32 <= first && first <= 0x7a as i32
@@ -1727,7 +1674,7 @@ pub unsafe fn xmlSplitQName(
                 unsafe { xmlCharInRange_safe(first as u32, unsafe { &xmlIsBaseCharGroup }) }
             }) != 0
                 || (if first < 0x100 as i32 {
-                    0 as i32
+                    0
                 } else {
                     (0x4e00 as i32 <= first && first <= 0x9fa5 as i32
                         || first == 0x3007 as i32
@@ -1747,7 +1694,7 @@ pub unsafe fn xmlSplitQName(
             }
         }
         cur = unsafe { cur.offset(1) };
-        while c != 0 as i32 && len < max {
+        while c != 0 && len < max {
             /* tested bigname2.xml */
             let fresh45 = len;
             len = len + 1;
@@ -1763,31 +1710,31 @@ pub unsafe fn xmlSplitQName(
              * Okay someone managed to make a huge name, so he's ready to pay
              * for the processing speed.
              */
-            max = len * 2 as i32;
-            buffer = xmlMallocAtomic_safe(
+            max = len * 2;
+            buffer = unsafe{xmlMallocAtomic_safe(
                 (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-            ) as *mut xmlChar;
+            )} as *mut xmlChar;
             if buffer.is_null() {
                 unsafe {
                     xmlErrMemory(ctxt, 0 as *const i8);
                 }
                 return 0 as *mut xmlChar;
             }
-            memcpy_safe(buffer as *mut (), buf.as_mut_ptr() as *const (), len as u64);
-            while c != 0 as i32 {
+            unsafe{memcpy_safe(buffer as *mut (), buf.as_mut_ptr() as *const (), len as u64)};
+            while c != 0 {
                 /* tested bigname2.xml */
-                if len + 10 as i32 > max {
+                if len + 10 > max {
                     let mut tmp_0: *mut xmlChar = 0 as *mut xmlChar;
-                    max *= 2 as i32;
-                    tmp_0 = xmlRealloc_safe(
+                    max *= 2;
+                    tmp_0 = unsafe{xmlRealloc_safe(
                         buffer as *mut (),
                         (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                    ) as *mut xmlChar;
+                    )} as *mut xmlChar;
                     if tmp_0.is_null() {
                         unsafe {
                             xmlErrMemory(ctxt, 0 as *const i8);
                         }
-                        xmlFree_safe(buffer as *mut ());
+                        unsafe{xmlFree_safe(buffer as *mut ())};
                         return 0 as *mut xmlChar;
                     }
                     buffer = tmp_0
@@ -1803,10 +1750,10 @@ pub unsafe fn xmlSplitQName(
                     c = *fresh48 as i32
                 }
             }
-            unsafe { *buffer.offset(len as isize) = 0 as i32 as xmlChar }
+            unsafe { *buffer.offset(len as isize) = 0 as xmlChar }
         }
         if buffer.is_null() {
-            ret = xmlStrndup_safe(buf.as_mut_ptr(), len)
+            ret = unsafe{xmlStrndup_safe(buf.as_mut_ptr(), len)}
         } else {
             ret = buffer
         }
@@ -1818,7 +1765,7 @@ pub unsafe fn xmlSplitQName(
 *			The parser itself				*
 *	Relates to http://www.w3.org/TR/REC-xml				*
 *									*
-************************************************************************/
+ ************************************************************************/
 /* ***********************************************************************
 *									*
 *	Routines to parse Name, NCName and NmToken			*
@@ -1826,17 +1773,17 @@ pub unsafe fn xmlSplitQName(
 ************************************************************************/
 
 #[cfg(HAVE_parser_DEBUG)]
-const nbParseName: i64 = 0 as i64;
+const nbParseName: i64 = 0;
 #[cfg(HAVE_parser_DEBUG)]
-const nbParseNmToken: i64 = 0 as i64;
+const nbParseNmToken: i64 = 0;
 #[cfg(HAVE_parser_DEBUG)]
-const nbParseNCName: i64 = 0 as i64;
+const nbParseNCName: i64 = 0;
 #[cfg(HAVE_parser_DEBUG)]
-const nbParseNCNameComplex: i64 = 0 as i64;
+const nbParseNCNameComplex: i64 = 0;
 #[cfg(HAVE_parser_DEBUG)]
-const nbParseNameComplex: i64 = 0 as i64;
+const nbParseNameComplex: i64 = 0;
 #[cfg(HAVE_parser_DEBUG)]
-const nbParseStringName: i64 = 0 as i64;
+const nbParseStringName: i64 = 0;
 
 /*
 * The two following functions are related to the change of accepted
@@ -1848,9 +1795,9 @@ const nbParseStringName: i64 = 0 as i64;
 * We still keep compatibility to pre-revision5 parsing semantic if the
 * new XML_PARSE_OLD10 option is given to the parser.
 */
-unsafe fn xmlIsNameStartChar(mut ctxt: xmlParserCtxtPtr, mut c: i32) -> i32 {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).options & XML_PARSE_OLD10 as i32 == 0 as i32 {
+fn xmlIsNameStartChar(ctxt: xmlParserCtxtPtr, c: i32) -> i32 {
+    let safe_ctxt = unsafe { &mut *ctxt };
+    if (safe_ctxt).options & XML_PARSE_OLD10 as i32 == 0 {
         /*
          * Use the new checks of production [4] [4a] amd [5] of the
          * Update 5 of XML-1.0
@@ -1875,7 +1822,7 @@ unsafe fn xmlIsNameStartChar(mut ctxt: xmlParserCtxtPtr, mut c: i32) -> i32 {
                 || c >= 0xfdf0 as i32 && c <= 0xfffd as i32
                 || c >= 0x10000 as i32 && c <= 0xeffff as i32)
         {
-            return 1 as i32;
+            return 1;
         }
     } else if (if c < 0x100 as i32 {
         (0x41 as i32 <= c && c <= 0x5a as i32
@@ -1884,10 +1831,10 @@ unsafe fn xmlIsNameStartChar(mut ctxt: xmlParserCtxtPtr, mut c: i32) -> i32 {
             || 0xd8 as i32 <= c && c <= 0xf6 as i32
             || 0xf8 as i32 <= c) as i32
     } else {
-        xmlCharInRange_safe(c as u32, unsafe { &xmlIsBaseCharGroup })
+        unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsBaseCharGroup })}
     }) != 0
         || (if c < 0x100 as i32 {
-            0 as i32
+            0
         } else {
             (0x4e00 as i32 <= c && c <= 0x9fa5 as i32
                 || c == 0x3007 as i32
@@ -1896,13 +1843,13 @@ unsafe fn xmlIsNameStartChar(mut ctxt: xmlParserCtxtPtr, mut c: i32) -> i32 {
         || c == '_' as i32
         || c == ':' as i32
     {
-        return 1 as i32;
+        return 1;
     }
-    return 0 as i32;
+    return 0;
 }
-unsafe fn xmlIsNameChar(mut ctxt: xmlParserCtxtPtr, mut c: i32) -> i32 {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).options & XML_PARSE_OLD10 as i32 == 0 as i32 {
+fn xmlIsNameChar(ctxt: xmlParserCtxtPtr, c: i32) -> i32 {
+    let safe_ctxt = unsafe { &mut *ctxt };
+    if (safe_ctxt).options & XML_PARSE_OLD10 as i32 == 0 {
         /*
          * Use the new checks of production [4] [4a] amd [5] of the
          * Update 5 of XML-1.0
@@ -1933,7 +1880,7 @@ unsafe fn xmlIsNameChar(mut ctxt: xmlParserCtxtPtr, mut c: i32) -> i32 {
                 || c >= 0xfdf0 as i32 && c <= 0xfffd as i32
                 || c >= 0x10000 as i32 && c <= 0xeffff as i32)
         {
-            return 1 as i32;
+            return 1;
         }
     } else if (if c < 0x100 as i32 {
         (0x41 as i32 <= c && c <= 0x5a as i32
@@ -1942,10 +1889,10 @@ unsafe fn xmlIsNameChar(mut ctxt: xmlParserCtxtPtr, mut c: i32) -> i32 {
             || 0xd8 as i32 <= c && c <= 0xf6 as i32
             || 0xf8 as i32 <= c) as i32
     } else {
-        xmlCharInRange_safe(c as u32, unsafe { &xmlIsBaseCharGroup })
+        unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsBaseCharGroup })}
     }) != 0
         || (if c < 0x100 as i32 {
-            0 as i32
+            0
         } else {
             (0x4e00 as i32 <= c && c <= 0x9fa5 as i32
                 || c == 0x3007 as i32
@@ -1954,33 +1901,33 @@ unsafe fn xmlIsNameChar(mut ctxt: xmlParserCtxtPtr, mut c: i32) -> i32 {
         || (if c < 0x100 as i32 {
             (0x30 as i32 <= c && c <= 0x39 as i32) as i32
         } else {
-            xmlCharInRange_safe(c as u32, unsafe { &xmlIsDigitGroup })
+            unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsDigitGroup })}
         }) != 0
         || c == '.' as i32
         || c == '-' as i32
         || c == '_' as i32
         || c == ':' as i32
         || (if c < 0x100 as i32 {
-            0 as i32
+            0
         } else {
-            xmlCharInRange_safe(c as u32, unsafe { &xmlIsCombiningGroup })
+            unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsCombiningGroup })}
         }) != 0
         || (if c < 0x100 as i32 {
             (c == 0xb7 as i32) as i32
         } else {
-            xmlCharInRange_safe(c as u32, unsafe { &xmlIsExtenderGroup })
+            unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsExtenderGroup })}
         }) != 0
     {
-        return 1 as i32;
+        return 1;
     }
-    return 0 as i32;
+    return 0;
 }
-unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut len: i32 = 0 as i32;
+fn xmlParseNameComplex(ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+    let safe_ctxt = unsafe { &mut *ctxt };
+    let mut len: i32 = 0;
     let mut l: i32 = 0;
     let mut c: i32 = 0;
-    let mut count: i32 = 0 as i32;
+    let mut count: i32 = 0;
 
     match () {
         #[cfg(HAVE_parser_DEBUG)]
@@ -1994,10 +1941,8 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     /*
      * Handler for more complex cases
      */
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
@@ -2005,7 +1950,7 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         return 0 as *const xmlChar;
     }
     c = unsafe { xmlCurrentChar(ctxt, &mut l) };
-    if (safe_ctxt).options & XML_PARSE_OLD10 as i32 == 0 as i32 {
+    if (safe_ctxt).options & XML_PARSE_OLD10 as i32 == 0 {
         /*
          * Use the new checks of production [4] [4a] amd [5] of the
          * Update 5 of XML-1.0
@@ -2036,7 +1981,7 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
             unsafe {
                 (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1 as i32
+                (*(*ctxt).input).col = 1
             }
         } else {
             unsafe { (*(*ctxt).input).col += 1 }
@@ -2073,12 +2018,11 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         {
             let fresh49 = count;
             count = count + 1;
-            if fresh49 > 100 as i32 {
-                count = 0 as i32;
+            if fresh49 > 100 {
+                count = 0;
                 if unsafe {
-                    (*ctxt).progressive == 0 as i32
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < 250 as i32 as i64
+                    (*ctxt).progressive == 0
+                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                 } {
                     xmlGROW(ctxt);
                 }
@@ -2090,7 +2034,7 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
                 unsafe {
                     (*(*ctxt).input).line += 1;
-                    (*(*ctxt).input).col = 1 as i32
+                    (*(*ctxt).input).col = 1
                 }
             } else {
                 unsafe { (*(*ctxt).input).col += 1 }
@@ -2111,10 +2055,10 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
                     || 0xd8 as i32 <= c && c <= 0xf6 as i32
                     || 0xf8 as i32 <= c) as i32
             } else {
-                xmlCharInRange_safe(c as u32, unsafe { &xmlIsBaseCharGroup })
+                unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsBaseCharGroup })}
             }) != 0
                 || (if c < 0x100 as i32 {
-                    0 as i32
+                    0
                 } else {
                     (0x4e00 as i32 <= c && c <= 0x9fa5 as i32
                         || c == 0x3007 as i32
@@ -2129,7 +2073,7 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
             unsafe {
                 (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1 as i32
+                (*(*ctxt).input).col = 1
             }
         } else {
             unsafe { (*(*ctxt).input).col += 1 }
@@ -2148,10 +2092,10 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
                     || 0xd8 as i32 <= c && c <= 0xf6 as i32
                     || 0xf8 as i32 <= c) as i32
             } else {
-                xmlCharInRange_safe(c as u32, unsafe { &xmlIsBaseCharGroup })
+                unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsBaseCharGroup })}
             }) != 0
                 || (if c < 0x100 as i32 {
-                    0 as i32
+                    0
                 } else {
                     (0x4e00 as i32 <= c && c <= 0x9fa5 as i32
                         || c == 0x3007 as i32
@@ -2160,31 +2104,30 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
                 || (if c < 0x100 as i32 {
                     (0x30 as i32 <= c && c <= 0x39 as i32) as i32
                 } else {
-                    xmlCharInRange_safe(c as u32, unsafe { &xmlIsDigitGroup })
+                    unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsDigitGroup })}
                 }) != 0
                 || c == '.' as i32
                 || c == '-' as i32
                 || c == '_' as i32
                 || c == ':' as i32
                 || (if c < 0x100 as i32 {
-                    0 as i32
+                    0
                 } else {
-                    xmlCharInRange_safe(c as u32, unsafe { &xmlIsCombiningGroup })
+                    unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsCombiningGroup })}
                 }) != 0
                 || (if c < 0x100 as i32 {
                     (c == 0xb7 as i32) as i32
                 } else {
-                    xmlCharInRange_safe(c as u32, unsafe { &xmlIsExtenderGroup })
+                    unsafe{xmlCharInRange_safe(c as u32, unsafe { &xmlIsExtenderGroup })}
                 }) != 0)
         {
             let fresh50 = count;
             count = count + 1;
-            if fresh50 > 100 as i32 {
-                count = 0 as i32;
+            if fresh50 > 100 {
+                count = 0;
                 if unsafe {
-                    (*ctxt).progressive == 0 as i32
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < 250 as i32 as i64
+                    (*ctxt).progressive == 0
+                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                 } {
                     xmlGROW(ctxt);
                 }
@@ -2196,7 +2139,7 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
                 unsafe {
                     (*(*ctxt).input).line += 1;
-                    (*(*ctxt).input).col = 1 as i32
+                    (*(*ctxt).input).col = 1
                 }
             } else {
                 unsafe { (*(*ctxt).input).col += 1 }
@@ -2207,7 +2150,7 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             }
         }
     }
-    if len > 50000 as i32 && unsafe { (*ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 } {
+    if len > 50000 && unsafe { (*ctxt).options & XML_PARSE_HUGE as i32 == 0 } {
         unsafe {
             xmlFatalErr(
                 ctxt,
@@ -2234,12 +2177,12 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     }
     if unsafe {
         *(*(*ctxt).input).cur as i32 == '\n' as i32
-            && *(*(*ctxt).input).cur.offset(-(1 as i32) as isize) as i32 == '\r' as i32
+            && *(*(*ctxt).input).cur.offset(-(1) as isize) as i32 == '\r' as i32
     } {
         return unsafe {
             xmlDictLookup_safe(
                 (*ctxt).dict,
-                (*(*ctxt).input).cur.offset(-((len + 1 as i32) as isize)),
+                (*(*ctxt).input).cur.offset(-((len + 1) as isize)),
                 len,
             )
         };
@@ -2268,13 +2211,13 @@ unsafe fn xmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 * Returns the Name parsed or NULL
 */
 
-pub unsafe fn xmlParseName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+pub fn xmlParseName(ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
     let mut ret: *const xmlChar = 0 as *const xmlChar;
-    let mut count: i32 = 0 as i32;
+    let mut count: i32 = 0;
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
+        (*ctxt).progressive == 0
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
     } {
         xmlGROW(ctxt);
     }
@@ -2310,11 +2253,9 @@ pub unsafe fn xmlParseName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         } {
             in_0 = unsafe { in_0.offset(1) };
         }
-        if unsafe { *in_0 as i32 > 0 as i32 && (*in_0 as i32) < 0x80 as i32 } {
-            count = unsafe { in_0.offset_from((*(*ctxt).input).cur) as i64 as i32 };
-            if count > 50000 as i32
-                && unsafe { (*ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 }
-            {
+        if unsafe { *in_0 as i32 > 0 && (*in_0 as i32) < 0x80 as i32 } {
+            count = unsafe { in_0.offset_from((*(*ctxt).input).cur) as i32 };
+            if count > 50000 && unsafe { (*ctxt).options & XML_PARSE_HUGE as i32 == 0 } {
                 unsafe {
                     xmlFatalErr(
                         ctxt,
@@ -2340,13 +2281,13 @@ pub unsafe fn xmlParseName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     /* accelerator for special cases */
     return xmlParseNameComplex(ctxt);
 }
-unsafe fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
-    let mut len: i32 = 0 as i32;
+fn xmlParseNCNameComplex(ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+    let mut len: i32 = 0;
     let mut l: i32 = 0;
     let mut c: i32 = 0;
-    let mut count: i32 = 0 as i32;
-    let mut startPosition: size_t = 0 as i32 as size_t;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut count: i32 = 0;
+    let mut startPosition: size_t = 0;
+    let safe_ctxt = unsafe { &mut *ctxt };
     match () {
         #[cfg(HAVE_parser_DEBUG)]
         _ => {
@@ -2359,15 +2300,12 @@ unsafe fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     /*
      * Handler for more complex cases
      */
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
-    startPosition =
-        unsafe { (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 as size_t };
+    startPosition = unsafe { (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as size_t };
     c = unsafe { xmlCurrentChar(ctxt, &mut l) };
     if c == ' ' as i32
         || c == '>' as i32
@@ -2383,8 +2321,8 @@ unsafe fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     {
         let fresh51 = count;
         count = count + 1;
-        if fresh51 > 100 as i32 {
-            if len > 50000 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 {
+        if fresh51 > 100 {
+            if len > 50000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                 unsafe {
                     xmlFatalErr(
                         ctxt,
@@ -2394,12 +2332,9 @@ unsafe fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
                 }
                 return 0 as *const xmlChar;
             }
-            count = 0 as i32;
-            if (safe_ctxt).progressive == 0 as i32
-                && unsafe {
-                    ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
-                }
+            count = 0;
+            if (safe_ctxt).progressive == 0
+                && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
             {
                 xmlGROW(ctxt);
             }
@@ -2411,7 +2346,7 @@ unsafe fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
         if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
             unsafe {
                 (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1 as i32
+                (*(*ctxt).input).col = 1
             }
         } else {
             unsafe { (*(*ctxt).input).col += 1 }
@@ -2420,19 +2355,16 @@ unsafe fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize);
             c = xmlCurrentChar(ctxt, &mut l);
         }
-        if c == 0 as i32 {
-            count = 0 as i32;
+        if c == 0 {
+            count = 0;
             /*
              * when shrinking to extend the buffer we really need to preserve
              * the part of the name we already parsed. Hence rolling back
              * by current length.
              */
             unsafe { (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(-(l as isize)) };
-            if (safe_ctxt).progressive == 0 as i32
-                && unsafe {
-                    ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
-                }
+            if (safe_ctxt).progressive == 0
+                && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
             {
                 xmlGROW(ctxt);
             }
@@ -2445,7 +2377,7 @@ unsafe fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             }
         }
     }
-    if len > 50000 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 {
+    if len > 50000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
         unsafe {
             xmlFatalErr(
                 ctxt,
@@ -2477,11 +2409,11 @@ unsafe fn xmlParseNCNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 *
 * Returns the Name parsed or NULL
 */
-unsafe fn xmlParseNCName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+fn xmlParseNCName(ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
     let mut e: *const xmlChar = 0 as *const xmlChar;
     let mut ret: *const xmlChar = 0 as *const xmlChar;
-    let mut count: i32 = 0 as i32;
+    let mut count: i32 = 0;
 
     match () {
         #[cfg(HAVE_parser_DEBUG)]
@@ -2518,11 +2450,9 @@ unsafe fn xmlParseNCName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             in_0 = unsafe { in_0.offset(1) };
         }
         if !(in_0 >= e) {
-            if unsafe { *in_0 as i32 > 0 as i32 && (*in_0 as i32) < 0x80 as i32 } {
-                count = unsafe { in_0.offset_from((*(*ctxt).input).cur) as i64 as i32 };
-                if count > 50000 as i32
-                    && unsafe { (*ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 }
-                {
+            if unsafe { *in_0 as i32 > 0 && (*in_0 as i32) < 0x80 as i32 } {
+                count = unsafe { in_0.offset_from((*(*ctxt).input).cur) as i32 };
+                if count > 50000 && unsafe { (*ctxt).options & XML_PARSE_HUGE as i32 == 0 } {
                     unsafe {
                         xmlFatalErr(
                             ctxt,
@@ -2558,18 +2488,13 @@ unsafe fn xmlParseNCName(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 * Returns NULL for an illegal name, (xmlChar*) 1 for success
 * and the name for mismatch
 */
-unsafe fn xmlParseNameAndCompare(
-    mut ctxt: xmlParserCtxtPtr,
-    mut other: *const xmlChar,
-) -> *const xmlChar {
+fn xmlParseNameAndCompare(ctxt: xmlParserCtxtPtr, other: *const xmlChar) -> *const xmlChar {
     let mut cmp: *const xmlChar = other;
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
     let mut ret: *const xmlChar = 0 as *const xmlChar;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+    let safe_ctxt = unsafe { &mut *ctxt };
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
@@ -2577,14 +2502,14 @@ unsafe fn xmlParseNameAndCompare(
         return 0 as *const xmlChar;
     }
     in_0 = unsafe { (*(*ctxt).input).cur };
-    while unsafe { *in_0 as i32 != 0 as i32 && *in_0 as i32 == *cmp as i32 } {
+    while unsafe { *in_0 as i32 != 0 && *in_0 as i32 == *cmp as i32 } {
         unsafe {
             in_0 = in_0.offset(1);
             cmp = cmp.offset(1);
         }
     }
     if unsafe {
-        *cmp as i32 == 0 as i32
+        *cmp as i32 == 0
             && (*in_0 as i32 == '>' as i32
                 || (*in_0 as i32 == 0x20 as i32
                     || 0x9 as i32 <= *in_0 as i32 && *in_0 as i32 <= 0xa as i32
@@ -2597,13 +2522,13 @@ unsafe fn xmlParseNameAndCompare(
                 as i32;
             (*(*ctxt).input).cur = in_0;
         }
-        return 1 as i32 as *const xmlChar;
+        return 1 as *const xmlChar;
     }
     /* failure (or end of input buffer), check with full function */
     ret = xmlParseName(ctxt);
     /* strings coming from the dictionary direct compare possible */
     if ret == other {
-        return 1 as i32 as *const xmlChar;
+        return 1 as *const xmlChar;
     }
     return ret;
 }
@@ -2624,16 +2549,13 @@ unsafe fn xmlParseNameAndCompare(
 * Returns the Name parsed or NULL. The @str pointer
 * is updated to the current location in the string.
 */
-unsafe fn xmlParseStringName(
-    mut ctxt: xmlParserCtxtPtr,
-    mut str: *mut *const xmlChar,
-) -> *mut xmlChar {
+fn xmlParseStringName(ctxt: xmlParserCtxtPtr, str: *mut *const xmlChar) -> *mut xmlChar {
     let mut buf: [xmlChar; 105] = [0; 105];
     let mut cur: *const xmlChar = unsafe { *str };
-    let mut len: i32 = 0 as i32;
+    let mut len: i32 = 0;
     let mut l: i32 = 0;
     let mut c: i32 = 0;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     match () {
         #[cfg(HAVE_parser_DEBUG)]
         _ => {
@@ -2647,7 +2569,7 @@ unsafe fn xmlParseStringName(
     if unsafe { xmlIsNameStartChar(ctxt, c) == 0 } {
         return 0 as *mut xmlChar;
     }
-    if l == 1 as i32 {
+    if l == 1 {
         let fresh52 = len;
         len = len + 1;
         buf[fresh52 as usize] = c as xmlChar
@@ -2659,7 +2581,7 @@ unsafe fn xmlParseStringName(
         c = xmlStringCurrentChar(ctxt, cur, &mut l);
     }
     while xmlIsNameChar(ctxt, c) != 0 {
-        if l == 1 as i32 {
+        if l == 1 {
             let fresh53 = len;
             len = len + 1;
             buf[fresh53 as usize] = c as xmlChar
@@ -2670,29 +2592,28 @@ unsafe fn xmlParseStringName(
             cur = cur.offset(l as isize);
             c = xmlStringCurrentChar(ctxt, cur, &mut l);
         }
-        if len >= 100 as i32 {
+        if len >= 100 {
             /* test bigentname.xml */
             /*
              * Okay someone managed to make a huge name, so he's ready to pay
              * for the processing speed.
              */
             let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
-            let mut max: i32 = len * 2 as i32;
-            buffer = xmlMallocAtomic_safe(
+            let mut max: i32 = len * 2;
+            buffer = unsafe{xmlMallocAtomic_safe(
                 (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-            ) as *mut xmlChar;
+            )} as *mut xmlChar;
             if buffer.is_null() {
                 unsafe {
                     xmlErrMemory(ctxt, 0 as *const i8);
                 }
                 return 0 as *mut xmlChar;
             }
-            memcpy_safe(buffer as *mut (), buf.as_mut_ptr() as *const (), len as u64);
+            unsafe{memcpy_safe(buffer as *mut (), buf.as_mut_ptr() as *const (), len as u64)};
             while xmlIsNameChar(ctxt, c) != 0 {
-                if len + 10 as i32 > max {
+                if len + 10 > max {
                     let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                    if len > 50000 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-                    {
+                    if len > 50000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                         unsafe {
                             xmlFatalErr(
                                 ctxt,
@@ -2700,24 +2621,24 @@ unsafe fn xmlParseStringName(
                                 b"NCName\x00" as *const u8 as *const i8,
                             );
                         }
-                        xmlFree_safe(buffer as *mut ());
+                        unsafe{xmlFree_safe(buffer as *mut ())};
                         return 0 as *mut xmlChar;
                     }
-                    max *= 2 as i32;
-                    tmp = xmlRealloc_safe(
+                    max *= 2;
+                    tmp = unsafe{xmlRealloc_safe(
                         buffer as *mut (),
                         (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                    ) as *mut xmlChar;
+                    )} as *mut xmlChar;
                     if tmp.is_null() {
                         unsafe {
                             xmlErrMemory(ctxt, 0 as *const i8);
                         }
-                        xmlFree_safe(buffer as *mut ());
+                        unsafe{xmlFree_safe(buffer as *mut ())};
                         return 0 as *mut xmlChar;
                     }
                     buffer = tmp
                 }
-                if l == 1 as i32 {
+                if l == 1 {
                     let fresh54 = len;
                     len = len + 1;
                     unsafe { *buffer.offset(fresh54 as isize) = c as xmlChar }
@@ -2730,13 +2651,13 @@ unsafe fn xmlParseStringName(
                 }
             }
             unsafe {
-                *buffer.offset(len as isize) = 0 as i32 as xmlChar;
+                *buffer.offset(len as isize) = 0 as xmlChar;
                 *str = cur;
             }
             return buffer;
         }
     }
-    if len > 50000 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 {
+    if len > 50000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
         unsafe {
             xmlFatalErr(
                 ctxt,
@@ -2749,7 +2670,7 @@ unsafe fn xmlParseStringName(
     unsafe {
         *str = cur;
     }
-    return xmlStrndup_safe(buf.as_mut_ptr(), len);
+    return unsafe{xmlStrndup_safe(buf.as_mut_ptr(), len)};
 }
 /* *
 * xmlParseNmtoken:
@@ -2764,13 +2685,13 @@ unsafe fn xmlParseStringName(
 * Returns the Nmtoken parsed or NULL
 */
 
-pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
+pub fn xmlParseNmtoken(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut buf: [xmlChar; 105] = [0; 105];
-    let mut len: i32 = 0 as i32;
+    let mut len: i32 = 0;
     let mut l: i32 = 0;
     let mut c: i32 = 0;
-    let mut count: i32 = 0 as i32;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut count: i32 = 0;
+    let safe_ctxt = unsafe { &mut *ctxt };
 
     match () {
         #[cfg(HAVE_parser_DEBUG)]
@@ -2781,10 +2702,8 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
         _ => {}
     };
 
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
@@ -2797,18 +2716,15 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     while xmlIsNameChar(ctxt, c) != 0 {
         let fresh55 = count;
         count = count + 1;
-        if fresh55 > 100 as i32 {
-            count = 0 as i32;
-            if (safe_ctxt).progressive == 0 as i32
-                && unsafe {
-                    ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
-                }
+        if fresh55 > 100 {
+            count = 0;
+            if (safe_ctxt).progressive == 0
+                && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
             {
                 xmlGROW(ctxt);
             }
         }
-        if l == 1 as i32 {
+        if l == 1 {
             let fresh56 = len;
             len = len + 1;
             buf[fresh56 as usize] = c as xmlChar
@@ -2818,7 +2734,7 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
         if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
             unsafe {
                 (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1 as i32;
+                (*(*ctxt).input).col = 1;
             }
         } else {
             unsafe {
@@ -2829,12 +2745,11 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
             (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize);
             c = xmlCurrentChar(ctxt, &mut l);
         }
-        if c == 0 as i32 {
-            count = 0 as i32;
+        if c == 0 {
+            count = 0;
             if unsafe {
-                (*ctxt).progressive == 0 as i32
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
+                (*ctxt).progressive == 0
+                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
             } {
                 xmlGROW(ctxt);
             }
@@ -2843,44 +2758,42 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
             }
             c = unsafe { xmlCurrentChar(ctxt, &mut l) };
         }
-        if len >= 100 as i32 {
+        if len >= 100 {
             /*
              * Okay someone managed to make a huge token, so he's ready to pay
              * for the processing speed.
              */
             let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
-            let mut max: i32 = len * 2 as i32;
-            buffer = xmlMallocAtomic_safe(
+            let mut max: i32 = len * 2;
+            buffer = unsafe{xmlMallocAtomic_safe(
                 (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-            ) as *mut xmlChar;
+            )} as *mut xmlChar;
             if buffer.is_null() {
                 unsafe {
                     xmlErrMemory(ctxt, 0 as *const i8);
                 }
                 return 0 as *mut xmlChar;
             }
-            memcpy_safe(buffer as *mut (), buf.as_mut_ptr() as *const (), len as u64);
+            unsafe{memcpy_safe(buffer as *mut (), buf.as_mut_ptr() as *const (), len as u64)};
             while xmlIsNameChar(ctxt, c) != 0 {
                 let fresh57 = count;
                 count = count + 1;
-                if fresh57 > 100 as i32 {
-                    count = 0 as i32;
+                if fresh57 > 100 {
+                    count = 0;
                     if unsafe {
-                        (*ctxt).progressive == 0 as i32
-                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                < 250 as i32 as i64
+                        (*ctxt).progressive == 0
+                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                     } {
                         xmlGROW(ctxt);
                     }
                     if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-                        xmlFree_safe(buffer as *mut ());
+                        unsafe{xmlFree_safe(buffer as *mut ())};
                         return 0 as *mut xmlChar;
                     }
                 }
-                if len + 10 as i32 > max {
+                if len + 10 > max {
                     let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                    if max > 50000 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-                    {
+                    if max > 50000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                         unsafe {
                             xmlFatalErr(
                                 ctxt,
@@ -2888,24 +2801,24 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
                                 b"NmToken\x00" as *const u8 as *const i8,
                             );
                         }
-                        xmlFree_safe(buffer as *mut ());
+                        unsafe{xmlFree_safe(buffer as *mut ())};
                         return 0 as *mut xmlChar;
                     }
-                    max *= 2 as i32;
-                    tmp = xmlRealloc_safe(
+                    max *= 2;
+                    tmp = unsafe{xmlRealloc_safe(
                         buffer as *mut (),
                         (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                    ) as *mut xmlChar;
+                    )} as *mut xmlChar;
                     if tmp.is_null() {
                         unsafe {
                             xmlErrMemory(ctxt, 0 as *const i8);
                         }
-                        xmlFree_safe(buffer as *mut ());
+                        unsafe{xmlFree_safe(buffer as *mut ())};
                         return 0 as *mut xmlChar;
                     }
                     buffer = tmp
                 }
-                if l == 1 as i32 {
+                if l == 1 {
                     let fresh58 = len;
                     len = len + 1;
                     unsafe { *buffer.offset(fresh58 as isize) = c as xmlChar };
@@ -2915,7 +2828,7 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
                 if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
                     unsafe {
                         (*(*ctxt).input).line += 1;
-                        (*(*ctxt).input).col = 1 as i32;
+                        (*(*ctxt).input).col = 1;
                     }
                 } else {
                     unsafe {
@@ -2928,15 +2841,15 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
                 }
             }
             unsafe {
-                *buffer.offset(len as isize) = 0 as i32 as xmlChar;
+                *buffer.offset(len as isize) = 0 as xmlChar;
             }
             return buffer;
         }
     }
-    if len == 0 as i32 {
+    if len == 0 {
         return 0 as *mut xmlChar;
     }
-    if len > 50000 as i32 && unsafe { (*ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 } {
+    if len > 50000 && unsafe { (*ctxt).options & XML_PARSE_HUGE as i32 == 0 } {
         unsafe {
             xmlFatalErr(
                 ctxt,
@@ -2946,7 +2859,7 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
         }
         return 0 as *mut xmlChar;
     }
-    return xmlStrndup_safe(buf.as_mut_ptr(), len);
+    return unsafe{xmlStrndup_safe(buf.as_mut_ptr(), len)};
 }
 /* *
 * xmlParseEntityValue:
@@ -2961,32 +2874,29 @@ pub unsafe fn xmlParseNmtoken(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
 * Returns the EntityValue parsed with reference substituted or NULL
 */
 
-pub unsafe fn xmlParseEntityValue(
-    mut ctxt: xmlParserCtxtPtr,
-    mut orig: *mut *mut xmlChar,
-) -> *mut xmlChar {
+pub fn xmlParseEntityValue(ctxt: xmlParserCtxtPtr, orig: *mut *mut xmlChar) -> *mut xmlChar {
     let mut current_block: u64;
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
-    let mut len: i32 = 0 as i32;
-    let mut size: i32 = 100 as i32;
+    let mut len: i32 = 0;
+    let mut size: i32 = 100;
     let mut c: i32 = 0;
     let mut l: i32 = 0;
     let mut stop: xmlChar = 0;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     let mut cur: *const xmlChar = 0 as *const xmlChar;
     let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     if unsafe { *(*(*ctxt).input).cur as i32 == '\"' as i32 } {
-        stop = '\"' as i32 as xmlChar
+        stop = '\"' as xmlChar
     } else if unsafe { *(*(*ctxt).input).cur as i32 == '\'' as i32 } {
-        stop = '\'' as i32 as xmlChar
+        stop = '\'' as xmlChar
     } else {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_ENTITY_NOT_STARTED, 0 as *const i8);
         }
         return 0 as *mut xmlChar;
     }
-    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+    buf = unsafe{xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))}
         as *mut xmlChar;
     if buf.is_null() {
         unsafe {
@@ -2999,15 +2909,13 @@ pub unsafe fn xmlParseEntityValue(
      */
     (safe_ctxt).instate = XML_PARSER_ENTITY_VALUE;
     input = (safe_ctxt).input;
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
     if !((safe_ctxt).instate as i32 == XML_PARSER_EOF as i32) {
-        xmlNextChar_safe(ctxt);
+        unsafe{xmlNextChar_safe(ctxt)};
         unsafe { c = xmlCurrentChar(ctxt, &mut l) };
         loop
         /*
@@ -3033,13 +2941,13 @@ pub unsafe fn xmlParseEntityValue(
                 current_block = 13460095289871124136;
                 break;
             }
-            if len + 5 as i32 >= size {
+            if len + 5 >= size {
                 let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                size *= 2 as i32;
-                tmp = xmlRealloc_safe(
+                size *= 2;
+                tmp = unsafe{xmlRealloc_safe(
                     buf as *mut (),
                     (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                ) as *mut xmlChar;
+                )} as *mut xmlChar;
                 if tmp.is_null() {
                     unsafe {
                         xmlErrMemory(ctxt, 0 as *const i8);
@@ -3050,7 +2958,7 @@ pub unsafe fn xmlParseEntityValue(
                     buf = tmp
                 }
             }
-            if l == 1 as i32 {
+            if l == 1 {
                 let fresh59 = len;
                 len = len + 1;
                 unsafe { *buf.offset(fresh59 as isize) = c as xmlChar }
@@ -3060,7 +2968,7 @@ pub unsafe fn xmlParseEntityValue(
             if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
                 unsafe {
                     (*(*ctxt).input).line += 1;
-                    (*(*ctxt).input).col = 1 as i32
+                    (*(*ctxt).input).col = 1
                 }
             } else {
                 unsafe { (*(*ctxt).input).col += 1 }
@@ -3068,20 +2976,16 @@ pub unsafe fn xmlParseEntityValue(
             unsafe {
                 (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize);
             }
-            if (safe_ctxt).progressive == 0 as i32
-                && unsafe {
-                    ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
-                }
+            if (safe_ctxt).progressive == 0
+                && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
             {
                 xmlGROW(ctxt);
             }
             unsafe { c = xmlCurrentChar(ctxt, &mut l) };
-            if c == 0 as i32 {
-                if (safe_ctxt).progressive == 0 as i32
+            if c == 0 {
+                if (safe_ctxt).progressive == 0
                     && unsafe {
-                        ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < 250 as i32 as i64
+                        ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                     }
                 {
                     xmlGROW(ctxt);
@@ -3093,7 +2997,7 @@ pub unsafe fn xmlParseEntityValue(
             1624980031832806685 => {}
             _ => {
                 unsafe {
-                    *buf.offset(len as isize) = 0 as i32 as xmlChar;
+                    *buf.offset(len as isize) = 0 as xmlChar;
                 }
                 if !((safe_ctxt).instate as i32 == XML_PARSER_EOF as i32) {
                     if c != stop as i32 {
@@ -3101,7 +3005,7 @@ pub unsafe fn xmlParseEntityValue(
                             xmlFatalErr(ctxt, XML_ERR_ENTITY_NOT_FINISHED, 0 as *const i8);
                         }
                     } else {
-                        xmlNextChar_safe(ctxt);
+                        unsafe{xmlNextChar_safe(ctxt)};
                         /*
                          * Raise problem w.r.t. '&' and '%' being used in non-entities
                          * reference constructs. Note Charref will be handled in
@@ -3109,7 +3013,7 @@ pub unsafe fn xmlParseEntityValue(
                          */
                         cur = buf;
                         loop {
-                            if !(unsafe { *cur } as i32 != 0 as i32) {
+                            if !(unsafe { *cur } as i32 != 0) {
                                 current_block = 7158658067966855297;
                                 break;
                             }
@@ -3117,33 +3021,33 @@ pub unsafe fn xmlParseEntityValue(
                             if unsafe {
                                 *cur as i32 == '%' as i32
                                     || *cur as i32 == '&' as i32
-                                        && *cur.offset(1 as i32 as isize) as i32 != '#' as i32
+                                        && *cur.offset(1) as i32 != '#' as i32
                             } {
                                 let mut name: *mut xmlChar = 0 as *mut xmlChar;
-                                let mut tmp_0: xmlChar = unsafe { *cur };
-                                let mut nameOk: i32 = 0 as i32;
+                                let tmp_0: xmlChar = unsafe { *cur };
+                                let mut nameOk: i32 = 0;
                                 unsafe {
                                     cur = cur.offset(1);
                                 }
                                 name = xmlParseStringName(ctxt, &mut cur);
                                 if !name.is_null() {
-                                    nameOk = 1 as i32;
-                                    xmlFree_safe(name as *mut ());
+                                    nameOk = 1;
+                                    unsafe{xmlFree_safe(name as *mut ())};
                                 }
-                                if nameOk == 0 as i32 || unsafe { *cur as i32 != ';' as i32 } {
+                                if nameOk == 0 || unsafe { *cur as i32 != ';' as i32 } {
                                     unsafe {
                                         xmlFatalErrMsgInt(ctxt,
-                                      XML_ERR_ENTITY_CHAR_ERROR,
-                                      b"EntityValue: \'%c\' forbidden except for entities references\n\x00"
-                                          as *const u8 as
-                                          *const i8,
-                                      tmp_0 as i32);
+                                                                  XML_ERR_ENTITY_CHAR_ERROR,
+                                                                  b"EntityValue: \'%c\' forbidden except for entities references\n\x00"
+                                                                  as *const u8 as
+                                                                  *const i8,
+                                                                  tmp_0 as i32);
                                     }
                                     current_block = 1624980031832806685;
                                     break;
                                 } else if tmp_0 as i32 == '%' as i32
-                                    && (safe_ctxt).inSubset == 1 as i32
-                                    && (safe_ctxt).inputNr == 1 as i32
+                                    && (safe_ctxt).inSubset == 1
+                                    && (safe_ctxt).inputNr == 1
                                 {
                                     unsafe {
                                         xmlFatalErr(
@@ -3154,7 +3058,7 @@ pub unsafe fn xmlParseEntityValue(
                                     }
                                     current_block = 1624980031832806685;
                                     break;
-                                } else if unsafe { *cur as i32 == 0 as i32 } {
+                                } else if unsafe { *cur as i32 == 0 } {
                                     current_block = 7158658067966855297;
                                     break;
                                 }
@@ -3176,10 +3080,10 @@ pub unsafe fn xmlParseEntityValue(
                                 ret = xmlStringDecodeEntities(
                                     ctxt,
                                     buf,
-                                    2 as i32,
-                                    0 as i32 as xmlChar,
-                                    0 as i32 as xmlChar,
-                                    0 as i32 as xmlChar,
+                                    2,
+                                    0 as xmlChar,
+                                    0 as xmlChar,
+                                    0 as xmlChar,
                                 );
                                 (safe_ctxt).depth -= 1;
                                 if !orig.is_null() {
@@ -3196,7 +3100,7 @@ pub unsafe fn xmlParseEntityValue(
         }
     }
     if !buf.is_null() {
-        xmlFree_safe(buf as *mut ());
+        unsafe{xmlFree_safe(buf as *mut ())};
     }
     return ret;
 }
@@ -3212,31 +3116,31 @@ pub unsafe fn xmlParseEntityValue(
 *
 * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
 */
-unsafe fn xmlParseAttValueComplex(
-    mut ctxt: xmlParserCtxtPtr,
-    mut attlen: *mut i32,
-    mut normalize: i32,
+fn xmlParseAttValueComplex(
+    ctxt: xmlParserCtxtPtr,
+    attlen: *mut i32,
+    normalize: i32,
 ) -> *mut xmlChar {
     let mut current_block: u64;
-    let mut limit: xmlChar = 0 as i32 as xmlChar;
+    let mut limit: xmlChar = 0 as xmlChar;
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
     let mut rep: *mut xmlChar = 0 as *mut xmlChar;
-    let mut len: size_t = 0 as i32 as size_t;
-    let mut buf_size: size_t = 0 as i32 as size_t;
+    let mut len: size_t = 0;
+    let mut buf_size: size_t = 0;
     let mut c: i32 = 0;
     let mut l: i32 = 0;
-    let mut in_space: i32 = 0 as i32;
+    let mut in_space: i32 = 0;
     let mut current: *mut xmlChar = 0 as *mut xmlChar;
     let mut ent: xmlEntityPtr = 0 as *mut xmlEntity;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if unsafe { *(*(*ctxt).input).cur.offset(0 as i32 as isize) as i32 == '\"' as i32 } {
+    let safe_ctxt = unsafe { &mut *ctxt };
+    if unsafe { *(*(*ctxt).input).cur.offset(0) as i32 == '\"' as i32 } {
         (safe_ctxt).instate = XML_PARSER_ATTRIBUTE_VALUE;
-        limit = '\"' as i32 as xmlChar;
-        xmlNextChar_safe(ctxt);
-    } else if unsafe { *(*(*ctxt).input).cur.offset(0 as i32 as isize) as i32 == '\'' as i32 } {
-        limit = '\'' as i32 as xmlChar;
+        limit = '\"' as xmlChar;
+        unsafe{xmlNextChar_safe(ctxt)};
+    } else if unsafe { *(*(*ctxt).input).cur.offset(0) as i32 == '\'' as i32 } {
+        limit = '\'' as xmlChar;
         (safe_ctxt).instate = XML_PARSER_ATTRIBUTE_VALUE;
-        xmlNextChar_safe(ctxt);
+        unsafe{xmlNextChar_safe(ctxt)};
     } else {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_ATTRIBUTE_NOT_STARTED, 0 as *const i8);
@@ -3246,8 +3150,8 @@ unsafe fn xmlParseAttValueComplex(
     /*
      * allocate a translation buffer.
      */
-    buf_size = 100 as i32 as size_t;
-    buf = xmlMallocAtomic_safe(buf_size) as *mut xmlChar;
+    buf_size = 100;
+    buf = unsafe{xmlMallocAtomic_safe(buf_size)} as *mut xmlChar;
     if buf.is_null() {
         current_block = 10140382788883813888;
     } else {
@@ -3259,7 +3163,7 @@ unsafe fn xmlParseAttValueComplex(
         }
         's_99: loop {
             if unsafe {
-                !(*(*(*ctxt).input).cur.offset(0 as i32 as isize) as i32 != limit as i32
+                !(*(*(*ctxt).input).cur.offset(0) as i32 != limit as i32
                     && (if c < 0x100 as i32 {
                         (0x9 as i32 <= c && c <= 0xa as i32 || c == 0xd as i32 || 0x20 as i32 <= c)
                             as i32
@@ -3279,9 +3183,7 @@ unsafe fn xmlParseAttValueComplex(
              * Impose a reasonable limit on attribute size, unless XML_PARSE_HUGE
              * special option is given
              */
-            if len > 10000000 as i32 as u64
-                && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-            {
+            if len > 10000000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                 unsafe {
                     xmlFatalErrMsg(
                         ctxt,
@@ -3293,23 +3195,20 @@ unsafe fn xmlParseAttValueComplex(
                 break;
             } else {
                 if c == '&' as i32 {
-                    in_space = 0 as i32;
-                    if unsafe {
-                        *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '#' as i32
-                    } {
-                        let mut val: i32 = xmlParseCharRef(ctxt);
+                    in_space = 0;
+                    if unsafe { *(*(*ctxt).input).cur.offset(1) as i32 == '#' as i32 } {
+                        let val: i32 = xmlParseCharRef(ctxt);
                         if val == '&' as i32 {
                             if (safe_ctxt).replaceEntities != 0 {
-                                if len.wrapping_add(10 as i32 as u64) > buf_size {
+                                if len.wrapping_add(10) > buf_size {
                                     let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                                    let mut new_size: size_t = buf_size
-                                        .wrapping_mul(2 as i32 as u64)
-                                        .wrapping_add(10 as i32 as u64);
+                                    let new_size: size_t =
+                                        buf_size.wrapping_mul(2).wrapping_add(10);
                                     if new_size < buf_size {
                                         current_block = 10140382788883813888;
                                         break;
                                     }
-                                    tmp = xmlRealloc_safe(buf as *mut (), new_size) as *mut xmlChar;
+                                    tmp = unsafe{xmlRealloc_safe(buf as *mut (), new_size)} as *mut xmlChar;
                                     if tmp.is_null() {
                                         current_block = 10140382788883813888;
                                         break;
@@ -3319,23 +3218,22 @@ unsafe fn xmlParseAttValueComplex(
                                 }
                                 let fresh60 = len;
                                 len = len.wrapping_add(1);
-                                unsafe { *buf.offset(fresh60 as isize) = '&' as i32 as xmlChar };
+                                unsafe { *buf.offset(fresh60 as isize) = '&' as xmlChar };
                             } else {
                                 /*
                                  * The reparsing will be done in xmlStringGetNodeList()
                                  * called by the attribute() function in SAX.c
                                  */
-                                if len.wrapping_add(10 as i32 as u64) > buf_size {
+                                if len.wrapping_add(10) > buf_size {
                                     let mut tmp_0: *mut xmlChar = 0 as *mut xmlChar;
-                                    let mut new_size_0: size_t = buf_size
-                                        .wrapping_mul(2 as i32 as u64)
-                                        .wrapping_add(10 as i32 as u64);
+                                    let new_size_0: size_t =
+                                        buf_size.wrapping_mul(2).wrapping_add(10);
                                     if new_size_0 < buf_size {
                                         current_block = 10140382788883813888;
                                         break;
                                     }
                                     tmp_0 =
-                                        xmlRealloc_safe(buf as *mut (), new_size_0) as *mut xmlChar;
+                                    unsafe{xmlRealloc_safe(buf as *mut (), new_size_0)} as *mut xmlChar;
                                     if tmp_0.is_null() {
                                         current_block = 10140382788883813888;
                                         break;
@@ -3346,32 +3244,30 @@ unsafe fn xmlParseAttValueComplex(
                                 let fresh61 = len;
                                 len = len.wrapping_add(1);
                                 unsafe {
-                                    *buf.offset(fresh61 as isize) = '&' as i32 as xmlChar;
+                                    *buf.offset(fresh61 as isize) = '&' as xmlChar;
                                     let fresh62 = len;
                                     len = len.wrapping_add(1);
-                                    *buf.offset(fresh62 as isize) = '#' as i32 as xmlChar;
+                                    *buf.offset(fresh62 as isize) = '#' as xmlChar;
                                     let fresh63 = len;
                                     len = len.wrapping_add(1);
-                                    *buf.offset(fresh63 as isize) = '3' as i32 as xmlChar;
+                                    *buf.offset(fresh63 as isize) = '3' as xmlChar;
                                     let fresh64 = len;
                                     len = len.wrapping_add(1);
-                                    *buf.offset(fresh64 as isize) = '8' as i32 as xmlChar;
+                                    *buf.offset(fresh64 as isize) = '8' as xmlChar;
                                     let fresh65 = len;
                                     len = len.wrapping_add(1);
-                                    *buf.offset(fresh65 as isize) = ';' as i32 as xmlChar;
+                                    *buf.offset(fresh65 as isize) = ';' as xmlChar;
                                 }
                             }
-                        } else if val != 0 as i32 {
-                            if len.wrapping_add(10 as i32 as u64) > buf_size {
+                        } else if val != 0 {
+                            if len.wrapping_add(10) > buf_size {
                                 let mut tmp_1: *mut xmlChar = 0 as *mut xmlChar;
-                                let mut new_size_1: size_t = buf_size
-                                    .wrapping_mul(2 as i32 as u64)
-                                    .wrapping_add(10 as i32 as u64);
+                                let new_size_1: size_t = buf_size.wrapping_mul(2).wrapping_add(10);
                                 if new_size_1 < buf_size {
                                     current_block = 10140382788883813888;
                                     break;
                                 }
-                                tmp_1 = xmlRealloc_safe(buf as *mut (), new_size_1) as *mut xmlChar;
+                                tmp_1 = unsafe{xmlRealloc_safe(buf as *mut (), new_size_1)} as *mut xmlChar;
                                 if tmp_1.is_null() {
                                     current_block = 10140382788883813888;
                                     break;
@@ -3381,7 +3277,7 @@ unsafe fn xmlParseAttValueComplex(
                             }
                             len = unsafe {
                                 (len as u64).wrapping_add(xmlCopyChar(
-                                    0 as i32,
+                                    0,
                                     &mut *buf.offset(len as isize),
                                     val,
                                 ) as u64) as size_t as size_t
@@ -3398,19 +3294,17 @@ unsafe fn xmlParseAttValueComplex(
                         }
                         if !ent.is_null()
                             && unsafe {
-                                (*ent).etype as u32 == XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
+                                (*ent).etype as u32 == XML_INTERNAL_PREDEFINED_ENTITY as u32
                             }
                         {
-                            if len.wrapping_add(10 as i32 as u64) > buf_size {
+                            if len.wrapping_add(10) > buf_size {
                                 let mut tmp_2: *mut xmlChar = 0 as *mut xmlChar;
-                                let mut new_size_2: size_t = buf_size
-                                    .wrapping_mul(2 as i32 as u64)
-                                    .wrapping_add(10 as i32 as u64);
+                                let new_size_2: size_t = buf_size.wrapping_mul(2).wrapping_add(10);
                                 if new_size_2 < buf_size {
                                     current_block = 10140382788883813888;
                                     break;
                                 }
-                                tmp_2 = xmlRealloc_safe(buf as *mut (), new_size_2) as *mut xmlChar;
+                                tmp_2 = unsafe{xmlRealloc_safe(buf as *mut (), new_size_2)} as *mut xmlChar;
                                 if tmp_2.is_null() {
                                     current_block = 10140382788883813888;
                                     break;
@@ -3419,54 +3313,50 @@ unsafe fn xmlParseAttValueComplex(
                                 buf_size = new_size_2
                             }
                             if unsafe {
-                                (*ctxt).replaceEntities == 0 as i32
-                                    && *(*ent).content.offset(0 as i32 as isize) as i32
-                                        == '&' as i32
+                                (*ctxt).replaceEntities == 0
+                                    && *(*ent).content.offset(0) as i32 == '&' as i32
                             } {
                                 let fresh66 = len;
                                 len = len.wrapping_add(1);
                                 unsafe {
-                                    *buf.offset(fresh66 as isize) = '&' as i32 as xmlChar;
+                                    *buf.offset(fresh66 as isize) = '&' as xmlChar;
                                     let fresh67 = len;
                                     len = len.wrapping_add(1);
-                                    *buf.offset(fresh67 as isize) = '#' as i32 as xmlChar;
+                                    *buf.offset(fresh67 as isize) = '#' as xmlChar;
                                     let fresh68 = len;
                                     len = len.wrapping_add(1);
-                                    *buf.offset(fresh68 as isize) = '3' as i32 as xmlChar;
+                                    *buf.offset(fresh68 as isize) = '3' as xmlChar;
                                     let fresh69 = len;
                                     len = len.wrapping_add(1);
-                                    *buf.offset(fresh69 as isize) = '8' as i32 as xmlChar;
+                                    *buf.offset(fresh69 as isize) = '8' as xmlChar;
                                     let fresh70 = len;
                                     len = len.wrapping_add(1);
-                                    *buf.offset(fresh70 as isize) = ';' as i32 as xmlChar
+                                    *buf.offset(fresh70 as isize) = ';' as xmlChar
                                 }
                             } else {
                                 let fresh71 = len;
                                 len = len.wrapping_add(1);
-                                unsafe {
-                                    *buf.offset(fresh71 as isize) =
-                                        *(*ent).content.offset(0 as i32 as isize)
-                                }
+                                unsafe { *buf.offset(fresh71 as isize) = *(*ent).content.offset(0) }
                             }
-                        } else if !ent.is_null() && (safe_ctxt).replaceEntities != 0 as i32 {
+                        } else if !ent.is_null() && (safe_ctxt).replaceEntities != 0 {
                             if unsafe {
-                                (*ent).etype as u32 != XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
+                                (*ent).etype as u32 != XML_INTERNAL_PREDEFINED_ENTITY as u32
                             } {
                                 (safe_ctxt).depth += 1;
                                 rep = unsafe {
                                     xmlStringDecodeEntities(
                                         ctxt,
                                         (*ent).content,
-                                        1 as i32,
-                                        0 as i32 as xmlChar,
-                                        0 as i32 as xmlChar,
-                                        0 as i32 as xmlChar,
+                                        1,
+                                        0 as xmlChar,
+                                        0 as xmlChar,
+                                        0 as xmlChar,
                                     )
                                 };
                                 (safe_ctxt).depth -= 1;
                                 if !rep.is_null() {
                                     current = rep;
-                                    while unsafe { *current } as i32 != 0 as i32 {
+                                    while unsafe { *current } as i32 != 0 {
                                         /* non input consuming */
                                         if unsafe { *current } as i32 == 0xd as i32
                                             || unsafe { *current } as i32 == 0xa as i32
@@ -3475,8 +3365,7 @@ unsafe fn xmlParseAttValueComplex(
                                             let fresh72 = len;
                                             len = len.wrapping_add(1);
                                             unsafe {
-                                                *buf.offset(fresh72 as isize) =
-                                                    0x20 as i32 as xmlChar;
+                                                *buf.offset(fresh72 as isize) = 0x20 as xmlChar;
                                                 current = current.offset(1);
                                             }
                                         } else {
@@ -3488,18 +3377,17 @@ unsafe fn xmlParseAttValueComplex(
                                                 *buf.offset(fresh74 as isize) = *fresh73
                                             }
                                         }
-                                        if !(len.wrapping_add(10 as i32 as u64) > buf_size) {
+                                        if !(len.wrapping_add(10) > buf_size) {
                                             continue;
                                         }
                                         let mut tmp_3: *mut xmlChar = 0 as *mut xmlChar;
-                                        let mut new_size_3: size_t = buf_size
-                                            .wrapping_mul(2 as i32 as u64)
-                                            .wrapping_add(10 as i32 as u64);
+                                        let new_size_3: size_t =
+                                            buf_size.wrapping_mul(2).wrapping_add(10);
                                         if new_size_3 < buf_size {
                                             current_block = 10140382788883813888;
                                             break 's_99;
                                         }
-                                        tmp_3 = xmlRealloc_safe(buf as *mut (), new_size_3)
+                                        tmp_3 = unsafe{xmlRealloc_safe(buf as *mut (), new_size_3)}
                                             as *mut xmlChar;
                                         if tmp_3.is_null() {
                                             current_block = 10140382788883813888;
@@ -3508,21 +3396,20 @@ unsafe fn xmlParseAttValueComplex(
                                         buf = tmp_3;
                                         buf_size = new_size_3
                                     }
-                                    xmlFree_safe(rep as *mut ());
+                                    unsafe{xmlFree_safe(rep as *mut ())};
                                     rep = 0 as *mut xmlChar
                                 }
                             } else {
-                                if len.wrapping_add(10 as i32 as u64) > buf_size {
+                                if len.wrapping_add(10) > buf_size {
                                     let mut tmp_4: *mut xmlChar = 0 as *mut xmlChar;
-                                    let mut new_size_4: size_t = buf_size
-                                        .wrapping_mul(2 as i32 as u64)
-                                        .wrapping_add(10 as i32 as u64);
+                                    let new_size_4: size_t =
+                                        buf_size.wrapping_mul(2).wrapping_add(10);
                                     if new_size_4 < buf_size {
                                         current_block = 10140382788883813888;
                                         break;
                                     }
                                     tmp_4 =
-                                        xmlRealloc_safe(buf as *mut (), new_size_4) as *mut xmlChar;
+                                    unsafe{xmlRealloc_safe(buf as *mut (), new_size_4)} as *mut xmlChar;
                                     if tmp_4.is_null() {
                                         current_block = 10140382788883813888;
                                         break;
@@ -3534,57 +3421,52 @@ unsafe fn xmlParseAttValueComplex(
                                     let fresh75 = len;
                                     len = len.wrapping_add(1);
                                     unsafe {
-                                        *buf.offset(fresh75 as isize) =
-                                            *(*ent).content.offset(0 as i32 as isize)
+                                        *buf.offset(fresh75 as isize) = *(*ent).content.offset(0)
                                     };
                                 }
                             }
                         } else if !ent.is_null() {
-                            let mut safe_ent = unsafe { &mut *ent };
-                            let mut i: i32 = xmlStrlen_safe((safe_ent).name);
+                            let safe_ent = unsafe { &mut *ent };
+                            let mut i: i32 = unsafe{xmlStrlen_safe((safe_ent).name)};
                             let mut cur: *const xmlChar = (safe_ent).name;
                             /*
                              * This may look absurd but is needed to detect
                              * entities problems
                              */
-                            if (safe_ent).etype as u32
-                                != XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
+                            if (safe_ent).etype as u32 != XML_INTERNAL_PREDEFINED_ENTITY as u32
                                 && !(safe_ent).content.is_null()
-                                && (safe_ent).checked == 0 as i32
+                                && (safe_ent).checked == 0
                             {
-                                let mut oldnbent: u64 = (safe_ctxt).nbentities;
+                                let oldnbent: u64 = (safe_ctxt).nbentities;
                                 let mut diff: u64 = 0;
                                 (safe_ctxt).depth += 1;
                                 rep = unsafe {
                                     xmlStringDecodeEntities(
                                         ctxt,
                                         (safe_ent).content,
-                                        1 as i32,
-                                        0 as i32 as xmlChar,
-                                        0 as i32 as xmlChar,
-                                        0 as i32 as xmlChar,
+                                        1,
+                                        0 as xmlChar,
+                                        0 as xmlChar,
+                                        0 as xmlChar,
                                     )
                                 };
                                 (safe_ctxt).depth -= 1;
                                 diff = (safe_ctxt)
                                     .nbentities
                                     .wrapping_sub(oldnbent)
-                                    .wrapping_add(1 as i32 as u64);
-                                if diff > (2147483647 as i32 / 2 as i32) as u64 {
-                                    diff = (2147483647 as i32 / 2 as i32) as u64
+                                    .wrapping_add(1);
+                                if diff > (2147483647 as i32 / 2) as u64 {
+                                    diff = (2147483647 as i32 / 2) as u64
                                 }
-                                (safe_ent).checked = diff.wrapping_mul(2 as i32 as u64) as i32;
+                                (safe_ent).checked = diff.wrapping_mul(2) as i32;
                                 if !rep.is_null() {
-                                    if !xmlStrchr_safe(rep, '<' as i32 as xmlChar).is_null() {
-                                        (safe_ent).checked |= 1 as i32
+                                    if !unsafe{xmlStrchr_safe(rep, '<' as xmlChar)}.is_null() {
+                                        (safe_ent).checked |= 1
                                     }
-                                    xmlFree_safe(rep as *mut ());
+                                    unsafe{xmlFree_safe(rep as *mut ())};
                                     rep = 0 as *mut xmlChar
                                 } else {
-                                    unsafe {
-                                        *(*ent).content.offset(0 as i32 as isize) =
-                                            0 as i32 as xmlChar
-                                    };
+                                    unsafe { *(*ent).content.offset(0) = 0 as xmlChar };
                                 }
                             }
                             /*
@@ -3593,21 +3475,19 @@ unsafe fn xmlParseAttValueComplex(
                             let fresh76 = len;
                             len = len.wrapping_add(1);
                             unsafe {
-                                *buf.offset(fresh76 as isize) = '&' as i32 as xmlChar;
+                                *buf.offset(fresh76 as isize) = '&' as xmlChar;
                             }
-                            while len.wrapping_add(i as u64).wrapping_add(10 as i32 as u64)
-                                > buf_size
-                            {
+                            while len.wrapping_add(i as u64).wrapping_add(10) > buf_size {
                                 let mut tmp_5: *mut xmlChar = 0 as *mut xmlChar;
-                                let mut new_size_5: size_t = buf_size
-                                    .wrapping_mul(2 as i32 as u64)
+                                let new_size_5: size_t = buf_size
+                                    .wrapping_mul(2)
                                     .wrapping_add(i as u64)
-                                    .wrapping_add(10 as i32 as u64);
+                                    .wrapping_add(10);
                                 if new_size_5 < buf_size {
                                     current_block = 10140382788883813888;
                                     break 's_99;
                                 }
-                                tmp_5 = xmlRealloc_safe(buf as *mut (), new_size_5) as *mut xmlChar;
+                                tmp_5 = unsafe{xmlRealloc_safe(buf as *mut (), new_size_5)} as *mut xmlChar;
                                 if tmp_5.is_null() {
                                     current_block = 10140382788883813888;
                                     break 's_99;
@@ -3615,7 +3495,7 @@ unsafe fn xmlParseAttValueComplex(
                                 buf = tmp_5;
                                 buf_size = new_size_5
                             }
-                            while i > 0 as i32 {
+                            while i > 0 {
                                 let fresh77 = cur;
                                 unsafe {
                                     cur = cur.offset(1);
@@ -3627,19 +3507,17 @@ unsafe fn xmlParseAttValueComplex(
                             }
                             let fresh79 = len;
                             len = len.wrapping_add(1);
-                            unsafe { *buf.offset(fresh79 as isize) = ';' as i32 as xmlChar };
+                            unsafe { *buf.offset(fresh79 as isize) = ';' as xmlChar };
                         }
                     }
                 } else {
                     if c == 0x20 as i32 || c == 0xd as i32 || c == 0xa as i32 || c == 0x9 as i32 {
-                        if len != 0 as i32 as u64 || normalize == 0 {
+                        if len != 0 || normalize == 0 {
                             if normalize == 0 || in_space == 0 {
-                                if l == 1 as i32 {
+                                if l == 1 {
                                     let fresh80 = len;
                                     len = len.wrapping_add(1);
-                                    unsafe {
-                                        *buf.offset(fresh80 as isize) = 0x20 as i32 as xmlChar
-                                    };
+                                    unsafe { *buf.offset(fresh80 as isize) = 0x20 as xmlChar };
                                 } else {
                                     len = unsafe {
                                         (len as u64).wrapping_add(xmlCopyCharMultiByte(
@@ -3651,17 +3529,16 @@ unsafe fn xmlParseAttValueComplex(
                                             as size_t
                                     };
                                 }
-                                while len.wrapping_add(10 as i32 as u64) > buf_size {
+                                while len.wrapping_add(10) > buf_size {
                                     let mut tmp_6: *mut xmlChar = 0 as *mut xmlChar;
-                                    let mut new_size_6: size_t = buf_size
-                                        .wrapping_mul(2 as i32 as u64)
-                                        .wrapping_add(10 as i32 as u64);
+                                    let new_size_6: size_t =
+                                        buf_size.wrapping_mul(2).wrapping_add(10);
                                     if new_size_6 < buf_size {
                                         current_block = 10140382788883813888;
                                         break 's_99;
                                     }
                                     tmp_6 =
-                                        xmlRealloc_safe(buf as *mut (), new_size_6) as *mut xmlChar;
+                                    unsafe{xmlRealloc_safe(buf as *mut (), new_size_6)} as *mut xmlChar;
                                     if tmp_6.is_null() {
                                         current_block = 10140382788883813888;
                                         break 's_99;
@@ -3670,11 +3547,11 @@ unsafe fn xmlParseAttValueComplex(
                                     buf_size = new_size_6
                                 }
                             }
-                            in_space = 1 as i32
+                            in_space = 1
                         }
                     } else {
-                        in_space = 0 as i32;
-                        if l == 1 as i32 {
+                        in_space = 0;
+                        if l == 1 {
                             let fresh81 = len;
                             len = len.wrapping_add(1);
                             unsafe { *buf.offset(fresh81 as isize) = c as xmlChar };
@@ -3686,16 +3563,14 @@ unsafe fn xmlParseAttValueComplex(
                                 ) as u64) as size_t as size_t
                             };
                         }
-                        if len.wrapping_add(10 as i32 as u64) > buf_size {
+                        if len.wrapping_add(10) > buf_size {
                             let mut tmp_7: *mut xmlChar = 0 as *mut xmlChar;
-                            let mut new_size_7: size_t = buf_size
-                                .wrapping_mul(2 as i32 as u64)
-                                .wrapping_add(10 as i32 as u64);
+                            let new_size_7: size_t = buf_size.wrapping_mul(2).wrapping_add(10);
                             if new_size_7 < buf_size {
                                 current_block = 10140382788883813888;
                                 break;
                             }
-                            tmp_7 = xmlRealloc_safe(buf as *mut (), new_size_7) as *mut xmlChar;
+                            tmp_7 = unsafe{xmlRealloc_safe(buf as *mut (), new_size_7)} as *mut xmlChar;
                             if tmp_7.is_null() {
                                 current_block = 10140382788883813888;
                                 break;
@@ -3707,7 +3582,7 @@ unsafe fn xmlParseAttValueComplex(
                     if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
                         unsafe {
                             (*(*ctxt).input).line += 1;
-                            (*(*ctxt).input).col = 1 as i32
+                            (*(*ctxt).input).col = 1
                         }
                     } else {
                         unsafe { (*(*ctxt).input).col += 1 }
@@ -3715,9 +3590,8 @@ unsafe fn xmlParseAttValueComplex(
                     unsafe { (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize) };
                 }
                 if unsafe {
-                    (*ctxt).progressive == 0 as i32
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < 250 as i32 as i64
+                    (*ctxt).progressive == 0
+                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                 } {
                     xmlGROW(ctxt);
                 }
@@ -3731,24 +3605,23 @@ unsafe fn xmlParseAttValueComplex(
                     current_block = 12690591973131353181;
                 } else {
                     if in_space != 0 && normalize != 0 {
-                        while len > 0 as i32 as u64
+                        while len > 0
                             && unsafe {
-                                *buf.offset(len.wrapping_sub(1 as i32 as u64) as isize) as i32
-                                    == 0x20 as i32
+                                *buf.offset(len.wrapping_sub(1) as isize) as i32 == 0x20 as i32
                             }
                         {
                             len = len.wrapping_sub(1)
                         }
                     }
                     unsafe {
-                        *buf.offset(len as isize) = 0 as i32 as xmlChar;
+                        *buf.offset(len as isize) = 0 as xmlChar;
                     }
                     if unsafe { *(*(*ctxt).input).cur as i32 == '<' as i32 } {
                         unsafe {
                             xmlFatalErr(ctxt, XML_ERR_LT_IN_ATTRIBUTE, 0 as *const i8);
                         }
                     } else if unsafe { *(*(*ctxt).input).cur as i32 != limit as i32 } {
-                        if c != 0 as i32
+                        if c != 0
                             && (if c < 0x100 as i32 {
                                 (0x9 as i32 <= c && c <= 0xa as i32
                                     || c == 0xd as i32
@@ -3778,13 +3651,13 @@ unsafe fn xmlParseAttValueComplex(
                             }
                         }
                     } else {
-                        xmlNextChar_safe(ctxt);
+                        unsafe{xmlNextChar_safe(ctxt)};
                     }
                     /*
                      * There we potentially risk an overflow, don't allow attribute value of
                      * length more than INT_MAX it is a very reasonable assumption !
                      */
-                    if len >= 2147483647 as i32 as u64 {
+                    if len >= 2147483647 {
                         unsafe {
                             xmlFatalErrMsg(
                                 ctxt,
@@ -3810,10 +3683,10 @@ unsafe fn xmlParseAttValueComplex(
         _ => {}
     }
     if !buf.is_null() {
-        xmlFree_safe(buf as *mut ());
+        unsafe{xmlFree_safe(buf as *mut ())};
     }
     if !rep.is_null() {
-        xmlFree_safe(rep as *mut ());
+        unsafe{xmlFree_safe(rep as *mut ())};
     }
     return 0 as *mut xmlChar;
 }
@@ -3850,11 +3723,11 @@ unsafe fn xmlParseAttValueComplex(
 * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
 */
 
-pub unsafe fn xmlParseAttValue(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
+pub fn xmlParseAttValue(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     if ctxt.is_null() || unsafe { (*ctxt).input.is_null() } {
         return 0 as *mut xmlChar;
     }
-    return unsafe { xmlParseAttValueInternal(ctxt, 0 as *mut i32, 0 as *mut i32, 0 as i32) };
+    return unsafe { xmlParseAttValueInternal(ctxt, 0 as *mut i32, 0 as *mut i32, 0) };
 }
 /* *
 * xmlParseSystemLiteral:
@@ -3867,39 +3740,38 @@ pub unsafe fn xmlParseAttValue(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
 * Returns the SystemLiteral parsed or NULL
 */
 
-pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
+pub fn xmlParseSystemLiteral(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
-    let mut len: i32 = 0 as i32;
-    let mut size: i32 = 100 as i32;
+    let mut len: i32 = 0;
+    let mut size: i32 = 100;
     let mut cur: i32 = 0;
     let mut l: i32 = 0;
     let mut stop: xmlChar = 0;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut state: i32 = (safe_ctxt).instate as i32;
-    let mut count: i32 = 0 as i32;
-    if (safe_ctxt).progressive == 0 as i32
+    let safe_ctxt = unsafe { &mut *ctxt };
+    let state: i32 = (safe_ctxt).instate as i32;
+    let mut count: i32 = 0;
+    if (safe_ctxt).progressive == 0
         && unsafe {
-            (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
+            (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < (2 as i32 * 250 as i32) as i64
+                    < (2 * 250) as i64
         }
     {
         xmlSHRINK(ctxt);
     }
     if unsafe { *(*(*ctxt).input).cur as i32 == '\"' as i32 } {
-        xmlNextChar_safe(ctxt);
-        stop = '\"' as i32 as xmlChar
+        unsafe{xmlNextChar_safe(ctxt)};
+        stop = '\"' as xmlChar
     } else if unsafe { *(*(*ctxt).input).cur as i32 == '\'' as i32 } {
-        xmlNextChar_safe(ctxt);
-        stop = '\'' as i32 as xmlChar
+        unsafe{xmlNextChar_safe(ctxt)};
+        stop = '\'' as xmlChar
     } else {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_LITERAL_NOT_STARTED, 0 as *const i8);
         }
         return 0 as *mut xmlChar;
     }
-    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+    buf = unsafe{xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))}
         as *mut xmlChar;
     if buf.is_null() {
         unsafe {
@@ -3919,9 +3791,9 @@ pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar 
         && cur != stop as i32
     {
         /* checked */
-        if len + 5 as i32 >= size {
+        if len + 5 >= size {
             let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-            if size > 50000 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 {
+            if size > 50000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                 unsafe {
                     xmlFatalErr(
                         ctxt,
@@ -3929,17 +3801,17 @@ pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar 
                         b"SystemLiteral\x00" as *const u8 as *const i8,
                     );
                 }
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 (safe_ctxt).instate = state as xmlParserInputState;
                 return 0 as *mut xmlChar;
             }
-            size *= 2 as i32;
-            tmp = xmlRealloc_safe(
+            size *= 2;
+            tmp = unsafe{xmlRealloc_safe(
                 buf as *mut (),
                 (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-            ) as *mut xmlChar;
+            )} as *mut xmlChar;
             if tmp.is_null() {
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 unsafe {
                     xmlErrMemory(ctxt, 0 as *const i8);
                 }
@@ -3949,31 +3821,30 @@ pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar 
             buf = tmp
         }
         count += 1;
-        if count > 50 as i32 {
-            if (safe_ctxt).progressive == 0 as i32
+        if count > 50 {
+            if (safe_ctxt).progressive == 0
                 && unsafe {
                     (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                        > (2 as i32 * 250 as i32) as i64
+                        > (2 * 250) as i64
                         && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < (2 as i32 * 250 as i32) as i64
+                            < (2 * 250) as i64
                 }
             {
                 xmlSHRINK(ctxt);
             }
             if unsafe {
-                (*ctxt).progressive == 0 as i32
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
+                (*ctxt).progressive == 0
+                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
             } {
                 xmlGROW(ctxt);
             }
-            count = 0 as i32;
+            count = 0;
             if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 return 0 as *mut xmlChar;
             }
         }
-        if l == 1 as i32 {
+        if l == 1 {
             let fresh82 = len;
             len = len + 1;
             unsafe { *buf.offset(fresh82 as isize) = cur as xmlChar }
@@ -3983,7 +3854,7 @@ pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar 
         if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
             unsafe {
                 (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1 as i32;
+                (*(*ctxt).input).col = 1;
             }
         } else {
             unsafe {
@@ -3994,21 +3865,18 @@ pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar 
             (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize);
             cur = xmlCurrentChar(ctxt, &mut l);
         }
-        if cur == 0 as i32 {
-            if (safe_ctxt).progressive == 0 as i32
-                && unsafe {
-                    ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
-                }
+        if cur == 0 {
+            if (safe_ctxt).progressive == 0
+                && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
             {
                 xmlGROW(ctxt);
             }
-            if (safe_ctxt).progressive == 0 as i32
+            if (safe_ctxt).progressive == 0
                 && unsafe {
                     (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                        > (2 as i32 * 250 as i32) as i64
+                        > (2 * 250) as i64
                         && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < (2 as i32 * 250 as i32) as i64
+                            < (2 * 250) as i64
                 }
             {
                 xmlSHRINK(ctxt);
@@ -4017,7 +3885,7 @@ pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar 
         }
     }
     unsafe {
-        *buf.offset(len as isize) = 0 as i32 as xmlChar;
+        *buf.offset(len as isize) = 0 as xmlChar;
         (*ctxt).instate = state as xmlParserInputState;
     }
     if if cur < 0x100 as i32 {
@@ -4032,7 +3900,7 @@ pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar 
             xmlFatalErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED, 0 as *const i8);
         }
     } else {
-        xmlNextChar_safe(ctxt);
+        unsafe{xmlNextChar_safe(ctxt)};
     }
     return buf;
 }
@@ -4047,37 +3915,35 @@ pub unsafe fn xmlParseSystemLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar 
 * Returns the PubidLiteral parsed or NULL.
 */
 
-pub unsafe fn xmlParsePubidLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
+pub fn xmlParsePubidLiteral(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
-    let mut len: i32 = 0 as i32;
-    let mut size: i32 = 100 as i32;
+    let mut len: i32 = 0;
+    let mut size: i32 = 100;
     let mut cur: xmlChar = 0;
     let mut stop: xmlChar = 0;
-    let mut count: i32 = 0 as i32;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut oldstate: xmlParserInputState = (safe_ctxt).instate;
+    let mut count: i32 = 0;
+    let safe_ctxt = unsafe { &mut *ctxt };
+    let oldstate: xmlParserInputState = (safe_ctxt).instate;
     if unsafe {
-        (safe_ctxt).progressive == 0 as i32
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250 as i32) as i64
+        (safe_ctxt).progressive == 0
+            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
     } {
         xmlSHRINK(ctxt);
     }
     if unsafe { *(*(*ctxt).input).cur as i32 == '\"' as i32 } {
-        xmlNextChar_safe(ctxt);
-        stop = '\"' as i32 as xmlChar
+        unsafe{xmlNextChar_safe(ctxt)};
+        stop = '\"' as xmlChar
     } else if unsafe { *(*(*ctxt).input).cur as i32 == '\'' as i32 } {
-        xmlNextChar_safe(ctxt);
-        stop = '\'' as i32 as xmlChar
+        unsafe{xmlNextChar_safe(ctxt)};
+        stop = '\'' as xmlChar
     } else {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_LITERAL_NOT_STARTED, 0 as *const i8);
         }
         return 0 as *mut xmlChar;
     }
-    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+    buf = unsafe{xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))}
         as *mut xmlChar;
     if buf.is_null() {
         unsafe {
@@ -4089,9 +3955,9 @@ pub unsafe fn xmlParsePubidLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     cur = unsafe { *(*(*ctxt).input).cur };
     while unsafe { xmlIsPubidChar_tab[cur as usize] as i32 != 0 } && cur as i32 != stop as i32 {
         /* checked */
-        if len + 1 as i32 >= size {
+        if len + 1 >= size {
             let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-            if size > 50000 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32 {
+            if size > 50000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                 unsafe {
                     xmlFatalErr(
                         ctxt,
@@ -4099,19 +3965,19 @@ pub unsafe fn xmlParsePubidLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
                         b"Public ID\x00" as *const u8 as *const i8,
                     );
                 }
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 return 0 as *mut xmlChar;
             }
-            size *= 2 as i32;
-            tmp = xmlRealloc_safe(
+            size *= 2;
+            tmp = unsafe{xmlRealloc_safe(
                 buf as *mut (),
                 (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-            ) as *mut xmlChar;
+            )} as *mut xmlChar;
             if tmp.is_null() {
                 unsafe {
                     xmlErrMemory(ctxt, 0 as *const i8);
                 }
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 return 0 as *mut xmlChar;
             }
             buf = tmp
@@ -4122,45 +3988,43 @@ pub unsafe fn xmlParsePubidLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
             *buf.offset(fresh83 as isize) = cur;
         }
         count += 1;
-        if count > 50 as i32 {
+        if count > 50 {
             if unsafe {
-                (*ctxt).progressive == 0 as i32
+                (*ctxt).progressive == 0
                     && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                        > (2 as i32 * 250 as i32) as i64
+                        > (2 * 250) as i64
                     && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < (2 as i32 * 250 as i32) as i64
+                        < (2 * 250) as i64
             } {
                 xmlSHRINK(ctxt);
             }
             if unsafe {
-                (*ctxt).progressive == 0 as i32
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
+                (*ctxt).progressive == 0
+                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
             } {
                 xmlGROW(ctxt);
             }
-            count = 0 as i32;
+            count = 0;
             if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 return 0 as *mut xmlChar;
             }
         }
-        xmlNextChar_safe(ctxt);
+        unsafe{xmlNextChar_safe(ctxt)};
         cur = unsafe { *(*(*ctxt).input).cur };
-        if cur as i32 == 0 as i32 {
+        if cur as i32 == 0 {
             if unsafe {
-                (*ctxt).progressive == 0 as i32
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
+                (*ctxt).progressive == 0
+                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
             } {
                 xmlGROW(ctxt);
             }
             if unsafe {
-                (*ctxt).progressive == 0 as i32
+                (*ctxt).progressive == 0
                     && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                        > (2 as i32 * 250 as i32) as i64
+                        > (2 * 250) as i64
                     && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < (2 as i32 * 250 as i32) as i64
+                        < (2 * 250) as i64
             } {
                 xmlSHRINK(ctxt);
             }
@@ -4168,14 +4032,14 @@ pub unsafe fn xmlParsePubidLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
         }
     }
     unsafe {
-        *buf.offset(len as isize) = 0 as i32 as xmlChar;
+        *buf.offset(len as isize) = 0 as xmlChar;
     }
     if cur as i32 != stop as i32 {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED, 0 as *const i8);
         }
     } else {
-        xmlNextChar_safe(ctxt);
+        unsafe{xmlNextChar_safe(ctxt)};
     }
     (safe_ctxt).instate = oldstate;
     return buf;
@@ -4184,262 +4048,17 @@ pub unsafe fn xmlParsePubidLiteral(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
 * used for the test in the inner loop of the char data testing
 */
 static mut test_char_data: [u8; 256] = [
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0x9 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0x20 as i32 as u8,
-    0x21 as i32 as u8,
-    0x22 as i32 as u8,
-    0x23 as i32 as u8,
-    0x24 as i32 as u8,
-    0x25 as i32 as u8,
-    0 as i32 as u8,
-    0x27 as i32 as u8,
-    0x28 as i32 as u8,
-    0x29 as i32 as u8,
-    0x2a as i32 as u8,
-    0x2b as i32 as u8,
-    0x2c as i32 as u8,
-    0x2d as i32 as u8,
-    0x2e as i32 as u8,
-    0x2f as i32 as u8,
-    0x30 as i32 as u8,
-    0x31 as i32 as u8,
-    0x32 as i32 as u8,
-    0x33 as i32 as u8,
-    0x34 as i32 as u8,
-    0x35 as i32 as u8,
-    0x36 as i32 as u8,
-    0x37 as i32 as u8,
-    0x38 as i32 as u8,
-    0x39 as i32 as u8,
-    0x3a as i32 as u8,
-    0x3b as i32 as u8,
-    0 as i32 as u8,
-    0x3d as i32 as u8,
-    0x3e as i32 as u8,
-    0x3f as i32 as u8,
-    0x40 as i32 as u8,
-    0x41 as i32 as u8,
-    0x42 as i32 as u8,
-    0x43 as i32 as u8,
-    0x44 as i32 as u8,
-    0x45 as i32 as u8,
-    0x46 as i32 as u8,
-    0x47 as i32 as u8,
-    0x48 as i32 as u8,
-    0x49 as i32 as u8,
-    0x4a as i32 as u8,
-    0x4b as i32 as u8,
-    0x4c as i32 as u8,
-    0x4d as i32 as u8,
-    0x4e as i32 as u8,
-    0x4f as i32 as u8,
-    0x50 as i32 as u8,
-    0x51 as i32 as u8,
-    0x52 as i32 as u8,
-    0x53 as i32 as u8,
-    0x54 as i32 as u8,
-    0x55 as i32 as u8,
-    0x56 as i32 as u8,
-    0x57 as i32 as u8,
-    0x58 as i32 as u8,
-    0x59 as i32 as u8,
-    0x5a as i32 as u8,
-    0x5b as i32 as u8,
-    0x5c as i32 as u8,
-    0 as i32 as u8,
-    0x5e as i32 as u8,
-    0x5f as i32 as u8,
-    0x60 as i32 as u8,
-    0x61 as i32 as u8,
-    0x62 as i32 as u8,
-    0x63 as i32 as u8,
-    0x64 as i32 as u8,
-    0x65 as i32 as u8,
-    0x66 as i32 as u8,
-    0x67 as i32 as u8,
-    0x68 as i32 as u8,
-    0x69 as i32 as u8,
-    0x6a as i32 as u8,
-    0x6b as i32 as u8,
-    0x6c as i32 as u8,
-    0x6d as i32 as u8,
-    0x6e as i32 as u8,
-    0x6f as i32 as u8,
-    0x70 as i32 as u8,
-    0x71 as i32 as u8,
-    0x72 as i32 as u8,
-    0x73 as i32 as u8,
-    0x74 as i32 as u8,
-    0x75 as i32 as u8,
-    0x76 as i32 as u8,
-    0x77 as i32 as u8,
-    0x78 as i32 as u8,
-    0x79 as i32 as u8,
-    0x7a as i32 as u8,
-    0x7b as i32 as u8,
-    0x7c as i32 as u8,
-    0x7d as i32 as u8,
-    0x7e as i32 as u8,
-    0x7f as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
-    0 as i32 as u8,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0x9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
+    0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0, 0x3d, 0x3e, 0x3f,
+    0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
+    0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5c, 0, 0x5e, 0x5f,
+    0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
+    0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a, 0x7b, 0x7c, 0x7d, 0x7e, 0x7f,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
 /* *
 * xmlParseCharData:
@@ -4457,26 +4076,24 @@ static mut test_char_data: [u8; 256] = [
 * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
 */
 
-pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+pub fn xmlParseCharData(ctxt: xmlParserCtxtPtr, cdata: i32) {
+    let safe_ctxt = unsafe { &mut *ctxt };
     let mut current_block: u64;
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
-    let mut nbchar: i32 = 0 as i32;
+    let mut nbchar: i32 = 0;
     let mut line: i32 = unsafe { (*(*ctxt).input).line };
     let mut col: i32 = unsafe { (*(*ctxt).input).col };
     let mut ccol: i32 = 0;
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250 as i32) as i64
+        (*ctxt).progressive == 0
+            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
     } {
         xmlSHRINK(ctxt);
     }
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
+        (*ctxt).progressive == 0
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
     } {
         xmlGROW(ctxt);
     }
@@ -4497,7 +4114,7 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                 loop {
                     unsafe {
                         (*(*ctxt).input).line += 1;
-                        (*(*ctxt).input).col = 1 as i32;
+                        (*(*ctxt).input).col = 1;
                         in_0 = in_0.offset(1);
                     }
                     if unsafe { !(*in_0 as i32 == 0xa as i32) } {
@@ -4506,15 +4123,15 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                 }
             } else {
                 if unsafe { *in_0 as i32 == '<' as i32 } {
-                    nbchar = unsafe { in_0.offset_from((*(*ctxt).input).cur) as i64 as i32 };
-                    if nbchar > 0 as i32 {
-                        let mut tmp: *const xmlChar = unsafe { (*(*ctxt).input).cur };
+                    nbchar = unsafe { in_0.offset_from((*(*ctxt).input).cur) as i32 };
+                    if nbchar > 0 {
+                        let tmp: *const xmlChar = unsafe { (*(*ctxt).input).cur };
                         unsafe { (*(*ctxt).input).cur = in_0 };
                         if unsafe {
                             !(*ctxt).sax.is_null()
                                 && (*(*ctxt).sax).ignorableWhitespace != (*(*ctxt).sax).characters
                         } {
-                            if areBlanks(ctxt, tmp, nbchar, 1 as i32) != 0 {
+                            if areBlanks(ctxt, tmp, nbchar, 1) != 0 {
                                 if unsafe { (*(*ctxt).sax).ignorableWhitespace.is_some() } {
                                     unsafe {
                                         (*(*ctxt).sax)
@@ -4538,8 +4155,8 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                                         );
                                     }
                                 }
-                                if unsafe { *(*ctxt).space } == -(1 as i32) {
-                                    unsafe { *(*ctxt).space = -(2 as i32) }
+                                if unsafe { *(*ctxt).space } == -(1) {
+                                    unsafe { *(*ctxt).space = -(2) }
                                 }
                             }
                         } else if !(safe_ctxt).sax.is_null()
@@ -4569,7 +4186,7 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                         if *in_0 as i32 == 0xa as i32 {
                             loop {
                                 (*(*ctxt).input).line += 1;
-                                (*(*ctxt).input).col = 1 as i32;
+                                (*(*ctxt).input).col = 1;
                                 in_0 = in_0.offset(1);
                                 if !(*in_0 as i32 == 0xa as i32) {
                                     break;
@@ -4579,11 +4196,11 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                             if !(*in_0 as i32 == ']' as i32) {
                                 break;
                             }
-                            if *in_0.offset(1 as i32 as isize) as i32 == ']' as i32
-                                && *in_0.offset(2 as i32 as isize) as i32 == '>' as i32
+                            if *in_0.offset(1) as i32 == ']' as i32
+                                && *in_0.offset(2) as i32 == '>' as i32
                             {
                                 xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, 0 as *const i8);
-                                (*(*ctxt).input).cur = in_0.offset(1 as i32 as isize);
+                                (*(*ctxt).input).cur = in_0.offset(1);
                                 return;
                             }
                             in_0 = in_0.offset(1);
@@ -4591,8 +4208,8 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                         }
                     }
                 }
-                nbchar = unsafe { in_0.offset_from((*(*ctxt).input).cur) as i64 as i32 };
-                if nbchar > 0 as i32 {
+                nbchar = unsafe { in_0.offset_from((*(*ctxt).input).cur) as i32 };
+                if nbchar > 0 {
                     if unsafe {
                         !(*ctxt).sax.is_null()
                             && (*(*ctxt).sax).ignorableWhitespace != (*(*ctxt).sax).characters
@@ -4601,9 +4218,9 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                                     && *(*(*ctxt).input).cur as i32 <= 0xa as i32
                                 || *(*(*ctxt).input).cur as i32 == 0xd as i32)
                     } {
-                        let mut tmp_0: *const xmlChar = unsafe { (*(*ctxt).input).cur };
+                        let tmp_0: *const xmlChar = unsafe { (*(*ctxt).input).cur };
                         unsafe { (*(*ctxt).input).cur = in_0 };
-                        if areBlanks(ctxt, tmp_0, nbchar, 0 as i32) != 0 {
+                        if areBlanks(ctxt, tmp_0, nbchar, 0) != 0 {
                             if unsafe { (*(*ctxt).sax).ignorableWhitespace.is_some() } {
                                 unsafe {
                                     (*(*ctxt).sax)
@@ -4626,8 +4243,8 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                                         nbchar,
                                     );
                                 }
-                                if *(*ctxt).space == -(1 as i32) {
-                                    *(*ctxt).space = -(2 as i32)
+                                if *(*ctxt).space == -(1) {
+                                    *(*ctxt).space = -(2)
                                 }
                             }
                         }
@@ -4663,7 +4280,7 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                             (*(*ctxt).input).cur = in_0;
                             in_0 = in_0.offset(1);
                             (*(*ctxt).input).line += 1;
-                            (*(*ctxt).input).col = 1 as i32;
+                            (*(*ctxt).input).col = 1;
                             current_block = 1917311967535052937;
                             /* while */
                         } else {
@@ -4684,18 +4301,18 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                             return;
                         }
                         if unsafe {
-                            (*ctxt).progressive == 0 as i32
+                            (*ctxt).progressive == 0
                                 && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                                    > (2 as i32 * 250 as i32) as i64
+                                    > (2 * 250) as i64
                                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                    < (2 as i32 * 250 as i32) as i64
+                                    < (2 * 250) as i64
                         } {
                             xmlSHRINK(ctxt);
                         }
                         if unsafe {
-                            (*ctxt).progressive == 0 as i32
+                            (*ctxt).progressive == 0
                                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                    < 250 as i32 as i64
+                                    < 250
                         } {
                             xmlGROW(ctxt);
                         }
@@ -4715,7 +4332,7 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                 }
             }
         }
-        nbchar = 0 as i32
+        nbchar = 0
     }
     unsafe {
         (*(*ctxt).input).line = line;
@@ -4732,25 +4349,23 @@ pub unsafe fn xmlParseCharData(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
 * of xmlParseCharData() when the parsing requires handling
 * of non-ASCII characters.
 */
-unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
+fn xmlParseCharDataComplex(ctxt: xmlParserCtxtPtr, cdata: i32) {
     let mut buf: [xmlChar; 305] = [0; 305];
-    let mut nbchar: i32 = 0 as i32;
+    let mut nbchar: i32 = 0;
     let mut cur: i32 = 0;
     let mut l: i32 = 0;
-    let mut count: i32 = 0 as i32;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut count: i32 = 0;
+    let safe_ctxt = unsafe { &mut *ctxt };
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250 as i32) as i64
+        (*ctxt).progressive == 0
+            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
     } {
         xmlSHRINK(ctxt);
     }
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
+        (*ctxt).progressive == 0
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
     } {
         xmlGROW(ctxt);
     }
@@ -4769,8 +4384,8 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
         /* test also done in xmlCurrentChar() */
         if cur == ']' as i32
             && unsafe {
-                *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == ']' as i32
-                    && *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32 == '>' as i32
+                *(*(*ctxt).input).cur.offset(1) as i32 == ']' as i32
+                    && *(*(*ctxt).input).cur.offset(2) as i32 == '>' as i32
             }
         {
             if cdata != 0 {
@@ -4780,7 +4395,7 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                 xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, 0 as *const i8);
             }
         }
-        if l == 1 as i32 {
+        if l == 1 {
             let fresh84 = nbchar;
             nbchar = nbchar + 1;
             buf[fresh84 as usize] = cur as xmlChar
@@ -4789,13 +4404,13 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                 xmlCopyCharMultiByte(&mut *buf.as_mut_ptr().offset(nbchar as isize), cur)
             };
         }
-        if nbchar >= 300 as i32 {
-            buf[nbchar as usize] = 0 as i32 as xmlChar;
+        if nbchar >= 300 {
+            buf[nbchar as usize] = 0 as xmlChar;
             /*
              * OK the segment is to be consumed as chars.
              */
             if !(safe_ctxt).sax.is_null() && (safe_ctxt).disableSAX == 0 {
-                if areBlanks(ctxt, buf.as_mut_ptr(), nbchar, 0 as i32) != 0 {
+                if areBlanks(ctxt, buf.as_mut_ptr(), nbchar, 0) != 0 {
                     unsafe {
                         if (*(*ctxt).sax).ignorableWhitespace.is_some() {
                             (*(*ctxt).sax)
@@ -4819,38 +4434,37 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                             );
                         }
                         if (*(*ctxt).sax).characters != (*(*ctxt).sax).ignorableWhitespace
-                            && *(*ctxt).space == -(1 as i32)
+                            && *(*ctxt).space == -(1)
                         {
-                            *(*ctxt).space = -(2 as i32)
+                            *(*ctxt).space = -(2)
                         }
                     }
                 }
             }
-            nbchar = 0 as i32;
+            nbchar = 0;
             /* something really bad happened in the SAX callback */
             if (safe_ctxt).instate as i32 != XML_PARSER_CONTENT as i32 {
                 return;
             }
         }
         count += 1;
-        if count > 50 as i32 {
+        if count > 50 {
             if unsafe {
-                (*ctxt).progressive == 0 as i32
+                (*ctxt).progressive == 0
                     && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                        > (2 as i32 * 250 as i32) as i64
+                        > (2 * 250) as i64
                     && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < (2 as i32 * 250 as i32) as i64
+                        < (2 * 250) as i64
             } {
                 xmlSHRINK(ctxt);
             }
             if unsafe {
-                (*ctxt).progressive == 0 as i32
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
+                (*ctxt).progressive == 0
+                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
             } {
                 xmlGROW(ctxt);
             }
-            count = 0 as i32;
+            count = 0;
             if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
                 return;
             }
@@ -4858,7 +4472,7 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
         if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
             unsafe {
                 (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1 as i32
+                (*(*ctxt).input).col = 1
             }
         } else {
             unsafe { (*(*ctxt).input).col += 1 }
@@ -4868,13 +4482,13 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
             cur = xmlCurrentChar(ctxt, &mut l);
         }
     }
-    if nbchar != 0 as i32 {
-        buf[nbchar as usize] = 0 as i32 as xmlChar;
+    if nbchar != 0 {
+        buf[nbchar as usize] = 0 as xmlChar;
         /*
          * OK the segment is to be consumed as chars.
          */
         if !(safe_ctxt).sax.is_null() && (safe_ctxt).disableSAX == 0 {
-            if areBlanks(ctxt, buf.as_mut_ptr(), nbchar, 0 as i32) != 0 {
+            if areBlanks(ctxt, buf.as_mut_ptr(), nbchar, 0) != 0 {
                 unsafe {
                     if (*(*ctxt).sax).ignorableWhitespace.is_some() {
                         (*(*ctxt).sax)
@@ -4898,15 +4512,15 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
                         );
                     }
                     if (*(*ctxt).sax).characters != (*(*ctxt).sax).ignorableWhitespace
-                        && *(*ctxt).space == -(1 as i32)
+                        && *(*ctxt).space == -(1)
                     {
-                        *(*ctxt).space = -(2 as i32)
+                        *(*ctxt).space = -(2)
                     }
                 }
             }
         }
     }
-    if cur != 0 as i32
+    if cur != 0
         && (if cur < 0x100 as i32 {
             (0x9 as i32 <= cur && cur <= 0xa as i32 || cur == 0xd as i32 || 0x20 as i32 <= cur)
                 as i32
@@ -4928,7 +4542,7 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
         unsafe {
             if *(*(*ctxt).input).cur as i32 == '\n' as i32 {
                 (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1 as i32
+                (*(*ctxt).input).col = 1
             } else {
                 (*(*ctxt).input).col += 1
             }
@@ -4958,39 +4572,37 @@ unsafe fn xmlParseCharDataComplex(mut ctxt: xmlParserCtxtPtr, mut cdata: i32) {
 *                it is possible to return NULL and have publicID set.
 */
 
-pub unsafe fn xmlParseExternalID(
-    mut ctxt: xmlParserCtxtPtr,
-    mut publicID: *mut *mut xmlChar,
-    mut strict: i32,
+pub fn xmlParseExternalID(
+    ctxt: xmlParserCtxtPtr,
+    publicID: *mut *mut xmlChar,
+    strict: i32,
 ) -> *mut xmlChar {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     let mut URI: *mut xmlChar = 0 as *mut xmlChar;
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250 as i32) as i64
+        (*ctxt).progressive == 0
+            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
     } {
         xmlSHRINK(ctxt);
     }
     unsafe { *publicID = 0 as *mut xmlChar };
     if unsafe {
-        *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'S' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'Y' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'S' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'M' as i32
+        *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'S' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'Y' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'S' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'M' as i32
     } {
         unsafe {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6 as i32 as isize);
-            (*(*ctxt).input).col += 6 as i32;
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
+            (*(*ctxt).input).col += 6;
         }
-        if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-            xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+        if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+            unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
         }
-        if xmlSkipBlankChars(ctxt) == 0 as i32 {
+        if xmlSkipBlankChars(ctxt) == 0 {
             unsafe {
                 xmlFatalErrMsg(
                     ctxt,
@@ -5006,21 +4618,21 @@ pub unsafe fn xmlParseExternalID(
             }
         }
     } else if unsafe {
-        *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'P' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'U' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'B' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'L' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'C' as i32
+        *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'P' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'U' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'B' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'L' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'C' as i32
     } {
         unsafe {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6 as i32 as isize);
-            (*(*ctxt).input).col += 6 as i32;
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
+            (*(*ctxt).input).col += 6;
         }
-        if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-            xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+        if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+            unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
         }
-        if xmlSkipBlankChars(ctxt) == 0 as i32 {
+        if xmlSkipBlankChars(ctxt) == 0 {
             unsafe {
                 xmlFatalErrMsg(
                     ctxt,
@@ -5039,7 +4651,7 @@ pub unsafe fn xmlParseExternalID(
             /*
              * We don't handle [83] so "S SystemLiteral" is required.
              */
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 unsafe {
                     xmlFatalErrMsg(
                         ctxt,
@@ -5056,7 +4668,7 @@ pub unsafe fn xmlParseExternalID(
              * system literal was found, but this is harmless since we must
              * be at the end of a NotationDecl.
              */
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 return 0 as *mut xmlChar;
             }
             if unsafe {
@@ -5089,26 +4701,26 @@ pub unsafe fn xmlParseExternalID(
 *
 * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
 */
-unsafe fn xmlParseCommentComplex(
-    mut ctxt: xmlParserCtxtPtr,
+fn xmlParseCommentComplex(
+    ctxt: xmlParserCtxtPtr,
     mut buf: *mut xmlChar,
     mut len: size_t,
     mut size: size_t,
 ) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     let mut q: i32 = 0;
     let mut ql: i32 = 0;
     let mut r: i32 = 0;
     let mut rl: i32 = 0;
     let mut cur: i32 = 0;
     let mut l: i32 = 0;
-    let mut count: size_t = 0 as i32 as size_t;
+    let mut count: size_t = 0;
     let mut inputid: i32 = 0;
     inputid = unsafe { (*(*ctxt).input).id };
     if buf.is_null() {
-        len = 0 as i32 as size_t;
-        size = 100 as i32 as size_t;
-        buf = xmlMallocAtomic_safe(size.wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+        len = 0;
+        size = 100;
+        buf = unsafe{xmlMallocAtomic_safe(size.wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))}
             as *mut xmlChar;
         if buf.is_null() {
             unsafe {
@@ -5118,8 +4730,8 @@ unsafe fn xmlParseCommentComplex(
         }
     }
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
+        (*ctxt).progressive == 0
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
     } {
         xmlGROW(ctxt);
     }
@@ -5127,7 +4739,7 @@ unsafe fn xmlParseCommentComplex(
     unsafe {
         q = xmlCurrentChar(ctxt, &mut ql);
     }
-    if !(q == 0 as i32) {
+    if !(q == 0) {
         if if q < 0x100 as i32 {
             (0x9 as i32 <= q && q <= 0xa as i32 || q == 0xd as i32 || 0x20 as i32 <= q) as i32
         } else {
@@ -5144,20 +4756,20 @@ unsafe fn xmlParseCommentComplex(
                     q,
                 );
             }
-            xmlFree_safe(buf as *mut ());
+            unsafe{xmlFree_safe(buf as *mut ())};
             return;
         }
         unsafe {
             if *(*(*ctxt).input).cur as i32 == '\n' as i32 {
                 (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1 as i32
+                (*(*ctxt).input).col = 1
             } else {
                 (*(*ctxt).input).col += 1
             }
             (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(ql as isize);
             r = xmlCurrentChar(ctxt, &mut rl);
         }
-        if !(r == 0 as i32) {
+        if !(r == 0) {
             if if r < 0x100 as i32 {
                 (0x9 as i32 <= r && r <= 0xa as i32 || r == 0xd as i32 || 0x20 as i32 <= r) as i32
             } else {
@@ -5175,20 +4787,20 @@ unsafe fn xmlParseCommentComplex(
                         q,
                     );
                 }
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 return;
             }
             unsafe {
                 if *(*(*ctxt).input).cur as i32 == '\n' as i32 {
                     (*(*ctxt).input).line += 1;
-                    (*(*ctxt).input).col = 1 as i32
+                    (*(*ctxt).input).col = 1
                 } else {
                     (*(*ctxt).input).col += 1
                 }
                 (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(rl as isize);
                 cur = xmlCurrentChar(ctxt, &mut l);
             }
-            if !(cur == 0 as i32) {
+            if !(cur == 0) {
                 while (if cur < 0x100 as i32 {
                     (0x9 as i32 <= cur && cur <= 0xa as i32
                         || cur == 0xd as i32
@@ -5206,9 +4818,7 @@ unsafe fn xmlParseCommentComplex(
                             xmlFatalErr(ctxt, XML_ERR_HYPHEN_IN_COMMENT, 0 as *const i8);
                         }
                     }
-                    if len > 10000000 as i32 as u64
-                        && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-                    {
+                    if len > 10000000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                         unsafe {
                             xmlFatalErrMsgStr(
                                 ctxt,
@@ -5217,16 +4827,16 @@ unsafe fn xmlParseCommentComplex(
                                 0 as *const xmlChar,
                             );
                         }
-                        xmlFree_safe(buf as *mut ());
+                        unsafe{xmlFree_safe(buf as *mut ())};
                         return;
                     }
-                    if len.wrapping_add(5 as i32 as u64) >= size {
+                    if len.wrapping_add(5) >= size {
                         let mut new_buf: *mut xmlChar = 0 as *mut xmlChar;
                         let mut new_size: size_t = 0;
-                        new_size = size.wrapping_mul(2 as i32 as u64);
-                        new_buf = xmlRealloc_safe(buf as *mut (), new_size) as *mut xmlChar;
+                        new_size = size.wrapping_mul(2);
+                        new_buf = unsafe{xmlRealloc_safe(buf as *mut (), new_size)} as *mut xmlChar;
                         if new_buf.is_null() {
-                            xmlFree_safe(buf as *mut ());
+                            unsafe{xmlFree_safe(buf as *mut ())};
                             unsafe {
                                 xmlErrMemory(ctxt, 0 as *const i8);
                             }
@@ -5235,7 +4845,7 @@ unsafe fn xmlParseCommentComplex(
                         buf = new_buf;
                         size = new_size
                     }
-                    if ql == 1 as i32 {
+                    if ql == 1 {
                         let fresh85 = len;
                         len = len.wrapping_add(1);
                         unsafe { *buf.offset(fresh85 as isize) = q as xmlChar }
@@ -5244,7 +4854,7 @@ unsafe fn xmlParseCommentComplex(
                             (len as u64).wrapping_add(xmlCopyCharMultiByte(
                                 &mut *buf.offset(len as isize),
                                 q,
-                            ) as u64) as size_t as size_t
+                            ) as u64) as size_t
                         };
                     }
                     q = r;
@@ -5252,53 +4862,53 @@ unsafe fn xmlParseCommentComplex(
                     r = cur;
                     rl = l;
                     count = count.wrapping_add(1);
-                    if count > 50 as i32 as u64 {
+                    if count > 50 {
                         if unsafe {
-                            (*ctxt).progressive == 0 as i32
+                            (*ctxt).progressive == 0
                                 && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                                    > (2 as i32 * 250 as i32) as i64
+                                    > (2 * 250) as i64
                                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                    < (2 as i32 * 250 as i32) as i64
+                                    < (2 * 250) as i64
                         } {
                             xmlSHRINK(ctxt);
                         }
                         if unsafe {
-                            (*ctxt).progressive == 0 as i32
+                            (*ctxt).progressive == 0
                                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                    < 250 as i32 as i64
+                                    < 250
                         } {
                             xmlGROW(ctxt);
                         }
-                        count = 0 as i32 as size_t;
+                        count = 0;
                         if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-                            xmlFree_safe(buf as *mut ());
+                            unsafe{xmlFree_safe(buf as *mut ())};
                             return;
                         }
                     }
                     unsafe {
                         if *(*(*ctxt).input).cur as i32 == '\n' as i32 {
                             (*(*ctxt).input).line += 1;
-                            (*(*ctxt).input).col = 1 as i32
+                            (*(*ctxt).input).col = 1
                         } else {
                             (*(*ctxt).input).col += 1
                         }
                         (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize);
                         cur = xmlCurrentChar(ctxt, &mut l);
                     }
-                    if cur == 0 as i32 {
+                    if cur == 0 {
                         if unsafe {
-                            (*ctxt).progressive == 0 as i32
+                            (*ctxt).progressive == 0
                                 && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                                    > (2 as i32 * 250 as i32) as i64
+                                    > (2 * 250) as i64
                                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                    < (2 as i32 * 250 as i32) as i64
+                                    < (2 * 250) as i64
                         } {
                             xmlSHRINK(ctxt);
                         }
                         if unsafe {
-                            (*ctxt).progressive == 0 as i32
+                            (*ctxt).progressive == 0
                                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                    < 250 as i32 as i64
+                                    < 250
                         } {
                             xmlGROW(ctxt);
                         }
@@ -5306,9 +4916,9 @@ unsafe fn xmlParseCommentComplex(
                     }
                 }
                 unsafe {
-                    *buf.offset(len as isize) = 0 as i32 as xmlChar;
+                    *buf.offset(len as isize) = 0 as xmlChar;
                 }
-                if cur == 0 as i32 {
+                if cur == 0 {
                     unsafe {
                         xmlFatalErrMsgStr(
                             ctxt,
@@ -5348,7 +4958,7 @@ unsafe fn xmlParseCommentComplex(
                             );
                         }
                     }
-                    xmlNextChar_safe(ctxt);
+                    unsafe{xmlNextChar_safe(ctxt)};
                     unsafe {
                         if !(*ctxt).sax.is_null()
                             && (*(*ctxt).sax).comment.is_some()
@@ -5361,7 +4971,7 @@ unsafe fn xmlParseCommentComplex(
                         }
                     }
                 }
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 return;
             }
         }
@@ -5374,7 +4984,7 @@ unsafe fn xmlParseCommentComplex(
             0 as *const xmlChar,
         );
     }
-    xmlFree_safe(buf as *mut ());
+    unsafe{xmlFree_safe(buf as *mut ())};
 }
 /* *
 * xmlParseComment:
@@ -5387,24 +4997,24 @@ unsafe fn xmlParseCommentComplex(
 * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
 */
 
-pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
+pub fn xmlParseComment(ctxt: xmlParserCtxtPtr) {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
-    let mut size: size_t = 100 as i32 as size_t;
-    let mut len: size_t = 0 as i32 as size_t;
+    let mut size: size_t = 100;
+    let mut len: size_t = 0;
     let mut state: xmlParserInputState = XML_PARSER_START;
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
-    let mut nbchar: size_t = 0 as i32 as size_t;
+    let mut nbchar: size_t = 0;
     let mut ccol: i32 = 0;
     let mut inputid: i32 = 0;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     /*
      * Check that there is a comment right here.
      */
     if unsafe {
         *(*(*ctxt).input).cur as i32 != '<' as i32
-            || *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 != '!' as i32
-            || *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32 != '-' as i32
-            || *(*(*ctxt).input).cur.offset(3 as i32 as isize) as i32 != '-' as i32
+            || *(*(*ctxt).input).cur.offset(1) as i32 != '!' as i32
+            || *(*(*ctxt).input).cur.offset(2) as i32 != '-' as i32
+            || *(*(*ctxt).input).cur.offset(3) as i32 != '-' as i32
     } {
         return;
     }
@@ -5412,24 +5022,22 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
     (safe_ctxt).instate = XML_PARSER_COMMENT;
     unsafe {
         inputid = (*(*ctxt).input).id;
-        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(4 as i32 as isize);
-        (*(*ctxt).input).col += 4 as i32;
+        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(4);
+        (*(*ctxt).input).col += 4;
     }
-    if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-        xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+    if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+        unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
     }
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250 as i32) as i64
+        (*ctxt).progressive == 0
+            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
     } {
         xmlSHRINK(ctxt);
     }
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
+        (*ctxt).progressive == 0
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
     } {
         xmlGROW(ctxt);
     }
@@ -5444,7 +5052,7 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
             if *in_0 as i32 == 0xa as i32 {
                 loop {
                     (*(*ctxt).input).line += 1;
-                    (*(*ctxt).input).col = 1 as i32;
+                    (*(*ctxt).input).col = 1;
                     in_0 = in_0.offset(1);
                     if !(*in_0 as i32 == 0xa as i32) {
                         break;
@@ -5464,26 +5072,26 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
                 if *in_0 as i32 == 0xa as i32 {
                     loop {
                         (*(*ctxt).input).line += 1;
-                        (*(*ctxt).input).col = 1 as i32;
+                        (*(*ctxt).input).col = 1;
                         in_0 = in_0.offset(1);
                         if !(*in_0 as i32 == 0xa as i32) {
                             break;
                         }
                     }
                 } else {
-                    nbchar = in_0.offset_from((*(*ctxt).input).cur) as i64 as size_t;
+                    nbchar = in_0.offset_from((*(*ctxt).input).cur) as size_t;
                     /*
                      * save current set of data
                      */
-                    if nbchar > 0 as i32 as u64 {
+                    if nbchar > 0 {
                         if !(*ctxt).sax.is_null() && (*(*ctxt).sax).comment.is_some() {
                             if buf.is_null() {
                                 if *in_0 as i32 == '-' as i32
-                                    && *in_0.offset(1 as i32 as isize) as i32 == '-' as i32
+                                    && *in_0.offset(1) as i32 == '-' as i32
                                 {
-                                    size = nbchar.wrapping_add(1 as i32 as u64)
+                                    size = nbchar.wrapping_add(1)
                                 } else {
-                                    size = (100 as i32 as u64).wrapping_add(nbchar)
+                                    size = 100 + nbchar
                                 }
                                 buf =
                                     xmlMallocAtomic_safe(size.wrapping_mul(::std::mem::size_of::<
@@ -5497,13 +5105,12 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
                                     (*ctxt).instate = state;
                                     return;
                                 }
-                                len = 0 as i32 as size_t
-                            } else if len.wrapping_add(nbchar).wrapping_add(1 as i32 as u64) >= size
-                            {
+                                len = 0
+                            } else if len.wrapping_add(nbchar).wrapping_add(1) >= size {
                                 let mut new_buf: *mut xmlChar = 0 as *mut xmlChar;
-                                size = (size as u64).wrapping_add(
-                                    len.wrapping_add(nbchar).wrapping_add(100 as i32 as u64),
-                                ) as size_t as size_t;
+                                size = (size as u64)
+                                    .wrapping_add(len.wrapping_add(nbchar).wrapping_add(100))
+                                    as size_t;
                                 new_buf = xmlRealloc_safe(
                                     buf as *mut (),
                                     size.wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
@@ -5521,13 +5128,11 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
                                 (*(*ctxt).input).cur as *const (),
                                 nbchar,
                             );
-                            len = (len as u64).wrapping_add(nbchar) as size_t as size_t;
-                            *buf.offset(len as isize) = 0 as i32 as xmlChar
+                            len = (len as u64).wrapping_add(nbchar) as size_t;
+                            *buf.offset(len as isize) = 0 as xmlChar
                         }
                     }
-                    if len > 10000000 as i32 as u64
-                        && (*ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-                    {
+                    if len > 10000000 && (*ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                         xmlFatalErrMsgStr(
                             ctxt,
                             XML_ERR_COMMENT_NOT_FINISHED,
@@ -5541,7 +5146,7 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
                     if *in_0 as i32 == 0xa as i32 {
                         in_0 = in_0.offset(1);
                         (*(*ctxt).input).line += 1;
-                        (*(*ctxt).input).col = 1 as i32
+                        (*(*ctxt).input).col = 1
                     }
                     if *in_0 as i32 == 0xd as i32 {
                         in_0 = in_0.offset(1);
@@ -5549,24 +5154,23 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
                             (*(*ctxt).input).cur = in_0;
                             in_0 = in_0.offset(1);
                             (*(*ctxt).input).line += 1;
-                            (*(*ctxt).input).col = 1 as i32;
+                            (*(*ctxt).input).col = 1;
                             break;
                             /* while */
                         } else {
                             in_0 = in_0.offset(-1)
                         }
                     }
-                    if (*ctxt).progressive == 0 as i32
+                    if (*ctxt).progressive == 0
                         && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                            > (2 as i32 * 250 as i32) as i64
+                            > (2 * 250) as i64
                         && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < (2 as i32 * 250 as i32) as i64
+                            < (2 * 250) as i64
                     {
                         xmlSHRINK(ctxt);
                     }
-                    if (*ctxt).progressive == 0 as i32
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < 250 as i32 as i64
+                    if (*ctxt).progressive == 0
+                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                     {
                         xmlGROW(ctxt);
                     }
@@ -5578,8 +5182,8 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
                     if !(*in_0 as i32 == '-' as i32) {
                         break;
                     }
-                    if *in_0.offset(1 as i32 as isize) as i32 == '-' as i32 {
-                        if *in_0.offset(2 as i32 as isize) as i32 == '>' as i32 {
+                    if *in_0.offset(1) as i32 == '-' as i32 {
+                        if *in_0.offset(2) as i32 == '>' as i32 {
                             if (*(*ctxt).input).id != inputid {
                                 xmlFatalErrMsg(
                                     ctxt,
@@ -5589,10 +5193,10 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
                                         as *const i8,
                                 );
                             }
-                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3 as i32 as isize);
-                            (*(*ctxt).input).col += 3 as i32;
-                            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
+                            (*(*ctxt).input).col += 3;
+                            if *(*(*ctxt).input).cur as i32 == 0 {
+                                xmlParserInputGrow_safe((*ctxt).input, 250);
                             }
                             if !(*ctxt).sax.is_null()
                                 && (*(*ctxt).sax).comment.is_some()
@@ -5667,24 +5271,21 @@ pub unsafe fn xmlParseComment(mut ctxt: xmlParserCtxtPtr) {
 * Returns the PITarget name or NULL
 */
 
-pub unsafe fn xmlParsePITarget(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+pub fn xmlParsePITarget(ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     name = xmlParseName(ctxt);
     if unsafe {
         !name.is_null()
-            && (*name.offset(0 as i32 as isize) as i32 == 'x' as i32
-                || *name.offset(0 as i32 as isize) as i32 == 'X' as i32)
-            && (*name.offset(1 as i32 as isize) as i32 == 'm' as i32
-                || *name.offset(1 as i32 as isize) as i32 == 'M' as i32)
-            && (*name.offset(2 as i32 as isize) as i32 == 'l' as i32
-                || *name.offset(2 as i32 as isize) as i32 == 'L' as i32)
+            && (*name.offset(0) as i32 == 'x' as i32 || *name.offset(0) as i32 == 'X' as i32)
+            && (*name.offset(1) as i32 == 'm' as i32 || *name.offset(1) as i32 == 'M' as i32)
+            && (*name.offset(2) as i32 == 'l' as i32 || *name.offset(2) as i32 == 'L' as i32)
     } {
         let mut i: i32 = 0;
         if unsafe {
-            *name.offset(0 as i32 as isize) as i32 == 'x' as i32
-                && *name.offset(1 as i32 as isize) as i32 == 'm' as i32
-                && *name.offset(2 as i32 as isize) as i32 == 'l' as i32
-                && *name.offset(3 as i32 as isize) as i32 == 0 as i32
+            *name.offset(0) as i32 == 'x' as i32
+                && *name.offset(1) as i32 == 'm' as i32
+                && *name.offset(2) as i32 == 'l' as i32
+                && *name.offset(3) as i32 == 0
         } {
             unsafe {
                 xmlFatalErrMsg(
@@ -5697,15 +5298,15 @@ pub unsafe fn xmlParsePITarget(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             return name;
         } else {
             unsafe {
-                if *name.offset(3 as i32 as isize) as i32 == 0 as i32 {
+                if *name.offset(3) as i32 == 0 {
                     xmlFatalErr(ctxt, XML_ERR_RESERVED_XML_NAME, 0 as *const i8);
                     return name;
                 }
             }
         }
-        i = 0 as i32;
+        i = 0;
         while unsafe { !xmlW3CPIs[i as usize].is_null() } {
-            if xmlStrEqual_safe(name, unsafe { xmlW3CPIs[i as usize] as *const xmlChar }) != 0 {
+            if unsafe{xmlStrEqual_safe(name, unsafe { xmlW3CPIs[i as usize] as *const xmlChar })} != 0 {
                 return name;
             }
             i += 1
@@ -5720,7 +5321,7 @@ pub unsafe fn xmlParsePITarget(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             );
         }
     }
-    if !name.is_null() && !xmlStrchr_safe(name, ':' as i32 as xmlChar).is_null() {
+    if !name.is_null() && !unsafe{xmlStrchr_safe(name, ':' as xmlChar)}.is_null() {
         unsafe {
             xmlNsErr(
                 ctxt,
@@ -5747,15 +5348,15 @@ pub unsafe fn xmlParsePITarget(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 * part of the document before any doctype information
 * This will add the given catalog to the parsing context in order
 * to be used if there is a resolution need further down in the document
-*/
+ */
 
 #[cfg(HAVE_parser_LIBXML_CATALOG_ENABLED)]
-unsafe fn xmlParseCatalogPI(mut ctxt: xmlParserCtxtPtr, mut catalog: *const xmlChar) {
+fn xmlParseCatalogPI(ctxt: xmlParserCtxtPtr, catalog: *const xmlChar) {
     let mut URL: *mut xmlChar = 0 as *mut xmlChar;
     let mut tmp: *const xmlChar = 0 as *const xmlChar;
     let mut base: *const xmlChar = 0 as *const xmlChar;
     let mut marker: xmlChar = 0;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     tmp = catalog;
     unsafe {
         while *tmp as i32 == 0x20 as i32
@@ -5768,11 +5369,11 @@ unsafe fn xmlParseCatalogPI(mut ctxt: xmlParserCtxtPtr, mut catalog: *const xmlC
     if !(xmlStrncmp_safe(
         tmp,
         b"catalog\x00" as *const u8 as *const i8 as *mut xmlChar,
-        7 as i32,
+        7,
     ) != 0)
     {
         unsafe {
-            tmp = tmp.offset(7 as i32 as isize);
+            tmp = tmp.offset(7);
             while *tmp as i32 == 0x20 as i32
                 || 0x9 as i32 <= *tmp as i32 && *tmp as i32 <= 0xa as i32
                 || *tmp as i32 == 0xd as i32
@@ -5796,13 +5397,13 @@ unsafe fn xmlParseCatalogPI(mut ctxt: xmlParserCtxtPtr, mut catalog: *const xmlC
             unsafe {
                 tmp = tmp.offset(1);
                 base = tmp;
-                while *tmp as i32 != 0 as i32 && *tmp as i32 != marker as i32 {
+                while *tmp as i32 != 0 && *tmp as i32 != marker as i32 {
                     tmp = tmp.offset(1)
                 }
             }
-            if !(unsafe { *tmp } as i32 == 0 as i32) {
+            if !(unsafe { *tmp } as i32 == 0) {
                 unsafe {
-                    URL = xmlStrndup_safe(base, tmp.offset_from(base) as i64 as i32);
+                    URL = xmlStrndup_safe(base, tmp.offset_from(base) as i32);
                     tmp = tmp.offset(1);
                     while *tmp as i32 == 0x20 as i32
                         || 0x9 as i32 <= *tmp as i32 && *tmp as i32 <= 0xa as i32
@@ -5811,7 +5412,7 @@ unsafe fn xmlParseCatalogPI(mut ctxt: xmlParserCtxtPtr, mut catalog: *const xmlC
                         tmp = tmp.offset(1)
                     }
                 }
-                if !(unsafe { *tmp } as i32 != 0 as i32) {
+                if !(unsafe { *tmp } as i32 != 0) {
                     if !URL.is_null() {
                         (safe_ctxt).catalogs = xmlCatalogAddLocal_safe((safe_ctxt).catalogs, URL);
                         xmlFree_safe(URL as *mut ());
@@ -5845,39 +5446,38 @@ unsafe fn xmlParseCatalogPI(mut ctxt: xmlParserCtxtPtr, mut catalog: *const xmlC
 * The processing is transferred to SAX once parsed.
 */
 
-pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
+pub fn xmlParsePI(ctxt: xmlParserCtxtPtr) {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
-    let mut len: size_t = 0 as i32 as size_t;
-    let mut size: size_t = 100 as i32 as size_t;
+    let mut len: size_t = 0;
+    let mut size: size_t = 100;
     let mut cur: i32 = 0;
     let mut l: i32 = 0;
     let mut target: *const xmlChar = 0 as *const xmlChar;
     let mut state: xmlParserInputState = XML_PARSER_START;
-    let mut count: i32 = 0 as i32;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut count: i32 = 0;
+    let safe_ctxt = unsafe { &mut *ctxt };
     if unsafe {
         *(*(*ctxt).input).cur as i32 == '<' as i32
-            && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '?' as i32
+            && *(*(*ctxt).input).cur.offset(1) as i32 == '?' as i32
     } {
-        let mut inputid: i32 = unsafe { (*(*ctxt).input).id };
+        let inputid: i32 = unsafe { (*(*ctxt).input).id };
         state = (safe_ctxt).instate;
         (safe_ctxt).instate = XML_PARSER_PI;
         /*
          * this is a Processing Instruction.
          */
         unsafe {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as i32 as isize);
-            (*(*ctxt).input).col += 2 as i32;
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
+            (*(*ctxt).input).col += 2;
         }
-        if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-            xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+        if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+            unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
         }
         if unsafe {
-            (*ctxt).progressive == 0 as i32
-                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                    > (2 as i32 * 250 as i32) as i64
+            (*ctxt).progressive == 0
+                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < (2 as i32 * 250 as i32) as i64
+                    < (2 * 250) as i64
         } {
             xmlSHRINK(ctxt);
         }
@@ -5889,7 +5489,7 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
         if !target.is_null() {
             if unsafe {
                 *(*(*ctxt).input).cur as i32 == '?' as i32
-                    && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '>' as i32
+                    && *(*(*ctxt).input).cur.offset(1) as i32 == '>' as i32
             } {
                 if inputid != unsafe { (*(*ctxt).input).id } {
                     unsafe {
@@ -5902,11 +5502,11 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                     }
                 }
                 unsafe {
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as i32 as isize);
-                    (*(*ctxt).input).col += 2 as i32;
+                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
+                    (*(*ctxt).input).col += 2;
                 }
-                if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-                    xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+                if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+                    unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
                 }
                 /*
                  * SAX: PI detected.
@@ -5930,7 +5530,7 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                 }
                 return;
             }
-            buf = xmlMallocAtomic_safe(size.wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+            buf = unsafe{xmlMallocAtomic_safe(size.wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))}
                 as *mut xmlChar;
             if buf.is_null() {
                 unsafe {
@@ -5939,7 +5539,7 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                 (safe_ctxt).instate = state;
                 return;
             }
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 unsafe {
                     xmlFatalErrMsgStr(
                         ctxt,
@@ -5961,19 +5561,18 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                     || 0x10000 as i32 <= cur && cur <= 0x10ffff as i32) as i32
             }) != 0
                 && unsafe {
-                    (cur != '?' as i32
-                        || *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 != '>' as i32)
+                    (cur != '?' as i32 || *(*(*ctxt).input).cur.offset(1) as i32 != '>' as i32)
                 }
             {
-                if len.wrapping_add(5 as i32 as u64) >= size {
+                if len.wrapping_add(5) >= size {
                     let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                    let mut new_size: size_t = size.wrapping_mul(2 as i32 as u64);
-                    tmp = xmlRealloc_safe(buf as *mut (), new_size) as *mut xmlChar;
+                    let new_size: size_t = size.wrapping_mul(2);
+                    tmp = unsafe{xmlRealloc_safe(buf as *mut (), new_size)} as *mut xmlChar;
                     if tmp.is_null() {
                         unsafe {
                             xmlErrMemory(ctxt, 0 as *const i8);
                         }
-                        xmlFree_safe(buf as *mut ());
+                        unsafe{xmlFree_safe(buf as *mut ())};
                         (safe_ctxt).instate = state;
                         return;
                     }
@@ -5981,31 +5580,28 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                     size = new_size
                 }
                 count += 1;
-                if count > 50 as i32 {
+                if count > 50 {
                     if unsafe {
-                        (*ctxt).progressive == 0 as i32
+                        (*ctxt).progressive == 0
                             && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                                > (2 as i32 * 250 as i32) as i64
+                                > (2 * 250) as i64
                             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                < (2 as i32 * 250 as i32) as i64
+                                < (2 * 250) as i64
                     } {
                         xmlSHRINK(ctxt);
                     }
                     if unsafe {
-                        (*ctxt).progressive == 0 as i32
-                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                < 250 as i32 as i64
+                        (*ctxt).progressive == 0
+                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                     } {
                         xmlGROW(ctxt);
                     }
                     if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-                        xmlFree_safe(buf as *mut ());
+                        unsafe{xmlFree_safe(buf as *mut ())};
                         return;
                     }
-                    count = 0 as i32;
-                    if len > 10000000 as i32 as u64
-                        && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-                    {
+                    count = 0;
+                    if len > 10000000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                         unsafe {
                             xmlFatalErrMsgStr(
                                 ctxt,
@@ -6014,12 +5610,12 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                                 target,
                             );
                         }
-                        xmlFree_safe(buf as *mut ());
+                        unsafe{xmlFree_safe(buf as *mut ())};
                         (safe_ctxt).instate = state;
                         return;
                     }
                 }
-                if l == 1 as i32 {
+                if l == 1 {
                     let fresh86 = len;
                     len = len.wrapping_add(1);
                     unsafe { *buf.offset(fresh86 as isize) = cur as xmlChar };
@@ -6028,42 +5624,39 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                         (len as u64)
                             .wrapping_add(
                                 xmlCopyCharMultiByte(&mut *buf.offset(len as isize), cur) as u64
-                            ) as size_t as size_t
+                            ) as size_t
                     };
                 }
                 unsafe {
                     if *(*(*ctxt).input).cur as i32 == '\n' as i32 {
                         (*(*ctxt).input).line += 1;
-                        (*(*ctxt).input).col = 1 as i32
+                        (*(*ctxt).input).col = 1
                     } else {
                         (*(*ctxt).input).col += 1
                     }
                     (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize);
                     cur = xmlCurrentChar(ctxt, &mut l);
                 }
-                if cur == 0 as i32 {
+                if cur == 0 {
                     if unsafe {
-                        (*ctxt).progressive == 0 as i32
+                        (*ctxt).progressive == 0
                             && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                                > (2 as i32 * 250 as i32) as i64
+                                > (2 * 250) as i64
                             && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                < (2 as i32 * 250 as i32) as i64
+                                < (2 * 250) as i64
                     } {
                         xmlSHRINK(ctxt);
                     }
                     if unsafe {
-                        (*ctxt).progressive == 0 as i32
-                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                < 250 as i32 as i64
+                        (*ctxt).progressive == 0
+                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                     } {
                         xmlGROW(ctxt);
                     }
                     cur = unsafe { xmlCurrentChar(ctxt, &mut l) };
                 }
             }
-            if len > 10000000 as i32 as u64
-                && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-            {
+            if len > 10000000 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 {
                 unsafe {
                     xmlFatalErrMsgStr(
                         ctxt,
@@ -6072,11 +5665,11 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                         target,
                     );
                 }
-                xmlFree_safe(buf as *mut ());
+                unsafe{xmlFree_safe(buf as *mut ())};
                 (safe_ctxt).instate = state;
                 return;
             }
-            unsafe { *buf.offset(len as isize) = 0 as i32 as xmlChar };
+            unsafe { *buf.offset(len as isize) = 0 as xmlChar };
             if cur != '?' as i32 {
                 unsafe {
                     xmlFatalErrMsgStr(
@@ -6096,10 +5689,10 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                                 as *const u8 as *const i8,
                         );
                     }
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as i32 as isize);
-                    (*(*ctxt).input).col += 2 as i32;
-                    if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                        xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
+                    (*(*ctxt).input).col += 2;
+                    if *(*(*ctxt).input).cur as i32 == 0 {
+                        xmlParserInputGrow_safe((safe_ctxt).input, 250);
                     }
                 }
 
@@ -6114,9 +5707,9 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                                     as *const xmlChar,
                             ) != 0
                         {
-                            let mut allow: xmlCatalogAllow = xmlCatalogGetDefaults_safe();
-                            if allow as u32 == XML_CATA_ALLOW_DOCUMENT as i32 as u32
-                                || allow as u32 == XML_CATA_ALLOW_ALL as i32 as u32
+                            let allow: xmlCatalogAllow = xmlCatalogGetDefaults_safe();
+                            if allow as u32 == XML_CATA_ALLOW_DOCUMENT as u32
+                                || allow as u32 == XML_CATA_ALLOW_ALL as u32
                             {
                                 xmlParseCatalogPI(ctxt, buf);
                             }
@@ -6142,7 +5735,7 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
                     }
                 }
             }
-            xmlFree_safe(buf as *mut ());
+            unsafe{xmlFree_safe(buf as *mut ())};
         } else {
             unsafe {
                 xmlFatalErr(ctxt, XML_ERR_PI_NOT_STARTED, 0 as *const i8);
@@ -6169,42 +5762,41 @@ pub unsafe fn xmlParsePI(mut ctxt: xmlParserCtxtPtr) {
 * See the NOTE on xmlParseExternalID().
 */
 
-pub unsafe fn xmlParseNotationDecl(mut ctxt: xmlParserCtxtPtr) {
+pub fn xmlParseNotationDecl(ctxt: xmlParserCtxtPtr) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut Pubid: *mut xmlChar = 0 as *mut xmlChar;
     let mut Systemid: *mut xmlChar = 0 as *mut xmlChar;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     if unsafe {
-        *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '<' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == '!' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'N' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'O' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(8 as i32 as isize) as i32 == 'O' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(9 as i32 as isize) as i32 == 'N' as i32
+        *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '<' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == '!' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'N' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'O' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'A' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(8) as i32 == 'O' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(9) as i32 == 'N' as i32
     } {
-        let mut inputid: i32 = unsafe { (*(*ctxt).input).id };
+        let inputid: i32 = unsafe { (*(*ctxt).input).id };
         if unsafe {
-            (*ctxt).progressive == 0 as i32
-                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                    > (2 as i32 * 250 as i32) as i64
+            (*ctxt).progressive == 0
+                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < (2 as i32 * 250 as i32) as i64
+                    < (2 * 250) as i64
         } {
             xmlSHRINK(ctxt);
         }
         unsafe {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(10 as i32 as isize);
-            (*(*ctxt).input).col += 10 as i32;
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(10);
+            (*(*ctxt).input).col += 10;
         }
 
-        if unsafe { *(*(*ctxt).input).cur as i32 == 0 as i32 } {
-            xmlParserInputGrow_safe((safe_ctxt).input, 250 as i32);
+        if unsafe { *(*(*ctxt).input).cur as i32 == 0 } {
+            unsafe{xmlParserInputGrow_safe((safe_ctxt).input, 250)};
         }
-        if xmlSkipBlankChars(ctxt) == 0 as i32 {
+        if xmlSkipBlankChars(ctxt) == 0 {
             unsafe {
                 xmlFatalErrMsg(
                     ctxt,
@@ -6221,17 +5813,20 @@ pub unsafe fn xmlParseNotationDecl(mut ctxt: xmlParserCtxtPtr) {
             }
             return;
         }
-        if !xmlStrchr_safe(name, ':' as i32 as xmlChar).is_null() {
-            xmlNsErr(
-                ctxt,
-                XML_NS_ERR_COLON,
-                b"colons are forbidden from notation names \'%s\'\n\x00" as *const u8 as *const i8,
-                name,
-                0 as *const xmlChar,
-                0 as *const xmlChar,
-            );
+        if !unsafe{xmlStrchr_safe(name, ':' as xmlChar)}.is_null() {
+            unsafe {
+                xmlNsErr(
+                    ctxt,
+                    XML_NS_ERR_COLON,
+                    b"colons are forbidden from notation names \'%s\'\n\x00" as *const u8
+                        as *const i8,
+                    name,
+                    0 as *const xmlChar,
+                    0 as *const xmlChar,
+                )
+            };
         }
-        if xmlSkipBlankChars(ctxt) == 0 as i32 {
+        if xmlSkipBlankChars(ctxt) == 0 {
             unsafe {
                 xmlFatalErrMsg(
                     ctxt,
@@ -6244,7 +5839,7 @@ pub unsafe fn xmlParseNotationDecl(mut ctxt: xmlParserCtxtPtr) {
         /*
          * Parse the IDs.
          */
-        Systemid = xmlParseExternalID(ctxt, &mut Pubid, 0 as i32);
+        Systemid = xmlParseExternalID(ctxt, &mut Pubid, 0);
         xmlSkipBlankChars(ctxt);
         unsafe {
             if *(*(*ctxt).input).cur as i32 == '>' as i32 {
@@ -6276,10 +5871,10 @@ pub unsafe fn xmlParseNotationDecl(mut ctxt: xmlParserCtxtPtr) {
         }
 
         if !Systemid.is_null() {
-            xmlFree_safe(Systemid as *mut ());
+            unsafe{xmlFree_safe(Systemid as *mut ())};
         }
         if !Pubid.is_null() {
-            xmlFree_safe(Pubid as *mut ());
+            unsafe{xmlFree_safe(Pubid as *mut ())};
         }
     };
 }
@@ -6305,41 +5900,40 @@ pub unsafe fn xmlParseNotationDecl(mut ctxt: xmlParserCtxtPtr) {
 * The Name must match the declared name of a notation.
 */
 
-pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
+pub fn xmlParseEntityDecl(ctxt: xmlParserCtxtPtr) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut value: *mut xmlChar = 0 as *mut xmlChar;
     let mut URI: *mut xmlChar = 0 as *mut xmlChar;
     let mut literal: *mut xmlChar = 0 as *mut xmlChar;
     let mut ndata: *const xmlChar = 0 as *const xmlChar;
-    let mut isParameter: i32 = 0 as i32;
+    let mut isParameter: i32 = 0;
     let mut orig: *mut xmlChar = 0 as *mut xmlChar;
     /* GROW; done in the caller */
     //@todo 削减unsafe范围
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '<' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == '!' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'N' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize) as i32 == 'Y' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '<' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == '!' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'N' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'Y' as i32
         {
-            let mut inputid: i32 = (*(*ctxt).input).id;
-            if (*ctxt).progressive == 0 as i32
-                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                    > (2 as i32 * 250 as i32) as i64
+            let inputid: i32 = (*(*ctxt).input).id;
+            if (*ctxt).progressive == 0
+                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < (2 as i32 * 250 as i32) as i64
+                    < (2 * 250) as i64
             {
                 xmlSHRINK(ctxt);
             }
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8 as i32 as isize);
-            (*(*ctxt).input).col += 8 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
+            (*(*ctxt).input).col += 8;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
                     XML_ERR_SPACE_REQUIRED,
@@ -6348,14 +5942,14 @@ pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
             }
             if *(*(*ctxt).input).cur as i32 == '%' as i32 {
                 xmlNextChar_safe(ctxt);
-                if xmlSkipBlankChars(ctxt) == 0 as i32 {
+                if xmlSkipBlankChars(ctxt) == 0 {
                     xmlFatalErrMsg(
                         ctxt,
                         XML_ERR_SPACE_REQUIRED,
                         b"Space required after \'%%\'\n\x00" as *const u8 as *const i8,
                     );
                 }
-                isParameter = 1 as i32
+                isParameter = 1
             }
             name = xmlParseName(ctxt);
             if name.is_null() {
@@ -6366,7 +5960,7 @@ pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                 );
                 return;
             }
-            if !xmlStrchr_safe(name, ':' as i32 as xmlChar).is_null() {
+            if !xmlStrchr_safe(name, ':' as xmlChar).is_null() {
                 xmlNsErr(
                     ctxt,
                     XML_NS_ERR_COLON,
@@ -6377,7 +5971,7 @@ pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                     0 as *const xmlChar,
                 );
             }
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
                     XML_ERR_SPACE_REQUIRED,
@@ -6411,7 +6005,7 @@ pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                         }
                     }
                 } else {
-                    URI = xmlParseExternalID(ctxt, &mut literal, 1 as i32);
+                    URI = xmlParseExternalID(ctxt, &mut literal, 1);
                     if URI.is_null() && literal.is_null() {
                         xmlFatalErr(ctxt, XML_ERR_VALUE_REQUIRED, 0 as *const i8);
                     }
@@ -6514,7 +6108,7 @@ pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                     );
                 }
             } else {
-                URI = xmlParseExternalID(ctxt, &mut literal, 1 as i32);
+                URI = xmlParseExternalID(ctxt, &mut literal, 1);
                 if URI.is_null() && literal.is_null() {
                     xmlFatalErr(ctxt, XML_ERR_VALUE_REQUIRED, 0 as *const i8);
                 }
@@ -6544,30 +6138,25 @@ pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                         xmlFreeURI_safe(uri_0);
                     }
                 }
-                if *(*(*ctxt).input).cur as i32 != '>' as i32 && xmlSkipBlankChars(ctxt) == 0 as i32
-                {
+                if *(*(*ctxt).input).cur as i32 != '>' as i32 && xmlSkipBlankChars(ctxt) == 0 {
                     xmlFatalErrMsg(
                         ctxt,
                         XML_ERR_SPACE_REQUIRED,
                         b"Space required before \'NDATA\'\n\x00" as *const u8 as *const i8,
                     );
                 }
-                if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'N' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32
-                        == 'D' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32
-                        == 'A' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32
-                        == 'T' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32
-                        == 'A' as i32
+                if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'N' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'D' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'A' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'T' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'A' as i32
                 {
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5 as i32 as isize);
-                    (*(*ctxt).input).col += 5 as i32;
-                    if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                        xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
+                    (*(*ctxt).input).col += 5;
+                    if *(*(*ctxt).input).cur as i32 == 0 {
+                        xmlParserInputGrow_safe((*ctxt).input, 250);
                     }
-                    if xmlSkipBlankChars(ctxt) == 0 as i32 {
+                    if xmlSkipBlankChars(ctxt) == 0 {
                         xmlFatalErrMsg(
                             ctxt,
                             XML_ERR_SPACE_REQUIRED,
@@ -6609,7 +6198,7 @@ pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
                      * For expat compatibility in SAX mode.
                      * assuming the entity replacement was asked for
                      */
-                    if (*ctxt).replaceEntities != 0 as i32
+                    if (*ctxt).replaceEntities != 0
                         && ((*ctxt).myDoc.is_null()
                             || xmlStrEqual_safe(
                                 (*(*ctxt).myDoc).version,
@@ -6743,60 +6332,60 @@ pub unsafe fn xmlParseEntityDecl(mut ctxt: xmlParserCtxtPtr) {
 *          or XML_ATTRIBUTE_FIXED.
 */
 
-pub unsafe fn xmlParseDefaultDecl(mut ctxt: xmlParserCtxtPtr, mut value: *mut *mut xmlChar) -> i32 {
+pub fn xmlParseDefaultDecl(ctxt: xmlParserCtxtPtr, value: *mut *mut xmlChar) -> i32 {
     let mut val: i32 = 0;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     //@todo 削减unsafe范围
     unsafe {
         *value = 0 as *mut xmlChar;
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'R' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'Q' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'U' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'R' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(8 as i32 as isize) as i32 == 'D' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'R' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'Q' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'U' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'R' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(8) as i32 == 'D' as i32
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9 as i32 as isize);
-            (*(*ctxt).input).col += 9 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9);
+            (*(*ctxt).input).col += 9;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
             return XML_ATTRIBUTE_REQUIRED as i32;
         }
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'M' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'P' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'L' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize) as i32 == 'D' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'M' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'P' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'L' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'D' as i32
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8 as i32 as isize);
-            (*(*ctxt).input).col += 8 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
+            (*(*ctxt).input).col += 8;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
             return XML_ATTRIBUTE_IMPLIED as i32;
         }
         val = XML_ATTRIBUTE_NONE as i32;
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'F' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'X' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'D' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'F' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'X' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'D' as i32
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6 as i32 as isize);
-            (*(*ctxt).input).col += 6 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
+            (*(*ctxt).input).col += 6;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
             val = XML_ATTRIBUTE_FIXED as i32;
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
                     XML_ERR_SPACE_REQUIRED,
@@ -6835,13 +6424,13 @@ pub unsafe fn xmlParseDefaultDecl(mut ctxt: xmlParserCtxtPtr, mut value: *mut *m
 * Returns: the notation attribute tree built while parsing
 */
 
-pub unsafe fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
+pub fn xmlParseNotationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut ret: xmlEnumerationPtr = 0 as xmlEnumerationPtr;
     let mut last: xmlEnumerationPtr = 0 as xmlEnumerationPtr;
     let mut cur: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
     let mut tmp: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     unsafe {
         if *(*(*ctxt).input).cur as i32 != '(' as i32 {
             xmlFatalErr(ctxt, XML_ERR_NOTATION_NOT_STARTED, 0 as *const i8);
@@ -6850,16 +6439,14 @@ pub unsafe fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumeration
     }
 
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250 as i32) as i64
+        (*ctxt).progressive == 0
+            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
     } {
         xmlSHRINK(ctxt);
     }
     loop {
-        xmlNextChar_safe(ctxt);
+        unsafe{xmlNextChar_safe(ctxt)};
         xmlSkipBlankChars(ctxt);
         name = xmlParseName(ctxt);
         if name.is_null() {
@@ -6870,12 +6457,12 @@ pub unsafe fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumeration
                     b"Name expected in NOTATION declaration\n\x00" as *const u8 as *const i8,
                 );
             }
-            xmlFreeEnumeration_safe(ret);
+            unsafe{xmlFreeEnumeration_safe(ret)};
             return 0 as xmlEnumerationPtr;
         }
         tmp = ret;
         while !tmp.is_null() {
-            if xmlStrEqual_safe(name, unsafe { (*tmp).name }) != 0 {
+            if unsafe{xmlStrEqual_safe(name, unsafe { (*tmp).name })} != 0 {
                 unsafe {
                     xmlValidityError(
                         ctxt,
@@ -6886,8 +6473,8 @@ pub unsafe fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumeration
                         0 as *const xmlChar,
                     );
                 }
-                if xmlDictOwns_safe((safe_ctxt).dict, name) == 0 {
-                    xmlFree_safe(name as *mut xmlChar as *mut ());
+                if unsafe{xmlDictOwns_safe((safe_ctxt).dict, name)} == 0 {
+                    unsafe{xmlFree_safe(name as *mut xmlChar as *mut ())};
                 }
                 break;
             } else {
@@ -6895,9 +6482,9 @@ pub unsafe fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumeration
             }
         }
         if tmp.is_null() {
-            cur = xmlCreateEnumeration_safe(name);
+            cur = unsafe{xmlCreateEnumeration_safe(name)};
             if cur.is_null() {
-                xmlFreeEnumeration_safe(ret);
+                unsafe{xmlFreeEnumeration_safe(ret)};
                 return 0 as xmlEnumerationPtr;
             }
             if last.is_null() {
@@ -6919,10 +6506,10 @@ pub unsafe fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumeration
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_NOTATION_NOT_FINISHED, 0 as *const i8);
         }
-        xmlFreeEnumeration_safe(ret);
+        unsafe{xmlFreeEnumeration_safe(ret)};
         return 0 as xmlEnumerationPtr;
     }
-    xmlNextChar_safe(ctxt);
+    unsafe{xmlNextChar_safe(ctxt)};
     return ret;
 }
 /* *
@@ -6940,13 +6527,13 @@ pub unsafe fn xmlParseNotationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumeration
 * Returns: the enumeration attribute tree built while parsing
 */
 
-pub unsafe fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
+pub fn xmlParseEnumerationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
     let mut name: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: xmlEnumerationPtr = 0 as xmlEnumerationPtr;
     let mut last: xmlEnumerationPtr = 0 as xmlEnumerationPtr;
     let mut cur: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
     let mut tmp: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     unsafe {
         if *(*(*ctxt).input).cur as i32 != '(' as i32 {
             xmlFatalErr(ctxt, XML_ERR_ATTLIST_NOT_STARTED, 0 as *const i8);
@@ -6954,16 +6541,14 @@ pub unsafe fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerat
         }
     }
     if unsafe {
-        (*ctxt).progressive == 0 as i32
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250 as i32) as i64
+        (*ctxt).progressive == 0
+            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
     } {
         xmlSHRINK(ctxt);
     }
     loop {
-        xmlNextChar_safe(ctxt);
+        unsafe{xmlNextChar_safe(ctxt)};
         xmlSkipBlankChars(ctxt);
         name = xmlParseNmtoken(ctxt);
         if name.is_null() {
@@ -6974,7 +6559,7 @@ pub unsafe fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerat
         }
         tmp = ret;
         while !tmp.is_null() {
-            if xmlStrEqual_safe(name, unsafe { (*tmp).name }) != 0 {
+            if unsafe{xmlStrEqual_safe(name, unsafe { (*tmp).name })} != 0 {
                 unsafe {
                     xmlValidityError(
                         ctxt,
@@ -6985,8 +6570,8 @@ pub unsafe fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerat
                         0 as *const xmlChar,
                     );
                 }
-                if xmlDictOwns_safe((safe_ctxt).dict, name) == 0 {
-                    xmlFree_safe(name as *mut ());
+                if unsafe{xmlDictOwns_safe((safe_ctxt).dict, name)} == 0 {
+                    unsafe{xmlFree_safe(name as *mut ())};
                 }
                 break;
             } else {
@@ -6994,12 +6579,12 @@ pub unsafe fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerat
             }
         }
         if tmp.is_null() {
-            cur = xmlCreateEnumeration_safe(name);
-            if xmlDictOwns_safe((safe_ctxt).dict, name) == 0 {
-                xmlFree_safe(name as *mut ());
+            cur = unsafe{xmlCreateEnumeration_safe(name)};
+            if unsafe{xmlDictOwns_safe((safe_ctxt).dict, name)} == 0 {
+                unsafe{xmlFree_safe(name as *mut ())};
             }
             if cur.is_null() {
-                xmlFreeEnumeration_safe(ret);
+                unsafe{xmlFreeEnumeration_safe(ret)};
                 return 0 as xmlEnumerationPtr;
             }
             if last.is_null() {
@@ -7023,7 +6608,7 @@ pub unsafe fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerat
             return ret;
         }
     }
-    xmlNextChar_safe(ctxt);
+    unsafe{xmlNextChar_safe(ctxt)};
     return ret;
 }
 /* *
@@ -7041,43 +6626,40 @@ pub unsafe fn xmlParseEnumerationType(mut ctxt: xmlParserCtxtPtr) -> xmlEnumerat
 * Returns: XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION
 */
 
-pub unsafe fn xmlParseEnumeratedType(
-    mut ctxt: xmlParserCtxtPtr,
-    mut tree: *mut xmlEnumerationPtr,
-) -> i32 {
+pub fn xmlParseEnumeratedType(ctxt: xmlParserCtxtPtr, tree: *mut xmlEnumerationPtr) -> i32 {
     //@todo 削减unsafe范围
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'N' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'O' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'O' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize) as i32 == 'N' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'N' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'O' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'A' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'O' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'N' as i32
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8 as i32 as isize);
-            (*(*ctxt).input).col += 8 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
+            (*(*ctxt).input).col += 8;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
                     XML_ERR_SPACE_REQUIRED,
                     b"Space required after \'NOTATION\'\n\x00" as *const u8 as *const i8,
                 );
-                return 0 as i32;
+                return 0;
             }
             *tree = xmlParseNotationType(ctxt);
             if (*tree).is_null() {
-                return 0 as i32;
+                return 0;
             }
             return XML_ATTRIBUTE_NOTATION as i32;
         }
         *tree = xmlParseEnumerationType(ctxt);
         if (*tree).is_null() {
-            return 0 as i32;
+            return 0;
         }
     }
     return XML_ATTRIBUTE_ENUMERATION as i32;
@@ -7128,192 +6710,137 @@ pub unsafe fn xmlParseEnumeratedType(
 * Returns the attribute type
 */
 
-pub unsafe fn xmlParseAttributeType(
-    mut ctxt: xmlParserCtxtPtr,
-    mut tree: *mut xmlEnumerationPtr,
-) -> i32 {
+pub fn xmlParseAttributeType(ctxt: xmlParserCtxtPtr, tree: *mut xmlEnumerationPtr) -> i32 {
     //@todo 削减unsafe范围
     unsafe {
-        if (*ctxt).progressive == 0 as i32
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250 as i32) as i64
+        if (*ctxt).progressive == 0
+            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
         {
             xmlSHRINK(ctxt);
         }
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'C' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'D' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'A' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'C' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'D' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'A' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'A' as i32
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5 as i32 as isize);
-            (*(*ctxt).input).col += 5 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
+            (*(*ctxt).input).col += 5;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
             return XML_ATTRIBUTE_CDATA as i32;
         } else {
-            if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'I' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'D' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'R' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'E' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'F' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'S' as i32
+            if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'I' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'D' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'R' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'E' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'F' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'S' as i32
             {
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6 as i32 as isize);
-                (*(*ctxt).input).col += 6 as i32;
-                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
+                (*(*ctxt).input).col += 6;
+                if *(*(*ctxt).input).cur as i32 == 0 {
+                    xmlParserInputGrow_safe((*ctxt).input, 250);
                 }
                 return XML_ATTRIBUTE_IDREFS as i32;
             } else {
-                if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'I' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32
-                        == 'D' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32
-                        == 'R' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32
-                        == 'E' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32
-                        == 'F' as i32
+                if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'I' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'D' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'R' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'E' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'F' as i32
                 {
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5 as i32 as isize);
-                    (*(*ctxt).input).col += 5 as i32;
-                    if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                        xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
+                    (*(*ctxt).input).col += 5;
+                    if *(*(*ctxt).input).cur as i32 == 0 {
+                        xmlParserInputGrow_safe((*ctxt).input, 250);
                     }
                     return XML_ATTRIBUTE_IDREF as i32;
                 } else {
                     if *(*(*ctxt).input).cur as i32 == 'I' as i32
-                        && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == 'D' as i32
+                        && *(*(*ctxt).input).cur.offset(1) as i32 == 'D' as i32
                     {
-                        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as i32 as isize);
-                        (*(*ctxt).input).col += 2 as i32;
-                        if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                            xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
+                        (*(*ctxt).input).col += 2;
+                        if *(*(*ctxt).input).cur as i32 == 0 {
+                            xmlParserInputGrow_safe((*ctxt).input, 250);
                         }
                         return XML_ATTRIBUTE_ID as i32;
                     } else {
-                        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32
-                            == 'E' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32
-                                == 'N' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32
-                                == 'T' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32
-                                == 'I' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32
-                                == 'T' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32
-                                == 'Y' as i32
+                        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'E' as i32
+                            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'N' as i32
+                            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'T' as i32
+                            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'I' as i32
+                            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
+                            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'Y' as i32
                         {
-                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6 as i32 as isize);
-                            (*(*ctxt).input).col += 6 as i32;
-                            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
+                            (*(*ctxt).input).col += 6;
+                            if *(*(*ctxt).input).cur as i32 == 0 {
+                                xmlParserInputGrow_safe((*ctxt).input, 250);
                             }
                             return XML_ATTRIBUTE_ENTITY as i32;
                         } else {
-                            if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32
-                                == 'E' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize)
-                                    as i32
-                                    == 'N' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize)
-                                    as i32
-                                    == 'T' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize)
-                                    as i32
-                                    == 'I' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize)
-                                    as i32
-                                    == 'T' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize)
-                                    as i32
-                                    == 'I' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize)
-                                    as i32
-                                    == 'E' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize)
-                                    as i32
-                                    == 'S' as i32
+                            if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'E' as i32
+                                && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'N' as i32
+                                && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'T' as i32
+                                && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'I' as i32
+                                && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
+                                && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
+                                && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'E' as i32
+                                && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'S' as i32
                             {
-                                (*(*ctxt).input).cur =
-                                    (*(*ctxt).input).cur.offset(8 as i32 as isize);
-                                (*(*ctxt).input).col += 8 as i32;
-                                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
+                                (*(*ctxt).input).col += 8;
+                                if *(*(*ctxt).input).cur as i32 == 0 {
+                                    xmlParserInputGrow_safe((*ctxt).input, 250);
                                 }
                                 return XML_ATTRIBUTE_ENTITIES as i32;
                             } else {
-                                if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize)
-                                    as i32
-                                    == 'N' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize)
-                                        as i32
+                                if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'N' as i32
+                                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32
                                         == 'M' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize)
-                                        as i32
+                                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32
                                         == 'T' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize)
-                                        as i32
+                                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32
                                         == 'O' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize)
-                                        as i32
+                                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32
                                         == 'K' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize)
-                                        as i32
+                                    && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32
                                         == 'E' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize)
-                                        as i32
+                                    && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32
                                         == 'N' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize)
-                                        as i32
+                                    && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32
                                         == 'S' as i32
                                 {
-                                    (*(*ctxt).input).cur =
-                                        (*(*ctxt).input).cur.offset(8 as i32 as isize);
-                                    (*(*ctxt).input).col += 8 as i32;
-                                    if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                                        xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
+                                    (*(*ctxt).input).col += 8;
+                                    if *(*(*ctxt).input).cur as i32 == 0 {
+                                        xmlParserInputGrow_safe((*ctxt).input, 250);
                                     }
                                     return XML_ATTRIBUTE_NMTOKENS as i32;
                                 } else {
-                                    if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize)
-                                        as i32
+                                    if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32
                                         == 'N' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8)
-                                            .offset(1 as i32 as isize)
-                                            as i32
+                                        && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32
                                             == 'M' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8)
-                                            .offset(2 as i32 as isize)
-                                            as i32
+                                        && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32
                                             == 'T' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8)
-                                            .offset(3 as i32 as isize)
-                                            as i32
+                                        && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32
                                             == 'O' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8)
-                                            .offset(4 as i32 as isize)
-                                            as i32
+                                        && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32
                                             == 'K' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8)
-                                            .offset(5 as i32 as isize)
-                                            as i32
+                                        && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32
                                             == 'E' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8)
-                                            .offset(6 as i32 as isize)
-                                            as i32
+                                        && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32
                                             == 'N' as i32
                                     {
-                                        (*(*ctxt).input).cur =
-                                            (*(*ctxt).input).cur.offset(7 as i32 as isize);
-                                        (*(*ctxt).input).col += 7 as i32;
-                                        if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                                            xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                                        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(7);
+                                        (*(*ctxt).input).col += 7;
+                                        if *(*(*ctxt).input).cur as i32 == 0 {
+                                            xmlParserInputGrow_safe((*ctxt).input, 250);
                                         }
                                         return XML_ATTRIBUTE_NMTOKEN as i32;
                                     }
@@ -7339,29 +6866,29 @@ pub unsafe fn xmlParseAttributeType(
 *
 */
 
-pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
+pub fn xmlParseAttributeListDecl(ctxt: xmlParserCtxtPtr) {
     let mut elemName: *const xmlChar = 0 as *const xmlChar;
     let mut attrName: *const xmlChar = 0 as *const xmlChar;
     let mut tree: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
     //@todo 削减unsafe范围
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '<' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == '!' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'L' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize) as i32 == 'S' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(8 as i32 as isize) as i32 == 'T' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '<' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == '!' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'A' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'L' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'I' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'S' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(8) as i32 == 'T' as i32
         {
-            let mut inputid: i32 = (*(*ctxt).input).id;
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9 as i32 as isize);
-            (*(*ctxt).input).col += 9 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            let inputid: i32 = (*(*ctxt).input).id;
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9);
+            (*(*ctxt).input).col += 9;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
                     XML_ERR_SPACE_REQUIRED,
@@ -7378,9 +6905,8 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                 return;
             }
             xmlSkipBlankChars(ctxt);
-            if (*ctxt).progressive == 0 as i32
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < 250 as i32 as i64
+            if (*ctxt).progressive == 0
+                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
             {
                 xmlGROW(ctxt);
             }
@@ -7393,9 +6919,8 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                 let mut type_0: i32 = 0;
                 let mut def: i32 = 0;
                 let mut defaultValue: *mut xmlChar = 0 as *mut xmlChar;
-                if (*ctxt).progressive == 0 as i32
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
+                if (*ctxt).progressive == 0
+                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                 {
                     xmlGROW(ctxt);
                 }
@@ -7409,13 +6934,12 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                     );
                     break;
                 } else {
-                    if (*ctxt).progressive == 0 as i32
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < 250 as i32 as i64
+                    if (*ctxt).progressive == 0
+                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                     {
                         xmlGROW(ctxt);
                     }
-                    if xmlSkipBlankChars(ctxt) == 0 as i32 {
+                    if xmlSkipBlankChars(ctxt) == 0 {
                         xmlFatalErrMsg(
                             ctxt,
                             XML_ERR_SPACE_REQUIRED,
@@ -7425,16 +6949,15 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                         break;
                     } else {
                         type_0 = xmlParseAttributeType(ctxt, &mut tree);
-                        if type_0 <= 0 as i32 {
+                        if type_0 <= 0 {
                             break;
                         }
-                        if (*ctxt).progressive == 0 as i32
-                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                                < 250 as i32 as i64
+                        if (*ctxt).progressive == 0
+                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                         {
                             xmlGROW(ctxt);
                         }
-                        if xmlSkipBlankChars(ctxt) == 0 as i32 {
+                        if xmlSkipBlankChars(ctxt) == 0 {
                             xmlFatalErrMsg(
                                 ctxt,
                                 XML_ERR_SPACE_REQUIRED,
@@ -7447,7 +6970,7 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                             break;
                         } else {
                             def = xmlParseDefaultDecl(ctxt, &mut defaultValue);
-                            if def <= 0 as i32 {
+                            if def <= 0 {
                                 if !defaultValue.is_null() {
                                     xmlFree_safe(defaultValue as *mut ());
                                 }
@@ -7459,20 +6982,20 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                                 if type_0 != XML_ATTRIBUTE_CDATA as i32 && !defaultValue.is_null() {
                                     xmlAttrNormalizeSpace(defaultValue, defaultValue);
                                 }
-                                if (*ctxt).progressive == 0 as i32
+                                if (*ctxt).progressive == 0
                                     && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur)
                                         as i64)
-                                        < 250 as i32 as i64
+                                        < 250
                                 {
                                     xmlGROW(ctxt);
                                 }
                                 if *(*(*ctxt).input).cur as i32 != '>' as i32 {
-                                    if xmlSkipBlankChars(ctxt) == 0 as i32 {
+                                    if xmlSkipBlankChars(ctxt) == 0 {
                                         xmlFatalErrMsg(ctxt,
-                                   XML_ERR_SPACE_REQUIRED,
-                                   b"Space required after the attribute default value\n\x00"
-                                       as *const u8 as
-                                       *const i8);
+                                                           XML_ERR_SPACE_REQUIRED,
+                                                           b"Space required after the attribute default value\n\x00"
+                                                           as *const u8 as
+                                                           *const i8);
                                         if !defaultValue.is_null() {
                                             xmlFree_safe(defaultValue as *mut ());
                                         }
@@ -7513,10 +7036,10 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
                                 if !defaultValue.is_null() {
                                     xmlFree_safe(defaultValue as *mut ());
                                 }
-                                if (*ctxt).progressive == 0 as i32
+                                if (*ctxt).progressive == 0
                                     && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur)
                                         as i64)
-                                        < 250 as i32 as i64
+                                        < 250
                                 {
                                     xmlGROW(ctxt);
                                 }
@@ -7528,8 +7051,8 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
             if *(*(*ctxt).input).cur as i32 == '>' as i32 {
                 if inputid != (*(*ctxt).input).id {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-               b"Attribute list declaration doesn\'t start and stop in the same entity\n\x00"
-                   as *const u8 as *const i8);
+                                   b"Attribute list declaration doesn\'t start and stop in the same entity\n\x00"
+                                   as *const u8 as *const i8);
                 }
                 xmlNextChar_safe(ctxt);
             }
@@ -7556,9 +7079,9 @@ pub unsafe fn xmlParseAttributeListDecl(mut ctxt: xmlParserCtxtPtr) {
 * returns: the list of the xmlElementContentPtr describing the element choices
 */
 
-pub unsafe fn xmlParseElementMixedContentDecl(
-    mut ctxt: xmlParserCtxtPtr,
-    mut inputchk: i32,
+pub fn xmlParseElementMixedContentDecl(
+    ctxt: xmlParserCtxtPtr,
+    inputchk: i32,
 ) -> xmlElementContentPtr {
     let mut ret: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut cur: xmlElementContentPtr = 0 as xmlElementContentPtr;
@@ -7566,38 +7089,37 @@ pub unsafe fn xmlParseElementMixedContentDecl(
     let mut elem: *const xmlChar = 0 as *const xmlChar;
     //@todo 削减unsafe范围
     unsafe {
-        if (*ctxt).progressive == 0 as i32
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
+        if (*ctxt).progressive == 0
+            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
         {
             xmlGROW(ctxt);
         }
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'P' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'C' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'D' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'A' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'P' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'C' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'D' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'A' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'A' as i32
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(7 as i32 as isize);
-            (*(*ctxt).input).col += 7 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(7);
+            (*(*ctxt).input).col += 7;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
             xmlSkipBlankChars(ctxt);
-            if (*ctxt).progressive == 0 as i32
-                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                    > (2 as i32 * 250 as i32) as i64
+            if (*ctxt).progressive == 0
+                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < (2 as i32 * 250 as i32) as i64
+                    < (2 * 250) as i64
             {
                 xmlSHRINK(ctxt);
             }
             if *(*(*ctxt).input).cur as i32 == ')' as i32 {
                 if (*(*ctxt).input).id != inputchk {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-               b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
-                   as *const u8 as *const i8);
+                                   b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
+                                   as *const u8 as *const i8);
                 }
                 xmlNextChar_safe(ctxt);
                 ret = xmlNewDocElementContent_safe(
@@ -7686,15 +7208,14 @@ pub unsafe fn xmlParseElementMixedContentDecl(
                     return 0 as xmlElementContentPtr;
                 }
                 xmlSkipBlankChars(ctxt);
-                if (*ctxt).progressive == 0 as i32
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < 250 as i32 as i64
+                if (*ctxt).progressive == 0
+                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
                 {
                     xmlGROW(ctxt);
                 }
             }
             if *(*(*ctxt).input).cur as i32 == ')' as i32
-                && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '*' as i32
+                && *(*(*ctxt).input).cur.offset(1) as i32 == '*' as i32
             {
                 if !elem.is_null() {
                     (*cur).c2 = xmlNewDocElementContent_safe(
@@ -7711,13 +7232,13 @@ pub unsafe fn xmlParseElementMixedContentDecl(
                 }
                 if (*(*ctxt).input).id != inputchk {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-               b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
-                   as *const u8 as *const i8);
+                                   b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
+                                   as *const u8 as *const i8);
                 }
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as i32 as isize);
-                (*(*ctxt).input).col += 2 as i32;
-                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
+                (*(*ctxt).input).col += 2;
+                if *(*(*ctxt).input).cur as i32 == 0 {
+                    xmlParserInputGrow_safe((*ctxt).input, 250);
                 }
             } else {
                 xmlFreeDocElementContent_safe((*ctxt).myDoc, ret);
@@ -7762,21 +7283,19 @@ pub unsafe fn xmlParseElementMixedContentDecl(
 * Returns the tree of xmlElementContentPtr describing the element
 *          hierarchy.
 */
-unsafe fn xmlParseElementChildrenContentDeclPriv(
-    mut ctxt: xmlParserCtxtPtr,
-    mut inputchk: i32,
-    mut depth: i32,
+fn xmlParseElementChildrenContentDeclPriv(
+    ctxt: xmlParserCtxtPtr,
+    inputchk: i32,
+    depth: i32,
 ) -> xmlElementContentPtr {
     let mut ret: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut cur: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut last: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut op: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut elem: *const xmlChar = 0 as *const xmlChar;
-    let mut type_0: xmlChar = 0 as i32 as xmlChar;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if depth > 128 as i32 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 as i32
-        || depth > 2048 as i32
-    {
+    let mut type_0: xmlChar = 0 as xmlChar;
+    let safe_ctxt = unsafe { &mut *ctxt };
+    if depth > 128 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 || depth > 2048 {
         unsafe {
             xmlFatalErrMsgInt(
                 ctxt,
@@ -7789,28 +7308,25 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
         return 0 as xmlElementContentPtr;
     }
     xmlSkipBlankChars(ctxt);
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
     if unsafe { *(*(*ctxt).input).cur as i32 == '(' as i32 } {
-        let mut inputid: i32 = unsafe { (*(*ctxt).input).id };
+        let inputid: i32 = unsafe { (*(*ctxt).input).id };
         /* Recurse on first child */
-        xmlNextChar_safe(ctxt);
+        unsafe{xmlNextChar_safe(ctxt)};
         xmlSkipBlankChars(ctxt);
-        ret = xmlParseElementChildrenContentDeclPriv(ctxt, inputid, depth + 1 as i32);
+        ret = xmlParseElementChildrenContentDeclPriv(ctxt, inputid, depth + 1);
         cur = ret;
         if cur.is_null() {
             return 0 as xmlElementContentPtr;
         }
         xmlSkipBlankChars(ctxt);
         if unsafe {
-            (*ctxt).progressive == 0 as i32
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < 250 as i32 as i64
+            (*ctxt).progressive == 0
+                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
         } {
             xmlGROW(ctxt);
         }
@@ -7822,7 +7338,7 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
             }
             return 0 as xmlElementContentPtr;
         }
-        ret = xmlNewDocElementContent_safe((safe_ctxt).myDoc, elem, XML_ELEMENT_CONTENT_ELEMENT);
+        ret = unsafe{xmlNewDocElementContent_safe((safe_ctxt).myDoc, elem, XML_ELEMENT_CONTENT_ELEMENT)};
         cur = ret;
         if cur.is_null() {
             unsafe {
@@ -7830,10 +7346,8 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
             }
             return 0 as xmlElementContentPtr;
         }
-        if (safe_ctxt).progressive == 0 as i32
-            && unsafe {
-                ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-            }
+        if (safe_ctxt).progressive == 0
+            && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
         {
             xmlGROW(ctxt);
         }
@@ -7851,21 +7365,18 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
                 (*cur).ocur = XML_ELEMENT_CONTENT_ONCE
             }
         }
-        if (safe_ctxt).progressive == 0 as i32
-            && unsafe {
-                ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-            }
+        if (safe_ctxt).progressive == 0
+            && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
         {
             xmlGROW(ctxt);
         }
     }
     xmlSkipBlankChars(ctxt);
-    if (safe_ctxt).progressive == 0 as i32
+    if (safe_ctxt).progressive == 0
         && unsafe {
-            (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250 as i32) as i64
+            (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
                 && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < (2 as i32 * 250 as i32) as i64
+                    < (2 * 250) as i64
         }
     {
         xmlSHRINK(ctxt);
@@ -7881,7 +7392,7 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
          * Each loop we parse one separator and one element.
          */
         if unsafe { *(*(*ctxt).input).cur as i32 == ',' as i32 } {
-            if type_0 as i32 == 0 as i32 {
+            if type_0 as i32 == 0 {
                 unsafe { type_0 = *(*(*ctxt).input).cur };
             } else if unsafe { type_0 as i32 != *(*(*ctxt).input).cur as i32 } {
                 unsafe {
@@ -7894,24 +7405,24 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
                     );
                 }
                 if !last.is_null() && last != ret {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last)};
                 }
                 if !ret.is_null() {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret)};
                 }
                 return 0 as xmlElementContentPtr;
             }
-            xmlNextChar_safe(ctxt);
-            op = xmlNewDocElementContent_safe(
+            unsafe{xmlNextChar_safe(ctxt)};
+            op = unsafe{xmlNewDocElementContent_safe(
                 (safe_ctxt).myDoc,
                 0 as *const xmlChar,
                 XML_ELEMENT_CONTENT_SEQ,
-            );
+            )};
             if op.is_null() {
                 if !last.is_null() && last != ret {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last)};
                 }
-                xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret);
+                unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret)};
                 return 0 as xmlElementContentPtr;
             }
             if last.is_null() {
@@ -7938,7 +7449,7 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
                 last = 0 as xmlElementContentPtr
             }
         } else if unsafe { *(*(*ctxt).input).cur as i32 == '|' as i32 } {
-            if type_0 as i32 == 0 as i32 {
+            if type_0 as i32 == 0 {
                 type_0 = unsafe { *(*(*ctxt).input).cur }
             } else if unsafe { type_0 as i32 != *(*(*ctxt).input).cur as i32 } {
                 unsafe {
@@ -7951,25 +7462,25 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
                     );
                 }
                 if !last.is_null() && last != ret {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last)};
                 }
                 if !ret.is_null() {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret)};
                 }
                 return 0 as xmlElementContentPtr;
             }
-            xmlNextChar_safe(ctxt);
-            op = xmlNewDocElementContent_safe(
+            unsafe{xmlNextChar_safe(ctxt)};
+            op = unsafe{xmlNewDocElementContent_safe(
                 (safe_ctxt).myDoc,
                 0 as *const xmlChar,
                 XML_ELEMENT_CONTENT_OR,
-            );
+            )};
             if op.is_null() {
                 if !last.is_null() && last != ret {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last)};
                 }
                 if !ret.is_null() {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret)};
                 }
                 return 0 as xmlElementContentPtr;
             }
@@ -8001,30 +7512,28 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
                 xmlFatalErr(ctxt, XML_ERR_ELEMCONTENT_NOT_FINISHED, 0 as *const i8);
             }
             if !last.is_null() && last != ret {
-                xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last);
+                unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last)};
             }
             if !ret.is_null() {
-                xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret);
+                unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret)};
             }
             return 0 as xmlElementContentPtr;
         }
         if unsafe {
-            (*ctxt).progressive == 0 as i32
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < 250 as i32 as i64
+            (*ctxt).progressive == 0
+                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
         } {
             xmlGROW(ctxt);
         }
         xmlSkipBlankChars(ctxt);
         if unsafe {
-            (*ctxt).progressive == 0 as i32
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < 250 as i32 as i64
+            (*ctxt).progressive == 0
+                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
         } {
             xmlGROW(ctxt);
         }
         if unsafe { *(*(*ctxt).input).cur as i32 == '(' as i32 } {
-            let mut inputid_0: i32 = unsafe { (*(*ctxt).input).id };
+            let inputid_0: i32 = unsafe { (*(*ctxt).input).id };
             /*
              * Detect "Name | Name , Name" error
              */
@@ -8032,12 +7541,12 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
              * Detect "Name , Name | Name" error
              */
             /* Recurse on second child */
-            xmlNextChar_safe(ctxt);
+            unsafe{xmlNextChar_safe(ctxt)};
             xmlSkipBlankChars(ctxt);
-            last = xmlParseElementChildrenContentDeclPriv(ctxt, inputid_0, depth + 1 as i32);
+            last = xmlParseElementChildrenContentDeclPriv(ctxt, inputid_0, depth + 1);
             if last.is_null() {
                 if !ret.is_null() {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret)};
                 }
                 return 0 as xmlElementContentPtr;
             }
@@ -8049,15 +7558,15 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
                     xmlFatalErr(ctxt, XML_ERR_ELEMCONTENT_NOT_STARTED, 0 as *const i8);
                 }
                 if !ret.is_null() {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret)};
                 }
                 return 0 as xmlElementContentPtr;
             }
             last =
-                xmlNewDocElementContent_safe((safe_ctxt).myDoc, elem, XML_ELEMENT_CONTENT_ELEMENT);
+            unsafe{xmlNewDocElementContent_safe((safe_ctxt).myDoc, elem, XML_ELEMENT_CONTENT_ELEMENT)};
             if last.is_null() {
                 if !ret.is_null() {
-                    xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret);
+                    unsafe{xmlFreeDocElementContent_safe((safe_ctxt).myDoc, ret)};
                 }
                 return 0 as xmlElementContentPtr;
             }
@@ -8078,9 +7587,8 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
         }
         xmlSkipBlankChars(ctxt);
         if unsafe {
-            (*ctxt).progressive == 0 as i32
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < 250 as i32 as i64
+            (*ctxt).progressive == 0
+                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
         } {
             xmlGROW(ctxt);
         }
@@ -8103,12 +7611,12 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
             );
         }
     }
-    xmlNextChar_safe(ctxt);
+    unsafe{xmlNextChar_safe(ctxt)};
     unsafe {
         if *(*(*ctxt).input).cur as i32 == '?' as i32 {
             if !ret.is_null() {
-                if (*ret).ocur as u32 == XML_ELEMENT_CONTENT_PLUS as i32 as u32
-                    || (*ret).ocur as u32 == XML_ELEMENT_CONTENT_MULT as i32 as u32
+                if (*ret).ocur as u32 == XML_ELEMENT_CONTENT_PLUS as u32
+                    || (*ret).ocur as u32 == XML_ELEMENT_CONTENT_MULT as u32
                 {
                     (*ret).ocur = XML_ELEMENT_CONTENT_MULT
                 } else {
@@ -8124,17 +7632,16 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
                  * Some normalization:
                  * (a | b* | c?)* == (a | b | c)*
                  */
-                while !cur.is_null() && (*cur).type_0 as u32 == XML_ELEMENT_CONTENT_OR as i32 as u32
-                {
+                while !cur.is_null() && (*cur).type_0 as u32 == XML_ELEMENT_CONTENT_OR as u32 {
                     if !(*cur).c1.is_null()
-                        && ((*(*cur).c1).ocur as u32 == XML_ELEMENT_CONTENT_OPT as i32 as u32
-                            || (*(*cur).c1).ocur as u32 == XML_ELEMENT_CONTENT_MULT as i32 as u32)
+                        && ((*(*cur).c1).ocur as u32 == XML_ELEMENT_CONTENT_OPT as u32
+                            || (*(*cur).c1).ocur as u32 == XML_ELEMENT_CONTENT_MULT as u32)
                     {
                         (*(*cur).c1).ocur = XML_ELEMENT_CONTENT_ONCE
                     }
                     if !(*cur).c2.is_null()
-                        && ((*(*cur).c2).ocur as u32 == XML_ELEMENT_CONTENT_OPT as i32 as u32
-                            || (*(*cur).c2).ocur as u32 == XML_ELEMENT_CONTENT_MULT as i32 as u32)
+                        && ((*(*cur).c2).ocur as u32 == XML_ELEMENT_CONTENT_OPT as u32
+                            || (*(*cur).c2).ocur as u32 == XML_ELEMENT_CONTENT_MULT as u32)
                     {
                         (*(*cur).c2).ocur = XML_ELEMENT_CONTENT_ONCE
                     }
@@ -8144,9 +7651,9 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
             xmlNextChar_safe(ctxt);
         } else if *(*(*ctxt).input).cur as i32 == '+' as i32 {
             if !ret.is_null() {
-                let mut found: i32 = 0 as i32;
-                if (*ret).ocur as u32 == XML_ELEMENT_CONTENT_OPT as i32 as u32
-                    || (*ret).ocur as u32 == XML_ELEMENT_CONTENT_MULT as i32 as u32
+                let mut found: i32 = 0;
+                if (*ret).ocur as u32 == XML_ELEMENT_CONTENT_OPT as u32
+                    || (*ret).ocur as u32 == XML_ELEMENT_CONTENT_MULT as u32
                 {
                     (*ret).ocur = XML_ELEMENT_CONTENT_MULT
                 } else {
@@ -8157,21 +7664,20 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
                  * (a | b*)+ == (a | b)*
                  * (a | b?)+ == (a | b)*
                  */
-                while !cur.is_null() && (*cur).type_0 as u32 == XML_ELEMENT_CONTENT_OR as i32 as u32
-                {
+                while !cur.is_null() && (*cur).type_0 as u32 == XML_ELEMENT_CONTENT_OR as u32 {
                     if !(*cur).c1.is_null()
-                        && ((*(*cur).c1).ocur as u32 == XML_ELEMENT_CONTENT_OPT as i32 as u32
-                            || (*(*cur).c1).ocur as u32 == XML_ELEMENT_CONTENT_MULT as i32 as u32)
+                        && ((*(*cur).c1).ocur as u32 == XML_ELEMENT_CONTENT_OPT as u32
+                            || (*(*cur).c1).ocur as u32 == XML_ELEMENT_CONTENT_MULT as u32)
                     {
                         (*(*cur).c1).ocur = XML_ELEMENT_CONTENT_ONCE;
-                        found = 1 as i32
+                        found = 1
                     }
                     if !(*cur).c2.is_null()
-                        && ((*(*cur).c2).ocur as u32 == XML_ELEMENT_CONTENT_OPT as i32 as u32
-                            || (*(*cur).c2).ocur as u32 == XML_ELEMENT_CONTENT_MULT as i32 as u32)
+                        && ((*(*cur).c2).ocur as u32 == XML_ELEMENT_CONTENT_OPT as u32
+                            || (*(*cur).c2).ocur as u32 == XML_ELEMENT_CONTENT_MULT as u32)
                     {
                         (*(*cur).c2).ocur = XML_ELEMENT_CONTENT_ONCE;
-                        found = 1 as i32
+                        found = 1
                     }
                     cur = (*cur).c2
                 }
@@ -8215,12 +7721,12 @@ unsafe fn xmlParseElementChildrenContentDeclPriv(
 *          hierarchy.
 */
 
-pub unsafe fn xmlParseElementChildrenContentDecl(
-    mut ctxt: xmlParserCtxtPtr,
-    mut inputchk: i32,
+pub fn xmlParseElementChildrenContentDecl(
+    ctxt: xmlParserCtxtPtr,
+    inputchk: i32,
 ) -> xmlElementContentPtr {
     /* stub left for API/ABI compat */
-    return xmlParseElementChildrenContentDeclPriv(ctxt, inputchk, 1 as i32);
+    return xmlParseElementChildrenContentDeclPriv(ctxt, inputchk, 1);
 }
 /* *
 * xmlParseElementContentDecl:
@@ -8236,14 +7742,14 @@ pub unsafe fn xmlParseElementChildrenContentDecl(
 * returns: the type of element content XML_ELEMENT_TYPE_xxx
 */
 
-pub unsafe fn xmlParseElementContentDecl(
-    mut ctxt: xmlParserCtxtPtr,
-    mut name: *const xmlChar,
-    mut result: *mut xmlElementContentPtr,
+pub fn xmlParseElementContentDecl(
+    ctxt: xmlParserCtxtPtr,
+    name: *const xmlChar,
+    result: *mut xmlElementContentPtr,
 ) -> i32 {
     let mut tree: xmlElementContentPtr = 0 as xmlElementContentPtr;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    let mut inputid: i32 = unsafe { (*(*ctxt).input).id };
+    let safe_ctxt = unsafe { &mut *ctxt };
+    let inputid: i32 = unsafe { (*(*ctxt).input).id };
     let mut res: i32 = 0;
     unsafe {
         *result = 0 as xmlElementContentPtr;
@@ -8254,34 +7760,32 @@ pub unsafe fn xmlParseElementContentDecl(
                 b"xmlParseElementContentDecl : %s \'(\' expected\n\x00" as *const u8 as *const i8,
                 name,
             );
-            return -(1 as i32);
+            return -(1);
         }
     }
-    xmlNextChar_safe(ctxt);
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+    unsafe{xmlNextChar_safe(ctxt)};
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
     if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
-        return -(1 as i32);
+        return -(1);
     }
     xmlSkipBlankChars(ctxt);
     if unsafe {
-        *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'P' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'C' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'D' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'A' as i32
+        *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'P' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'C' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'D' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'A' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'T' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'A' as i32
     } {
         tree = xmlParseElementMixedContentDecl(ctxt, inputid);
         res = XML_ELEMENT_TYPE_MIXED as i32
     } else {
-        tree = xmlParseElementChildrenContentDeclPriv(ctxt, inputid, 1 as i32);
+        tree = xmlParseElementChildrenContentDeclPriv(ctxt, inputid, 1);
         res = XML_ELEMENT_TYPE_ELEMENT as i32
     }
     xmlSkipBlankChars(ctxt);
@@ -8302,36 +7806,36 @@ pub unsafe fn xmlParseElementContentDecl(
 * Returns the type of the element, or -1 in case of error
 */
 
-pub unsafe fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> i32 {
+pub fn xmlParseElementDecl(ctxt: xmlParserCtxtPtr) -> i32 {
     let mut name: *const xmlChar = 0 as *const xmlChar;
-    let mut ret: i32 = -(1 as i32);
+    let mut ret: i32 = -(1);
     let mut content: xmlElementContentPtr = 0 as xmlElementContentPtr;
     /* GROW; done in the caller */
     //@todo 削减unsafe范围
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '<' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == '!' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'L' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32 == 'M' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7 as i32 as isize) as i32 == 'N' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(8 as i32 as isize) as i32 == 'T' as i32
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '<' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == '!' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'L' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'M' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'E' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'N' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(8) as i32 == 'T' as i32
         {
-            let mut inputid: i32 = (*(*ctxt).input).id;
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9 as i32 as isize);
-            (*(*ctxt).input).col += 9 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            let inputid: i32 = (*(*ctxt).input).id;
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9);
+            (*(*ctxt).input).col += 9;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
                     XML_ERR_SPACE_REQUIRED,
                     b"Space required after \'ELEMENT\'\n\x00" as *const u8 as *const i8,
                 );
-                return -(1 as i32);
+                return -(1);
             }
             name = xmlParseName(ctxt);
             if name.is_null() {
@@ -8340,38 +7844,38 @@ pub unsafe fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> i32 {
                     XML_ERR_NAME_REQUIRED,
                     b"xmlParseElementDecl: no name for Element\n\x00" as *const u8 as *const i8,
                 );
-                return -(1 as i32);
+                return -(1);
             }
-            if xmlSkipBlankChars(ctxt) == 0 as i32 {
+            if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
                     XML_ERR_SPACE_REQUIRED,
                     b"Space required after the element name\n\x00" as *const u8 as *const i8,
                 );
             }
-            if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'E' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == 'M' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'P' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'T' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'Y' as i32
+            if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'E' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'M' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'P' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'T' as i32
+                && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'Y' as i32
             {
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5 as i32 as isize);
-                (*(*ctxt).input).col += 5 as i32;
-                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
+                (*(*ctxt).input).col += 5;
+                if *(*(*ctxt).input).cur as i32 == 0 {
+                    xmlParserInputGrow_safe((*ctxt).input, 250);
                 }
                 /*
                  * Element must always be empty.
                  */
                 ret = XML_ELEMENT_TYPE_EMPTY as i32
             } else if *(*(*ctxt).input).cur as i32 == 'A' as i32
-                && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == 'N' as i32
-                && *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32 == 'Y' as i32
+                && *(*(*ctxt).input).cur.offset(1) as i32 == 'N' as i32
+                && *(*(*ctxt).input).cur.offset(2) as i32 == 'Y' as i32
             {
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3 as i32 as isize);
-                (*(*ctxt).input).col += 3 as i32;
-                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
+                (*(*ctxt).input).col += 3;
+                if *(*(*ctxt).input).cur as i32 == 0 {
+                    xmlParserInputGrow_safe((*ctxt).input, 250);
                 }
                 /*
                  * Element is a generic container.
@@ -8384,8 +7888,8 @@ pub unsafe fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> i32 {
                  * [ WFC: PEs in Internal Subset ] error handling.
                  */
                 if *(*(*ctxt).input).cur as i32 == '%' as i32
-                    && (*ctxt).external == 0 as i32
-                    && (*ctxt).inputNr == 1 as i32
+                    && (*ctxt).external == 0
+                    && (*ctxt).inputNr == 1
                 {
                     xmlFatalErrMsg(
                         ctxt,
@@ -8401,7 +7905,7 @@ pub unsafe fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> i32 {
                             as *const u8 as *const i8,
                     );
                 }
-                return -(1 as i32);
+                return -(1);
             }
             xmlSkipBlankChars(ctxt);
             if *(*(*ctxt).input).cur as i32 != '>' as i32 {
@@ -8458,45 +7962,39 @@ pub unsafe fn xmlParseElementDecl(mut ctxt: xmlParserCtxtPtr) -> i32 {
 * [64] ignoreSectContents ::= Ignore ('<![' ignoreSectContents ']]>' Ignore)*
 * [65] Ignore ::= Char* - (Char* ('<![' | ']]>') Char*)
 */
-unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
+fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
     let mut inputIds: *mut i32 = 0 as *mut i32;
-    let mut inputIdsSize: size_t = 0 as i32 as size_t;
-    let mut depth: size_t = 0 as i32 as size_t;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut inputIdsSize: size_t = 0;
+    let mut depth: size_t = 0;
+    let safe_ctxt = unsafe { &mut *ctxt };
     's_11: while 1 < 2 {
         if (!((safe_ctxt).instate as i32 != XML_PARSER_EOF as i32)) {
             break;
         }
         unsafe {
             if *(*(*ctxt).input).cur as i32 == '<' as i32
-                && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '!' as i32
-                && *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32 == '[' as i32
+                && *(*(*ctxt).input).cur.offset(1) as i32 == '!' as i32
+                && *(*(*ctxt).input).cur.offset(2) as i32 == '[' as i32
             {
-                let mut id: i32 = (*(*ctxt).input).id;
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3 as i32 as isize);
-                (*(*ctxt).input).col += 3 as i32;
-                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                let id: i32 = (*(*ctxt).input).id;
+                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
+                (*(*ctxt).input).col += 3;
+                if *(*(*ctxt).input).cur as i32 == 0 {
+                    xmlParserInputGrow_safe((*ctxt).input, 250);
                 }
                 xmlSkipBlankChars(ctxt);
-                if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == 'I' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32
-                        == 'N' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32
-                        == 'C' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32
-                        == 'L' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32
-                        == 'U' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32
-                        == 'D' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(6 as i32 as isize) as i32
-                        == 'E' as i32
+                if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'I' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'N' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'C' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'L' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'U' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'D' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'E' as i32
                 {
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(7 as i32 as isize);
-                    (*(*ctxt).input).col += 7 as i32;
-                    if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                        xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(7);
+                    (*(*ctxt).input).col += 7;
+                    if *(*(*ctxt).input).cur as i32 == 0 {
+                        xmlParserInputGrow_safe((*ctxt).input, 250);
                     }
                     xmlSkipBlankChars(ctxt);
                     if *(*(*ctxt).input).cur as i32 != '[' as i32 {
@@ -8506,17 +8004,17 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                     } else {
                         if (*(*ctxt).input).id != id {
                             xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                       b"All markup of the conditional section is not in the same entity\n\x00"
-                           as *const u8 as
-                           *const i8);
+                                           b"All markup of the conditional section is not in the same entity\n\x00"
+                                           as *const u8 as
+                                           *const i8);
                         }
                         xmlNextChar_safe(ctxt);
                         if inputIdsSize <= depth {
                             let mut tmp: *mut i32 = 0 as *mut i32;
-                            inputIdsSize = if inputIdsSize == 0 as i32 as u64 {
-                                4 as i32 as u64
+                            inputIdsSize = if inputIdsSize == 0 {
+                                4
                             } else {
-                                inputIdsSize.wrapping_mul(2 as i32 as u64)
+                                inputIdsSize.wrapping_mul(2)
                             };
                             tmp = xmlRealloc_safe(
                                 inputIds as *mut (),
@@ -8532,26 +8030,20 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                         *inputIds.offset(depth as isize) = id;
                         depth = depth.wrapping_add(1)
                     }
-                } else if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32
-                    == 'I' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32
-                        == 'G' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32
-                        == 'N' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32
-                        == 'O' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32
-                        == 'R' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(5 as i32 as isize) as i32
-                        == 'E' as i32
+                } else if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'I' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'G' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'N' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'O' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'R' as i32
+                    && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'E' as i32
                 {
                     let mut state: i32 = 0;
                     let mut instate: xmlParserInputState = XML_PARSER_START;
-                    let mut ignoreDepth: size_t = 0 as i32 as size_t;
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6 as i32 as isize);
-                    (*(*ctxt).input).col += 6 as i32;
-                    if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                        xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                    let mut ignoreDepth: size_t = 0;
+                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
+                    (*(*ctxt).input).col += 6;
+                    if *(*(*ctxt).input).cur as i32 == 0 {
+                        xmlParserInputGrow_safe((*ctxt).input, 250);
                     }
                     xmlSkipBlankChars(ctxt);
                     if *(*(*ctxt).input).cur as i32 != '[' as i32 {
@@ -8561,9 +8053,9 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                     } else {
                         if (*(*ctxt).input).id != id {
                             xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                       b"All markup of the conditional section is not in the same entity\n\x00"
-                           as *const u8 as
-                           *const i8);
+                                           b"All markup of the conditional section is not in the same entity\n\x00"
+                                           as *const u8 as
+                                           *const i8);
                         }
                         xmlNextChar_safe(ctxt);
                         /*
@@ -8572,44 +8064,38 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                          */
                         state = (*ctxt).disableSAX;
                         instate = (*ctxt).instate;
-                        if (*ctxt).recovery == 0 as i32 {
-                            (*ctxt).disableSAX = 1 as i32
+                        if (*ctxt).recovery == 0 {
+                            (*ctxt).disableSAX = 1
                         }
                         (*ctxt).instate = XML_PARSER_IGNORE;
-                        while *(*(*ctxt).input).cur as i32 != 0 as i32 {
+                        while *(*(*ctxt).input).cur as i32 != 0 {
                             if *(*(*ctxt).input).cur as i32 == '<' as i32
-                                && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32
-                                    == '!' as i32
-                                && *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32
-                                    == '[' as i32
+                                && *(*(*ctxt).input).cur.offset(1) as i32 == '!' as i32
+                                && *(*(*ctxt).input).cur.offset(2) as i32 == '[' as i32
                             {
-                                (*(*ctxt).input).cur =
-                                    (*(*ctxt).input).cur.offset(3 as i32 as isize);
-                                (*(*ctxt).input).col += 3 as i32;
-                                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
+                                (*(*ctxt).input).col += 3;
+                                if *(*(*ctxt).input).cur as i32 == 0 {
+                                    xmlParserInputGrow_safe((*ctxt).input, 250);
                                 }
                                 ignoreDepth = ignoreDepth.wrapping_add(1);
                                 /* Check for integer overflow */
-                                if !(ignoreDepth == 0 as i32 as u64) {
+                                if !(ignoreDepth == 0) {
                                     continue;
                                 }
                                 xmlErrMemory(ctxt, 0 as *const i8);
                                 break 's_11;
                             } else if *(*(*ctxt).input).cur as i32 == ']' as i32
-                                && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32
-                                    == ']' as i32
-                                && *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32
-                                    == '>' as i32
+                                && *(*(*ctxt).input).cur.offset(1) as i32 == ']' as i32
+                                && *(*(*ctxt).input).cur.offset(2) as i32 == '>' as i32
                             {
-                                if ignoreDepth == 0 as i32 as u64 {
+                                if ignoreDepth == 0 {
                                     break;
                                 }
-                                (*(*ctxt).input).cur =
-                                    (*(*ctxt).input).cur.offset(3 as i32 as isize);
-                                (*(*ctxt).input).col += 3 as i32;
-                                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
+                                (*(*ctxt).input).col += 3;
+                                if *(*(*ctxt).input).cur as i32 == 0 {
+                                    xmlParserInputGrow_safe((*ctxt).input, 250);
                                 }
                                 ignoreDepth = ignoreDepth.wrapping_sub(1)
                             } else {
@@ -8618,20 +8104,20 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                         }
                         (*ctxt).disableSAX = state;
                         (*ctxt).instate = instate;
-                        if *(*(*ctxt).input).cur as i32 == 0 as i32 {
+                        if *(*(*ctxt).input).cur as i32 == 0 {
                             xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, 0 as *const i8);
                             break;
                         } else {
                             if (*(*ctxt).input).id != id {
                                 xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-                           b"All markup of the conditional section is not in the same entity\n\x00"
-                               as *const u8 as
-                               *const i8);
+                                               b"All markup of the conditional section is not in the same entity\n\x00"
+                                               as *const u8 as
+                                               *const i8);
                             }
-                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3 as i32 as isize);
-                            (*(*ctxt).input).col += 3 as i32;
-                            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
+                            (*(*ctxt).input).col += 3;
+                            if *(*(*ctxt).input).cur as i32 == 0 {
+                                xmlParserInputGrow_safe((*ctxt).input, 250);
                             }
                         }
                     }
@@ -8640,10 +8126,10 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                     xmlHaltParser(ctxt);
                     break;
                 }
-            } else if depth > 0 as i32 as u64
+            } else if depth > 0
                 && *(*(*ctxt).input).cur as i32 == ']' as i32
-                && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == ']' as i32
-                && *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32 == '>' as i32
+                && *(*(*ctxt).input).cur.offset(1) as i32 == ']' as i32
+                && *(*(*ctxt).input).cur.offset(2) as i32 == '>' as i32
             {
                 depth = depth.wrapping_sub(1);
                 if (*(*ctxt).input).id != *inputIds.offset(depth as isize) {
@@ -8654,14 +8140,14 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                             as *const u8 as *const i8,
                     );
                 }
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3 as i32 as isize);
-                (*(*ctxt).input).col += 3 as i32;
-                if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
+                (*(*ctxt).input).col += 3;
+                if *(*(*ctxt).input).cur as i32 == 0 {
+                    xmlParserInputGrow_safe((*ctxt).input, 250);
                 }
             } else {
-                let mut check: *const xmlChar = (*(*ctxt).input).cur;
-                let mut cons: u32 = (*(*ctxt).input).consumed as u32;
+                let check: *const xmlChar = (*(*ctxt).input).cur;
+                let cons: u32 = (*(*ctxt).input).consumed as u32;
                 xmlParseMarkupDecl(ctxt);
                 if (*(*ctxt).input).cur == check && cons as u64 == (*(*ctxt).input).consumed {
                     xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, 0 as *const i8);
@@ -8669,19 +8155,18 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
                     break;
                 }
             }
-            if depth == 0 as i32 as u64 {
+            if depth == 0 {
                 break;
             }
             xmlSkipBlankChars(ctxt);
-            if (*ctxt).progressive == 0 as i32
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < 250 as i32 as i64
+            if (*ctxt).progressive == 0
+                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
             {
                 xmlGROW(ctxt);
             }
         }
     }
-    xmlFree_safe(inputIds as *mut ());
+    unsafe{xmlFree_safe(inputIds as *mut ())};
 }
 /* *
 * xmlParseMarkupDecl:
@@ -8706,26 +8191,22 @@ unsafe fn xmlParseConditionalSections(mut ctxt: xmlParserCtxtPtr) {
 * entities or to the external subset.)
 */
 
-pub unsafe fn xmlParseMarkupDecl(mut ctxt: xmlParserCtxtPtr) {
-    let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).progressive == 0 as i32
-        && unsafe {
-            ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 as i32 as i64
-        }
+pub fn xmlParseMarkupDecl(ctxt: xmlParserCtxtPtr) {
+    let safe_ctxt = unsafe { &mut *ctxt };
+    if (safe_ctxt).progressive == 0
+        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
     //@todo 削减unsafe范围
     unsafe {
         if *(*(*ctxt).input).cur as i32 == '<' as i32 {
-            if *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '!' as i32 {
-                match *(*(*ctxt).input).cur.offset(2 as i32 as isize) as i32 {
+            if *(*(*ctxt).input).cur.offset(1) as i32 == '!' as i32 {
+                match *(*(*ctxt).input).cur.offset(2) as i32 {
                     69 => {
-                        if *(*(*ctxt).input).cur.offset(3 as i32 as isize) as i32 == 'L' as i32 {
+                        if *(*(*ctxt).input).cur.offset(3) as i32 == 'L' as i32 {
                             xmlParseElementDecl(ctxt);
-                        } else if *(*(*ctxt).input).cur.offset(3 as i32 as isize) as i32
-                            == 'N' as i32
-                        {
+                        } else if *(*(*ctxt).input).cur.offset(3) as i32 == 'N' as i32 {
                             xmlParseEntityDecl(ctxt);
                         }
                     }
@@ -8740,7 +8221,7 @@ pub unsafe fn xmlParseMarkupDecl(mut ctxt: xmlParserCtxtPtr) {
                     }
                     _ => {}
                 }
-            } else if *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '?' as i32 {
+            } else if *(*(*ctxt).input).cur.offset(1) as i32 == '?' as i32 {
                 xmlParsePI(ctxt);
             }
         }
@@ -8763,29 +8244,29 @@ pub unsafe fn xmlParseMarkupDecl(mut ctxt: xmlParserCtxtPtr) {
 * [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
 */
 
-pub unsafe fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
+pub fn xmlParseTextDecl(ctxt: xmlParserCtxtPtr) {
     let mut version: *mut xmlChar = 0 as *mut xmlChar;
     let mut encoding: *const xmlChar = 0 as *const xmlChar;
     let mut oldstate: i32 = 0;
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let safe_ctxt = unsafe { &mut *ctxt };
     /*
      * We know that '<?xml' is here.
      */
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0 as i32 as isize) as i32 == '<' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1 as i32 as isize) as i32 == '?' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2 as i32 as isize) as i32 == 'x' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3 as i32 as isize) as i32 == 'm' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4 as i32 as isize) as i32 == 'l' as i32
-            && (*(*(*ctxt).input).cur.offset(5 as i32 as isize) as i32 == 0x20 as i32
-                || 0x9 as i32 <= *(*(*ctxt).input).cur.offset(5 as i32 as isize) as i32
-                    && *(*(*ctxt).input).cur.offset(5 as i32 as isize) as i32 <= 0xa as i32
-                || *(*(*ctxt).input).cur.offset(5 as i32 as isize) as i32 == 0xd as i32)
+        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '<' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == '?' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'x' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'm' as i32
+            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'l' as i32
+            && (*(*(*ctxt).input).cur.offset(5) as i32 == 0x20 as i32
+                || 0x9 as i32 <= *(*(*ctxt).input).cur.offset(5) as i32
+                    && *(*(*ctxt).input).cur.offset(5) as i32 <= 0xa as i32
+                || *(*(*ctxt).input).cur.offset(5) as i32 == 0xd as i32)
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5 as i32 as isize);
-            (*(*ctxt).input).col += 5 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
+            (*(*ctxt).input).col += 5;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
         } else {
             xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_STARTED, 0 as *const i8);
@@ -8795,7 +8276,7 @@ pub unsafe fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
     /* Avoid expansion of parameter entities when skipping blanks. */
     oldstate = (safe_ctxt).instate as i32;
     (safe_ctxt).instate = XML_PARSER_START;
-    if xmlSkipBlankChars(ctxt) == 0 as i32 {
+    if xmlSkipBlankChars(ctxt) == 0 {
         unsafe {
             xmlFatalErrMsg(
                 ctxt,
@@ -8811,8 +8292,8 @@ pub unsafe fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
         version = xmlParseVersionInfo(ctxt);
     }
     if version.is_null() {
-        version = xmlCharStrdup_safe(b"1.0\x00" as *const u8 as *const i8)
-    } else if xmlSkipBlankChars(ctxt) == 0 as i32 {
+        version = unsafe{xmlCharStrdup_safe(b"1.0\x00" as *const u8 as *const i8)}
+    } else if xmlSkipBlankChars(ctxt) == 0 {
         unsafe {
             xmlFatalErrMsg(
                 ctxt,
@@ -8849,12 +8330,12 @@ pub unsafe fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
     xmlSkipBlankChars(ctxt);
     unsafe {
         if *(*(*ctxt).input).cur as i32 == '?' as i32
-            && *(*(*ctxt).input).cur.offset(1 as i32 as isize) as i32 == '>' as i32
+            && *(*(*ctxt).input).cur.offset(1) as i32 == '>' as i32
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2 as i32 as isize);
-            (*(*ctxt).input).col += 2 as i32;
-            if *(*(*ctxt).input).cur as i32 == 0 as i32 {
-                xmlParserInputGrow_safe((*ctxt).input, 250 as i32);
+            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
+            (*(*ctxt).input).col += 2;
+            if *(*(*ctxt).input).cur as i32 == 0 {
+                xmlParserInputGrow_safe((*ctxt).input, 250);
             }
         } else if *(*(*ctxt).input).cur as i32 == '>' as i32 {
             /* Deprecated old WD ... */
@@ -8870,6 +8351,7 @@ pub unsafe fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
     }
     (safe_ctxt).instate = oldstate as xmlParserInputState;
 }
+
 /* *
 * xmlParseExternalSubset:
 * @ctxt:  an XML parser context
@@ -8882,7 +8364,6 @@ pub unsafe fn xmlParseTextDecl(mut ctxt: xmlParserCtxtPtr) {
 *
 * [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *
 */
-
 pub unsafe fn xmlParseExternalSubset(
     mut ctxt: xmlParserCtxtPtr,
     mut ExternalID: *const xmlChar,
