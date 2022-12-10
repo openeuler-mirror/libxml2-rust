@@ -5425,11 +5425,13 @@ fn xmlParseCatalogPI(ctxt: xmlParserCtxtPtr, catalog: *const xmlChar) {
             tmp = tmp.offset(1)
         }
     }
-    if !(unsafe{xmlStrncmp_safe(
-        tmp,
-        b"catalog\x00" as *const u8 as *const i8 as *mut xmlChar,
-        7,
-    )} != 0)
+    if !(unsafe {
+        xmlStrncmp_safe(
+            tmp,
+            b"catalog\x00" as *const u8 as *const i8 as *mut xmlChar,
+            7,
+        )
+    } != 0)
     {
         unsafe {
             tmp = tmp.offset(7);
@@ -5473,8 +5475,9 @@ fn xmlParseCatalogPI(ctxt: xmlParserCtxtPtr, catalog: *const xmlChar) {
                 }
                 if !(unsafe { *tmp } as i32 != 0) {
                     if !URL.is_null() {
-                        (safe_ctxt).catalogs = unsafe{xmlCatalogAddLocal_safe((safe_ctxt).catalogs, URL)};
-                        unsafe{xmlFree_safe(URL as *mut ())};
+                        (safe_ctxt).catalogs =
+                            unsafe { xmlCatalogAddLocal_safe((safe_ctxt).catalogs, URL) };
+                        unsafe { xmlFree_safe(URL as *mut ()) };
                     }
                     return;
                 }
@@ -5491,7 +5494,7 @@ fn xmlParseCatalogPI(ctxt: xmlParserCtxtPtr, catalog: *const xmlChar) {
         );
     }
     if !URL.is_null() {
-        unsafe{xmlFree_safe(URL as *mut ())};
+        unsafe { xmlFree_safe(URL as *mut ()) };
     };
 }
 /* *
@@ -5761,13 +5764,15 @@ pub fn xmlParsePI(ctxt: xmlParserCtxtPtr) {
                     _ => {
                         if (state as i32 == XML_PARSER_MISC as i32
                             || state as i32 == XML_PARSER_START as i32)
-                            && unsafe{xmlStrEqual_safe(
-                                target,
-                                b"oasis-xml-catalog\x00" as *const u8 as *const i8
-                                    as *const xmlChar,
-                            )} != 0
+                            && unsafe {
+                                xmlStrEqual_safe(
+                                    target,
+                                    b"oasis-xml-catalog\x00" as *const u8 as *const i8
+                                        as *const xmlChar,
+                                )
+                            } != 0
                         {
-                            let allow: xmlCatalogAllow = unsafe{xmlCatalogGetDefaults_safe()};
+                            let allow: xmlCatalogAllow = unsafe { xmlCatalogGetDefaults_safe() };
                             if allow as u32 == XML_CATA_ALLOW_DOCUMENT as u32
                                 || allow as u32 == XML_CATA_ALLOW_ALL as u32
                             {
