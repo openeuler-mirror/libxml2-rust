@@ -62,10 +62,10 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
                     l1 = -(safe_node1.content as ptrdiff_t); /* element is owner */
                     l2 = -(safe_node2.content as ptrdiff_t);
                     if l1 < l2 {
-                        return 1;
+                        return 1 as i32;
                     }
                     if l1 > l2 {
-                        return -(1);
+                        return -(1 as i32);
                     }
                     current_block = 721385680381463314;
                 } else {
@@ -76,10 +76,10 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
             }
         }
         2 => {
-            precedence1 = 1;
+            precedence1 = 1 as i32;
             miscNode1 = node1;
             node1 = safe_node1.parent;
-            misc = 1;
+            misc = 1 as i32;
             current_block = 721385680381463314;
         }
         3 | 4 | 8 | 7 => {
@@ -120,7 +120,7 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
                 node1 = miscNode1;
                 precedence1 = 0 as i32
             } else {
-                misc = 1
+                misc = 1 as i32
             }
             current_block = 721385680381463314;
         }
@@ -128,7 +128,7 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
             /*
              * TODO: why do we return 1 for namespace nodes?
              */
-            return 1;
+            return 1 as i32;
         }
         _ => {
             current_block = 721385680381463314; /* element is owner */
@@ -138,10 +138,10 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
         721385680381463314 => {
             match unsafe { (*node2).type_0 as u32 } {
                 2 => {
-                    precedence2 = 1; /* element is parent */
+                    precedence2 = 1 as i32; /* element is parent */
                     miscNode2 = node2; /* element is parent */
                     node2 = unsafe { (*node2).parent };
-                    misc = 1
+                    misc = 1 as i32
                 }
                 3 | 4 | 8 | 7 => {
                     miscNode2 = node2;
@@ -165,16 +165,16 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
                         node2 = unsafe { (*node2).parent }
                     }
                     if node2.is_null()
-                        || unsafe { (*node2).type_0 as u32 != XML_ELEMENT_NODE as u32 }
+                        || unsafe { (*node2).type_0 as u32 != XML_ELEMENT_NODE as i32 as u32 }
                         || unsafe { 0 as i32 as i64 <= (*node2).content as ptrdiff_t }
                     {
                         node2 = miscNode2;
                         precedence2 = 0 as i32
                     } else {
-                        misc = 1
+                        misc = 1 as i32
                     }
                 }
-                18 => return 1,
+                18 => return 1 as i32,
                 1 | _ => {}
             }
             if misc != 0 {
@@ -187,18 +187,18 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
                         cur = unsafe { (*miscNode2).prev };
                         while !cur.is_null() {
                             if cur == miscNode1 {
-                                return 1;
+                                return 1 as i32;
                             }
-                            if unsafe { (*cur).type_0 as u32 == XML_ELEMENT_NODE as u32 } {
-                                return -(1);
+                            if unsafe { (*cur).type_0 as u32 == XML_ELEMENT_NODE as i32 as u32 } {
+                                return -(1 as i32);
                             }
                             cur = unsafe { (*cur).prev }
                         }
-                        return -(1);
+                        return -(1 as i32);
                     } else if precedence1 < precedence2 {
-                        return 1;
+                        return 1 as i32;
                     } else {
-                        return -(1);
+                        return -(1 as i32);
                     }
                 }
                 /*
@@ -214,20 +214,20 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
                  *   </node2>
                  *   Text-6(precedence2 == 3) * </foo>
                  */
-                if precedence2 == 3 as i32 && precedence1 > 1 {
+                if precedence2 == 3 as i32 && precedence1 > 1 as i32 {
                     cur = unsafe { (*node1).parent };
                     while !cur.is_null() {
                         if cur == node2 {
-                            return 1;
+                            return 1 as i32;
                         }
                         cur = unsafe { (*cur).parent }
                     }
                 }
-                if precedence1 == 3 as i32 && precedence2 > 1 {
+                if precedence1 == 3 as i32 && precedence2 > 1 as i32 {
                     cur = unsafe { (*node2).parent };
                     while !cur.is_null() {
                         if cur == node1 {
-                            return -(1);
+                            return -(1 as i32);
                         }
                         cur = unsafe { (*cur).parent }
                     }
@@ -248,17 +248,17 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
                     l2 = -((*node2).content as ptrdiff_t);
                 };
                 if l1 < l2 {
-                    return 1;
+                    return 1 as i32;
                 }
                 if l1 > l2 {
-                    return -(1);
+                    return -(1 as i32);
                 }
             }
         }
         _ => {}
     }
 
-    // turtle_comparison: if node1 == unsafe{(*node2).prev} { return 1 }
+    // turtle_comparison: if node1 == unsafe{(*node2).prev} { return 1 as i32 }
     if node1 == unsafe { (*node2).next } {
         return -1;
     }
@@ -367,8 +367,8 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
  *         it's the same node, +1 otherwise
  */
 #[cfg(XP_OPTIMIZED_NON_ELEM_COMPARISON)]
-fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> i32 {
-    let mut res: i32 = unsafe { xmlXPathCmpNodesExt(x, y) };
+fn wrap_cmp(x: xmlNodePtr, y: xmlNodePtr) -> i32 {
+    let mut res: i32 = xmlXPathCmpNodesExt(x, y);
     return if res == -2 { res } else { -res };
 }
 #[cfg(not(XP_OPTIMIZED_NON_ELEM_COMPARISON))]
@@ -421,10 +421,10 @@ fn wrap_cmp(mut x: xmlNodePtr, mut y: xmlNodePtr) -> i32 {
 /* right merge */
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn libxml_domnode_tim_sort_collapse(
-    mut dst: *mut xmlNodePtr,
-    mut stack: *mut TIM_SORT_RUN_T,
+    dst: *mut xmlNodePtr,
+    stack: *mut TIM_SORT_RUN_T,
     mut stack_curr: i32,
-    mut store: *mut TEMP_STORAGE_T,
+    store: *mut TEMP_STORAGE_T,
     size: size_t,
 ) -> i32 {
     loop {
@@ -441,34 +441,36 @@ fn libxml_domnode_tim_sort_collapse(
             break;
         }
         /* if this is the last merge, just do it */
-        if stack_curr == 2 as i32
+        if stack_curr == 2
             && unsafe {
-                (*stack.offset(0))
+                (*stack.offset(0 as isize))
                     .length
                     .wrapping_add((*stack.offset(1 as isize)).length)
                     == size
             }
-            || stack_curr == 2 as i32
-                && unsafe { (*stack.offset(0)).length <= (*stack.offset(1 as isize)).length }
+            || stack_curr == 2
+                && unsafe {
+                    (*stack.offset(0 as isize)).length <= (*stack.offset(1 as isize)).length
+                }
         {
-            unsafe { libxml_domnode_tim_sort_merge(dst, stack, stack_curr, store) };
-            let ref mut fresh0 = unsafe { (*stack.offset(0)).length };
+            libxml_domnode_tim_sort_merge(dst, stack, stack_curr, store);
+            let ref mut fresh0 = unsafe { (*stack.offset(0 as isize)).length };
             *fresh0 = (*fresh0 as u64).wrapping_add(unsafe { (*stack.offset(1 as isize)).length })
                 as size_t as size_t;
             stack_curr -= 1;
             break;
         } else {
-            if stack_curr == 2 as i32 {
+            if stack_curr == 2 {
                 break;
             }
-            B = unsafe { (*stack.offset((stack_curr - 3 as i32) as isize)).length };
-            C = unsafe { (*stack.offset((stack_curr - 2 as i32) as isize)).length };
+            B = unsafe { (*stack.offset((stack_curr - 3) as isize)).length };
+            C = unsafe { (*stack.offset((stack_curr - 2) as isize)).length };
             D = unsafe { (*stack.offset((stack_curr - 1) as isize)).length };
             if stack_curr >= 4 as i32 {
-                A = unsafe { (*stack.offset((stack_curr - 4 as i32) as isize)).length };
+                A = unsafe { (*stack.offset((stack_curr - 4) as isize)).length };
                 ABC = (A <= B.wrapping_add(C)) as i32
             } else {
-                ABC = 0 as i32
+                ABC = 0
             }
             BCD = (B <= C.wrapping_add(D) || ABC != 0) as i32;
             CD = (C <= D) as i32;
@@ -479,22 +481,20 @@ fn libxml_domnode_tim_sort_collapse(
             }
             /* left merge */
             if BCD != 0 && CD == 0 {
-                unsafe { libxml_domnode_tim_sort_merge(dst, stack, stack_curr - 1, store) };
-                let ref mut fresh2 =
-                    unsafe { (*stack.offset((stack_curr - 3 as i32) as isize)).length };
-                *fresh2 = (*fresh2 as u64).wrapping_add(unsafe {
-                    (*stack.offset((stack_curr - 2 as i32) as isize)).length
-                }) as size_t as size_t;
+                libxml_domnode_tim_sort_merge(dst, stack, stack_curr - 1 as i32, store);
+                let ref mut fresh2 = unsafe { (*stack.offset((stack_curr - 3) as isize)).length };
+                *fresh2 = (*fresh2 as u64)
+                    .wrapping_add(unsafe { (*stack.offset((stack_curr - 2) as isize)).length })
+                    as size_t as size_t;
                 unsafe {
-                    *stack.offset((stack_curr - 2 as i32) as isize) =
+                    *stack.offset((stack_curr - 2) as isize) =
                         *stack.offset((stack_curr - 1) as isize)
                 };
                 stack_curr -= 1
             } else {
                 /* right merge */
-                unsafe { libxml_domnode_tim_sort_merge(dst, stack, stack_curr, store) };
-                let ref mut fresh3 =
-                    unsafe { (*stack.offset((stack_curr - 2 as i32) as isize)).length };
+                libxml_domnode_tim_sort_merge(dst, stack, stack_curr, store);
+                let ref mut fresh3 = unsafe { (*stack.offset((stack_curr - 2) as isize)).length };
                 *fresh3 = (*fresh3 as u64)
                     .wrapping_add(unsafe { (*stack.offset((stack_curr - 1) as isize)).length })
                     as size_t as size_t;
@@ -507,14 +507,14 @@ fn libxml_domnode_tim_sort_collapse(
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn libxml_domnode_tim_sort_merge(
-    mut dst: *mut xmlNodePtr,
-    mut stack: *const TIM_SORT_RUN_T,
+    dst: *mut xmlNodePtr,
+    stack: *const TIM_SORT_RUN_T,
     stack_curr: i32,
-    mut store: *mut TEMP_STORAGE_T,
+    store: *mut TEMP_STORAGE_T,
 ) {
-    let A: size_t = unsafe { (*stack.offset((stack_curr - 2 as i32) as isize)).length };
+    let A: size_t = unsafe { (*stack.offset((stack_curr - 2) as isize)).length };
     let B: size_t = unsafe { (*stack.offset((stack_curr - 1) as isize)).length };
-    let curr: size_t = unsafe { (*stack.offset((stack_curr - 2 as i32) as isize)).start };
+    let curr: size_t = unsafe { (*stack.offset((stack_curr - 2) as isize)).start };
     let mut storage: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
     let mut i: size_t = 0;
     let mut j: size_t = 0;
@@ -531,7 +531,7 @@ fn libxml_domnode_tim_sort_merge(
                 A.wrapping_mul(::std::mem::size_of::<xmlNodePtr>() as u64),
             )
         };
-        i = 0 as i32 as size_t;
+        i = 0 as size_t;
         j = curr.wrapping_add(A);
         k = curr;
         while k < curr.wrapping_add(A).wrapping_add(B) {
@@ -573,7 +573,7 @@ fn libxml_domnode_tim_sort_merge(
         k = curr.wrapping_add(A).wrapping_add(B);
         while k > curr {
             k = k.wrapping_sub(1);
-            if i > 0 as i32 as u64 && j > curr {
+            if i > 0 as u64 && j > curr {
                 if unsafe {
                     wrap_cmp(
                         *dst.offset(j.wrapping_sub(1 as u64) as isize),
@@ -589,7 +589,7 @@ fn libxml_domnode_tim_sort_merge(
                     *fresh11 = unsafe { *storage.offset(i as isize) }
                 }
             } else {
-                if !(i > 0 as i32 as u64) {
+                if !(i > 0 as u64) {
                     break;
                 }
                 i = i.wrapping_sub(1);
@@ -601,7 +601,7 @@ fn libxml_domnode_tim_sort_merge(
 }
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_tim_sort_resize(mut store: *mut TEMP_STORAGE_T, new_size: size_t) {
+fn libxml_domnode_tim_sort_resize(store: *mut TEMP_STORAGE_T, new_size: size_t) {
     let safe_store = unsafe { &mut *store };
     if safe_store.alloc < new_size {
         let mut tempstore: *mut xmlNodePtr = unsafe {
@@ -618,7 +618,7 @@ fn libxml_domnode_tim_sort_resize(mut store: *mut TEMP_STORAGE_T, new_size: size
                         as *const u8 as *const i8,
                     (::std::mem::size_of::<xmlNodePtr>() as u64).wrapping_mul(new_size),
                 );
-                exit(1);
+                exit(1 as i32);
             };
         }
         safe_store.storage = tempstore;
@@ -628,27 +628,26 @@ fn libxml_domnode_tim_sort_resize(mut store: *mut TEMP_STORAGE_T, new_size: size
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn libxml_domnode_count_run(mut dst: *mut xmlNodePtr, start: size_t, size: size_t) -> size_t {
     let mut curr: size_t = 0;
-    if size.wrapping_sub(start) == 1 as u64 {
+    if size.wrapping_sub(start) == 1 as i32 as u64 {
         return 1 as size_t;
     }
     if start >= size.wrapping_sub(2 as i32 as u64) {
         if unsafe {
             wrap_cmp(
-                *dst.offset(size.wrapping_sub(2 as i32 as u64) as isize),
+                *dst.offset(size.wrapping_sub(2 as u64) as isize),
                 *dst.offset(size.wrapping_sub(1 as u64) as isize),
             ) > 0 as i32
         } {
             let mut __SORT_SWAP_t: xmlNodePtr =
-                unsafe { *dst.offset(size.wrapping_sub(2 as i32 as u64) as isize) };
-            let ref mut fresh13 =
-                unsafe { *dst.offset(size.wrapping_sub(2 as i32 as u64) as isize) };
-            *fresh13 = unsafe { *dst.offset(size.wrapping_sub(1 as u64) as isize) };
+                unsafe { *dst.offset(size.wrapping_sub(2 as u64) as isize) };
+            let ref mut fresh13 = unsafe { *dst.offset(size.wrapping_sub(2 as u64) as isize) };
+            *fresh13 = unsafe { *dst.offset(size.wrapping_sub(1 as i32 as u64) as isize) };
             let ref mut fresh14 = unsafe { *dst.offset(size.wrapping_sub(1 as u64) as isize) };
             *fresh14 = __SORT_SWAP_t
         }
-        return 2 as i32 as size_t;
+        return 2 as size_t;
     }
-    curr = start.wrapping_add(2 as i32 as u64);
+    curr = start.wrapping_add(2 as u64);
     if unsafe {
         wrap_cmp(
             *dst.offset(start as isize),
@@ -658,7 +657,7 @@ fn libxml_domnode_count_run(mut dst: *mut xmlNodePtr, start: size_t, size: size_
         while !(curr == size.wrapping_sub(1 as u64)) {
             if unsafe {
                 wrap_cmp(
-                    *dst.offset(curr.wrapping_sub(1 as u64) as isize),
+                    *dst.offset(curr.wrapping_sub(1 as i32 as u64) as isize),
                     *dst.offset(curr as isize),
                 ) > 0 as i32
             } {
@@ -679,34 +678,30 @@ fn libxml_domnode_count_run(mut dst: *mut xmlNodePtr, start: size_t, size: size_
             }
             curr = curr.wrapping_add(1)
         }
-        unsafe { libxml_domnode_reverse_elements(dst, start, curr.wrapping_sub(1 as u64)) };
+        libxml_domnode_reverse_elements(dst, start, curr.wrapping_sub(1 as i32 as u64));
         return curr.wrapping_sub(start);
     };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn libxml_domnode_binary_insertion_sort(mut dst: *mut xmlNodePtr, size: size_t) {
+pub fn libxml_domnode_binary_insertion_sort(dst: *mut xmlNodePtr, size: size_t) {
     if size <= 1 as u64 {
         return;
     }
-    unsafe { libxml_domnode_binary_insertion_sort_start(dst, 1 as size_t, size) };
+    libxml_domnode_binary_insertion_sort_start(dst, 1 as size_t, size);
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn compute_minrun(size: uint64_t) -> i32 {
-    let top_bit: i32 = 64 as i32 - (size as u64).leading_zeros() as i32;
-    let shift: i32 = (if top_bit > 6 as i32 {
-        top_bit
-    } else {
-        6 as i32
-    }) - 6 as i32;
+    let top_bit: i32 = 64 - (size as u64).leading_zeros() as i32;
+    let shift: i32 = (if top_bit > 6 { top_bit } else { 6 }) - 6;
     let minrun: i32 = (size >> shift) as i32;
     let mask: uint64_t = ((1 as u64) << shift).wrapping_sub(1 as u64) as uint64_t;
     if mask & size != 0 {
-        return minrun + 1;
+        return minrun + 1 as i32;
     }
     return minrun;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_check_invariant(mut stack: *mut TIM_SORT_RUN_T, stack_curr: i32) -> i32 {
+fn libxml_domnode_check_invariant(stack: *mut TIM_SORT_RUN_T, stack_curr: i32) -> i32 {
     let mut A: size_t = 0;
     let mut B: size_t = 0;
     let mut C: size_t = 0;
@@ -714,24 +709,24 @@ fn libxml_domnode_check_invariant(mut stack: *mut TIM_SORT_RUN_T, stack_curr: i3
         return 1;
     }
     if stack_curr == 2 as i32 {
-        let A1: size_t = unsafe { (*stack.offset((stack_curr - 2 as i32) as isize)).length };
+        let A1: size_t = unsafe { (*stack.offset((stack_curr - 2) as isize)).length };
         let B1: size_t = unsafe { (*stack.offset((stack_curr - 1) as isize)).length };
         if A1 <= B1 {
             return 0 as i32;
         }
-        return 1;
+        return 1 as i32;
     }
-    A = unsafe { (*stack.offset((stack_curr - 3 as i32) as isize)).length };
-    B = unsafe { (*stack.offset((stack_curr - 2 as i32) as isize)).length };
+    A = unsafe { (*stack.offset((stack_curr - 3) as isize)).length };
+    B = unsafe { (*stack.offset((stack_curr - 2) as isize)).length };
     C = unsafe { (*stack.offset((stack_curr - 1) as isize)).length };
     if A <= B.wrapping_add(C) || B <= C {
-        return 0 as i32;
+        return 0;
     }
     return 1;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn libxml_domnode_binary_insertion_find(
-    mut dst: *mut xmlNodePtr,
+    dst: *mut xmlNodePtr,
     x: xmlNodePtr,
     size: size_t,
 ) -> size_t {
@@ -741,9 +736,9 @@ fn libxml_domnode_binary_insertion_find(
     let mut cx: xmlNodePtr = 0 as *mut xmlNode;
     l = 0 as i32 as size_t;
     r = size.wrapping_sub(1 as u64);
-    c = r >> 1;
-    if unsafe { wrap_cmp(x, *dst.offset(0)) < 0 as i32 } {
-        return 0 as i32 as size_t;
+    c = r >> 1 as i32;
+    if unsafe { wrap_cmp(x, *dst.offset(0 as isize)) < 0 as i32 } {
+        return 0 as size_t;
     } else {
         if unsafe { wrap_cmp(x, *dst.offset(r as isize)) > 0 as i32 } {
             return r;
@@ -751,7 +746,7 @@ fn libxml_domnode_binary_insertion_find(
     }
     cx = unsafe { *dst.offset(c as isize) };
     loop {
-        let val: i32 = unsafe { wrap_cmp(x, cx) };
+        let val: i32 = wrap_cmp(x, cx);
         if val < 0 as i32 {
             if c.wrapping_sub(l) <= 1 as u64 {
                 return c;
@@ -763,16 +758,12 @@ fn libxml_domnode_binary_insertion_find(
             }
             l = c
         }
-        c = l.wrapping_add(r.wrapping_sub(l) >> 1);
+        c = l.wrapping_add(r.wrapping_sub(l) >> 1 as i32);
         cx = unsafe { *dst.offset(c as isize) }
     }
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_binary_insertion_sort_start(
-    mut dst: *mut xmlNodePtr,
-    start: size_t,
-    size: size_t,
-) {
+fn libxml_domnode_binary_insertion_sort_start(dst: *mut xmlNodePtr, start: size_t, size: size_t) {
     let mut i: size_t = 0;
     i = start;
     while i < size {
@@ -792,10 +783,10 @@ fn libxml_domnode_binary_insertion_sort_start(
             j = i.wrapping_sub(1 as u64);
             while j >= location {
                 unsafe {
-                    let ref mut fresh15 = *dst.offset(j.wrapping_add(1 as u64) as isize);
+                    let ref mut fresh15 = *dst.offset(j.wrapping_add(1 as i32 as u64) as isize);
                     *fresh15 = *dst.offset(j as isize);
                 };
-                if j == 0 as i32 as u64 {
+                if j == 0 as u64 {
                     break;
                 }
                 j = j.wrapping_sub(1)
@@ -809,7 +800,7 @@ fn libxml_domnode_binary_insertion_sort_start(
     }
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-fn libxml_domnode_reverse_elements(mut dst: *mut xmlNodePtr, mut start: size_t, mut end: size_t) {
+fn libxml_domnode_reverse_elements(dst: *mut xmlNodePtr, mut start: size_t, mut end: size_t) {
     loop {
         if start >= end {
             return;
@@ -827,13 +818,13 @@ fn libxml_domnode_reverse_elements(mut dst: *mut xmlNodePtr, mut start: size_t, 
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn PUSH_NEXT(
-    mut dst: *mut xmlNodePtr,
+    dst: *mut xmlNodePtr,
     size: size_t,
-    mut store: *mut TEMP_STORAGE_T,
+    store: *mut TEMP_STORAGE_T,
     minrun: size_t,
-    mut run_stack: *mut TIM_SORT_RUN_T,
-    mut stack_curr: *mut size_t,
-    mut curr: *mut size_t,
+    run_stack: *mut TIM_SORT_RUN_T,
+    stack_curr: *mut size_t,
+    curr: *mut size_t,
 ) -> i32 {
     let mut len: size_t = unsafe { libxml_domnode_count_run(dst, *curr, size) };
     let mut run: size_t = minrun;
@@ -851,16 +842,15 @@ fn PUSH_NEXT(
         (*run_stack.offset(*stack_curr as isize)).start = *curr;
         (*run_stack.offset(*stack_curr as isize)).length = len;
         *stack_curr = (*stack_curr).wrapping_add(1);
-        *curr = (*curr as u64).wrapping_add(len) as size_t as size_t;
+        *curr = (*curr as u64).wrapping_add(len) as size_t;
     };
     if unsafe { *curr == size } {
         /* finish up */
         while unsafe { *stack_curr > 1 as u64 } {
             unsafe { libxml_domnode_tim_sort_merge(dst, run_stack, *stack_curr as i32, store) };
             unsafe {
-                let ref mut fresh19 = (*run_stack
-                    .offset((*stack_curr).wrapping_sub(2 as i32 as u64) as isize))
-                .length;
+                let ref mut fresh19 =
+                    (*run_stack.offset((*stack_curr).wrapping_sub(2 as u64) as isize)).length;
                 *fresh19 = (*fresh19 as u64).wrapping_add(
                     (*run_stack.offset((*stack_curr).wrapping_sub(1 as u64) as isize)).length,
                 ) as size_t as size_t;
@@ -871,12 +861,12 @@ fn PUSH_NEXT(
             unsafe { free(safe_store.storage as *mut ()) };
             safe_store.storage = 0 as *mut xmlNodePtr
         }
-        return 0 as i32;
+        return 0;
     }
     return 1;
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub fn libxml_domnode_tim_sort(mut dst: *mut xmlNodePtr, size: size_t) {
+pub fn libxml_domnode_tim_sort(dst: *mut xmlNodePtr, size: size_t) {
     let mut minrun: size_t = 0;
     let mut _store: TEMP_STORAGE_T = TEMP_STORAGE_T {
         alloc: 0,
@@ -893,79 +883,72 @@ pub fn libxml_domnode_tim_sort(mut dst: *mut xmlNodePtr, size: size_t) {
     if size <= 1 as u64 {
         return;
     }
-    if size < 64 as i32 as u64 {
-        unsafe { libxml_domnode_binary_insertion_sort(dst, size) };
+    if size < 64 as u64 {
+        libxml_domnode_binary_insertion_sort(dst, size);
         return;
     }
     /* compute the minimum run length */
-    minrun = unsafe { compute_minrun(size) as size_t };
+    minrun = compute_minrun(size) as size_t;
     /* temporary storage for merges */
     store = &mut _store;
     let safe_store = unsafe { &mut *store };
-    safe_store.alloc = 0 as i32 as size_t;
+    safe_store.alloc = 0 as size_t;
     safe_store.storage = 0 as *mut xmlNodePtr;
-    if unsafe {
-        PUSH_NEXT(
-            dst,
-            size,
-            store,
-            minrun,
-            run_stack.as_mut_ptr(),
-            &mut stack_curr,
-            &mut curr,
-        ) == 0
-    } {
+    if PUSH_NEXT(
+        dst,
+        size,
+        store,
+        minrun,
+        run_stack.as_mut_ptr(),
+        &mut stack_curr,
+        &mut curr,
+    ) == 0
+    {
         return;
     }
-    if unsafe {
-        PUSH_NEXT(
-            dst,
-            size,
-            store,
-            minrun,
-            run_stack.as_mut_ptr(),
-            &mut stack_curr,
-            &mut curr,
-        ) == 0
-    } {
+    if PUSH_NEXT(
+        dst,
+        size,
+        store,
+        minrun,
+        run_stack.as_mut_ptr(),
+        &mut stack_curr,
+        &mut curr,
+    ) == 0
+    {
         return;
     }
-    if unsafe {
-        PUSH_NEXT(
-            dst,
-            size,
-            store,
-            minrun,
-            run_stack.as_mut_ptr(),
-            &mut stack_curr,
-            &mut curr,
-        ) == 0
-    } {
+    if PUSH_NEXT(
+        dst,
+        size,
+        store,
+        minrun,
+        run_stack.as_mut_ptr(),
+        &mut stack_curr,
+        &mut curr,
+    ) == 0
+    {
         return;
     }
     loop {
-        if unsafe { libxml_domnode_check_invariant(run_stack.as_mut_ptr(), stack_curr as i32) == 0 }
-        {
-            stack_curr = unsafe {
-                libxml_domnode_tim_sort_collapse(
-                    dst,
-                    run_stack.as_mut_ptr(),
-                    stack_curr as i32,
-                    store,
-                    size,
-                ) as size_t
-            }
-        } else if unsafe {
-            PUSH_NEXT(
+        if libxml_domnode_check_invariant(run_stack.as_mut_ptr(), stack_curr as i32) == 0 {
+            stack_curr = libxml_domnode_tim_sort_collapse(
                 dst,
-                size,
-                store,
-                minrun,
                 run_stack.as_mut_ptr(),
-                &mut stack_curr,
-                &mut curr,
-            ) == 0
-        } {
+                stack_curr as i32,
+                store,
+                size,
+            ) as size_t
+        } else if PUSH_NEXT(
+            dst,
+            size,
+            store,
+            minrun,
+            run_stack.as_mut_ptr(),
+            &mut stack_curr,
+            &mut curr,
+        ) == 0
+        {
             return;
         }
     }
@@ -1231,7 +1214,7 @@ fn xmlXPathErrMemory(ctxt: xmlXPathContextPtr, extra: *const i8) {
 #[cfg(LIBXML_XPATH_ENABLED)]
 fn xmlXPathPErrMemory(ctxt: xmlXPathParserContextPtr, extra: *const i8) {
     if ctxt.is_null() {
-        unsafe { xmlXPathErrMemory(0 as xmlXPathContextPtr, extra) };
+        xmlXPathErrMemory(0 as xmlXPathContextPtr, extra);
     } else {
         let safe_ctxt = unsafe { &mut *ctxt };
         safe_ctxt.error = XPATH_MEMORY_ERROR as i32;
@@ -1245,17 +1228,17 @@ fn xmlXPathPErrMemory(ctxt: xmlXPathParserContextPtr, extra: *const i8) {
  * Handle an XPath error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathErr(mut ctxt: xmlXPathParserContextPtr, mut error: i32) {
+pub fn xmlXPathErr(mut ctxt: xmlXPathParserContextPtr, mut error: i32) {
     let safe_ctxt = unsafe { &mut *ctxt };
     if error < 0 as i32
         || error
             > (::std::mem::size_of::<[*const i8; 28]>() as u64)
                 .wrapping_div(::std::mem::size_of::<*const i8>() as u64) as i32
-                - 1
+                - 1 as i32
     {
         error = (::std::mem::size_of::<[*const i8; 28]>() as u64)
             .wrapping_div(::std::mem::size_of::<*const i8>() as u64) as i32
-            - 1
+            - 1 as i32
     }
     if ctxt.is_null() {
         unsafe {
@@ -1363,15 +1346,13 @@ pub unsafe fn xmlXPathErr(mut ctxt: xmlXPathParserContextPtr, mut error: i32) {
  * Formats an error message.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPatherror(
+pub fn xmlXPatherror(
     mut ctxt: xmlXPathParserContextPtr,
     mut file: *const i8,
     mut line: i32,
     mut no: i32,
 ) {
-    unsafe {
-        xmlXPathErr(ctxt, no);
-    }
+    xmlXPathErr(ctxt, no);
 }
 /* *
  * xmlXPathCheckOpLimit: * @ctxt: the XPath Parser context
@@ -1389,7 +1370,7 @@ fn xmlXPathCheckOpLimit(ctxt: xmlXPathParserContextPtr, opCount: u64) -> i32 {
         || safe_xpctxt.opCount > safe_xpctxt.opLimit.wrapping_sub(opCount)
     {
         safe_xpctxt.opCount = safe_xpctxt.opLimit;
-        unsafe { xmlXPathErr(ctxt, XPATH_OP_LIMIT_EXCEEDED as i32) };
+        xmlXPathErr(ctxt, XPATH_OP_LIMIT_EXCEEDED as i32);
         return -1;
     }
     safe_xpctxt.opCount = safe_xpctxt.opCount.wrapping_add(opCount);
@@ -1413,24 +1394,20 @@ fn xmlPointerListAddSize(list: xmlPointerListPtr, item: *mut (), mut initialSize
             ) as *mut *mut ()
         };
         if safe_list.items.is_null() {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"xmlPointerListCreate: allocating item\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"xmlPointerListCreate: allocating item\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         safe_list.number = 0;
         safe_list.size = initialSize
     } else if safe_list.size <= safe_list.number {
         if safe_list.size > 50000000 {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"xmlPointerListAddSize: re-allocating item\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"xmlPointerListAddSize: re-allocating item\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         safe_list.size *= 2 as i32;
@@ -1441,12 +1418,10 @@ fn xmlPointerListAddSize(list: xmlPointerListPtr, item: *mut (), mut initialSize
             ) as *mut *mut ()
         };
         if safe_list.items.is_null() {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"xmlPointerListAddSize: re-allocating item\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"xmlPointerListAddSize: re-allocating item\n\x00" as *const u8 as *const i8,
+            );
             safe_list.size = 0;
             return -1;
         }
@@ -1473,12 +1448,10 @@ fn xmlPointerListCreate(initialSize: i32) -> xmlPointerListPtr {
             as xmlPointerListPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"xmlPointerListCreate: allocating item\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"xmlPointerListCreate: allocating item\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlPointerListPtr;
     }
     unsafe {
@@ -1489,7 +1462,7 @@ fn xmlPointerListCreate(initialSize: i32) -> xmlPointerListPtr {
         )
     };
     if initialSize > 0 {
-        unsafe { xmlPointerListAddSize(ret, 0 as *mut (), initialSize) };
+        xmlPointerListAddSize(ret, 0 as *mut (), initialSize);
         unsafe { (*ret).number = 0 as i32 }
     }
     return ret;
@@ -1531,12 +1504,10 @@ fn xmlXPathNewCompExpr() -> xmlXPathCompExprPtr {
     };
     let safe_cur = unsafe { &mut *cur };
     if cur.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"allocating component\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"allocating component\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathCompExprPtr;
     }
     unsafe {
@@ -1587,7 +1558,7 @@ fn xmlXPathNewCompExpr() -> xmlXPathCompExprPtr {
  * Free up the memory allocated by @comp
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathFreeCompExpr(comp: xmlXPathCompExprPtr) {
+pub fn xmlXPathFreeCompExpr(comp: xmlXPathCompExprPtr) {
     let mut op: xmlXPathStepOpPtr = 0 as *mut xmlXPathStepOp;
     let mut i: i32;
     if comp.is_null() {
@@ -1686,7 +1657,7 @@ fn xmlXPathCompExprAdd(
     if safe_comp.nbStep >= safe_comp.maxStep {
         let mut real: *mut xmlXPathStepOp = 0 as *mut xmlXPathStepOp;
         if safe_comp.maxStep >= 1000000 as i32 {
-            unsafe { xmlXPathPErrMemory(ctxt, b"adding step\n\x00" as *const u8 as *const i8) };
+            xmlXPathPErrMemory(ctxt, b"adding step\n\x00" as *const u8 as *const i8);
             return -1;
         }
         safe_comp.maxStep *= 2 as i32;
@@ -1699,7 +1670,7 @@ fn xmlXPathCompExprAdd(
         };
         if real.is_null() {
             safe_comp.maxStep /= 2 as i32;
-            unsafe { xmlXPathPErrMemory(ctxt, b"adding step\n\x00" as *const u8 as *const i8) };
+            xmlXPathPErrMemory(ctxt, b"adding step\n\x00" as *const u8 as *const i8);
             return -1;
         }
         safe_comp.steps = real
@@ -1866,7 +1837,7 @@ fn xmlXPathDebugDumpNodeList(output: *mut FILE, mut cur: xmlNodePtr, depth: i32)
 }
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathDebugDumpNodeSet(output: *mut FILE, cur: xmlNodeSetPtr, depth: i32) {
+fn xmlXPathDebugDumpNodeSet(output: *mut FILE, cur: xmlNodeSetPtr, depth: i32) {
     let mut i: i32 = 0;
     let mut shift: [i8; 100] = [0; 100];
     i = 0;
@@ -1875,7 +1846,7 @@ unsafe fn xmlXPathDebugDumpNodeSet(output: *mut FILE, cur: xmlNodeSetPtr, depth:
         shift[(2 * i) as usize] = shift[(2 * i + 1) as usize];
         i += 1
     }
-    shift[(2 * i + 1) as usize] = 0 as i8;
+    shift[(2 * i + 1 as i32) as usize] = 0 as i8;
     shift[(2 * i) as usize] = shift[(2 * i + 1) as usize];
     if cur.is_null() {
         unsafe {
@@ -1905,8 +1876,8 @@ unsafe fn xmlXPathDebugDumpNodeSet(output: *mut FILE, cur: xmlNodeSetPtr, depth:
                     b"%s\x00" as *const u8 as *const i8,
                     shift.as_mut_ptr(),
                 );
-                fprintf(output, b"%d\x00" as *const u8 as *const i8, i + 1);
-                xmlXPathDebugDumpNode(output, *(*cur).nodeTab.offset(i as isize), depth + 1);
+                fprintf(output, b"%d\x00" as *const u8 as *const i8, i + 1 as i32);
+                xmlXPathDebugDumpNode(output, *(*cur).nodeTab.offset(i as isize), depth + 1 as i32);
             };
             i += 1
         }
@@ -1914,7 +1885,7 @@ unsafe fn xmlXPathDebugDumpNodeSet(output: *mut FILE, cur: xmlNodeSetPtr, depth:
 }
 #[cfg(LIBXML_DEBUG_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathDebugDumpValueTree(output: *mut FILE, cur: xmlNodeSetPtr, depth: i32) {
+fn xmlXPathDebugDumpValueTree(output: *mut FILE, cur: xmlNodeSetPtr, depth: i32) {
     let mut i: i32 = 0;
     let mut shift: [i8; 100] = [0; 100];
     let safe_cur = unsafe { &mut *cur };
@@ -1959,7 +1930,7 @@ unsafe fn xmlXPathDebugDumpValueTree(output: *mut FILE, cur: xmlNodeSetPtr, dept
 #[cfg(LIBXML_XPTR_ENABLED)]
 #[cfg(LIBXML_XPATH_ENABLED)]
 #[cfg(LIBXML_DEBUG_ENABLED)]
-unsafe fn xmlXPathDebugDumpLocationSet(output: *mut FILE, cur: xmlLocationSetPtr, depth: i32) {
+fn xmlXPathDebugDumpLocationSet(output: *mut FILE, cur: xmlLocationSetPtr, depth: i32) {
     let mut i: i32;
     let mut shift: [i8; 100] = [0; 100];
     i = 0;
@@ -2008,11 +1979,7 @@ unsafe fn xmlXPathDebugDumpLocationSet(output: *mut FILE, cur: xmlLocationSetPtr
  * Dump the content of the object for debugging purposes
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathDebugDumpObject(
-    mut output: *mut FILE,
-    mut cur: xmlXPathObjectPtr,
-    mut depth: i32,
-) {
+pub fn xmlXPathDebugDumpObject(mut output: *mut FILE, mut cur: xmlXPathObjectPtr, mut depth: i32) {
     let mut i: i32;
     let mut shift: [i8; 100] = [0; 100];
     if output.is_null() {
@@ -2136,7 +2103,7 @@ pub unsafe fn xmlXPathDebugDumpObject(
                     b"Object is a point : index %d in node\x00" as *const u8 as *const i8,
                     (*cur).index,
                 );
-                xmlXPathDebugDumpNode(output, (*cur).user as xmlNodePtr, depth + 1);
+                xmlXPathDebugDumpNode(output, (*cur).user as xmlNodePtr, depth + 1 as i32);
                 fprintf(output, b"\n\x00" as *const u8 as *const i8);
             };
         }
@@ -2166,7 +2133,7 @@ pub unsafe fn xmlXPathDebugDumpObject(
                 }
                 unsafe {
                     fprintf(output, b"node\n\x00" as *const u8 as *const i8);
-                    xmlXPathDebugDumpNode(output, (*cur).user as xmlNodePtr, depth + 1);
+                    xmlXPathDebugDumpNode(output, (*cur).user as xmlNodePtr, depth + 1 as i32);
                 };
             } else {
                 unsafe {
@@ -2192,7 +2159,7 @@ pub unsafe fn xmlXPathDebugDumpObject(
                 }
                 unsafe {
                     fprintf(output, b"node\n\x00" as *const u8 as *const i8);
-                    xmlXPathDebugDumpNode(output, (*cur).user as xmlNodePtr, depth + 1);
+                    xmlXPathDebugDumpNode(output, (*cur).user as xmlNodePtr, depth + 1 as i32);
                     fprintf(
                         output,
                         b"%s\x00" as *const u8 as *const i8,
@@ -2211,7 +2178,7 @@ pub unsafe fn xmlXPathDebugDumpObject(
                 }
                 unsafe {
                     fprintf(output, b"node\n\x00" as *const u8 as *const i8);
-                    xmlXPathDebugDumpNode(output, (*cur).user2 as xmlNodePtr, depth + 1);
+                    xmlXPathDebugDumpNode(output, (*cur).user2 as xmlNodePtr, depth + 1 as i32);
                     fprintf(output, b"\n\x00" as *const u8 as *const i8);
                 }
             }
@@ -2248,7 +2215,7 @@ pub unsafe fn xmlXPathDebugDumpObject(
     };
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathDebugDumpStepOp(
+fn xmlXPathDebugDumpStepOp(
     output: *mut FILE,
     comp: xmlXPathCompExprPtr,
     op: xmlXPathStepOpPtr,
@@ -2311,7 +2278,7 @@ unsafe fn xmlXPathDebugDumpStepOp(
         XPATH_OP_PLUS => {
             if safe_op.value == 0 as i32 {
                 unsafe { fprintf(output, b"PLUS -\x00" as *const u8 as *const i8) };
-            } else if safe_op.value == 1 {
+            } else if safe_op.value == 1 as i32 {
                 unsafe { fprintf(output, b"PLUS +\x00" as *const u8 as *const i8) };
             } else if safe_op.value == 2 as i32 {
                 unsafe { fprintf(output, b"PLUS unary -\x00" as *const u8 as *const i8) };
@@ -2323,7 +2290,7 @@ unsafe fn xmlXPathDebugDumpStepOp(
         XPATH_OP_MULT => {
             if safe_op.value == 0 as i32 {
                 unsafe { fprintf(output, b"MULT *\x00" as *const u8 as *const i8) };
-            } else if safe_op.value == 1 {
+            } else if safe_op.value == 1 as i32 {
                 unsafe { fprintf(output, b"MULT div\x00" as *const u8 as *const i8) };
             } else {
                 unsafe { fprintf(output, b"MULT mod\x00" as *const u8 as *const i8) };
@@ -2579,7 +2546,7 @@ unsafe fn xmlXPathDebugDumpStepOp(
  * Dumps the tree of the compiled XPath expression.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathDebugDumpCompExpr(output: *mut FILE, comp: xmlXPathCompExprPtr, depth: i32) {
+pub fn xmlXPathDebugDumpCompExpr(output: *mut FILE, comp: xmlXPathCompExprPtr, depth: i32) {
     let safe_comp = unsafe { &mut *comp };
     let mut i: i32;
     let mut shift: [i8; 100] = [0; 100];
@@ -3086,7 +3053,7 @@ extern "C" fn xmlXPathDebugObjUsageDisplay(ctxt: xmlXPathContextPtr) {
  * Returns the xmlXPathCache just allocated.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathNewCache() -> xmlXPathContextCachePtr {
+fn xmlXPathNewCache() -> xmlXPathContextCachePtr {
     let mut ret: xmlXPathContextCachePtr = 0 as *mut xmlXPathContextCache;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -3094,12 +3061,10 @@ unsafe fn xmlXPathNewCache() -> xmlXPathContextCachePtr {
         ) as xmlXPathContextCachePtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating object cache\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating object cache\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathContextCachePtr;
     }
     let safe_ret = unsafe { &mut *ret };
@@ -3154,10 +3119,10 @@ unsafe fn xmlXPathCacheFreeObjectList(list: xmlPointerListPtr) {
             _ => {}
         };
     }
-    unsafe { xmlPointerListFree(list) };
+    xmlPointerListFree(list);
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathFreeCache(cache: xmlXPathContextCachePtr) {
+fn xmlXPathFreeCache(cache: xmlXPathContextCachePtr) {
     if cache.is_null() {
         return;
     }
@@ -3197,7 +3162,7 @@ unsafe fn xmlXPathFreeCache(cache: xmlXPathContextCachePtr) {
  * Returns 0 if the setting succeeded, and -1 on API or internal errors.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathContextSetCache(
+pub fn xmlXPathContextSetCache(
     ctxt: xmlXPathContextPtr,
     active: i32,
     mut value: i32,
@@ -3273,7 +3238,7 @@ unsafe fn xmlXPathCacheWrapNodeSet(
             }
         }
     }
-    return unsafe { xmlXPathWrapNodeSet(val) };
+    return xmlXPathWrapNodeSet(val);
 }
 /* *
  * xmlXPathCacheWrapString: * @ctxt: the XPath context
@@ -3285,10 +3250,7 @@ unsafe fn xmlXPathCacheWrapNodeSet(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheWrapString(
-    ctxt: xmlXPathContextPtr,
-    val: *mut xmlChar,
-) -> xmlXPathObjectPtr {
+fn xmlXPathCacheWrapString(ctxt: xmlXPathContextPtr, val: *mut xmlChar) -> xmlXPathObjectPtr {
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3340,7 +3302,7 @@ unsafe fn xmlXPathCacheWrapString(
             }
         }
     }
-    return unsafe { xmlXPathWrapString(val) };
+    return xmlXPathWrapString(val);
 }
 
 /* *
@@ -3354,7 +3316,7 @@ unsafe fn xmlXPathCacheWrapString(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheNewNodeSet(ctxt: xmlXPathContextPtr, val: xmlNodePtr) -> xmlXPathObjectPtr {
+fn xmlXPathCacheNewNodeSet(ctxt: xmlXPathContextPtr, val: xmlNodePtr) -> xmlXPathObjectPtr {
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3379,7 +3341,8 @@ unsafe fn xmlXPathCacheNewNodeSet(ctxt: xmlXPathContextPtr, val: xmlNodePtr) -> 
                         /* TODO: Check memory error. */
                         xmlXPathNodeSetAddUnique((*ret).nodesetval, val);
                     } else {
-                        let ref mut fresh30 = *(*(*ret).nodesetval).nodeTab.offset(0);
+                        let ref mut fresh30 =
+                            *(*(*ret).nodesetval).nodeTab.offset(0 as i32 as isize);
                         *fresh30 = val;
                         (*(*ret).nodesetval).nodeNr = 1
                     }
@@ -3427,7 +3390,7 @@ unsafe fn xmlXPathCacheNewNodeSet(ctxt: xmlXPathContextPtr, val: xmlNodePtr) -> 
             }
         }
     }
-    return unsafe { xmlXPathNewNodeSet(val) };
+    return xmlXPathNewNodeSet(val);
 }
 
 /* *
@@ -3440,7 +3403,7 @@ unsafe fn xmlXPathCacheNewNodeSet(ctxt: xmlXPathContextPtr, val: xmlNodePtr) -> 
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheNewCString(ctxt: xmlXPathContextPtr, val: *const i8) -> xmlXPathObjectPtr {
+fn xmlXPathCacheNewCString(ctxt: xmlXPathContextPtr, val: *const i8) -> xmlXPathObjectPtr {
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3488,7 +3451,7 @@ unsafe fn xmlXPathCacheNewCString(ctxt: xmlXPathContextPtr, val: *const i8) -> x
             }
         }
     }
-    return unsafe { xmlXPathNewCString(val) };
+    return xmlXPathNewCString(val);
 }
 /* *
  * xmlXPathCacheNewString: * @ctxt: the XPath context
@@ -3500,10 +3463,7 @@ unsafe fn xmlXPathCacheNewCString(ctxt: xmlXPathContextPtr, val: *const i8) -> x
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheNewString(
-    ctxt: xmlXPathContextPtr,
-    val: *const xmlChar,
-) -> xmlXPathObjectPtr {
+fn xmlXPathCacheNewString(ctxt: xmlXPathContextPtr, val: *const xmlChar) -> xmlXPathObjectPtr {
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3561,7 +3521,7 @@ unsafe fn xmlXPathCacheNewString(
             }
         }
     }
-    return unsafe { xmlXPathNewString(val) };
+    return xmlXPathNewString(val);
 }
 /* *
  * xmlXPathCacheNewBoolean: * @ctxt: the XPath context
@@ -3573,7 +3533,7 @@ unsafe fn xmlXPathCacheNewString(
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheNewBoolean(ctxt: xmlXPathContextPtr, val: i32) -> xmlXPathObjectPtr {
+fn xmlXPathCacheNewBoolean(ctxt: xmlXPathContextPtr, val: i32) -> xmlXPathObjectPtr {
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3621,7 +3581,7 @@ unsafe fn xmlXPathCacheNewBoolean(ctxt: xmlXPathContextPtr, val: i32) -> xmlXPat
             }
         }
     }
-    return unsafe { xmlXPathNewBoolean(val) };
+    return xmlXPathNewBoolean(val);
 }
 /* *
  * xmlXPathCacheNewFloat: * @ctxt: the XPath context
@@ -3633,10 +3593,7 @@ unsafe fn xmlXPathCacheNewBoolean(ctxt: xmlXPathContextPtr, val: i32) -> xmlXPat
  * Returns the created or reused object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheNewFloat(
-    ctxt: xmlXPathContextPtr,
-    val: libc::c_double,
-) -> xmlXPathObjectPtr {
+fn xmlXPathCacheNewFloat(ctxt: xmlXPathContextPtr, val: libc::c_double) -> xmlXPathObjectPtr {
     let safe_ctxt = unsafe { &mut *ctxt };
     if !ctxt.is_null() && !safe_ctxt.cache.is_null() {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
@@ -3684,7 +3641,7 @@ unsafe fn xmlXPathCacheNewFloat(
             }
         }
     }
-    return unsafe { xmlXPathNewFloat(val) };
+    return xmlXPathNewFloat(val);
 }
 /* *
  * xmlXPathCacheConvertString: * @ctxt: the XPath context
@@ -3695,13 +3652,13 @@ unsafe fn xmlXPathCacheNewFloat(
  *
  * Returns a created or reused object, the old one is freed (cached) *         (or the operation is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheConvertString(
+fn xmlXPathCacheConvertString(
     ctxt: xmlXPathContextPtr,
     val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
     let mut res: *mut xmlChar = 0 as *mut xmlChar;
     if val.is_null() {
-        return unsafe { xmlXPathCacheNewCString(ctxt, b"\x00" as *const u8 as *const i8) };
+        return xmlXPathCacheNewCString(ctxt, b"\x00" as *const u8 as *const i8);
     }
     let safe_val = unsafe { &mut *val };
     match safe_val.type_0 as u32 {
@@ -3737,11 +3694,11 @@ unsafe fn xmlXPathCacheConvertString(
             };
         }
     }
-    unsafe { xmlXPathReleaseObject(ctxt, val) };
+    xmlXPathReleaseObject(ctxt, val);
     if res.is_null() {
-        return unsafe { xmlXPathCacheNewCString(ctxt, b"\x00" as *const u8 as *const i8) };
+        return xmlXPathCacheNewCString(ctxt, b"\x00" as *const u8 as *const i8);
     }
-    return unsafe { xmlXPathCacheWrapString(ctxt, res) };
+    return xmlXPathCacheWrapString(ctxt, res);
 }
 /* *
  * xmlXPathCacheObjectCopy: * @ctxt: the XPath context
@@ -3753,10 +3710,7 @@ unsafe fn xmlXPathCacheConvertString(
  * Returns a created or reused created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheObjectCopy(
-    ctxt: xmlXPathContextPtr,
-    val: xmlXPathObjectPtr,
-) -> xmlXPathObjectPtr {
+fn xmlXPathCacheObjectCopy(ctxt: xmlXPathContextPtr, val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     if val.is_null() {
         return 0 as xmlXPathObjectPtr;
     }
@@ -3778,7 +3732,7 @@ unsafe fn xmlXPathCacheObjectCopy(
             _ => {}
         }
     }
-    return unsafe { xmlXPathObjectCopy(val) };
+    return xmlXPathObjectCopy(val);
 }
 /* *
  * xmlXPathCacheConvertBoolean: * @ctxt: the XPath context
@@ -3790,20 +3744,20 @@ unsafe fn xmlXPathCacheObjectCopy(
  * Returns a created or reused object, the old one is freed (or the operation
  *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheConvertBoolean(
+fn xmlXPathCacheConvertBoolean(
     ctxt: xmlXPathContextPtr,
     val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
-        return unsafe { xmlXPathCacheNewBoolean(ctxt, 0) };
+        return xmlXPathCacheNewBoolean(ctxt, 0);
     }
     let safe_val = unsafe { &mut *val };
     if safe_val.type_0 as u32 == XPATH_BOOLEAN as u32 {
         return val;
     }
-    ret = unsafe { xmlXPathCacheNewBoolean(ctxt, xmlXPathCastToBoolean(val)) };
-    unsafe { xmlXPathReleaseObject(ctxt, val) };
+    ret = xmlXPathCacheNewBoolean(ctxt, xmlXPathCastToBoolean(val));
+    xmlXPathReleaseObject(ctxt, val);
     return ret;
 }
 /* *
@@ -3816,20 +3770,20 @@ unsafe fn xmlXPathCacheConvertBoolean(
  * Returns a created or reused object, the old one is freed (or the operation
  *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathCacheConvertNumber(
+fn xmlXPathCacheConvertNumber(
     ctxt: xmlXPathContextPtr,
     val: xmlXPathObjectPtr,
 ) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
-        return unsafe { xmlXPathCacheNewFloat(ctxt, 0.0f64) };
+        return xmlXPathCacheNewFloat(ctxt, 0.0f64);
     }
     let safe_val = unsafe { &mut *val };
     if safe_val.type_0 as u32 == XPATH_NUMBER as u32 {
         return val;
     }
-    ret = unsafe { xmlXPathCacheNewFloat(ctxt, xmlXPathCastToNumber(val)) };
-    unsafe { xmlXPathReleaseObject(ctxt, val) };
+    ret = xmlXPathCacheNewFloat(ctxt, xmlXPathCastToNumber(val));
+    xmlXPathReleaseObject(ctxt, val);
     return ret;
 }
 /* ***********************************************************************
@@ -3845,7 +3799,7 @@ unsafe fn xmlXPathCacheConvertNumber(
  * Returns the previous frame value to be restored once done
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathSetFrame(ctxt: xmlXPathParserContextPtr) -> i32 {
+fn xmlXPathSetFrame(ctxt: xmlXPathParserContextPtr) -> i32 {
     let mut ret: i32 = 0;
     if ctxt.is_null() {
         return 0;
@@ -3862,20 +3816,18 @@ unsafe fn xmlXPathSetFrame(ctxt: xmlXPathParserContextPtr) -> i32 {
  * Remove the callee evaluation frame
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathPopFrame(ctxt: xmlXPathParserContextPtr, frame: i32) {
+fn xmlXPathPopFrame(ctxt: xmlXPathParserContextPtr, frame: i32) {
     if ctxt.is_null() {
         return;
     }
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.valueNr < safe_ctxt.valueFrame {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                2840 as i32,
-                XPATH_STACK_ERROR as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            2840 as i32,
+            XPATH_STACK_ERROR as i32,
+        );
     }
     safe_ctxt.valueFrame = frame;
 }
@@ -3889,21 +3841,19 @@ unsafe fn xmlXPathPopFrame(ctxt: xmlXPathParserContextPtr, frame: i32) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn valuePop(ctxt: xmlXPathParserContextPtr) -> xmlXPathObjectPtr {
+pub fn valuePop(ctxt: xmlXPathParserContextPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.valueNr <= 0 {
         return 0 as xmlXPathObjectPtr;
     }
     if safe_ctxt.valueNr <= safe_ctxt.valueFrame {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                2862 as i32,
-                XPATH_STACK_ERROR as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            2862 as i32,
+            XPATH_STACK_ERROR as i32,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     safe_ctxt.valueNr -= 1;
@@ -3929,7 +3879,7 @@ pub unsafe fn valuePop(ctxt: xmlXPathParserContextPtr) -> xmlXPathObjectPtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn valuePush(ctxt: xmlXPathParserContextPtr, value: xmlXPathObjectPtr) -> i32 {
+pub fn valuePush(ctxt: xmlXPathParserContextPtr, value: xmlXPathObjectPtr) -> i32 {
     if ctxt.is_null() {
         return -1;
     }
@@ -3944,12 +3894,10 @@ pub unsafe fn valuePush(ctxt: xmlXPathParserContextPtr, value: xmlXPathObjectPtr
     if safe_ctxt.valueNr >= safe_ctxt.valueMax {
         let mut tmp: *mut xmlXPathObjectPtr = 0 as *mut xmlXPathObjectPtr;
         if safe_ctxt.valueMax >= 1000000 as i32 {
-            unsafe {
-                xmlXPathPErrMemory(
-                    ctxt,
-                    b"XPath stack depth limit reached\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathPErrMemory(
+                ctxt,
+                b"XPath stack depth limit reached\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         tmp = unsafe {
@@ -3960,7 +3908,7 @@ pub unsafe fn valuePush(ctxt: xmlXPathParserContextPtr, value: xmlXPathObjectPtr
             ) as *mut xmlXPathObjectPtr
         };
         if tmp.is_null() {
-            unsafe { xmlXPathPErrMemory(ctxt, b"pushing value\n\x00" as *const u8 as *const i8) };
+            xmlXPathPErrMemory(ctxt, b"pushing value\n\x00" as *const u8 as *const i8);
             return -1;
         }
         safe_ctxt.valueMax *= 2;
@@ -4048,19 +3996,17 @@ pub unsafe fn valuePush(ctxt: xmlXPathParserContextPtr, value: xmlXPathObjectPtr
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathPopBoolean(ctxt: xmlXPathParserContextPtr) -> i32 {
+pub fn xmlXPathPopBoolean(ctxt: xmlXPathParserContextPtr) -> i32 {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: i32;
     obj = valuePop(ctxt);
     if obj.is_null() {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                2935 as i32,
-                XPATH_INVALID_OPERAND as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            2935 as i32,
+            XPATH_INVALID_OPERAND as i32,
+        );
         if !ctxt.is_null() {
             let safe_ctxt = unsafe { &mut *ctxt };
             safe_ctxt.error = XPATH_INVALID_OPERAND as i32
@@ -4069,7 +4015,7 @@ pub unsafe fn xmlXPathPopBoolean(ctxt: xmlXPathParserContextPtr) -> i32 {
     }
     let safe_obj = unsafe { &mut *obj };
     if safe_obj.type_0 as u32 != XPATH_BOOLEAN as u32 {
-        ret = unsafe { xmlXPathCastToBoolean(obj) }
+        ret = xmlXPathCastToBoolean(obj)
     } else {
         ret = safe_obj.boolval
     }
@@ -4086,19 +4032,17 @@ pub unsafe fn xmlXPathPopBoolean(ctxt: xmlXPathParserContextPtr) -> i32 {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathPopNumber(ctxt: xmlXPathParserContextPtr) -> libc::c_double {
+pub fn xmlXPathPopNumber(ctxt: xmlXPathParserContextPtr) -> libc::c_double {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: libc::c_double = 0.;
-    obj = unsafe { valuePop(ctxt) };
+    obj = valuePop(ctxt);
     if obj.is_null() {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                2962 as i32,
-                XPATH_INVALID_OPERAND as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            2962 as i32,
+            XPATH_INVALID_OPERAND as i32,
+        );
         if !ctxt.is_null() {
             let safe_ctxt = unsafe { &mut *ctxt };
             safe_ctxt.error = XPATH_INVALID_OPERAND as i32
@@ -4124,19 +4068,17 @@ pub unsafe fn xmlXPathPopNumber(ctxt: xmlXPathParserContextPtr) -> libc::c_doubl
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathPopString(ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
+pub fn xmlXPathPopString(ctxt: xmlXPathParserContextPtr) -> *mut xmlChar {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject; /* this does required strdup */
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     obj = valuePop(ctxt);
     if obj.is_null() {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                2989 as i32,
-                XPATH_INVALID_OPERAND as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            2989 as i32,
+            XPATH_INVALID_OPERAND as i32,
+        );
         if !ctxt.is_null() {
             let safe_ctxt = unsafe { &mut *ctxt };
             safe_ctxt.error = XPATH_INVALID_OPERAND as i32
@@ -4144,7 +4086,7 @@ pub unsafe fn xmlXPathPopString(ctxt: xmlXPathParserContextPtr) -> *mut xmlChar 
         return 0 as *mut xmlChar;
     }
     let safe_obj = unsafe { &mut *obj };
-    ret = unsafe { xmlXPathCastToString(obj) };
+    ret = xmlXPathCastToString(obj);
     /* TODO: needs refactoring somewhere else */
     if safe_obj.stringval == ret {
         safe_obj.stringval = 0 as *mut xmlChar
@@ -4162,7 +4104,7 @@ pub unsafe fn xmlXPathPopString(ctxt: xmlXPathParserContextPtr) -> *mut xmlChar 
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeSetPtr {
+pub fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeSetPtr {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     if ctxt.is_null() {
@@ -4170,14 +4112,12 @@ pub unsafe fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeS
     }
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.value.is_null() {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                3016 as i32,
-                XPATH_INVALID_OPERAND as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            3016 as i32,
+            XPATH_INVALID_OPERAND as i32,
+        );
         if !ctxt.is_null() {
             safe_ctxt.error = XPATH_INVALID_OPERAND as i32
         }
@@ -4188,20 +4128,18 @@ pub unsafe fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeS
             && ((*(*ctxt).value).type_0 as u32 == XPATH_NODESET as u32
                 || (*(*ctxt).value).type_0 as u32 == XPATH_XSLT_TREE as u32))
     } {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                3020 as i32,
-                XPATH_INVALID_TYPE as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            3020 as i32,
+            XPATH_INVALID_TYPE as i32,
+        );
         if !ctxt.is_null() {
             safe_ctxt.error = XPATH_INVALID_TYPE as i32
         }
         return 0 as xmlNodeSetPtr;
     }
-    obj = unsafe { valuePop(ctxt) };
+    obj = valuePop(ctxt);
     let safe_obj = unsafe { &mut *obj };
     ret = safe_obj.nodesetval;
     safe_obj.nodesetval = 0 as xmlNodeSetPtr;
@@ -4218,39 +4156,35 @@ pub unsafe fn xmlXPathPopNodeSet(mut ctxt: xmlXPathParserContextPtr) -> xmlNodeS
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathPopExternal(ctxt: xmlXPathParserContextPtr) -> *mut () {
+pub fn xmlXPathPopExternal(ctxt: xmlXPathParserContextPtr) -> *mut () {
     let mut obj: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     let mut ret: *mut () = 0 as *mut ();
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.value.is_null() {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                3050 as i32,
-                XPATH_INVALID_OPERAND as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            3050 as i32,
+            XPATH_INVALID_OPERAND as i32,
+        );
         if !ctxt.is_null() {
             safe_ctxt.error = XPATH_INVALID_OPERAND as i32
         }
         return 0 as *mut ();
     }
     if unsafe { (*(*ctxt).value).type_0 as u32 != XPATH_USERS as u32 } {
-        unsafe {
-            xmlXPatherror(
-                ctxt,
-                b"xpath.c\x00" as *const u8 as *const i8,
-                3054 as i32,
-                XPATH_INVALID_TYPE as i32,
-            )
-        };
+        xmlXPatherror(
+            ctxt,
+            b"xpath.c\x00" as *const u8 as *const i8,
+            3054 as i32,
+            XPATH_INVALID_TYPE as i32,
+        );
         if !ctxt.is_null() {
             safe_ctxt.error = XPATH_INVALID_TYPE as i32
         }
         return 0 as *mut ();
     }
-    obj = unsafe { valuePop(ctxt) };
+    obj = valuePop(ctxt);
     let safe_obj = unsafe { &mut *obj };
     ret = safe_obj.user;
     safe_obj.user = 0 as *mut ();
@@ -4265,8 +4199,8 @@ pub unsafe fn xmlXPathPopExternal(ctxt: xmlXPathParserContextPtr) -> *mut () {
  * Convert the number into a string representation.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersize: i32) {
-    match unsafe { xmlXPathIsInf(number) } {
+fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersize: i32) {
+    match xmlXPathIsInf(number) {
         1 => {
             if buffersize > ::std::mem::size_of::<[i8; 9]>() as u64 as i32 {
                 unsafe {
@@ -4290,7 +4224,7 @@ unsafe fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersi
             }
         }
         _ => {
-            if unsafe { xmlXPathIsNaN(number) } != 0 {
+            if xmlXPathIsNaN(number) != 0 {
                 if buffersize > ::std::mem::size_of::<[i8; 4]>() as u64 as i32 {
                     unsafe {
                         snprintf(
@@ -4309,7 +4243,7 @@ unsafe fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersi
                         b"0\x00" as *const u8 as *const i8,
                     )
                 };
-            } else if number > (-(2147483647 as i32) - 1) as libc::c_double
+            } else if number > (-(2147483647 as i32) - 1 as i32) as libc::c_double
                 && number < 2147483647 as i32 as libc::c_double
                 && number == number as i32 as libc::c_double
             {
@@ -4317,7 +4251,7 @@ unsafe fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersi
                 let mut ptr: *mut i8 = 0 as *mut i8;
                 let mut cur: *mut i8 = 0 as *mut i8;
                 let mut value: i32 = number as i32;
-                ptr = unsafe { &mut *buffer.offset(0) as *mut i8 };
+                ptr = unsafe { &mut *buffer.offset(0 as i32 as isize) as *mut i8 };
                 if value == 0 as i32 {
                     let fresh34 = ptr;
                     unsafe {
@@ -4333,7 +4267,7 @@ unsafe fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersi
                             value,
                         )
                     };
-                    cur = unsafe { &mut *work.as_mut_ptr().offset(0) as *mut i8 };
+                    cur = unsafe { &mut *work.as_mut_ptr().offset(0 as i32 as isize) as *mut i8 };
                     while unsafe {
                         *cur as i32 != 0 && (ptr.offset_from(buffer) as i64) < buffersize as i64
                     } {
@@ -4405,7 +4339,7 @@ unsafe fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersi
                             fraction_place = 15 - integer_place
                         }
                     } else {
-                        fraction_place = 1
+                        fraction_place = 1 as i32
                     }
                     size = unsafe {
                         snprintf(
@@ -4461,7 +4395,7 @@ unsafe fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersi
                 /* Finally copy result back to caller */
                 size = unsafe { strlen(work_0.as_mut_ptr()).wrapping_add(1 as u64) as i32 };
                 if size > buffersize {
-                    work_0[(buffersize - 1) as usize] = 0 as i8;
+                    work_0[(buffersize - 1 as i32) as usize] = 0 as i8;
                     size = buffersize
                 }
                 unsafe {
@@ -4495,7 +4429,7 @@ unsafe fn xmlXPathFormatNumber(number: libc::c_double, buffer: *mut i8, buffersi
  *    of error.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathOrderDocElems(doc: xmlDocPtr) -> i64 {
+pub fn xmlXPathOrderDocElems(doc: xmlDocPtr) -> i64 {
     let mut count: ptrdiff_t = 0 as i32 as ptrdiff_t;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     if doc.is_null() {
@@ -4546,7 +4480,7 @@ pub unsafe fn xmlXPathOrderDocElems(doc: xmlDocPtr) -> i64 {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
+pub fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
     let mut depth1: i32;
     let mut depth2: i32;
     let mut attr1: i32 = 0;
@@ -4588,7 +4522,7 @@ pub unsafe fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> 
 
                 while !cur.is_null() {
                     if cur == attrNode1 {
-                        return 1;
+                        return 1 as i32;
                     }
                     unsafe { cur = (*cur).prev }
                 }
@@ -4730,7 +4664,7 @@ pub unsafe fn xmlXPathCmpNodes(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> 
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetSort(set: xmlNodeSetPtr) {
+pub fn xmlXPathNodeSetSort(set: xmlNodeSetPtr) {
     // #ifndef WITH_TIM_SORT
     let safe_set = unsafe { &mut *set };
     match () {
@@ -4786,7 +4720,7 @@ pub unsafe fn xmlXPathNodeSetSort(set: xmlNodeSetPtr) {
                                 };
                             }
                         }
-                        if !(XP_OPTIMIZED_NON_ELEM_COMPARISON_RES == -(1)) {
+                        if !(XP_OPTIMIZED_NON_ELEM_COMPARISON_RES == -(1 as i32)) {
                             break;
                         }
                         unsafe {
@@ -4822,7 +4756,7 @@ pub unsafe fn xmlXPathNodeSetSort(set: xmlNodeSetPtr) {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathNodeSetDupNs(node: xmlNodePtr, ns: xmlNsPtr) -> xmlNodePtr {
+fn xmlXPathNodeSetDupNs(node: xmlNodePtr, ns: xmlNsPtr) -> xmlNodePtr {
     let safe_node = unsafe { &mut *node };
     let safe_ns = unsafe { &mut *ns };
     let mut cur: xmlNsPtr = 0 as *mut xmlNs;
@@ -4841,12 +4775,10 @@ unsafe fn xmlXPathNodeSetDupNs(node: xmlNodePtr, ns: xmlNsPtr) -> xmlNodePtr {
             as xmlNsPtr
     };
     if cur.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"duplicating namespace\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"duplicating namespace\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlNodePtr;
     }
     unsafe {
@@ -4880,7 +4812,7 @@ unsafe fn xmlXPathNodeSetDupNs(node: xmlNodePtr, ns: xmlNsPtr) -> xmlNodePtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetFreeNs(ns: xmlNsPtr) {
+pub fn xmlXPathNodeSetFreeNs(ns: xmlNsPtr) {
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null() || safe_ns.type_0 as u32 != XML_NAMESPACE_DECL as u32 {
         return;
@@ -4909,19 +4841,17 @@ pub unsafe fn xmlXPathNodeSetFreeNs(ns: xmlNsPtr) {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetCreate(val: xmlNodePtr) -> xmlNodeSetPtr {
+pub fn xmlXPathNodeSetCreate(val: xmlNodePtr) -> xmlNodeSetPtr {
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlNodeSet>() as u64)
             as xmlNodeSetPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating nodeset\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating nodeset\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlNodeSetPtr;
     }
     unsafe {
@@ -4989,7 +4919,7 @@ pub unsafe fn xmlXPathNodeSetCreate(val: xmlNodePtr) -> xmlNodeSetPtr {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetContains(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
+pub fn xmlXPathNodeSetContains(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
     let mut i: i32;
     if cur.is_null() || val.is_null() {
         return 0;
@@ -5042,7 +4972,7 @@ pub unsafe fn xmlXPathNodeSetContains(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i3
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetAddNs(cur: xmlNodeSetPtr, node: xmlNodePtr, ns: xmlNsPtr) -> i32 {
+pub fn xmlXPathNodeSetAddNs(cur: xmlNodeSetPtr, node: xmlNodePtr, ns: xmlNsPtr) -> i32 {
     let mut i: i32 = 0;
     let safe_ns = unsafe { &mut *ns };
     let safe_node = unsafe { &mut *node };
@@ -5084,12 +5014,10 @@ pub unsafe fn xmlXPathNodeSetAddNs(cur: xmlNodeSetPtr, node: xmlNodePtr, ns: xml
             ) as *mut xmlNodePtr
         };
         if unsafe { (*cur).nodeTab.is_null() } {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         unsafe {
@@ -5103,12 +5031,10 @@ pub unsafe fn xmlXPathNodeSetAddNs(cur: xmlNodeSetPtr, node: xmlNodePtr, ns: xml
     } else if safe_cur.nodeNr == safe_cur.nodeMax {
         let mut temp: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
         if safe_cur.nodeMax >= 10000000 as i32 {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset hit limit\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset hit limit\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         temp = unsafe {
@@ -5119,12 +5045,10 @@ pub unsafe fn xmlXPathNodeSetAddNs(cur: xmlNodeSetPtr, node: xmlNodePtr, ns: xml
             ) as *mut xmlNodePtr
         };
         if temp.is_null() {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         unsafe {
@@ -5150,7 +5074,7 @@ pub unsafe fn xmlXPathNodeSetAddNs(cur: xmlNodeSetPtr, node: xmlNodePtr, ns: xml
  * Returns 0 in case of success, and -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetAdd(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
+pub fn xmlXPathNodeSetAdd(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
     let mut i: i32;
     if cur.is_null() || val.is_null() {
         return -1;
@@ -5178,12 +5102,10 @@ pub unsafe fn xmlXPathNodeSetAdd(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
             ) as *mut xmlNodePtr
         };
         if safe_cur.nodeTab.is_null() {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         unsafe {
@@ -5197,12 +5119,10 @@ pub unsafe fn xmlXPathNodeSetAdd(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
     } else if safe_cur.nodeNr == safe_cur.nodeMax {
         let mut temp: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
         if safe_cur.nodeMax >= 10000000 as i32 {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset hit limit\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset hit limit\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         temp = unsafe {
@@ -5213,12 +5133,10 @@ pub unsafe fn xmlXPathNodeSetAdd(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
             ) as *mut xmlNodePtr
         };
         if temp.is_null() {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         unsafe {
@@ -5255,7 +5173,7 @@ pub unsafe fn xmlXPathNodeSetAdd(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
  * Returns 0 in case of success and -1 in case of failure
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe extern "C" fn xmlXPathNodeSetAddUnique(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
+pub extern "C" fn xmlXPathNodeSetAddUnique(cur: xmlNodeSetPtr, val: xmlNodePtr) -> i32 {
     if cur.is_null() || val.is_null() {
         return -1;
     }
@@ -5272,12 +5190,10 @@ pub unsafe extern "C" fn xmlXPathNodeSetAddUnique(cur: xmlNodeSetPtr, val: xmlNo
             ) as *mut xmlNodePtr
         };
         if unsafe { (*cur).nodeTab.is_null() } {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         unsafe {
@@ -5291,12 +5207,10 @@ pub unsafe extern "C" fn xmlXPathNodeSetAddUnique(cur: xmlNodeSetPtr, val: xmlNo
     } else if safe_cur.nodeNr == safe_cur.nodeMax {
         let mut temp: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
         if safe_cur.nodeMax >= 10000000 as i32 {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset hit limit\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset hit limit\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         temp = unsafe {
@@ -5307,12 +5221,10 @@ pub unsafe extern "C" fn xmlXPathNodeSetAddUnique(cur: xmlNodeSetPtr, val: xmlNo
             ) as *mut xmlNodePtr
         };
         if temp.is_null() {
-            unsafe {
-                xmlXPathErrMemory(
-                    0 as xmlXPathContextPtr,
-                    b"growing nodeset\n\x00" as *const u8 as *const i8,
-                )
-            };
+            xmlXPathErrMemory(
+                0 as xmlXPathContextPtr,
+                b"growing nodeset\n\x00" as *const u8 as *const i8,
+            );
             return -1;
         }
         unsafe {
@@ -5349,7 +5261,7 @@ pub unsafe extern "C" fn xmlXPathNodeSetAddUnique(cur: xmlNodeSetPtr, val: xmlNo
  * Returns @val1 once extended or NULL in case of error.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, val2: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, val2: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let mut i: i32;
     let mut j: i32;
     let mut initNr: i32;
@@ -5360,7 +5272,7 @@ pub unsafe fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, val2: xmlNodeSetPtr)
         return val1;
     }
     if val1.is_null() {
-        val1 = unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
+        val1 = xmlXPathNodeSetCreate(0 as xmlNodePtr);
         if val1.is_null() {
             return 0 as xmlNodeSetPtr;
         }
@@ -5411,12 +5323,10 @@ pub unsafe fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, val2: xmlNodeSetPtr)
                     ) as *mut xmlNodePtr
                 };
                 if unsafe { (*val1).nodeTab.is_null() } {
-                    unsafe {
-                        xmlXPathErrMemory(
-                            0 as xmlXPathContextPtr,
-                            b"merging nodeset\n\x00" as *const u8 as *const i8,
-                        )
-                    };
+                    xmlXPathErrMemory(
+                        0 as xmlXPathContextPtr,
+                        b"merging nodeset\n\x00" as *const u8 as *const i8,
+                    );
                     return 0 as xmlNodeSetPtr;
                 }
                 unsafe {
@@ -5430,12 +5340,10 @@ pub unsafe fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, val2: xmlNodeSetPtr)
             } else if safe_val1.nodeNr == safe_val1.nodeMax {
                 let mut temp: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
                 if safe_val1.nodeMax >= 10000000 as i32 {
-                    unsafe {
-                        xmlXPathErrMemory(
-                            0 as xmlXPathContextPtr,
-                            b"merging nodeset hit limit\n\x00" as *const u8 as *const i8,
-                        )
-                    };
+                    xmlXPathErrMemory(
+                        0 as xmlXPathContextPtr,
+                        b"merging nodeset hit limit\n\x00" as *const u8 as *const i8,
+                    );
                     return 0 as xmlNodeSetPtr;
                 }
                 temp =
@@ -5447,12 +5355,10 @@ pub unsafe fn xmlXPathNodeSetMerge(mut val1: xmlNodeSetPtr, val2: xmlNodeSetPtr)
                         ) as *mut xmlNodePtr
                     };
                 if temp.is_null() {
-                    unsafe {
-                        xmlXPathErrMemory(
-                            0 as xmlXPathContextPtr,
-                            b"merging nodeset\n\x00" as *const u8 as *const i8,
-                        )
-                    };
+                    xmlXPathErrMemory(
+                        0 as xmlXPathContextPtr,
+                        b"merging nodeset\n\x00" as *const u8 as *const i8,
+                    );
                     return 0 as xmlNodeSetPtr;
                 }
                 unsafe {
@@ -5526,8 +5432,8 @@ extern "C" fn xmlXPathNodeSetMergeAndClear(
             }
             let safe_n1 = unsafe { &mut *n1 };
             let safe_n2 = unsafe { &mut *n2 };
-            if safe_n1.type_0 as u32 == XML_NAMESPACE_DECL as u32
-                && safe_n2.type_0 as u32 == XML_NAMESPACE_DECL as u32
+            if safe_n1.type_0 as u32 == XML_NAMESPACE_DECL as i32 as u32
+                && safe_n2.type_0 as u32 == XML_NAMESPACE_DECL as i32 as u32
             {
                 if unsafe {
                     (*(n1 as xmlNsPtr)).next == (*(n2 as xmlNsPtr)).next
@@ -5560,12 +5466,10 @@ extern "C" fn xmlXPathNodeSetMergeAndClear(
                         ) as *mut xmlNodePtr
                     };
                     if unsafe { (*set1).nodeTab.is_null() } {
-                        unsafe {
-                            xmlXPathErrMemory(
-                                0 as xmlXPathContextPtr,
-                                b"merging nodeset\n\x00" as *const u8 as *const i8,
-                            )
-                        };
+                        xmlXPathErrMemory(
+                            0 as xmlXPathContextPtr,
+                            b"merging nodeset\n\x00" as *const u8 as *const i8,
+                        );
                         return 0 as xmlNodeSetPtr;
                     }
                     unsafe {
@@ -5580,12 +5484,10 @@ extern "C" fn xmlXPathNodeSetMergeAndClear(
                 } else if safe_set1.nodeNr >= safe_set1.nodeMax {
                     let mut temp: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
                     if safe_set1.nodeMax >= 10000000 as i32 {
-                        unsafe {
-                            xmlXPathErrMemory(
-                                0 as xmlXPathContextPtr,
-                                b"merging nodeset hit limit\n\x00" as *const u8 as *const i8,
-                            )
-                        };
+                        xmlXPathErrMemory(
+                            0 as xmlXPathContextPtr,
+                            b"merging nodeset hit limit\n\x00" as *const u8 as *const i8,
+                        );
                         return 0 as xmlNodeSetPtr;
                     }
                     temp = unsafe {
@@ -5596,12 +5498,10 @@ extern "C" fn xmlXPathNodeSetMergeAndClear(
                         ) as *mut xmlNodePtr
                     };
                     if temp.is_null() {
-                        unsafe {
-                            xmlXPathErrMemory(
-                                0 as xmlXPathContextPtr,
-                                b"merging nodeset\n\x00" as *const u8 as *const i8,
-                            )
-                        };
+                        xmlXPathErrMemory(
+                            0 as xmlXPathContextPtr,
+                            b"merging nodeset\n\x00" as *const u8 as *const i8,
+                        );
                         return 0 as xmlNodeSetPtr;
                     }
                     unsafe {
@@ -5651,12 +5551,10 @@ extern "C" fn xmlXPathNodeSetMergeAndClearNoDupls(
                 ) as *mut xmlNodePtr
             };
             if unsafe { (*set1).nodeTab.is_null() } {
-                unsafe {
-                    xmlXPathErrMemory(
-                        0 as xmlXPathContextPtr,
-                        b"merging nodeset\n\x00" as *const u8 as *const i8,
-                    )
-                };
+                xmlXPathErrMemory(
+                    0 as xmlXPathContextPtr,
+                    b"merging nodeset\n\x00" as *const u8 as *const i8,
+                );
                 return 0 as xmlNodeSetPtr;
             }
             unsafe {
@@ -5670,12 +5568,10 @@ extern "C" fn xmlXPathNodeSetMergeAndClearNoDupls(
         } else if safe_set1.nodeNr >= safe_set1.nodeMax {
             let mut temp: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
             if safe_set1.nodeMax >= 10000000 as i32 {
-                unsafe {
-                    xmlXPathErrMemory(
-                        0 as xmlXPathContextPtr,
-                        b"merging nodeset hit limit\n\x00" as *const u8 as *const i8,
-                    )
-                };
+                xmlXPathErrMemory(
+                    0 as xmlXPathContextPtr,
+                    b"merging nodeset hit limit\n\x00" as *const u8 as *const i8,
+                );
                 return 0 as xmlNodeSetPtr;
             }
             unsafe {
@@ -5686,12 +5582,10 @@ extern "C" fn xmlXPathNodeSetMergeAndClearNoDupls(
                 ) as *mut xmlNodePtr
             };
             if temp.is_null() {
-                unsafe {
-                    xmlXPathErrMemory(
-                        0 as xmlXPathContextPtr,
-                        b"merging nodeset\n\x00" as *const u8 as *const i8,
-                    )
-                };
+                xmlXPathErrMemory(
+                    0 as xmlXPathContextPtr,
+                    b"merging nodeset\n\x00" as *const u8 as *const i8,
+                );
                 return 0 as xmlNodeSetPtr;
             }
             unsafe {
@@ -5717,7 +5611,7 @@ extern "C" fn xmlXPathNodeSetMergeAndClearNoDupls(
  * Removes an xmlNodePtr from an existing NodeSet
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetDel(cur: xmlNodeSetPtr, val: xmlNodePtr) {
+pub fn xmlXPathNodeSetDel(cur: xmlNodeSetPtr, val: xmlNodePtr) {
     let mut i: i32;
     if cur.is_null() {
         return;
@@ -5782,7 +5676,7 @@ pub unsafe fn xmlXPathNodeSetDel(cur: xmlNodeSetPtr, val: xmlNodePtr) {
  * Removes an entry from an existing NodeSet list.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeSetRemove(cur: xmlNodeSetPtr, mut val: i32) {
+pub fn xmlXPathNodeSetRemove(cur: xmlNodeSetPtr, mut val: i32) {
     if cur.is_null() {
         return;
     }
@@ -5847,7 +5741,7 @@ pub unsafe fn xmlXPathFreeNodeSet(obj: xmlNodeSetPtr) {
  * itself. Sets the length of the list to @pos.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathNodeSetClearFromPos(set: xmlNodeSetPtr, pos: i32, hasNsNodes: i32) {
+fn xmlXPathNodeSetClearFromPos(set: xmlNodeSetPtr, pos: i32, hasNsNodes: i32) {
     let safe_set = unsafe { &mut *set };
     if set.is_null() || pos >= safe_set.nodeNr {
         return;
@@ -5860,7 +5754,7 @@ unsafe fn xmlXPathNodeSetClearFromPos(set: xmlNodeSetPtr, pos: i32, hasNsNodes: 
                 node = unsafe { *(*set).nodeTab.offset(i as isize) };
                 if unsafe { !node.is_null() && (*node).type_0 as u32 == XML_NAMESPACE_DECL as u32 }
                 {
-                    unsafe { xmlXPathNodeSetFreeNs(node as xmlNsPtr) };
+                    xmlXPathNodeSetFreeNs(node as xmlNsPtr);
                 }
                 i += 1
             }
@@ -5876,8 +5770,8 @@ unsafe fn xmlXPathNodeSetClearFromPos(set: xmlNodeSetPtr, pos: i32, hasNsNodes: 
  * list to 0.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathNodeSetClear(set: xmlNodeSetPtr, hasNsNodes: i32) {
-    unsafe { xmlXPathNodeSetClearFromPos(set, 0, hasNsNodes) };
+fn xmlXPathNodeSetClear(set: xmlNodeSetPtr, hasNsNodes: i32) {
+    xmlXPathNodeSetClearFromPos(set, 0, hasNsNodes);
 }
 /* *
  * xmlXPathNodeSetKeepLast: * @set: the node set to be cleared
@@ -5898,12 +5792,12 @@ unsafe fn xmlXPathNodeSetKeepLast(set: xmlNodeSetPtr) {
     while i < safe_set.nodeNr - 1 {
         node = unsafe { *(*set).nodeTab.offset(i as isize) };
         if !node.is_null() && unsafe { (*node).type_0 as u32 == XML_NAMESPACE_DECL as u32 } {
-            unsafe { xmlXPathNodeSetFreeNs(node as xmlNsPtr) };
+            xmlXPathNodeSetFreeNs(node as xmlNsPtr);
         }
         i += 1
     }
     unsafe {
-        let ref mut fresh67 = *(*set).nodeTab.offset(0);
+        let ref mut fresh67 = *(*set).nodeTab.offset(0 as isize);
         *fresh67 = *(*set).nodeTab.offset(((*set).nodeNr - 1) as isize);
         (*set).nodeNr = 1;
     }
@@ -5919,14 +5813,14 @@ unsafe fn xmlXPathNodeSetKeepLast(set: xmlNodeSetPtr) {
  * Free the NodeSet compound and the actual tree, this is different
  * from xmlXPathFreeNodeSet() */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathFreeValueTree(mut obj: xmlNodeSetPtr) {
-    let mut i: i32 = 0;
+fn xmlXPathFreeValueTree(obj: xmlNodeSetPtr) {
+    let mut i: i32;
     if obj.is_null() {
         return;
     }
     let safe_obj = unsafe { &mut *obj };
     if !safe_obj.nodeTab.is_null() {
-        i = 0 as i32;
+        i = 0;
         while i < safe_obj.nodeNr {
             if unsafe { !(*(*obj).nodeTab.offset(i as isize)).is_null() } {
                 if unsafe {
@@ -5954,11 +5848,8 @@ unsafe fn xmlXPathFreeValueTree(mut obj: xmlNodeSetPtr) {
  */
 #[cfg(DEBUG_OR_DEBUG_STEP)]
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe extern "C" fn xmlGenericErrorContextNodeSet(
-    mut output: *mut FILE,
-    mut obj: xmlNodeSetPtr,
-) {
-    let mut i: i32 = 0;
+pub extern "C" fn xmlGenericErrorContextNodeSet(output: *mut FILE, obj: xmlNodeSetPtr) {
+    let mut i: i32;
     let safe_obj = unsafe { &mut *obj };
     if output.is_null() {
         output = unsafe { *__xmlGenericErrorContext() as *mut FILE }
@@ -5967,7 +5858,7 @@ pub unsafe extern "C" fn xmlGenericErrorContextNodeSet(
         unsafe { fprintf(output, b"NodeSet == NULL !\n\x00" as *const u8 as *const i8) };
         return;
     }
-    if safe_obj.nodeNr == 0 as i32 {
+    if safe_obj.nodeNr == 0 {
         unsafe { fprintf(output, b"NodeSet is empty\n\x00" as *const u8 as *const i8) };
         return;
     }
@@ -5980,7 +5871,7 @@ pub unsafe extern "C" fn xmlGenericErrorContextNodeSet(
         };
         return;
     }
-    i = 0 as i32;
+    i = 0;
     while i < safe_obj.nodeNr {
         if unsafe { (*(*obj).nodeTab.offset(i as isize)).is_null() } {
             unsafe { fprintf(output, b" NULL !\n\x00" as *const u8 as *const i8) };
@@ -6017,19 +5908,17 @@ pub unsafe extern "C" fn xmlGenericErrorContextNodeSet(
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
+pub fn xmlXPathNewNodeSet(val: xmlNodePtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating nodeset\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating nodeset\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
@@ -6039,7 +5928,7 @@ pub unsafe fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
             ::std::mem::size_of::<xmlXPathObject>() as u64,
         );
         (*ret).type_0 = XPATH_NODESET;
-        (*ret).boolval = 0 as i32;
+        (*ret).boolval = 0;
         /* TODO: Check memory error. */
         (*ret).nodesetval = xmlXPathNodeSetCreate(val);
     }
@@ -6065,19 +5954,17 @@ pub unsafe fn xmlXPathNewNodeSet(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewValueTree(val: xmlNodePtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating result value tree\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating result value tree\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
@@ -6087,7 +5974,7 @@ pub unsafe fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
             ::std::mem::size_of::<xmlXPathObject>() as u64,
         );
         (*ret).type_0 = XPATH_XSLT_TREE;
-        (*ret).boolval = 1;
+        (*ret).boolval = 1 as i32;
         (*ret).user = val as *mut ();
         (*ret).nodesetval = xmlXPathNodeSetCreate(val);
     }
@@ -6111,18 +5998,18 @@ pub unsafe fn xmlXPathNewValueTree(mut val: xmlNodePtr) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNewNodeSetList(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
+pub unsafe fn xmlXPathNewNodeSetList(val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
-    let mut i: i32 = 0;
+    let mut i: i32;
     let safe_val = unsafe { &mut *val };
     if val.is_null() {
         ret = 0 as xmlXPathObjectPtr
     } else if safe_val.nodeTab.is_null() {
-        ret = unsafe { xmlXPathNewNodeSet(0 as xmlNodePtr) }
+        ret = xmlXPathNewNodeSet(0 as xmlNodePtr)
     } else {
-        ret = unsafe { xmlXPathNewNodeSet(*(*val).nodeTab.offset(0)) };
+        ret = unsafe { xmlXPathNewNodeSet(*(*val).nodeTab.offset(0 as isize)) };
         if !ret.is_null() {
-            i = 1;
+            i = 1 as i32;
             while i < safe_val.nodeNr {
                 /* TODO: Propagate memory error. */
                 if unsafe {
@@ -6145,19 +6032,17 @@ pub unsafe fn xmlXPathNewNodeSetList(mut val: xmlNodeSetPtr) -> xmlXPathObjectPt
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathWrapNodeSet(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
+pub fn xmlXPathWrapNodeSet(val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating node set object\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating node set object\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
@@ -6186,7 +6071,7 @@ pub unsafe fn xmlXPathWrapNodeSet(mut val: xmlNodeSetPtr) -> xmlXPathObjectPtr {
  * the list contrary to xmlXPathFreeObject().
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathFreeNodeSetList(mut obj: xmlXPathObjectPtr) {
+pub fn xmlXPathFreeNodeSetList(obj: xmlXPathObjectPtr) {
     if obj.is_null() {
         return;
     }
@@ -6211,39 +6096,36 @@ pub unsafe fn xmlXPathFreeNodeSetList(mut obj: xmlXPathObjectPtr) {
  *         nodes2 is empty
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathDifference(
-    mut nodes1: xmlNodeSetPtr,
-    mut nodes2: xmlNodeSetPtr,
-) -> xmlNodeSetPtr {
+pub fn xmlXPathDifference(nodes1: xmlNodeSetPtr, nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
-    let mut i: i32 = 0;
-    let mut l1: i32 = 0;
+    let mut i: i32;
+    let l1: i32;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
-    if nodes2.is_null() || safe_nodes2.nodeNr == 0 as i32 || safe_nodes2.nodeTab.is_null() {
+    if nodes2.is_null() || safe_nodes2.nodeNr == 0 || safe_nodes2.nodeTab.is_null() {
         return nodes1;
     }
     /* TODO: Check memory error. */
-    ret = unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
-    if nodes1.is_null() || safe_nodes1.nodeNr == 0 as i32 || safe_nodes1.nodeTab.is_null() {
+    ret = xmlXPathNodeSetCreate(0 as xmlNodePtr);
+    if nodes1.is_null() || safe_nodes1.nodeNr == 0 || safe_nodes1.nodeTab.is_null() {
         return ret;
     }
     l1 = if !nodes1.is_null() {
         safe_nodes1.nodeNr
     } else {
-        0 as i32
+        0
     };
-    i = 0 as i32;
+    i = 0;
     while i < l1 {
-        cur = if !nodes1.is_null() && i >= 0 as i32 && i < safe_nodes1.nodeNr {
+        cur = if !nodes1.is_null() && i >= 0 && i < safe_nodes1.nodeNr {
             unsafe { *(*nodes1).nodeTab.offset(i as isize) }
         } else {
             0 as xmlNodePtr
         };
-        if unsafe { xmlXPathNodeSetContains(nodes2, cur) == 0 } {
+        if xmlXPathNodeSetContains(nodes2, cur) == 0 {
             /* TODO: Propagate memory error. */
-            if unsafe { xmlXPathNodeSetAddUnique(ret, cur) < 0 as i32 } {
+            if xmlXPathNodeSetAddUnique(ret, cur) < 0 {
                 break;
             }
         }
@@ -6260,40 +6142,37 @@ pub unsafe fn xmlXPathDifference(
  *         node sets passed as arguments
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathIntersection(
-    mut nodes1: xmlNodeSetPtr,
-    mut nodes2: xmlNodeSetPtr,
-) -> xmlNodeSetPtr {
-    let mut ret: xmlNodeSetPtr = unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
-    let mut i: i32 = 0;
-    let mut l1: i32 = 0;
+pub fn xmlXPathIntersection(nodes1: xmlNodeSetPtr, nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
+    let mut ret: xmlNodeSetPtr = xmlXPathNodeSetCreate(0 as xmlNodePtr);
+    let mut i: i32;
+    let l1: i32;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if ret.is_null() {
         return ret;
     }
-    if nodes1.is_null() || safe_nodes1.nodeNr == 0 as i32 || safe_nodes1.nodeTab.is_null() {
+    if nodes1.is_null() || safe_nodes1.nodeNr == 0 || safe_nodes1.nodeTab.is_null() {
         return ret;
     }
-    if nodes2.is_null() || safe_nodes2.nodeNr == 0 as i32 || safe_nodes2.nodeTab.is_null() {
+    if nodes2.is_null() || safe_nodes2.nodeNr == 0 || safe_nodes2.nodeTab.is_null() {
         return ret;
     }
     l1 = if !nodes1.is_null() {
         safe_nodes1.nodeNr
     } else {
-        0 as i32
+        0
     };
-    i = 0 as i32;
+    i = 0;
     while i < l1 {
-        cur = if !nodes1.is_null() && i >= 0 as i32 && i < safe_nodes1.nodeNr {
+        cur = if !nodes1.is_null() && i >= 0 && i < safe_nodes1.nodeNr {
             unsafe { *(*nodes1).nodeTab.offset(i as isize) }
         } else {
             0 as xmlNodePtr
         };
-        if unsafe { xmlXPathNodeSetContains(nodes2, cur) } != 0 {
+        if xmlXPathNodeSetContains(nodes2, cur) != 0 {
             /* TODO: Propagate memory error. */
-            if unsafe { xmlXPathNodeSetAddUnique(ret, cur) } < 0 as i32 {
+            if xmlXPathNodeSetAddUnique(ret, cur) < 0 {
                 break;
             }
         }
@@ -6309,39 +6188,39 @@ pub unsafe fn xmlXPathIntersection(
  *         it is empty
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathDistinctSorted(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub fn xmlXPathDistinctSorted(nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
     let mut hash: xmlHashTablePtr = 0 as *mut xmlHashTable;
-    let mut i: i32 = 0;
+    let mut i: i32;
     let mut l: i32 = 0;
     let mut strval: *mut xmlChar = 0 as *mut xmlChar;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     let safe_nodes = unsafe { &mut *nodes };
-    if nodes.is_null() || safe_nodes.nodeNr == 0 as i32 || safe_nodes.nodeTab.is_null() {
+    if nodes.is_null() || safe_nodes.nodeNr == 0 || safe_nodes.nodeTab.is_null() {
         return nodes;
     }
-    ret = unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
+    ret = xmlXPathNodeSetCreate(0 as xmlNodePtr);
     if ret.is_null() {
         return ret;
     }
     l = if !nodes.is_null() {
         safe_nodes.nodeNr
     } else {
-        0 as i32
+        0
     };
     hash = unsafe { xmlHashCreate(l) };
-    i = 0 as i32;
+    i = 0;
     while i < l {
-        cur = if !nodes.is_null() && i >= 0 as i32 && i < safe_nodes.nodeNr {
+        cur = if !nodes.is_null() && i >= 0 && i < safe_nodes.nodeNr {
             unsafe { *(*nodes).nodeTab.offset(i as isize) }
         } else {
             0 as xmlNodePtr
         };
-        strval = unsafe { xmlXPathCastNodeToString(cur) };
+        strval = xmlXPathCastNodeToString(cur);
         if unsafe { xmlHashLookup(hash, strval).is_null() } {
             unsafe { xmlHashAddEntry(hash, strval, strval as *mut ()) };
             /* TODO: Propagate memory error. */
-            if unsafe { xmlXPathNodeSetAddUnique(ret, cur) } < 0 as i32 {
+            if xmlXPathNodeSetAddUnique(ret, cur) < 0 {
                 break;
             }
         } else {
@@ -6370,13 +6249,13 @@ pub unsafe fn xmlXPathDistinctSorted(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr 
  *         it is empty
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathDistinct(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
+pub fn xmlXPathDistinct(nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let safe_nodes = unsafe { &mut *nodes };
-    if nodes.is_null() || safe_nodes.nodeNr == 0 as i32 || safe_nodes.nodeTab.is_null() {
+    if nodes.is_null() || safe_nodes.nodeNr == 0 || safe_nodes.nodeTab.is_null() {
         return nodes;
     }
-    unsafe { xmlXPathNodeSetSort(nodes) };
-    return unsafe { xmlXPathDistinctSorted(nodes) };
+    xmlXPathNodeSetSort(nodes);
+    return xmlXPathDistinctSorted(nodes);
 }
 /* *
  * xmlXPathHasSameNodes: * @nodes1: a node-set
@@ -6386,8 +6265,8 @@ pub unsafe fn xmlXPathDistinct(mut nodes: xmlNodeSetPtr) -> xmlNodeSetPtr {
  * Returns true (1) if @nodes1 shares any node with @nodes2, false (0) *         otherwise
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathHasSameNodes(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNodeSetPtr) -> i32 {
-    let mut i: i32 = 0;
+pub fn xmlXPathHasSameNodes(nodes1: xmlNodeSetPtr, nodes2: xmlNodeSetPtr) -> i32 {
+    let mut i: i32;
     let mut l: i32 = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     let safe_nodes1 = unsafe { &mut *nodes1 };
@@ -6395,28 +6274,28 @@ pub unsafe fn xmlXPathHasSameNodes(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNod
     if nodes1.is_null()
         || safe_nodes1.nodeNr == 0 as i32
         || safe_nodes1.nodeTab.is_null()
-        || (nodes2.is_null() || safe_nodes2.nodeNr == 0 as i32 || safe_nodes2.nodeTab.is_null())
+        || (nodes2.is_null() || safe_nodes2.nodeNr == 0 || safe_nodes2.nodeTab.is_null())
     {
-        return 0 as i32;
+        return 0;
     }
     l = if !nodes1.is_null() {
         safe_nodes1.nodeNr
     } else {
-        0 as i32
+        0
     };
-    i = 0 as i32;
+    i = 0;
     while i < l {
-        cur = if !nodes1.is_null() && i >= 0 as i32 && i < safe_nodes1.nodeNr {
+        cur = if !nodes1.is_null() && i >= 0 && i < safe_nodes1.nodeNr {
             unsafe { *(*nodes1).nodeTab.offset(i as isize) }
         } else {
             0 as xmlNodePtr
         };
-        if unsafe { xmlXPathNodeSetContains(nodes2, cur) } != 0 {
+        if xmlXPathNodeSetContains(nodes2, cur) != 0 {
             return 1;
         }
         i += 1
     }
-    return 0 as i32;
+    return 0;
 }
 /* *
  * xmlXPathNodeLeadingSorted: * @nodes: a node-set, sorted by document order
@@ -6427,11 +6306,8 @@ pub unsafe fn xmlXPathHasSameNodes(mut nodes1: xmlNodeSetPtr, mut nodes2: xmlNod
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeLeadingSorted(
-    mut nodes: xmlNodeSetPtr,
-    mut node: xmlNodePtr,
-) -> xmlNodeSetPtr {
-    let mut i: i32 = 0;
+pub fn xmlXPathNodeLeadingSorted(nodes: xmlNodeSetPtr, node: xmlNodePtr) -> xmlNodeSetPtr {
+    let mut i: i32;
     let mut l: i32 = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
@@ -6439,25 +6315,25 @@ pub unsafe fn xmlXPathNodeLeadingSorted(
         return nodes;
     }
     let safe_nodes = unsafe { &mut *nodes };
-    ret = unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
+    ret = xmlXPathNodeSetCreate(0 as xmlNodePtr);
     if ret.is_null() {
         return ret;
     }
     if nodes.is_null()
-        || safe_nodes.nodeNr == 0 as i32
+        || safe_nodes.nodeNr == 0
         || safe_nodes.nodeTab.is_null()
-        || unsafe { xmlXPathNodeSetContains(nodes, node) } == 0
+        || xmlXPathNodeSetContains(nodes, node) == 0
     {
         return ret;
     }
     l = if !nodes.is_null() {
         safe_nodes.nodeNr
     } else {
-        0 as i32
+        0
     };
-    i = 0 as i32;
+    i = 0;
     while i < l {
-        cur = if !nodes.is_null() && i >= 0 as i32 && i < safe_nodes.nodeNr {
+        cur = if !nodes.is_null() && i >= 0 && i < safe_nodes.nodeNr {
             unsafe { *(*nodes).nodeTab.offset(i as isize) }
         } else {
             0 as xmlNodePtr
@@ -6466,7 +6342,7 @@ pub unsafe fn xmlXPathNodeLeadingSorted(
             break;
         }
         /* TODO: Propagate memory error. */
-        if unsafe { xmlXPathNodeSetAddUnique(ret, cur) } < 0 as i32 {
+        if xmlXPathNodeSetAddUnique(ret, cur) < 0 {
             break;
         }
         i += 1
@@ -6484,9 +6360,9 @@ pub unsafe fn xmlXPathNodeLeadingSorted(
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeLeading(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr) -> xmlNodeSetPtr {
-    unsafe { xmlXPathNodeSetSort(nodes) };
-    return unsafe { xmlXPathNodeLeadingSorted(nodes, node) };
+pub fn xmlXPathNodeLeading(nodes: xmlNodeSetPtr, node: xmlNodePtr) -> xmlNodeSetPtr {
+    xmlXPathNodeSetSort(nodes);
+    return xmlXPathNodeLeadingSorted(nodes, node);
 }
 /* *
  * xmlXPathLeadingSorted: * @nodes1: a node-set, sorted by document order
@@ -6498,10 +6374,7 @@ pub unsafe fn xmlXPathNodeLeading(mut nodes: xmlNodeSetPtr, mut node: xmlNodePtr
  *         an empty node-set if @nodes1 doesn't contain @nodes2
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathLeadingSorted(
-    mut nodes1: xmlNodeSetPtr,
-    mut nodes2: xmlNodeSetPtr,
-) -> xmlNodeSetPtr {
+pub fn xmlXPathLeadingSorted(nodes1: xmlNodeSetPtr, nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if nodes2.is_null() || safe_nodes2.nodeNr == 0 as i32 || safe_nodes2.nodeTab.is_null() {
@@ -6510,7 +6383,7 @@ pub unsafe fn xmlXPathLeadingSorted(
     return unsafe {
         xmlXPathNodeLeadingSorted(
             nodes1,
-            if !nodes2.is_null() && 1 >= 0 as i32 && (1) < (*nodes2).nodeNr {
+            if !nodes2.is_null() && 1 >= 0 && (1) < (*nodes2).nodeNr {
                 *(*nodes2).nodeTab.offset(1 as isize)
             } else {
                 0 as xmlNodePtr
@@ -6530,24 +6403,21 @@ pub unsafe fn xmlXPathLeadingSorted(
  *         an empty node-set if @nodes1 doesn't contain @nodes2
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathLeading(
-    mut nodes1: xmlNodeSetPtr,
-    mut nodes2: xmlNodeSetPtr,
-) -> xmlNodeSetPtr {
+pub fn xmlXPathLeading(nodes1: xmlNodeSetPtr, nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
     if nodes2.is_null() || safe_nodes2.nodeNr == 0 as i32 || safe_nodes2.nodeTab.is_null() {
         return nodes1;
     }
     if nodes1.is_null() || safe_nodes1.nodeNr == 0 as i32 || safe_nodes1.nodeTab.is_null() {
-        return unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
+        return xmlXPathNodeSetCreate(0 as xmlNodePtr);
     }
-    unsafe { xmlXPathNodeSetSort(nodes1) };
-    unsafe { xmlXPathNodeSetSort(nodes2) };
+    xmlXPathNodeSetSort(nodes1);
+    xmlXPathNodeSetSort(nodes2);
     return unsafe {
         xmlXPathNodeLeadingSorted(
             nodes1,
-            if !nodes2.is_null() && 1 >= 0 as i32 && (1) < (*nodes2).nodeNr {
+            if !nodes2.is_null() && 1 >= 0 && (1) < (*nodes2).nodeNr {
                 *(*nodes2).nodeTab.offset(1 as isize)
             } else {
                 0 as xmlNodePtr
@@ -6564,11 +6434,8 @@ pub unsafe fn xmlXPathLeading(
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeTrailingSorted(
-    mut nodes: xmlNodeSetPtr,
-    mut node: xmlNodePtr,
-) -> xmlNodeSetPtr {
-    let mut i: i32 = 0;
+pub fn xmlXPathNodeTrailingSorted(nodes: xmlNodeSetPtr, node: xmlNodePtr) -> xmlNodeSetPtr {
+    let mut i: i32;
     let mut l: i32 = 0;
     let mut cur: xmlNodePtr = 0 as *mut xmlNode;
     let mut ret: xmlNodeSetPtr = 0 as *mut xmlNodeSet;
@@ -6576,25 +6443,25 @@ pub unsafe fn xmlXPathNodeTrailingSorted(
         return nodes;
     }
     let safe_nodes = unsafe { &mut *nodes };
-    ret = unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
+    ret = xmlXPathNodeSetCreate(0 as xmlNodePtr);
     if ret.is_null() {
         return ret;
     }
     if nodes.is_null()
-        || safe_nodes.nodeNr == 0 as i32
+        || safe_nodes.nodeNr == 0
         || safe_nodes.nodeTab.is_null()
-        || unsafe { xmlXPathNodeSetContains(nodes, node) } == 0
+        || xmlXPathNodeSetContains(nodes, node) == 0
     {
         return ret;
     }
     l = if !nodes.is_null() {
         safe_nodes.nodeNr
     } else {
-        0 as i32
+        0
     };
     i = l - 1;
-    while i >= 0 as i32 {
-        cur = if !nodes.is_null() && i >= 0 as i32 && i < safe_nodes.nodeNr {
+    while i >= 0 {
+        cur = if !nodes.is_null() && i >= 0 && i < safe_nodes.nodeNr {
             unsafe { *(*nodes).nodeTab.offset(i as isize) }
         } else {
             0 as xmlNodePtr
@@ -6603,12 +6470,12 @@ pub unsafe fn xmlXPathNodeTrailingSorted(
             break;
         }
         /* TODO: Propagate memory error. */
-        if unsafe { xmlXPathNodeSetAddUnique(ret, cur) } < 0 as i32 {
+        if xmlXPathNodeSetAddUnique(ret, cur) < 0 {
             break; /* bug 413451 */
         }
         i -= 1
     }
-    unsafe { xmlXPathNodeSetSort(ret) };
+    xmlXPathNodeSetSort(ret);
     return ret;
 }
 /* *
@@ -6622,12 +6489,9 @@ pub unsafe fn xmlXPathNodeTrailingSorted(
  *         doesn't contain @node
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNodeTrailing(
-    mut nodes: xmlNodeSetPtr,
-    mut node: xmlNodePtr,
-) -> xmlNodeSetPtr {
-    unsafe { xmlXPathNodeSetSort(nodes) };
-    return unsafe { xmlXPathNodeTrailingSorted(nodes, node) };
+pub fn xmlXPathNodeTrailing(nodes: xmlNodeSetPtr, node: xmlNodePtr) -> xmlNodeSetPtr {
+    xmlXPathNodeSetSort(nodes);
+    return xmlXPathNodeTrailingSorted(nodes, node);
 }
 /* *
  * xmlXPathTrailingSorted: * @nodes1: a node-set, sorted by document order
@@ -6639,19 +6503,16 @@ pub unsafe fn xmlXPathNodeTrailing(
  *         an empty node-set if @nodes1 doesn't contain @nodes2
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathTrailingSorted(
-    mut nodes1: xmlNodeSetPtr,
-    mut nodes2: xmlNodeSetPtr,
-) -> xmlNodeSetPtr {
+pub fn xmlXPathTrailingSorted(nodes1: xmlNodeSetPtr, nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let safe_nodes2 = unsafe { &mut *nodes2 };
-    if nodes2.is_null() || safe_nodes2.nodeNr == 0 as i32 || safe_nodes2.nodeTab.is_null() {
+    if nodes2.is_null() || safe_nodes2.nodeNr == 0 || safe_nodes2.nodeTab.is_null() {
         return nodes1;
     }
     return unsafe {
         xmlXPathNodeTrailingSorted(
             nodes1,
-            if !nodes2.is_null() && 2 > 1 && (0 as i32) < (*nodes2).nodeNr {
-                *(*nodes2).nodeTab.offset(0)
+            if !nodes2.is_null() && 2 > 1 && (0) < (*nodes2).nodeNr {
+                *(*nodes2).nodeTab.offset(0 as isize)
             } else {
                 0 as xmlNodePtr
             },
@@ -6670,25 +6531,22 @@ pub unsafe fn xmlXPathTrailingSorted(
  *         an empty node-set if @nodes1 doesn't contain @nodes2
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathTrailing(
-    mut nodes1: xmlNodeSetPtr,
-    mut nodes2: xmlNodeSetPtr,
-) -> xmlNodeSetPtr {
+pub unsafe fn xmlXPathTrailing(nodes1: xmlNodeSetPtr, nodes2: xmlNodeSetPtr) -> xmlNodeSetPtr {
     let safe_nodes1 = unsafe { &mut *nodes1 };
     let safe_nodes2 = unsafe { &mut *nodes2 };
-    if nodes2.is_null() || safe_nodes2.nodeNr == 0 as i32 || safe_nodes2.nodeTab.is_null() {
+    if nodes2.is_null() || safe_nodes2.nodeNr == 0 || safe_nodes2.nodeTab.is_null() {
         return nodes1;
     }
-    if nodes1.is_null() || safe_nodes1.nodeNr == 0 as i32 || safe_nodes1.nodeTab.is_null() {
-        return unsafe { xmlXPathNodeSetCreate(0 as xmlNodePtr) };
+    if nodes1.is_null() || safe_nodes1.nodeNr == 0 || safe_nodes1.nodeTab.is_null() {
+        return xmlXPathNodeSetCreate(0 as xmlNodePtr);
     }
-    unsafe { xmlXPathNodeSetSort(nodes1) };
-    unsafe { xmlXPathNodeSetSort(nodes2) };
+    xmlXPathNodeSetSort(nodes1);
+    xmlXPathNodeSetSort(nodes2);
     return unsafe {
         xmlXPathNodeTrailingSorted(
             nodes1,
-            if !nodes2.is_null() && 2 > 1 && (0 as i32) < (*nodes2).nodeNr {
-                *(*nodes2).nodeTab.offset(0)
+            if !nodes2.is_null() && 2 > 1 && (0) < (*nodes2).nodeNr {
+                *(*nodes2).nodeTab.offset(0 as isize)
             } else {
                 0 as xmlNodePtr
             },
@@ -6710,12 +6568,12 @@ pub unsafe fn xmlXPathTrailing(
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisterFunc(
-    mut ctxt: xmlXPathContextPtr,
-    mut name: *const xmlChar,
-    mut f: xmlXPathFunction,
+pub fn xmlXPathRegisterFunc(
+    ctxt: xmlXPathContextPtr,
+    name: *const xmlChar,
+    f: xmlXPathFunction,
 ) -> i32 {
-    return unsafe { xmlXPathRegisterFuncNS(ctxt, name, 0 as *const xmlChar, f) };
+    return xmlXPathRegisterFuncNS(ctxt, name, 0 as *const xmlChar, f);
 }
 /* *
  * xmlXPathRegisterFuncNS: * @ctxt: the XPath context
@@ -6728,24 +6586,24 @@ pub unsafe fn xmlXPathRegisterFunc(
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisterFuncNS(
-    mut ctxt: xmlXPathContextPtr,
-    mut name: *const xmlChar,
-    mut ns_uri: *const xmlChar,
-    mut f: xmlXPathFunction,
+pub fn xmlXPathRegisterFuncNS(
+    ctxt: xmlXPathContextPtr,
+    name: *const xmlChar,
+    ns_uri: *const xmlChar,
+    f: xmlXPathFunction,
 ) -> i32 {
     if ctxt.is_null() {
-        return -(1);
+        return -1;
     }
     if name.is_null() {
-        return -(1);
+        return -1;
     }
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.funcHash.is_null() {
-        unsafe { (*ctxt).funcHash = xmlHashCreate(0 as i32) }
+        unsafe { (*ctxt).funcHash = xmlHashCreate(0) }
     }
     if unsafe { (*ctxt).funcHash.is_null() } {
-        return -(1);
+        return -1;
     }
     if f.is_none() {
         return unsafe { xmlHashRemoveEntry2((*ctxt).funcHash, name, ns_uri, None) };
@@ -6770,10 +6628,10 @@ pub unsafe fn xmlXPathRegisterFuncNS(
  * Registers an external mechanism to do function lookup.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisterFuncLookup(
-    mut ctxt: xmlXPathContextPtr,
-    mut f: xmlXPathFuncLookupFunc,
-    mut funcCtxt: *mut (),
+pub fn xmlXPathRegisterFuncLookup(
+    ctxt: xmlXPathContextPtr,
+    f: xmlXPathFuncLookupFunc,
+    funcCtxt: *mut (),
 ) {
     if ctxt.is_null() {
         return;
@@ -6793,10 +6651,7 @@ pub unsafe fn xmlXPathRegisterFuncLookup(
  * Returns the xmlXPathFunction or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathFunctionLookup(
-    mut ctxt: xmlXPathContextPtr,
-    mut name: *const xmlChar,
-) -> xmlXPathFunction {
+pub fn xmlXPathFunctionLookup(ctxt: xmlXPathContextPtr, name: *const xmlChar) -> xmlXPathFunction {
     if ctxt.is_null() {
         return None;
     }
@@ -6812,7 +6667,7 @@ pub unsafe fn xmlXPathFunctionLookup(
             return ret;
         }
     }
-    return unsafe { xmlXPathFunctionLookupNS(ctxt, name, 0 as *const xmlChar) };
+    return xmlXPathFunctionLookupNS(ctxt, name, 0 as *const xmlChar);
 }
 /* *
  * xmlXPathFunctionLookupNS: * @ctxt: the XPath context
@@ -6825,10 +6680,10 @@ pub unsafe fn xmlXPathFunctionLookup(
  * Returns the xmlXPathFunction or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathFunctionLookupNS(
-    mut ctxt: xmlXPathContextPtr,
-    mut name: *const xmlChar,
-    mut ns_uri: *const xmlChar,
+pub fn xmlXPathFunctionLookupNS(
+    ctxt: xmlXPathContextPtr,
+    name: *const xmlChar,
+    ns_uri: *const xmlChar,
 ) -> xmlXPathFunction {
     let mut ret: xmlXPathFunction = None;
     if ctxt.is_null() {
@@ -6864,7 +6719,7 @@ pub unsafe fn xmlXPathFunctionLookupNS(
 
 #[cfg(LIBXML_XPATH_ENABLED)]
 #[cfg(DEBUG_STEP)]
-pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mut nbNodes: i32) {
+pub extern "C" fn xmlXPathDebugDumpStepAxis(op: xmlXPathStepOpPtr, nbNodes: i32) {
     let safe_op = unsafe { &mut *op };
     unsafe {
         (*__xmlGenericError()).expect("non-null function pointer")(
@@ -6873,7 +6728,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
         )
     };
     match safe_op.value {
-        1 => {
+        AXIS_ANCESTOR => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6881,7 +6736,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        2 => {
+        AXIS_ANCESTOR_OR_SELF => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6889,7 +6744,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        3 => {
+        AXIS_ATTRIBUTE => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6897,7 +6752,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        4 => {
+        AXIS_CHILD => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6905,7 +6760,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        5 => {
+        AXIS_DESCENDANT => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6913,7 +6768,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        6 => {
+        AXIS_DESCENDANT_OR_SELF => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6921,7 +6776,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        7 => {
+        AXIS_FOLLOWING => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6929,7 +6784,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        8 => {
+        AXIS_FOLLOWING_SIBLING => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6937,7 +6792,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        9 => {
+        AXIS_NAMESPACE => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6945,7 +6800,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        10 => {
+        AXIS_PARENT => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6953,7 +6808,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        11 => {
+        AXIS_PRECEDING => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6961,7 +6816,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        12 => {
+        AXIS_PRECEDING_SIBLING => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6969,7 +6824,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        13 => {
+        AXIS_SELF => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6987,7 +6842,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
         )
     };
     match safe_op.value2 {
-        0 => {
+        NODE_TEST_NONE => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -6995,7 +6850,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        1 => {
+        NODE_TEST_TYPE => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -7004,7 +6859,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        2 => {
+        NODE_TEST_PI => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -7012,7 +6867,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        3 => {
+        NODE_TEST_ALL => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -7020,7 +6875,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        4 => {
+        NODE_TEST_NS => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -7029,7 +6884,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
                 )
             };
         }
-        5 => {
+        NODE_TEST_NAME => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -7063,7 +6918,7 @@ pub unsafe extern "C" fn xmlXPathDebugDumpStepAxis(mut op: xmlXPathStepOpPtr, mu
  * Cleanup the XPath context data associated to registered functions
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisteredFuncsCleanup(mut ctxt: xmlXPathContextPtr) {
+pub fn xmlXPathRegisteredFuncsCleanup(ctxt: xmlXPathContextPtr) {
     if ctxt.is_null() {
         return;
     }
@@ -7088,12 +6943,12 @@ pub unsafe fn xmlXPathRegisteredFuncsCleanup(mut ctxt: xmlXPathContextPtr) {
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisterVariable(
-    mut ctxt: xmlXPathContextPtr,
-    mut name: *const xmlChar,
-    mut value: xmlXPathObjectPtr,
+pub fn xmlXPathRegisterVariable(
+    ctxt: xmlXPathContextPtr,
+    name: *const xmlChar,
+    value: xmlXPathObjectPtr,
 ) -> i32 {
-    return unsafe { xmlXPathRegisterVariableNS(ctxt, name, 0 as *const xmlChar, value) };
+    return xmlXPathRegisterVariableNS(ctxt, name, 0 as *const xmlChar, value);
 }
 /* *
  * xmlXPathRegisterVariableNS: * @ctxt: the XPath context
@@ -7107,24 +6962,24 @@ pub unsafe fn xmlXPathRegisterVariable(
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisterVariableNS(
-    mut ctxt: xmlXPathContextPtr,
-    mut name: *const xmlChar,
-    mut ns_uri: *const xmlChar,
-    mut value: xmlXPathObjectPtr,
+pub fn xmlXPathRegisterVariableNS(
+    ctxt: xmlXPathContextPtr,
+    name: *const xmlChar,
+    ns_uri: *const xmlChar,
+    value: xmlXPathObjectPtr,
 ) -> i32 {
     if ctxt.is_null() {
-        return -(1);
+        return -1;
     }
     if name.is_null() {
-        return -(1);
+        return -1;
     }
     let safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.varHash.is_null() {
-        unsafe { (*ctxt).varHash = xmlHashCreate(0 as i32) }
+        unsafe { (*ctxt).varHash = xmlHashCreate(0) }
     }
     if unsafe { (*ctxt).varHash.is_null() } {
-        return -(1);
+        return -1;
     }
     if value.is_null() {
         return unsafe {
@@ -7224,10 +7079,10 @@ pub unsafe fn xmlXPathRegisterVariableNS(
  * register an external mechanism to do variable lookup
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisterVariableLookup(
-    mut ctxt: xmlXPathContextPtr,
-    mut f: xmlXPathVariableLookupFunc,
-    mut data: *mut (),
+pub fn xmlXPathRegisterVariableLookup(
+    ctxt: xmlXPathContextPtr,
+    f: xmlXPathVariableLookupFunc,
+    data: *mut (),
 ) {
     if ctxt.is_null() {
         return;
@@ -7247,10 +7102,7 @@ pub unsafe fn xmlXPathRegisterVariableLookup(
  * Returns a copy of the value or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathVariableLookup(
-    mut ctxt: xmlXPathContextPtr,
-    mut name: *const xmlChar,
-) -> xmlXPathObjectPtr {
+pub fn xmlXPathVariableLookup(ctxt: xmlXPathContextPtr, name: *const xmlChar) -> xmlXPathObjectPtr {
     if ctxt.is_null() {
         return 0 as xmlXPathObjectPtr;
     }
@@ -7266,7 +7118,7 @@ pub unsafe fn xmlXPathVariableLookup(
         };
         return ret;
     }
-    return unsafe { xmlXPathVariableLookupNS(ctxt, name, 0 as *const xmlChar) };
+    return xmlXPathVariableLookupNS(ctxt, name, 0 as *const xmlChar);
 }
 /* *
  * xmlXPathVariableLookupNS: * @ctxt: the XPath context
@@ -7279,10 +7131,10 @@ pub unsafe fn xmlXPathVariableLookup(
  * Returns the a copy of the value or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathVariableLookupNS(
-    mut ctxt: xmlXPathContextPtr,
-    mut name: *const xmlChar,
-    mut ns_uri: *const xmlChar,
+pub fn xmlXPathVariableLookupNS(
+    ctxt: xmlXPathContextPtr,
+    name: *const xmlChar,
+    ns_uri: *const xmlChar,
 ) -> xmlXPathObjectPtr {
     if ctxt.is_null() {
         return 0 as xmlXPathObjectPtr;
@@ -7320,7 +7172,7 @@ pub unsafe fn xmlXPathVariableLookupNS(
  * Cleanup the XPath context data associated to registered variables
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisteredVariablesCleanup(mut ctxt: xmlXPathContextPtr) {
+pub fn xmlXPathRegisteredVariablesCleanup(mut ctxt: xmlXPathContextPtr) {
     if ctxt.is_null() {
         return;
     }
@@ -7349,26 +7201,26 @@ pub unsafe fn xmlXPathRegisteredVariablesCleanup(mut ctxt: xmlXPathContextPtr) {
  * Returns 0 in case of success, -1 in case of error
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisterNs(
-    mut ctxt: xmlXPathContextPtr,
-    mut prefix: *const xmlChar,
-    mut ns_uri: *const xmlChar,
+pub fn xmlXPathRegisterNs(
+    ctxt: xmlXPathContextPtr,
+    prefix: *const xmlChar,
+    ns_uri: *const xmlChar,
 ) -> i32 {
     if ctxt.is_null() {
-        return -(1);
+        return -1;
     }
     if prefix.is_null() {
-        return -(1);
+        return -1;
     }
     let safe_ctxt = unsafe { &mut *ctxt };
-    if unsafe { *prefix.offset(0) as i32 == 0 as i32 } {
-        return -(1);
+    if unsafe { *prefix.offset(0 as isize) as i32 == 0 } {
+        return -1;
     }
     if safe_ctxt.nsHash.is_null() {
-        unsafe { (*ctxt).nsHash = xmlHashCreate(10 as i32) }
+        unsafe { (*ctxt).nsHash = xmlHashCreate(10) }
     }
     if unsafe { (*ctxt).nsHash.is_null() } {
-        return -(1);
+        return -1;
     }
     if ns_uri.is_null() {
         return unsafe {
@@ -7404,10 +7256,7 @@ pub unsafe fn xmlXPathRegisterNs(
  * Returns the value or NULL if not found
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNsLookup(
-    mut ctxt: xmlXPathContextPtr,
-    mut prefix: *const xmlChar,
-) -> *const xmlChar {
+pub fn xmlXPathNsLookup(ctxt: xmlXPathContextPtr, prefix: *const xmlChar) -> *const xmlChar {
     if ctxt.is_null() {
         return 0 as *const xmlChar;
     }
@@ -7435,8 +7284,8 @@ pub unsafe fn xmlXPathNsLookup(
     };
 
     if !safe_ctxt.namespaces.is_null() {
-        let mut i: i32 = 0;
-        i = 0 as i32;
+        let mut i: i32;
+        i = 0;
         while i < safe_ctxt.nsNr {
             if unsafe {
                 !(*(*ctxt).namespaces.offset(i as isize)).is_null()
@@ -7455,7 +7304,7 @@ pub unsafe fn xmlXPathNsLookup(
  * Cleanup the XPath context data associated to registered variables
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathRegisteredNsCleanup(mut ctxt: xmlXPathContextPtr) {
+pub fn xmlXPathRegisteredNsCleanup(ctxt: xmlXPathContextPtr) {
     if ctxt.is_null() {
         return;
     }
@@ -7484,25 +7333,23 @@ pub unsafe fn xmlXPathRegisteredNsCleanup(mut ctxt: xmlXPathContextPtr) {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNewFloat(mut val: libc::c_double) -> xmlXPathObjectPtr {
+pub fn xmlXPathNewFloat(val: libc::c_double) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating float object\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating float object\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
         memset(
             ret as *mut (),
-            0 as i32,
+            0,
             ::std::mem::size_of::<xmlXPathObject>() as u64,
         );
         (*ret).type_0 = XPATH_NUMBER;
@@ -7527,29 +7374,27 @@ pub unsafe fn xmlXPathNewFloat(mut val: libc::c_double) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNewBoolean(mut val: i32) -> xmlXPathObjectPtr {
+pub fn xmlXPathNewBoolean(val: i32) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating boolean object\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating boolean object\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
         memset(
             ret as *mut (),
-            0 as i32,
+            0,
             ::std::mem::size_of::<xmlXPathObject>() as u64,
         );
         (*ret).type_0 = XPATH_BOOLEAN;
-        (*ret).boolval = (val != 0 as i32) as i32;
+        (*ret).boolval = (val != 0) as i32;
     }
     match () {
         #[cfg(XP_DEBUG_OBJ_USAGE)]
@@ -7569,25 +7414,23 @@ pub unsafe fn xmlXPathNewBoolean(mut val: i32) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNewString(mut val: *const xmlChar) -> xmlXPathObjectPtr {
+pub fn xmlXPathNewString(val: *const xmlChar) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating string object\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating string object\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
         memset(
             ret as *mut (),
-            0 as i32,
+            0,
             ::std::mem::size_of::<xmlXPathObject>() as u64,
         );
         (*ret).type_0 = XPATH_STRING;
@@ -7616,25 +7459,23 @@ pub unsafe fn xmlXPathNewString(mut val: *const xmlChar) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathWrapString(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
+pub fn xmlXPathWrapString(val: *mut xmlChar) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating string object\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating string object\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
         memset(
             ret as *mut (),
-            0 as i32,
+            0,
             ::std::mem::size_of::<xmlXPathObject>() as u64,
         );
         (*ret).type_0 = XPATH_STRING;
@@ -7658,25 +7499,23 @@ pub unsafe fn xmlXPathWrapString(mut val: *mut xmlChar) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathNewCString(mut val: *const i8) -> xmlXPathObjectPtr {
+pub fn xmlXPathNewCString(val: *const i8) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating string object\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating string object\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
         memset(
             ret as *mut (),
-            0 as i32,
+            0,
             ::std::mem::size_of::<xmlXPathObject>() as u64,
         );
         (*ret).type_0 = XPATH_STRING;
@@ -7700,8 +7539,8 @@ pub unsafe fn xmlXPathNewCString(mut val: *const i8) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathWrapCString(mut val: *mut i8) -> xmlXPathObjectPtr {
-    return unsafe { xmlXPathWrapString(val as *mut xmlChar) };
+pub fn xmlXPathWrapCString(val: *mut i8) -> xmlXPathObjectPtr {
+    return xmlXPathWrapString(val as *mut xmlChar);
 }
 /* *
  * xmlXPathWrapExternal: * @val: the user data
@@ -7711,25 +7550,23 @@ pub unsafe fn xmlXPathWrapCString(mut val: *mut i8) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathWrapExternal(mut val: *mut ()) -> xmlXPathObjectPtr {
+pub fn xmlXPathWrapExternal(val: *mut ()) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<xmlXPathObject>() as u64)
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating user object\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating user object\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
         memset(
             ret as *mut (),
-            0 as i32,
+            0,
             ::std::mem::size_of::<xmlXPathObject>() as u64,
         );
         (*ret).type_0 = XPATH_USERS;
@@ -7753,7 +7590,7 @@ pub unsafe fn xmlXPathWrapExternal(mut val: *mut ()) -> xmlXPathObjectPtr {
  * Returns the newly created object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub fn xmlXPathObjectCopy(val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return 0 as xmlXPathObjectPtr;
@@ -7764,12 +7601,10 @@ pub unsafe fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPt
             as xmlXPathObjectPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"copying object\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"copying object\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathObjectPtr;
     }
     unsafe {
@@ -7790,8 +7625,8 @@ pub unsafe fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPt
         _ => {}
     };
     match safe_val.type_0 as u32 {
-        4 => unsafe { (*ret).stringval = xmlStrdup((*val).stringval) },
-        9 | 1 => {
+        XPATH_STRING => unsafe { (*ret).stringval = xmlStrdup((*val).stringval) },
+        XPATH_XSLT_TREE | XPATH_NODESET => {
             unsafe {
                 /* TODO: Check memory error. */
                 (*ret).nodesetval = xmlXPathNodeSetMerge(0 as xmlNodeSetPtr, (*val).nodesetval);
@@ -7799,7 +7634,7 @@ pub unsafe fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPt
                 (*ret).boolval = 0 as i32
             }
         }
-        7 => {
+        XPATH_LOCATIONSET => {
             match () {
                 #[cfg(LIBXML_XPTR_ENABLED)]
                 _ => {
@@ -7813,8 +7648,8 @@ pub unsafe fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPt
                 _ => {}
             };
         }
-        8 => unsafe { (*ret).user = (*val).user },
-        0 => {
+        XPATH_USERS => unsafe { (*ret).user = (*val).user },
+        XPATH_UNDEFINED => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -7823,7 +7658,7 @@ pub unsafe fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPt
                 )
             };
         }
-        2 | 3 | 5 | 6 | _ => {}
+        XPATH_BOOLEAN | XPATH_NUMBER | XPATH_POINT | XPATH_RANGE | _ => {}
     }
     return ret;
 }
@@ -7833,7 +7668,7 @@ pub unsafe fn xmlXPathObjectCopy(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPt
  * Free up an xmlXPathObjectPtr object.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathFreeObject(mut obj: xmlXPathObjectPtr) {
+pub fn xmlXPathFreeObject(obj: xmlXPathObjectPtr) {
     if obj.is_null() {
         return;
     } /* TODO: Just for debugging. */
@@ -7878,7 +7713,7 @@ pub unsafe fn xmlXPathFreeObject(mut obj: xmlXPathObjectPtr) {
 }
 #[cfg(LIBXML_XPATH_ENABLED)]
 extern "C" fn xmlXPathFreeObjectEntry(mut obj: *mut (), mut name: *const xmlChar) {
-    unsafe { xmlXPathFreeObject(obj as xmlXPathObjectPtr) };
+    xmlXPathFreeObject(obj as xmlXPathObjectPtr);
 }
 /* *
  * xmlXPathReleaseObject: * @obj: the xmlXPathObjectPtr to free or to cache
@@ -7887,7 +7722,7 @@ extern "C" fn xmlXPathFreeObjectEntry(mut obj: *mut (), mut name: *const xmlChar
  * XPath object or stores it in the cache.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathObjectPtr) {
+fn xmlXPathReleaseObject(ctxt: xmlXPathContextPtr, obj: xmlXPathObjectPtr) {
     let mut current_block: u64;
     if obj.is_null() {
         return;
@@ -7895,7 +7730,7 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
     let safe_obj = unsafe { &mut *obj };
     let safe_ctxt = unsafe { &mut *ctxt };
     if ctxt.is_null() || safe_ctxt.cache.is_null() {
-        unsafe { xmlXPathFreeObject(obj) };
+        xmlXPathFreeObject(obj);
     } else {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
         match safe_obj.type_0 as u32 {
@@ -7936,7 +7771,7 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
                                         (*cache).nodesetObjs,
                                         obj as *mut (),
                                         0 as i32,
-                                    ) == -(1)
+                                    ) == -(1 as i32)
                                 } {
                                     current_block = 4144075667789361827;
                                 } else {
@@ -7980,7 +7815,7 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
                         _ => {
                             if unsafe {
                                 xmlPointerListAddSize((*cache).stringObjs, obj as *mut (), 0 as i32)
-                                    == -(1)
+                                    == -(1 as i32)
                             } {
                                 current_block = 4144075667789361827;
                             } else {
@@ -8015,7 +7850,7 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
                                     (*cache).booleanObjs,
                                     obj as *mut (),
                                     0 as i32,
-                                ) == -(1)
+                                ) == -(1 as i32)
                             } {
                                 current_block = 4144075667789361827;
                             } else {
@@ -8047,7 +7882,7 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
                         _ => {
                             if unsafe {
                                 xmlPointerListAddSize((*cache).numberObjs, obj as *mut (), 0 as i32)
-                                    == -(1)
+                                    == -(1 as i32)
                             } {
                                 current_block = 4144075667789361827;
                             } else {
@@ -8093,7 +7928,7 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
                         _ => {
                             if unsafe {
                                 xmlPointerListAddSize((*cache).miscObjs, obj as *mut (), 0 as i32)
-                                    == -(1)
+                                    == -(1 as i32)
                             } {
                                 current_block = 4144075667789361827;
                             } else {
@@ -8126,7 +7961,7 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
                      * URGENT TODO: Check if it's actually slowing things down.
                      *  Maybe we shouldn't try to preserve the list.
                      */
-                    if unsafe { (*tmpset).nodeNr > 1 } {
+                    if unsafe { (*tmpset).nodeNr > 1 as i32 } {
                         let mut i: i32 = 0;
                         let mut node: xmlNodePtr = 0 as *mut xmlNode;
                         i = 0 as i32;
@@ -8134,20 +7969,22 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
                             unsafe { node = *(*tmpset).nodeTab.offset(i as isize) };
                             if unsafe {
                                 !node.is_null()
-                                    && (*node).type_0 as u32 == XML_NAMESPACE_DECL as u32
+                                    && (*node).type_0 as u32 == XML_NAMESPACE_DECL as i32 as u32
                             } {
-                                unsafe { xmlXPathNodeSetFreeNs(node as xmlNsPtr) };
+                                xmlXPathNodeSetFreeNs(node as xmlNsPtr);
                             }
                             i += 1
                         }
-                    } else if unsafe { (*tmpset).nodeNr == 1 } {
+                    } else if unsafe { (*tmpset).nodeNr == 1 as i32 } {
                         if unsafe {
-                            !(*(*tmpset).nodeTab.offset(0)).is_null()
-                                && (**(*tmpset).nodeTab.offset(0)).type_0 as u32
-                                    == XML_NAMESPACE_DECL as u32
+                            !(*(*tmpset).nodeTab.offset(0 as i32 as isize)).is_null()
+                                && (**(*tmpset).nodeTab.offset(0 as i32 as isize)).type_0 as u32
+                                    == XML_NAMESPACE_DECL as i32 as u32
                         } {
                             unsafe {
-                                xmlXPathNodeSetFreeNs(*(*tmpset).nodeTab.offset(0) as xmlNsPtr)
+                                xmlXPathNodeSetFreeNs(
+                                    *(*tmpset).nodeTab.offset(0 as i32 as isize) as xmlNsPtr
+                                )
                             };
                         }
                     }
@@ -8187,7 +8024,7 @@ unsafe fn xmlXPathReleaseObject(mut ctxt: xmlXPathContextPtr, mut obj: xmlXPathO
  * Returns a newly allocated string.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastBooleanToString(mut val: i32) -> *mut xmlChar {
+pub fn xmlXPathCastBooleanToString(val: i32) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if val != 0 {
         ret = unsafe { xmlStrdup(b"true\x00" as *const u8 as *const i8 as *const xmlChar) }
@@ -8204,9 +8041,9 @@ pub unsafe fn xmlXPathCastBooleanToString(mut val: i32) -> *mut xmlChar {
  * Returns a newly allocated string.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlChar {
+pub fn xmlXPathCastNumberToString(val: libc::c_double) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
-    match unsafe { xmlXPathIsInf(val) } {
+    match xmlXPathIsInf(val) {
         1 => {
             ret = unsafe { xmlStrdup(b"Infinity\x00" as *const u8 as *const i8 as *const xmlChar) }
         }
@@ -8214,16 +8051,16 @@ pub unsafe fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlCha
             ret = unsafe { xmlStrdup(b"-Infinity\x00" as *const u8 as *const i8 as *const xmlChar) }
         }
         _ => {
-            if unsafe { xmlXPathIsNaN(val) } != 0 {
+            if xmlXPathIsNaN(val) != 0 {
                 ret = unsafe { xmlStrdup(b"NaN\x00" as *const u8 as *const i8 as *const xmlChar) }
-            } else if val == 0 as i32 as libc::c_double {
+            } else if val == 0 as libc::c_double {
                 /* Omit sign for negative zero. */
                 ret = unsafe { xmlStrdup(b"0\x00" as *const u8 as *const i8 as *const xmlChar) }
             } else {
                 /* could be improved */
                 let mut buf: [i8; 100] = [0; 100];
-                unsafe { xmlXPathFormatNumber(val, buf.as_mut_ptr(), 99 as i32) };
-                buf[99 as i32 as usize] = 0 as i32 as i8;
+                xmlXPathFormatNumber(val, buf.as_mut_ptr(), 99 as i32);
+                buf[99 as usize] = 0 as i8;
                 ret = unsafe { xmlStrdup(buf.as_mut_ptr() as *const xmlChar) }
             }
         }
@@ -8238,7 +8075,7 @@ pub unsafe fn xmlXPathCastNumberToString(mut val: libc::c_double) -> *mut xmlCha
  * Returns a newly allocated string.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastNodeToString(mut node: xmlNodePtr) -> *mut xmlChar {
+pub fn xmlXPathCastNodeToString(node: xmlNodePtr) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     ret = unsafe { xmlNodeGetContent(node as *const xmlNode) };
     if ret.is_null() {
@@ -8254,15 +8091,15 @@ pub unsafe fn xmlXPathCastNodeToString(mut node: xmlNodePtr) -> *mut xmlChar {
  * Returns a newly allocated string.
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastNodeSetToString(mut ns: xmlNodeSetPtr) -> *mut xmlChar {
+pub fn xmlXPathCastNodeSetToString(ns: xmlNodeSetPtr) -> *mut xmlChar {
     let safe_ns = unsafe { &mut *ns };
     if ns.is_null() || safe_ns.nodeNr == 0 as i32 || safe_ns.nodeTab.is_null() {
         return unsafe { xmlStrdup(b"\x00" as *const u8 as *const i8 as *const xmlChar) };
     }
     if safe_ns.nodeNr > 1 {
-        unsafe { xmlXPathNodeSetSort(ns) };
+        xmlXPathNodeSetSort(ns);
     }
-    return unsafe { xmlXPathCastNodeToString(*(*ns).nodeTab.offset(0)) };
+    return unsafe { xmlXPathCastNodeToString(*(*ns).nodeTab.offset(0 as isize)) };
 }
 /* *
  * xmlXPathCastToString: * @val: an XPath object
@@ -8273,14 +8110,14 @@ pub unsafe fn xmlXPathCastNodeSetToString(mut ns: xmlNodeSetPtr) -> *mut xmlChar
  *         It's up to the caller to free the string memory with xmlFree().
  */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastToString(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
+pub fn xmlXPathCastToString(val: xmlXPathObjectPtr) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if val.is_null() {
         return unsafe { xmlStrdup(b"\x00" as *const u8 as *const i8 as *const xmlChar) };
     }
     let safe_val = unsafe { &mut *val };
     match safe_val.type_0 as u32 {
-        0 => {
+        XPATH_UNDEFINED => {
             match () {
                 #[cfg(DEBUG_EXPR)]
                 _ => {
@@ -8296,17 +8133,19 @@ pub unsafe fn xmlXPathCastToString(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
             };
             ret = unsafe { xmlStrdup(b"\x00" as *const u8 as *const i8 as *const xmlChar) }
         }
-        1 | 9 => ret = unsafe { xmlXPathCastNodeSetToString((*val).nodesetval) },
-        4 => return unsafe { xmlStrdup((*val).stringval) },
-        2 => ret = unsafe { xmlXPathCastBooleanToString((*val).boolval) },
-        3 => ret = unsafe { xmlXPathCastNumberToString((*val).floatval) },
-        8 | 5 | 6 | 7 => {
+        XPATH_NODESET | XPATH_XSLT_TREE => {
+            ret = unsafe { xmlXPathCastNodeSetToString((*val).nodesetval) }
+        }
+        XPATH_STRING => return unsafe { xmlStrdup((*val).stringval) },
+        XPATH_BOOLEAN => ret = unsafe { xmlXPathCastBooleanToString((*val).boolval) },
+        XPATH_NUMBER => ret = unsafe { xmlXPathCastNumberToString((*val).floatval) },
+        XPATH_USERS | XPATH_POINT | XPATH_RANGE | XPATH_LOCATIONSET => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
                     b"Unimplemented block at %s:%d\n\x00" as *const u8 as *const i8,
                     b"xpath.c\x00" as *const u8 as *const i8,
-                    5775 as i32,
+                    5775,
                 )
             };
             ret = unsafe { xmlStrdup(b"\x00" as *const u8 as *const i8 as *const xmlChar) }
@@ -8323,18 +8162,20 @@ pub unsafe fn xmlXPathCastToString(mut val: xmlXPathObjectPtr) -> *mut xmlChar {
  * Returns the new object, the old one is freed (or the operation
  *         is done directly on @val) */
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub fn xmlXPathConvertString(val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     let mut res: *mut xmlChar = 0 as *mut xmlChar;
     if val.is_null() {
-        return unsafe { xmlXPathNewCString(b"\x00" as *const u8 as *const i8) };
+        return xmlXPathNewCString(b"\x00" as *const u8 as *const i8);
     }
     let safe_val = unsafe { &mut *val };
     match safe_val.type_0 as u32 {
-        1 | 9 => res = unsafe { xmlXPathCastNodeSetToString((*val).nodesetval) },
-        4 => return val,
-        2 => res = unsafe { xmlXPathCastBooleanToString((*val).boolval) },
-        3 => res = unsafe { xmlXPathCastNumberToString((*val).floatval) },
-        8 | 5 | 6 | 7 => {
+        XPATH_NODESET | XPATH_XSLT_TREE => {
+            res = unsafe { xmlXPathCastNodeSetToString((*val).nodesetval) }
+        }
+        XPATH_STRING => return val,
+        XPATH_BOOLEAN => res = unsafe { xmlXPathCastBooleanToString((*val).boolval) },
+        XPATH_NUMBER => res = unsafe { xmlXPathCastNumberToString((*val).floatval) },
+        XPATH_USERS | XPATH_POINT | XPATH_RANGE | XPATH_LOCATIONSET => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
@@ -8344,7 +8185,7 @@ pub unsafe fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjec
                 )
             };
         }
-        0 | _ => {
+        XPATH_UNDEFINED | _ => {
             match () {
                 #[cfg(DEBUG_EXPR)]
                 _ => {
@@ -8360,11 +8201,11 @@ pub unsafe fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjec
             };
         }
     }
-    unsafe { xmlXPathFreeObject(val) };
+    xmlXPathFreeObject(val);
     if res.is_null() {
-        return unsafe { xmlXPathNewCString(b"\x00" as *const u8 as *const i8) };
+        return xmlXPathNewCString(b"\x00" as *const u8 as *const i8);
     }
-    return unsafe { xmlXPathWrapString(res) };
+    return xmlXPathWrapString(res);
 }
 /* *
  * xmlXPathCastBooleanToNumber: * @val: a boolean
@@ -8375,7 +8216,7 @@ pub unsafe fn xmlXPathConvertString(mut val: xmlXPathObjectPtr) -> xmlXPathObjec
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastBooleanToNumber(mut val: i32) -> libc::c_double {
+pub fn xmlXPathCastBooleanToNumber(val: i32) -> libc::c_double {
     if val != 0 {
         return 1.0f64;
     }
@@ -8390,7 +8231,7 @@ pub unsafe fn xmlXPathCastBooleanToNumber(mut val: i32) -> libc::c_double {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastStringToNumber(mut val: *const xmlChar) -> libc::c_double {
+pub fn xmlXPathCastStringToNumber(val: *const xmlChar) -> libc::c_double {
     return unsafe { xmlXPathStringEvalNumber(val) };
 }
 /* *
@@ -8402,17 +8243,17 @@ pub unsafe fn xmlXPathCastStringToNumber(mut val: *const xmlChar) -> libc::c_dou
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastNodeToNumber(mut node: xmlNodePtr) -> libc::c_double {
+pub fn xmlXPathCastNodeToNumber(node: xmlNodePtr) -> libc::c_double {
     let mut strval: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: libc::c_double = 0.;
     if node.is_null() {
         return unsafe { xmlXPathNAN };
     }
-    strval = unsafe { xmlXPathCastNodeToString(node) };
+    strval = xmlXPathCastNodeToString(node);
     if strval.is_null() {
         return unsafe { xmlXPathNAN };
     }
-    ret = unsafe { xmlXPathCastStringToNumber(strval) };
+    ret = xmlXPathCastStringToNumber(strval);
     unsafe { xmlFree.expect("non-null function pointer")(strval as *mut ()) };
     return ret;
 }
@@ -8425,14 +8266,14 @@ pub unsafe fn xmlXPathCastNodeToNumber(mut node: xmlNodePtr) -> libc::c_double {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastNodeSetToNumber(mut ns: xmlNodeSetPtr) -> libc::c_double {
+pub fn xmlXPathCastNodeSetToNumber(ns: xmlNodeSetPtr) -> libc::c_double {
     let mut str: *mut xmlChar = 0 as *mut xmlChar;
     let mut ret: libc::c_double = 0.;
     if ns.is_null() {
         return unsafe { xmlXPathNAN };
     }
-    str = unsafe { xmlXPathCastNodeSetToString(ns) };
-    ret = unsafe { xmlXPathCastStringToNumber(str) };
+    str = xmlXPathCastNodeSetToString(ns);
+    ret = xmlXPathCastStringToNumber(str);
     unsafe { xmlFree.expect("non-null function pointer")(str as *mut ()) };
     return ret;
 }
@@ -8444,14 +8285,14 @@ pub unsafe fn xmlXPathCastNodeSetToNumber(mut ns: xmlNodeSetPtr) -> libc::c_doub
  * Returns the number value
  */
 
-pub unsafe fn xmlXPathCastToNumber(mut val: xmlXPathObjectPtr) -> libc::c_double {
+pub fn xmlXPathCastToNumber(val: xmlXPathObjectPtr) -> libc::c_double {
     let mut ret: libc::c_double = 0.0f64;
     if val.is_null() {
         return unsafe { xmlXPathNAN };
     }
     let safe_val = unsafe { &mut *val };
     match safe_val.type_0 as u32 {
-        0 => {
+        XPATH_UNDEFINED => {
             match () {
                 #[cfg(DEBUG_EXPR)]
                 _ => {
@@ -8467,17 +8308,19 @@ pub unsafe fn xmlXPathCastToNumber(mut val: xmlXPathObjectPtr) -> libc::c_double
             };
             ret = unsafe { xmlXPathNAN }
         }
-        1 | 9 => ret = unsafe { xmlXPathCastNodeSetToNumber((*val).nodesetval) },
-        4 => ret = unsafe { xmlXPathCastStringToNumber((*val).stringval) },
-        3 => ret = safe_val.floatval,
-        2 => ret = unsafe { xmlXPathCastBooleanToNumber((*val).boolval) },
-        8 | 5 | 6 | 7 => {
+        XPATH_NODESET | XPATH_XSLT_TREE => {
+            ret = unsafe { xmlXPathCastNodeSetToNumber((*val).nodesetval) }
+        }
+        XPATH_STRING => ret = unsafe { xmlXPathCastStringToNumber((*val).stringval) },
+        XPATH_NUMBER => ret = safe_val.floatval,
+        XPATH_BOOLEAN => ret = unsafe { xmlXPathCastBooleanToNumber((*val).boolval) },
+        XPATH_USERS | XPATH_POINT | XPATH_RANGE | XPATH_LOCATIONSET => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
                     b"Unimplemented block at %s:%d\n\x00" as *const u8 as *const i8,
                     b"xpath.c\x00" as *const u8 as *const i8,
-                    5940 as i32,
+                    5940,
                 )
             };
             ret = unsafe { xmlXPathNAN }
@@ -8495,7 +8338,7 @@ pub unsafe fn xmlXPathCastToNumber(mut val: xmlXPathObjectPtr) -> libc::c_double
  *         is done directly on @val) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub fn xmlXPathConvertNumber(val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
         return xmlXPathNewFloat(0.0f64);
@@ -8504,8 +8347,8 @@ pub unsafe fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjec
     if safe_val.type_0 as u32 == XPATH_NUMBER as u32 {
         return val;
     }
-    ret = unsafe { xmlXPathNewFloat(xmlXPathCastToNumber(val)) };
-    unsafe { xmlXPathFreeObject(val) };
+    ret = xmlXPathNewFloat(xmlXPathCastToNumber(val));
+    xmlXPathFreeObject(val);
     return ret;
 }
 /* *
@@ -8520,9 +8363,9 @@ pub unsafe fn xmlXPathConvertNumber(mut val: xmlXPathObjectPtr) -> xmlXPathObjec
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastNumberToBoolean(mut val: libc::c_double) -> i32 {
-    if unsafe { xmlXPathIsNaN(val) } != 0 || val == 0.0f64 {
-        return 0 as i32;
+pub fn xmlXPathCastNumberToBoolean(val: libc::c_double) -> i32 {
+    if xmlXPathIsNaN(val) != 0 || val == 0.0f64 {
+        return 0;
     }
     return 1;
 }
@@ -8535,9 +8378,9 @@ pub unsafe fn xmlXPathCastNumberToBoolean(mut val: libc::c_double) -> i32 {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastStringToBoolean(mut val: *const xmlChar) -> i32 {
-    if val.is_null() || unsafe { xmlStrlen(val) } == 0 as i32 {
-        return 0 as i32;
+pub fn xmlXPathCastStringToBoolean(val: *const xmlChar) -> i32 {
+    if val.is_null() || unsafe { xmlStrlen(val) } == 0 {
+        return 0;
     }
     return 1;
 }
@@ -8550,10 +8393,10 @@ pub unsafe fn xmlXPathCastStringToBoolean(mut val: *const xmlChar) -> i32 {
  */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathCastNodeSetToBoolean(mut ns: xmlNodeSetPtr) -> i32 {
+pub fn xmlXPathCastNodeSetToBoolean(ns: xmlNodeSetPtr) -> i32 {
     let safe_ns = unsafe { &mut *ns };
-    if ns.is_null() || safe_ns.nodeNr == 0 as i32 {
-        return 0 as i32;
+    if ns.is_null() || safe_ns.nodeNr == 0 {
+        return 0;
     }
     return 1;
 }
@@ -8565,14 +8408,14 @@ pub unsafe fn xmlXPathCastNodeSetToBoolean(mut ns: xmlNodeSetPtr) -> i32 {
  * Returns the boolean value
  */
 
-pub unsafe fn xmlXPathCastToBoolean(mut val: xmlXPathObjectPtr) -> i32 {
-    let mut ret: i32 = 0 as i32;
+pub fn xmlXPathCastToBoolean(val: xmlXPathObjectPtr) -> i32 {
+    let mut ret: i32 = 0;
     if val.is_null() {
-        return 0 as i32;
+        return 0;
     }
     let safe_val = unsafe { &mut *val };
     match safe_val.type_0 as u32 {
-        0 => {
+        XPATH_UNDEFINED => {
             match () {
                 #[cfg(DEBUG_EXPR)]
                 _ => {
@@ -8586,22 +8429,24 @@ pub unsafe fn xmlXPathCastToBoolean(mut val: xmlXPathObjectPtr) -> i32 {
                 #[cfg(not(DEBUG_EXPR))]
                 _ => {}
             };
-            ret = 0 as i32
+            ret = 0
         }
-        1 | 9 => ret = unsafe { xmlXPathCastNodeSetToBoolean((*val).nodesetval) },
-        4 => ret = unsafe { xmlXPathCastStringToBoolean((*val).stringval) },
-        3 => ret = unsafe { xmlXPathCastNumberToBoolean((*val).floatval) },
-        2 => ret = safe_val.boolval,
-        8 | 5 | 6 | 7 => {
+        XPATH_NODESET | XPATH_XSLT_TREE => {
+            ret = unsafe { xmlXPathCastNodeSetToBoolean((*val).nodesetval) }
+        }
+        XPATH_STRING => ret = unsafe { xmlXPathCastStringToBoolean((*val).stringval) },
+        XPATH_NUMBER => ret = unsafe { xmlXPathCastNumberToBoolean((*val).floatval) },
+        XPATH_BOOLEAN => ret = safe_val.boolval,
+        XPATH_USERS | XPATH_POINT | XPATH_RANGE | XPATH_LOCATIONSET => {
             unsafe {
                 (*__xmlGenericError()).expect("non-null function pointer")(
                     *__xmlGenericErrorContext(),
                     b"Unimplemented block at %s:%d\n\x00" as *const u8 as *const i8,
                     b"xpath.c\x00" as *const u8 as *const i8,
-                    6052 as i32,
+                    6052,
                 )
             };
-            ret = 0 as i32
+            ret = 0
         }
         _ => {}
     }
@@ -8616,17 +8461,17 @@ pub unsafe fn xmlXPathCastToBoolean(mut val: xmlXPathObjectPtr) -> i32 {
  *         is done directly on @val) */
 
 #[cfg(LIBXML_XPATH_ENABLED)]
-pub unsafe fn xmlXPathConvertBoolean(mut val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
+pub fn xmlXPathConvertBoolean(val: xmlXPathObjectPtr) -> xmlXPathObjectPtr {
     let mut ret: xmlXPathObjectPtr = 0 as *mut xmlXPathObject;
     if val.is_null() {
-        return unsafe { xmlXPathNewBoolean(0 as i32) };
+        return xmlXPathNewBoolean(0);
     }
     let safe_val = unsafe { &mut *val };
     if safe_val.type_0 as u32 == XPATH_BOOLEAN as u32 {
         return val;
     }
-    ret = unsafe { xmlXPathNewBoolean(xmlXPathCastToBoolean(val)) };
-    unsafe { xmlXPathFreeObject(val) };
+    ret = xmlXPathNewBoolean(xmlXPathCastToBoolean(val));
+    xmlXPathFreeObject(val);
     return ret;
 }
 /* *
@@ -8645,7 +8490,7 @@ pub unsafe fn xmlXPathConvertBoolean(mut val: xmlXPathObjectPtr) -> xmlXPathObje
  * Returns the xmlXPathContext just allocated. The caller will need to free it.
  */
 
-pub unsafe fn xmlXPathNewContext(mut doc: xmlDocPtr) -> xmlXPathContextPtr {
+pub fn xmlXPathNewContext(doc: xmlDocPtr) -> xmlXPathContextPtr {
     let mut ret: xmlXPathContextPtr = 0 as *mut xmlXPathContext;
     ret = unsafe {
         xmlMalloc.expect("non-null function pointer")(
@@ -8653,34 +8498,32 @@ pub unsafe fn xmlXPathNewContext(mut doc: xmlDocPtr) -> xmlXPathContextPtr {
         ) as xmlXPathContextPtr
     };
     if ret.is_null() {
-        unsafe {
-            xmlXPathErrMemory(
-                0 as xmlXPathContextPtr,
-                b"creating context\n\x00" as *const u8 as *const i8,
-            )
-        };
+        xmlXPathErrMemory(
+            0 as xmlXPathContextPtr,
+            b"creating context\n\x00" as *const u8 as *const i8,
+        );
         return 0 as xmlXPathContextPtr;
     }
     unsafe {
         memset(
             ret as *mut (),
-            0 as i32,
+            0,
             ::std::mem::size_of::<xmlXPathContext>() as u64,
         );
         (*ret).doc = doc;
         (*ret).node = 0 as xmlNodePtr;
         (*ret).varHash = 0 as xmlHashTablePtr;
-        (*ret).nb_types = 0 as i32;
-        (*ret).max_types = 0 as i32;
+        (*ret).nb_types = 0;
+        (*ret).max_types = 0;
         (*ret).types = 0 as xmlXPathTypePtr;
-        (*ret).funcHash = xmlHashCreate(0 as i32);
-        (*ret).nb_axis = 0 as i32;
-        (*ret).max_axis = 0 as i32;
+        (*ret).funcHash = xmlHashCreate(0);
+        (*ret).nb_axis = 0;
+        (*ret).max_axis = 0;
         (*ret).axis = 0 as xmlXPathAxisPtr;
         (*ret).nsHash = 0 as xmlHashTablePtr;
         (*ret).user = 0 as *mut ();
-        (*ret).contextSize = -(1);
-        (*ret).proximityPosition = -(1);
+        (*ret).contextSize = -1;
+        (*ret).proximityPosition = -1;
     }
     match () {
         #[cfg(XP_DEFAULT_CACHE_ON)]
