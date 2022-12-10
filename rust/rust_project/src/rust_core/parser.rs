@@ -2,6 +2,7 @@ use super::parserInternals::*;
 use rust_ffi::ffi_defination::defination::*;
 use rust_ffi::ffi_extern_method::extern_method::*;
 use rust_ffi::ffi_extern_method::extern_method_safe::*;
+use std::mem::size_of;
 
 /* *
 * nameNsPush:
@@ -34,8 +35,7 @@ fn nameNsPush(
         tmp = unsafe {
             xmlRealloc_safe(
                 (safe_ctxt).nameTab as *mut *mut xmlChar as *mut (),
-                ((safe_ctxt).nameMax as u64)
-                    .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
+                ((safe_ctxt).nameMax as u64).wrapping_mul(size_of::<*const xmlChar>() as u64),
             )
         } as *mut *const xmlChar;
         if tmp.is_null() {
@@ -46,8 +46,7 @@ fn nameNsPush(
             tmp2 = unsafe {
                 xmlRealloc_safe(
                     (safe_ctxt).pushTab as *mut *mut () as *mut (),
-                    ((safe_ctxt).nameMax as u64)
-                        .wrapping_mul(::std::mem::size_of::<xmlStartTag>() as u64),
+                    ((safe_ctxt).nameMax as u64).wrapping_mul(size_of::<xmlStartTag>() as u64),
                 )
             } as *mut xmlStartTag;
             if tmp2.is_null() {
@@ -61,8 +60,7 @@ fn nameNsPush(
     } else if (safe_ctxt).pushTab.is_null() {
         (safe_ctxt).pushTab = unsafe {
             xmlMalloc_safe(
-                ((safe_ctxt).nameMax as u64)
-                    .wrapping_mul(::std::mem::size_of::<xmlStartTag>() as u64),
+                ((safe_ctxt).nameMax as u64).wrapping_mul(size_of::<xmlStartTag>() as u64),
             )
         } as *mut xmlStartTag;
         if (safe_ctxt).pushTab.is_null() {
@@ -146,8 +144,7 @@ pub fn namePush(ctxt: xmlParserCtxtPtr, value: *const xmlChar) -> i32 {
         tmp = unsafe {
             xmlRealloc_safe(
                 (safe_ctxt).nameTab as *mut *mut xmlChar as *mut (),
-                (((safe_ctxt).nameMax * 2) as u64)
-                    .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
+                (((safe_ctxt).nameMax * 2) as u64).wrapping_mul(size_of::<*const xmlChar>() as u64),
             )
         } as *mut *const xmlChar;
         if tmp.is_null() {
@@ -205,7 +202,7 @@ fn spacePush(ctxt: xmlParserCtxtPtr, val: i32) -> i32 {
         tmp = unsafe {
             xmlRealloc_safe(
                 (safe_ctxt).spaceTab as *mut (),
-                ((safe_ctxt).spaceMax as u64).wrapping_mul(::std::mem::size_of::<i32>() as u64),
+                ((safe_ctxt).spaceMax as u64).wrapping_mul(size_of::<i32>() as u64),
             )
         } as *mut i32;
         if tmp.is_null() {
@@ -1611,9 +1608,9 @@ pub fn xmlSplitQName(
          * for the processing speed.
          */
         max = len * 2;
-        buffer = unsafe {
-            xmlMallocAtomic_safe((max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
-        } as *mut xmlChar;
+        buffer =
+            unsafe { xmlMallocAtomic_safe((max as u64).wrapping_mul(size_of::<xmlChar>() as u64)) }
+                as *mut xmlChar;
         if buffer.is_null() {
             unsafe {
                 xmlErrMemory(ctxt, 0 as *const i8);
@@ -1629,7 +1626,7 @@ pub fn xmlSplitQName(
                 tmp = unsafe {
                     xmlRealloc_safe(
                         buffer as *mut (),
-                        (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                        (max as u64).wrapping_mul(size_of::<xmlChar>() as u64),
                     )
                 } as *mut xmlChar;
                 if tmp.is_null() {
@@ -1740,9 +1737,7 @@ pub fn xmlSplitQName(
              */
             max = len * 2;
             buffer = unsafe {
-                xmlMallocAtomic_safe(
-                    (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                )
+                xmlMallocAtomic_safe((max as u64).wrapping_mul(size_of::<xmlChar>() as u64))
             } as *mut xmlChar;
             if buffer.is_null() {
                 unsafe {
@@ -1759,7 +1754,7 @@ pub fn xmlSplitQName(
                     tmp_0 = unsafe {
                         xmlRealloc_safe(
                             buffer as *mut (),
-                            (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                            (max as u64).wrapping_mul(size_of::<xmlChar>() as u64),
                         )
                     } as *mut xmlChar;
                     if tmp_0.is_null() {
@@ -2633,9 +2628,7 @@ fn xmlParseStringName(ctxt: xmlParserCtxtPtr, str: *mut *const xmlChar) -> *mut 
             let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
             let mut max: i32 = len * 2;
             buffer = unsafe {
-                xmlMallocAtomic_safe(
-                    (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                )
+                xmlMallocAtomic_safe((max as u64).wrapping_mul(size_of::<xmlChar>() as u64))
             } as *mut xmlChar;
             if buffer.is_null() {
                 unsafe {
@@ -2662,7 +2655,7 @@ fn xmlParseStringName(ctxt: xmlParserCtxtPtr, str: *mut *const xmlChar) -> *mut 
                     tmp = unsafe {
                         xmlRealloc_safe(
                             buffer as *mut (),
-                            (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                            (max as u64).wrapping_mul(size_of::<xmlChar>() as u64),
                         )
                     } as *mut xmlChar;
                     if tmp.is_null() {
@@ -2802,9 +2795,7 @@ pub fn xmlParseNmtoken(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
             let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
             let mut max: i32 = len * 2;
             buffer = unsafe {
-                xmlMallocAtomic_safe(
-                    (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                )
+                xmlMallocAtomic_safe((max as u64).wrapping_mul(size_of::<xmlChar>() as u64))
             } as *mut xmlChar;
             if buffer.is_null() {
                 unsafe {
@@ -2846,7 +2837,7 @@ pub fn xmlParseNmtoken(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
                     tmp = unsafe {
                         xmlRealloc_safe(
                             buffer as *mut (),
-                            (max as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                            (max as u64).wrapping_mul(size_of::<xmlChar>() as u64),
                         )
                     } as *mut xmlChar;
                     if tmp.is_null() {
@@ -2936,9 +2927,8 @@ pub fn xmlParseEntityValue(ctxt: xmlParserCtxtPtr, orig: *mut *mut xmlChar) -> *
         }
         return 0 as *mut xmlChar;
     }
-    buf = unsafe {
-        xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
-    } as *mut xmlChar;
+    buf = unsafe { xmlMallocAtomic_safe((size as u64).wrapping_mul(size_of::<xmlChar>() as u64)) }
+        as *mut xmlChar;
     if buf.is_null() {
         unsafe {
             xmlErrMemory(ctxt, 0 as *const i8);
@@ -2988,7 +2978,7 @@ pub fn xmlParseEntityValue(ctxt: xmlParserCtxtPtr, orig: *mut *mut xmlChar) -> *
                 tmp = unsafe {
                     xmlRealloc_safe(
                         buf as *mut (),
-                        (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                        (size as u64).wrapping_mul(size_of::<xmlChar>() as u64),
                     )
                 } as *mut xmlChar;
                 if tmp.is_null() {
@@ -3820,9 +3810,8 @@ pub fn xmlParseSystemLiteral(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
         }
         return 0 as *mut xmlChar;
     }
-    buf = unsafe {
-        xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
-    } as *mut xmlChar;
+    buf = unsafe { xmlMallocAtomic_safe((size as u64).wrapping_mul(size_of::<xmlChar>() as u64)) }
+        as *mut xmlChar;
     if buf.is_null() {
         unsafe {
             xmlErrMemory(ctxt, 0 as *const i8);
@@ -3859,7 +3848,7 @@ pub fn xmlParseSystemLiteral(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
             tmp = unsafe {
                 xmlRealloc_safe(
                     buf as *mut (),
-                    (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                    (size as u64).wrapping_mul(size_of::<xmlChar>() as u64),
                 )
             } as *mut xmlChar;
             if tmp.is_null() {
@@ -3995,9 +3984,8 @@ pub fn xmlParsePubidLiteral(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
         }
         return 0 as *mut xmlChar;
     }
-    buf = unsafe {
-        xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
-    } as *mut xmlChar;
+    buf = unsafe { xmlMallocAtomic_safe((size as u64).wrapping_mul(size_of::<xmlChar>() as u64)) }
+        as *mut xmlChar;
     if buf.is_null() {
         unsafe {
             xmlErrMemory(ctxt, 0 as *const i8);
@@ -4025,7 +4013,7 @@ pub fn xmlParsePubidLiteral(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
             tmp = unsafe {
                 xmlRealloc_safe(
                     buf as *mut (),
-                    (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                    (size as u64).wrapping_mul(size_of::<xmlChar>() as u64),
                 )
             } as *mut xmlChar;
             if tmp.is_null() {
@@ -4775,9 +4763,8 @@ fn xmlParseCommentComplex(
     if buf.is_null() {
         len = 0;
         size = 100;
-        buf = unsafe {
-            xmlMallocAtomic_safe(size.wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
-        } as *mut xmlChar;
+        buf = unsafe { xmlMallocAtomic_safe(size.wrapping_mul(size_of::<xmlChar>() as u64)) }
+            as *mut xmlChar;
         if buf.is_null() {
             unsafe {
                 xmlErrMemory(ctxt, 0 as *const i8);
@@ -5150,13 +5137,9 @@ pub fn xmlParseComment(ctxt: xmlParserCtxtPtr) {
                                 } else {
                                     size = 100 + nbchar
                                 }
-                                buf =
-                                    xmlMallocAtomic_safe(size.wrapping_mul(::std::mem::size_of::<
-                                        xmlChar,
-                                    >(
-                                    )
-                                        as u64))
-                                        as *mut xmlChar;
+                                buf = xmlMallocAtomic_safe(
+                                    size.wrapping_mul(size_of::<xmlChar>() as u64),
+                                ) as *mut xmlChar;
                                 if buf.is_null() {
                                     xmlErrMemory(ctxt, 0 as *const i8);
                                     (*ctxt).instate = state;
@@ -5170,7 +5153,7 @@ pub fn xmlParseComment(ctxt: xmlParserCtxtPtr) {
                                     as size_t;
                                 new_buf = xmlRealloc_safe(
                                     buf as *mut (),
-                                    size.wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                                    size.wrapping_mul(size_of::<xmlChar>() as u64),
                                 ) as *mut xmlChar;
                                 if new_buf.is_null() {
                                     xmlFree_safe(buf as *mut ());
@@ -5592,9 +5575,8 @@ pub fn xmlParsePI(ctxt: xmlParserCtxtPtr) {
                 }
                 return;
             }
-            buf = unsafe {
-                xmlMallocAtomic_safe(size.wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
-            } as *mut xmlChar;
+            buf = unsafe { xmlMallocAtomic_safe(size.wrapping_mul(size_of::<xmlChar>() as u64)) }
+                as *mut xmlChar;
             if buf.is_null() {
                 unsafe {
                     xmlErrMemory(ctxt, 0 as *const i8);
@@ -8090,7 +8072,7 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                             };
                             tmp = xmlRealloc_safe(
                                 inputIds as *mut (),
-                                inputIdsSize.wrapping_mul(::std::mem::size_of::<i32>() as u64),
+                                inputIdsSize.wrapping_mul(size_of::<i32>() as u64),
                             ) as *mut i32;
                             if tmp.is_null() {
                                 xmlErrMemory(ctxt, 0 as *const i8);
@@ -8599,14 +8581,14 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                     if hex == 'x' as i32 || hex == 'X' as i32 {
                         snprintf(
                             out.as_mut_ptr() as *mut i8,
-                            ::std::mem::size_of::<[xmlChar; 16]>() as u64,
+                            size_of::<[xmlChar; 16]>() as u64,
                             b"#x%X\x00" as *const u8 as *const i8,
                             value,
                         );
                     } else {
                         snprintf(
                             out.as_mut_ptr() as *mut i8,
-                            ::std::mem::size_of::<[xmlChar; 16]>() as u64,
+                            size_of::<[xmlChar; 16]>() as u64,
                             b"#%d\x00" as *const u8 as *const i8,
                             value,
                         );
@@ -10624,11 +10606,9 @@ pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
                 {
                     if atts.is_null() {
                         maxatts = 22 as i32; /* allow for 10 attrs by default */
-                        atts = xmlMalloc_safe((maxatts as u64).wrapping_mul(::std::mem::size_of::<
-                            *mut xmlChar,
-                        >(
-                        )
-                            as u64)) as *mut *const xmlChar;
+                        atts = xmlMalloc_safe(
+                            (maxatts as u64).wrapping_mul(size_of::<*mut xmlChar>() as u64),
+                        ) as *mut *const xmlChar;
                         if atts.is_null() {
                             unsafe {
                                 xmlErrMemory(ctxt, 0 as *const i8);
@@ -10647,8 +10627,7 @@ pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
                         maxatts *= 2 as i32;
                         n = xmlRealloc_safe(
                             atts as *mut (),
-                            (maxatts as u64)
-                                .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
+                            (maxatts as u64).wrapping_mul(size_of::<*const xmlChar>() as u64),
                         ) as *mut *const xmlChar;
                         if n.is_null() {
                             unsafe {
@@ -12750,7 +12729,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
         (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(sl as isize);
         cur = xmlCurrentChar(ctxt, &mut l);
     }
-    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(size_of::<xmlChar>() as u64))
         as *mut xmlChar;
     if buf.is_null() {
         unsafe {
@@ -12781,7 +12760,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
             }
             tmp = xmlRealloc_safe(
                 buf as *mut (),
-                ((size * 2 as i32) as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                ((size * 2 as i32) as u64).wrapping_mul(size_of::<xmlChar>() as u64),
             ) as *mut xmlChar;
             if tmp.is_null() {
                 xmlFree_safe(buf as *mut ());
@@ -13336,7 +13315,7 @@ pub unsafe fn xmlParseVersionNum(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut len: i32 = 0 as i32;
     let mut size: i32 = 10 as i32;
     let mut cur: xmlChar = 0;
-    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(size_of::<xmlChar>() as u64))
         as *mut xmlChar;
     if buf.is_null() {
         unsafe {
@@ -13369,7 +13348,7 @@ pub unsafe fn xmlParseVersionNum(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
             size *= 2 as i32;
             tmp = xmlRealloc_safe(
                 buf as *mut (),
-                (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                (size as u64).wrapping_mul(size_of::<xmlChar>() as u64),
             ) as *mut xmlChar;
             if tmp.is_null() {
                 xmlFree_safe(buf as *mut ());
@@ -13473,9 +13452,8 @@ pub unsafe fn xmlParseEncName(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     if cur as i32 >= 'a' as i32 && cur as i32 <= 'z' as i32
         || cur as i32 >= 'A' as i32 && cur as i32 <= 'Z' as i32
     {
-        buf = xmlMallocAtomic_safe(
-            (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-        ) as *mut xmlChar;
+        buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(size_of::<xmlChar>() as u64))
+            as *mut xmlChar;
         if buf.is_null() {
             unsafe {
                 xmlErrMemory(ctxt, 0 as *const i8);
@@ -13501,7 +13479,7 @@ pub unsafe fn xmlParseEncName(mut ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
                 size *= 2 as i32;
                 tmp = xmlRealloc_safe(
                     buf as *mut (),
-                    (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                    (size as u64).wrapping_mul(size_of::<xmlChar>() as u64),
                 ) as *mut xmlChar;
                 if tmp.is_null() {
                     unsafe {
@@ -17186,8 +17164,7 @@ pub unsafe fn xmlCreatePushParserCtxt(
             }
         };
 
-        safe_ctxt.sax =
-            xmlMalloc_safe(::std::mem::size_of::<xmlSAXHandler>() as u64) as xmlSAXHandlerPtr;
+        safe_ctxt.sax = xmlMalloc_safe(size_of::<xmlSAXHandler>() as u64) as xmlSAXHandlerPtr;
         if safe_ctxt.sax.is_null() {
             xmlErrMemory(ctxt, 0 as *const i8);
             xmlFreeParserInputBuffer_safe(buf);
@@ -17198,19 +17175,19 @@ pub unsafe fn xmlCreatePushParserCtxt(
             memset(
                 safe_ctxt.sax as *mut (),
                 0 as i32,
-                ::std::mem::size_of::<xmlSAXHandler>() as u64,
+                size_of::<xmlSAXHandler>() as u64,
             );
             if (*sax).initialized == 0xdeedbeaf as u32 {
                 memcpy(
                     safe_ctxt.sax as *mut (),
                     sax as *const (),
-                    ::std::mem::size_of::<xmlSAXHandler>() as u64,
+                    size_of::<xmlSAXHandler>() as u64,
                 );
             } else {
                 memcpy(
                     safe_ctxt.sax as *mut (),
                     sax as *const (),
-                    ::std::mem::size_of::<xmlSAXHandlerV1>() as u64,
+                    size_of::<xmlSAXHandlerV1>() as u64,
                 );
             }
         }
@@ -17409,8 +17386,7 @@ pub unsafe fn xmlCreateIOParserCtxt(
             }
         };
 
-        safe_ctxt.sax =
-            xmlMalloc_safe(::std::mem::size_of::<xmlSAXHandler>() as u64) as xmlSAXHandlerPtr;
+        safe_ctxt.sax = xmlMalloc_safe(size_of::<xmlSAXHandler>() as u64) as xmlSAXHandlerPtr;
         if safe_ctxt.sax.is_null() {
             xmlErrMemory(ctxt, 0 as *const i8);
             xmlFreeParserCtxt_safe(ctxt);
@@ -17420,19 +17396,19 @@ pub unsafe fn xmlCreateIOParserCtxt(
             memset(
                 safe_ctxt.sax as *mut (),
                 0 as i32,
-                ::std::mem::size_of::<xmlSAXHandler>() as u64,
+                size_of::<xmlSAXHandler>() as u64,
             );
             if (*sax).initialized == 0xdeedbeaf as u32 {
                 memcpy(
                     safe_ctxt.sax as *mut (),
                     sax as *const (),
-                    ::std::mem::size_of::<xmlSAXHandler>() as u64,
+                    size_of::<xmlSAXHandler>() as u64,
                 );
             } else {
                 memcpy(
                     safe_ctxt.sax as *mut (),
                     sax as *const (),
-                    ::std::mem::size_of::<xmlSAXHandlerV1>() as u64,
+                    size_of::<xmlSAXHandlerV1>() as u64,
                 );
             }
         }
@@ -22198,14 +22174,12 @@ unsafe fn xmlAddDefAttrs(
                  */
                 defaults = xmlHashLookup2_safe((*ctxt).attsDefault, name, prefix) as xmlDefAttrsPtr;
                 if defaults.is_null() {
-                    defaults =
-                        xmlMalloc_safe((::std::mem::size_of::<xmlDefAttrs>() as u64).wrapping_add(
-                            ((4 as i32 * 5 as i32) as u64).wrapping_mul(::std::mem::size_of::<
-                                *const xmlChar,
-                            >(
-                            )
-                                as u64),
-                        )) as xmlDefAttrsPtr;
+                    defaults = xmlMalloc_safe(
+                        (size_of::<xmlDefAttrs>() as u64).wrapping_add(
+                            ((4 as i32 * 5 as i32) as u64)
+                                .wrapping_mul(size_of::<*const xmlChar>() as u64),
+                        ),
+                    ) as xmlDefAttrsPtr;
                     if defaults.is_null() {
                         current_block = 2968889880470072775;
                     } else {
@@ -22229,9 +22203,9 @@ unsafe fn xmlAddDefAttrs(
                     let mut temp: xmlDefAttrsPtr = 0 as *mut xmlDefAttrs;
                     temp = xmlRealloc_safe(
                         defaults as *mut (),
-                        (::std::mem::size_of::<xmlDefAttrs>() as u64).wrapping_add(
+                        (size_of::<xmlDefAttrs>() as u64).wrapping_add(
                             ((2 as i32 * (*defaults).maxAttrs * 5 as i32) as u64)
-                                .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
+                                .wrapping_mul(size_of::<*const xmlChar>() as u64),
                         ),
                     ) as xmlDefAttrsPtr;
                     if temp.is_null() {
@@ -22732,7 +22706,7 @@ unsafe fn nsPush(
         (safe_ctxt).nsMax = 10 as i32;
         (safe_ctxt).nsNr = 0 as i32;
         (safe_ctxt).nsTab = xmlMalloc_safe(
-            ((safe_ctxt).nsMax as u64).wrapping_mul(::std::mem::size_of::<*mut xmlChar>() as u64),
+            ((safe_ctxt).nsMax as u64).wrapping_mul(size_of::<*mut xmlChar>() as u64),
         ) as *mut *const xmlChar;
         if (safe_ctxt).nsTab.is_null() {
             unsafe {
@@ -22746,7 +22720,7 @@ unsafe fn nsPush(
         (safe_ctxt).nsMax *= 2 as i32;
         tmp = xmlRealloc_safe(
             (safe_ctxt).nsTab as *mut i8 as *mut (),
-            ((safe_ctxt).nsMax as u64).wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
+            ((safe_ctxt).nsMax as u64).wrapping_mul(size_of::<*const xmlChar>() as u64),
         ) as *mut *const xmlChar;
         if tmp.is_null() {
             unsafe {
@@ -22817,16 +22791,15 @@ unsafe fn xmlCtxtGrowAttrs(mut ctxt: xmlParserCtxtPtr, mut nr: i32) -> i32 {
     let mut maxatts: i32 = 0;
     if (safe_ctxt).atts.is_null() {
         maxatts = 55 as i32;
-        atts = xmlMalloc_safe(
-            (maxatts as u64).wrapping_mul(::std::mem::size_of::<*mut xmlChar>() as u64),
-        ) as *mut *const xmlChar;
+        atts = xmlMalloc_safe((maxatts as u64).wrapping_mul(size_of::<*mut xmlChar>() as u64))
+            as *mut *const xmlChar;
         if atts.is_null() {
             current_block = 1220566974040888119;
         } else {
             (safe_ctxt).atts = atts;
-            attallocs = xmlMalloc_safe(
-                ((maxatts / 5 as i32) as u64).wrapping_mul(::std::mem::size_of::<i32>() as u64),
-            ) as *mut i32;
+            attallocs =
+                xmlMalloc_safe(((maxatts / 5 as i32) as u64).wrapping_mul(size_of::<i32>() as u64))
+                    as *mut i32;
             if attallocs.is_null() {
                 current_block = 1220566974040888119;
             } else {
@@ -22839,7 +22812,7 @@ unsafe fn xmlCtxtGrowAttrs(mut ctxt: xmlParserCtxtPtr, mut nr: i32) -> i32 {
         maxatts = (nr + 5 as i32) * 2 as i32;
         atts = xmlRealloc_safe(
             (safe_ctxt).atts as *mut (),
-            (maxatts as u64).wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
+            (maxatts as u64).wrapping_mul(size_of::<*const xmlChar>() as u64),
         ) as *mut *const xmlChar;
         if atts.is_null() {
             current_block = 1220566974040888119;
@@ -22847,7 +22820,7 @@ unsafe fn xmlCtxtGrowAttrs(mut ctxt: xmlParserCtxtPtr, mut nr: i32) -> i32 {
             (safe_ctxt).atts = atts;
             attallocs = xmlRealloc_safe(
                 (safe_ctxt).attallocs as *mut (),
-                ((maxatts / 5 as i32) as u64).wrapping_mul(::std::mem::size_of::<i32>() as u64),
+                ((maxatts / 5 as i32) as u64).wrapping_mul(size_of::<i32>() as u64),
             ) as *mut i32;
             if attallocs.is_null() {
                 current_block = 1220566974040888119;
@@ -22889,8 +22862,7 @@ pub unsafe fn inputPush_parser(mut ctxt: xmlParserCtxtPtr, mut value: xmlParserI
         (safe_ctxt).inputMax *= 2 as i32;
         (safe_ctxt).inputTab = xmlRealloc_safe(
             (safe_ctxt).inputTab as *mut (),
-            ((safe_ctxt).inputMax as u64)
-                .wrapping_mul(::std::mem::size_of::<xmlParserInputPtr>() as u64),
+            ((safe_ctxt).inputMax as u64).wrapping_mul(size_of::<xmlParserInputPtr>() as u64),
         ) as *mut xmlParserInputPtr;
         if (safe_ctxt).inputTab.is_null() {
             unsafe {
@@ -22965,8 +22937,7 @@ pub unsafe fn nodePush(mut ctxt: xmlParserCtxtPtr, mut value: xmlNodePtr) -> i32
         let mut tmp: *mut xmlNodePtr = 0 as *mut xmlNodePtr;
         tmp = xmlRealloc_safe(
             (safe_ctxt).nodeTab as *mut (),
-            (((safe_ctxt).nodeMax * 2 as i32) as u64)
-                .wrapping_mul(::std::mem::size_of::<xmlNodePtr>() as u64),
+            (((safe_ctxt).nodeMax * 2 as i32) as u64).wrapping_mul(size_of::<xmlNodePtr>() as u64),
         ) as *mut xmlNodePtr;
         if tmp.is_null() {
             unsafe {
