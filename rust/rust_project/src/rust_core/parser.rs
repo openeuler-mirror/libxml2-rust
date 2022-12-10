@@ -8644,12 +8644,12 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
     if safe_ctxt.wellFormed == 0 {
         return;
     }
-    was_checked = (safe_ent).checked;
+    was_checked = safe_ent.checked;
     /* special case of predefined entities */
-    if (safe_ent).name.is_null()
-        || (safe_ent).etype as u32 == XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
+    if safe_ent.name.is_null()
+        || safe_ent.etype as u32 == XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
     {
-        val = (safe_ent).content;
+        val = safe_ent.content;
         if val.is_null() {
             return;
         }
@@ -8682,9 +8682,9 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
      * far more secure as the parser will only process data coming from
      * the document entity by default.
      */
-    if ((safe_ent).checked == 0 as i32
-        || (safe_ent).children.is_null() && safe_ctxt.options & XML_PARSE_NOENT as i32 != 0)
-        && ((safe_ent).etype as u32 != XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
+    if (safe_ent.checked == 0 as i32
+        || safe_ent.children.is_null() && safe_ctxt.options & XML_PARSE_NOENT as i32 != 0)
+        && (safe_ent.etype as u32 != XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
             || safe_ctxt.options & (XML_PARSE_NOENT as i32 | XML_PARSE_DTDVALID as i32) != 0)
     {
         let mut oldnbent: u64 = safe_ctxt.nbentities;
@@ -8706,13 +8706,13 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
          * if its replacement text matches the production labeled
          * content.
          */
-        if (safe_ent).etype as u32 == XML_INTERNAL_GENERAL_ENTITY as i32 as u32 {
+        if safe_ent.etype as u32 == XML_INTERNAL_GENERAL_ENTITY as i32 as u32 {
             safe_ctxt.depth += 1;
             ret = unsafe {
-                xmlParseBalancedChunkMemoryInternal(ctxt, (safe_ent).content, user_data, &mut list)
+                xmlParseBalancedChunkMemoryInternal(ctxt, safe_ent.content, user_data, &mut list)
             };
             safe_ctxt.depth -= 1
-        } else if (safe_ent).etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32 {
+        } else if safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32 {
             safe_ctxt.depth += 1;
             ret = unsafe {
                 xmlParseExternalEntityPrivate(
@@ -8721,8 +8721,8 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                     safe_ctxt.sax,
                     user_data,
                     safe_ctxt.depth,
-                    (safe_ent).URI,
-                    (safe_ent).ExternalID,
+                    safe_ent.URI,
+                    safe_ent.ExternalID,
                     &mut list,
                 )
             };
@@ -8749,11 +8749,11 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
         if diff > (2147483647 as i32 / 2 as i32) as u64 {
             diff = (2147483647 as i32 / 2 as i32) as u64
         }
-        (safe_ent).checked = diff.wrapping_mul(2 as i32 as u64) as i32;
-        if !(safe_ent).content.is_null()
-            && !xmlStrchr_safe((safe_ent).content, '<' as i32 as xmlChar).is_null()
+        safe_ent.checked = diff.wrapping_mul(2 as i32 as u64) as i32;
+        if !safe_ent.content.is_null()
+            && !xmlStrchr_safe(safe_ent.content, '<' as i32 as xmlChar).is_null()
         {
-            (safe_ent).checked |= 1 as i32
+            safe_ent.checked |= 1 as i32
         }
         if ret as u32 == XML_ERR_ENTITY_LOOP as i32 as u32 {
             unsafe {
@@ -8768,11 +8768,11 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             return;
         }
         if ret as u32 == XML_ERR_OK as i32 as u32 && !list.is_null() {
-            if ((safe_ent).etype as u32 == XML_INTERNAL_GENERAL_ENTITY as i32 as u32
-                || (safe_ent).etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32)
-                && (safe_ent).children.is_null()
+            if (safe_ent.etype as u32 == XML_INTERNAL_GENERAL_ENTITY as i32 as u32
+                || safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32)
+                && safe_ent.children.is_null()
             {
-                (safe_ent).children = list;
+                safe_ent.children = list;
                 /*
                  * Prune it directly in the generated document
                  * except for single text nodes.
@@ -8783,36 +8783,36 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                         || (*list).type_0 as u32 == XML_TEXT_NODE as i32 as u32
                             && (*list).next.is_null()
                 } {
-                    (safe_ent).owner = 1 as i32;
+                    safe_ent.owner = 1 as i32;
                     while !list.is_null() {
                         unsafe {
                             (*list).parent = ent as xmlNodePtr;
-                            xmlSetTreeDoc_safe(list, (safe_ent).doc);
+                            xmlSetTreeDoc_safe(list, safe_ent.doc);
                             if (*list).next.is_null() {
-                                (safe_ent).last = list
+                                safe_ent.last = list
                             }
                             list = (*list).next
                         }
                     }
                     list = 0 as xmlNodePtr
                 } else {
-                    (safe_ent).owner = 0 as i32;
+                    safe_ent.owner = 0 as i32;
                     while !list.is_null() {
                         unsafe {
                             (*list).parent = safe_ctxt.node;
                             (*list).doc = safe_ctxt.myDoc;
                             if (*list).next.is_null() {
-                                (safe_ent).last = list
+                                safe_ent.last = list
                             }
                             list = (*list).next
                         }
                     }
-                    list = (safe_ent).children;
+                    list = safe_ent.children;
 
                     match () {
                         #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
                         _ => {
-                            if (safe_ent).etype as u32
+                            if safe_ent.etype as u32
                                 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
                             {
                                 unsafe {
@@ -8838,10 +8838,10 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                     ctxt,
                     XML_ERR_UNDECLARED_ENTITY,
                     b"Entity \'%s\' failed to parse\n\x00" as *const u8 as *const i8,
-                    (safe_ent).name,
+                    safe_ent.name,
                 );
             }
-            if !(safe_ent).content.is_null() {
+            if !safe_ent.content.is_null() {
                 unsafe { *(*ent).content.offset(0 as i32 as isize) = 0 as i32 as xmlChar }
             }
             xmlParserEntityCheck(ctxt, 0 as i32 as size_t, ent, 0 as i32 as size_t);
@@ -8849,22 +8849,22 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             xmlFreeNodeList_safe(list);
             list = 0 as xmlNodePtr
         }
-        if (safe_ent).checked == 0 as i32 {
-            (safe_ent).checked = 2 as i32
+        if safe_ent.checked == 0 as i32 {
+            safe_ent.checked = 2 as i32
         }
         /* Prevent entity from being parsed and expanded twice (Bug 760367). */
         was_checked = 0 as i32
-    } else if (safe_ent).checked != 1 as i32 {
+    } else if safe_ent.checked != 1 as i32 {
         safe_ctxt.nbentities = safe_ctxt
             .nbentities
-            .wrapping_add(((safe_ent).checked / 2 as i32) as u64)
+            .wrapping_add((safe_ent.checked / 2 as i32) as u64)
     }
     /*
      * Now that the entity content has been gathered
      * provide it to the application, this can take different forms based
      * on the parsing modes.
      */
-    if (safe_ent).children.is_null() {
+    if safe_ent.children.is_null() {
         /*
          * Probably running in SAX mode and the callbacks don't
          * build the entity content. So unless we already went
@@ -8883,18 +8883,18 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             } else {
                 user_data_0 = safe_ctxt.userData
             }
-            if (safe_ent).etype as u32 == XML_INTERNAL_GENERAL_ENTITY as i32 as u32 {
+            if safe_ent.etype as u32 == XML_INTERNAL_GENERAL_ENTITY as i32 as u32 {
                 safe_ctxt.depth += 1;
                 ret = unsafe {
                     xmlParseBalancedChunkMemoryInternal(
                         ctxt,
-                        (safe_ent).content,
+                        safe_ent.content,
                         user_data_0,
                         0 as *mut xmlNodePtr,
                     )
                 };
                 safe_ctxt.depth -= 1
-            } else if (safe_ent).etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32 {
+            } else if safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32 {
                 safe_ctxt.depth += 1;
                 ret = unsafe {
                     xmlParseExternalEntityPrivate(
@@ -8903,8 +8903,8 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                         safe_ctxt.sax,
                         user_data_0,
                         safe_ctxt.depth,
-                        (safe_ent).URI,
-                        (safe_ent).ExternalID,
+                        safe_ent.URI,
+                        safe_ent.ExternalID,
                         0 as *mut xmlNodePtr,
                     )
                 };
@@ -8939,7 +8939,7 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             unsafe {
                 (*(*ctxt).sax).reference.expect("non-null function pointer")(
                     safe_ctxt.userData,
-                    (safe_ent).name,
+                    safe_ent.name,
                 );
             }
         }
@@ -8960,12 +8960,12 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
         unsafe {
             (*(*ctxt).sax).reference.expect("non-null function pointer")(
                 safe_ctxt.userData,
-                (safe_ent).name,
+                safe_ent.name,
             );
         }
         return;
     }
-    if safe_ctxt.replaceEntities != 0 || (safe_ent).children.is_null() {
+    if safe_ctxt.replaceEntities != 0 || safe_ent.children.is_null() {
         /*
          * There is a problem on the handling of _private for entities
          * (bug 155816): Should we copy the content of the field from
@@ -8979,13 +8979,13 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
          * hack - maybe we should have further tests to determine
          * what to do.
          */
-        if !safe_ctxt.node.is_null() && !(safe_ent).children.is_null() {
+        if !safe_ctxt.node.is_null() && !safe_ent.children.is_null() {
             /*
              * Seems we are generating the DOM content, do
              * a simple tree copy for all references except the first
              * In the first occurrence list contains the replacement.
              */
-            if list.is_null() && (safe_ent).owner == 0 as i32
+            if list.is_null() && safe_ent.owner == 0 as i32
                 || safe_ctxt.parseMode as u32 == XML_PARSE_READER as i32 as u32
             {
                 let mut nw: xmlNodePtr = 0 as xmlNodePtr;
@@ -8994,11 +8994,11 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                 /* LIBXML_LEGACY_ENABLED */
                 safe_ctxt.sizeentcopy = safe_ctxt
                     .sizeentcopy
-                    .wrapping_add(((safe_ent).length + 5 as i32) as u64);
+                    .wrapping_add((safe_ent.length + 5 as i32) as u64);
                 if xmlParserEntityCheck(ctxt, 0 as i32 as size_t, ent, safe_ctxt.sizeentcopy) != 0 {
                     return;
                 }
-                cur = (safe_ent).children;
+                cur = safe_ent.children;
                 while !cur.is_null() {
                     nw = xmlDocCopyNode_safe(cur, safe_ctxt.myDoc, 1 as i32);
                     unsafe {
@@ -9012,7 +9012,7 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                             nw = xmlAddChild_safe(safe_ctxt.node, nw)
                         }
                     }
-                    if cur == (safe_ent).last {
+                    if cur == safe_ent.last {
                         unsafe {
                             if safe_ctxt.parseMode as u32 == XML_PARSE_READER as i32 as u32
                                 && !nw.is_null()
@@ -9031,8 +9031,7 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                 match () {
                     #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
                     _ => {
-                        if (safe_ent).etype as u32
-                            == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
+                        if safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
                         {
                             unsafe {
                                 xmlAddEntityReference(ent, firstChild, nw);
@@ -9051,14 +9050,14 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                 /* LIBXML_LEGACY_ENABLED */
                 safe_ctxt.sizeentcopy = safe_ctxt
                     .sizeentcopy
-                    .wrapping_add(((safe_ent).length + 5 as i32) as u64);
+                    .wrapping_add((safe_ent.length + 5 as i32) as u64);
                 if xmlParserEntityCheck(ctxt, 0 as i32 as size_t, ent, safe_ctxt.sizeentcopy) != 0 {
                     return;
                 }
-                cur_0 = (safe_ent).children;
-                (safe_ent).children = 0 as *mut _xmlNode;
-                last = (safe_ent).last;
-                (safe_ent).last = 0 as *mut _xmlNode;
+                cur_0 = safe_ent.children;
+                safe_ent.children = 0 as *mut _xmlNode;
+                last = safe_ent.last;
+                safe_ent.last = 0 as *mut _xmlNode;
                 while !cur_0.is_null() {
                     unsafe {
                         next = (*cur_0).next;
@@ -9082,14 +9081,13 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                     }
                     cur_0 = next
                 }
-                if (safe_ent).owner == 0 as i32 {
-                    (safe_ent).owner = 1 as i32
+                if safe_ent.owner == 0 as i32 {
+                    safe_ent.owner = 1 as i32
                 }
                 match () {
                     #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
                     _ => {
-                        if (safe_ent).etype as u32
-                            == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
+                        if safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
                         {
                             unsafe {
                                 xmlAddEntityReference(ent, firstChild_0, nw_0);
@@ -9124,13 +9122,13 @@ pub unsafe fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                     if (*(*ent).children).type_0 as u32 == XML_TEXT_NODE as i32 as u32 {
                         (*(*ent).children).name = nbktext
                     }
-                    if (safe_ent).last != (safe_ent).children
+                    if safe_ent.last != safe_ent.children
                         && (*(*ent).last).type_0 as u32 == XML_TEXT_NODE as i32 as u32
                     {
                         (*(*ent).last).name = nbktext
                     }
                 }
-                xmlAddChildList_safe(safe_ctxt.node, (safe_ent).children);
+                xmlAddChildList_safe(safe_ctxt.node, safe_ent.children);
             }
             /*
              * This is to avoid a nasty side effect, see
@@ -9304,7 +9302,7 @@ pub unsafe fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
         }
         xmlParserEntityCheck(ctxt, 0 as i32 as size_t, ent, 0 as i32 as size_t);
         safe_ctxt.valid = 0 as i32
-    } else if (safe_ent).etype as u32 == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY as i32 as u32 {
+    } else if safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY as i32 as u32 {
         unsafe {
             xmlFatalErrMsgStr(
                 ctxt,
@@ -9314,7 +9312,7 @@ pub unsafe fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
             );
         }
     } else if safe_ctxt.instate as i32 == XML_PARSER_ATTRIBUTE_VALUE as i32
-        && (safe_ent).etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
+        && safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
     {
         unsafe {
             xmlFatalErrMsgStr(
@@ -9326,11 +9324,11 @@ pub unsafe fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
         }
     } else if safe_ctxt.instate as i32 == XML_PARSER_ATTRIBUTE_VALUE as i32
         && !ent.is_null()
-        && (safe_ent).etype as u32 != XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
+        && safe_ent.etype as u32 != XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
     {
-        if ((safe_ent).checked & 1 as i32 != 0 || (safe_ent).checked == 0 as i32)
-            && !(safe_ent).content.is_null()
-            && !xmlStrchr_safe((safe_ent).content, '<' as i32 as xmlChar).is_null()
+        if (safe_ent.checked & 1 as i32 != 0 || safe_ent.checked == 0 as i32)
+            && !safe_ent.content.is_null()
+            && !xmlStrchr_safe(safe_ent.content, '<' as i32 as xmlChar).is_null()
         {
             unsafe {
                 xmlFatalErrMsgStr(
@@ -9362,7 +9360,7 @@ pub unsafe fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
         /*
          * Internal check, no parameter entities here ...
          */
-        match (safe_ent).etype as u32 {
+        match safe_ent.etype as u32 {
             4 | 5 => unsafe {
                 xmlFatalErrMsgStr(
                     ctxt,
@@ -9547,7 +9545,7 @@ unsafe fn xmlParseStringEntityRef(
         }
         xmlParserEntityCheck(ctxt, 0 as i32 as size_t, ent, 0 as i32 as size_t);
     /* TODO ? check regressions ctxt->valid = 0; */
-    } else if (safe_ent).etype as u32 == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY as i32 as u32 {
+    } else if safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY as i32 as u32 {
         unsafe {
             xmlFatalErrMsgStr(
                 ctxt,
@@ -9557,7 +9555,7 @@ unsafe fn xmlParseStringEntityRef(
             );
         }
     } else if safe_ctxt.instate as i32 == XML_PARSER_ATTRIBUTE_VALUE as i32
-        && (safe_ent).etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
+        && safe_ent.etype as u32 == XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
     {
         unsafe {
             xmlFatalErrMsgStr(
@@ -9569,9 +9567,9 @@ unsafe fn xmlParseStringEntityRef(
         }
     } else if safe_ctxt.instate as i32 == XML_PARSER_ATTRIBUTE_VALUE as i32
         && !ent.is_null()
-        && !(safe_ent).content.is_null()
-        && (safe_ent).etype as u32 != XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
-        && !xmlStrchr_safe((safe_ent).content, '<' as i32 as xmlChar).is_null()
+        && !safe_ent.content.is_null()
+        && safe_ent.etype as u32 != XML_INTERNAL_PREDEFINED_ENTITY as i32 as u32
+        && !xmlStrchr_safe(safe_ent.content, '<' as i32 as xmlChar).is_null()
     {
         unsafe {
             xmlFatalErrMsgStr(
@@ -9602,7 +9600,7 @@ unsafe fn xmlParseStringEntityRef(
         /*
          * Internal check, no parameter entities here ...
          */
-        match (safe_ent).etype as u32 {
+        match safe_ent.etype as u32 {
             4 | 5 => unsafe {
                 xmlFatalErrMsgStr(
                     ctxt,
@@ -9766,8 +9764,8 @@ pub unsafe fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
             0 as xmlEntityPtr,
             0 as i32 as size_t,
         );
-    } else if (safe_entity).etype as u32 != XML_INTERNAL_PARAMETER_ENTITY as i32 as u32
-        && (safe_entity).etype as u32 != XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32
+    } else if safe_entity.etype as u32 != XML_INTERNAL_PARAMETER_ENTITY as i32 as u32
+        && safe_entity.etype as u32 != XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32
     {
         unsafe {
             xmlWarningMsg(
@@ -9784,7 +9782,7 @@ pub unsafe fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
         if xmlParserEntityCheck(ctxt, 0 as i32 as size_t, entity, 0 as i32 as size_t) != 0 {
             return;
         }
-        if (safe_entity).etype as u32 == XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32
+        if safe_entity.etype as u32 == XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32
             && safe_ctxt.options & XML_PARSE_NOENT as i32 == 0 as i32
             && safe_ctxt.options & XML_PARSE_DTDVALID as i32 == 0 as i32
             && safe_ctxt.options & XML_PARSE_DTDLOAD as i32 == 0 as i32
@@ -9799,7 +9797,7 @@ pub unsafe fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
             xmlFreeInputStream_safe(input);
             return;
         }
-        if (safe_entity).etype as u32 == XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32 {
+        if safe_entity.etype as u32 == XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32 {
             /*
              * Internal checking in case the entity quest barfed
              */
@@ -9877,9 +9875,9 @@ unsafe fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntity
     let mut safe_entity = unsafe { &mut *entity };
     if ctxt.is_null()
         || entity.is_null()
-        || (safe_entity).etype as u32 != XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32
-            && (safe_entity).etype as u32 != XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
-        || !(safe_entity).content.is_null()
+        || safe_entity.etype as u32 != XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32
+            && safe_entity.etype as u32 != XML_EXTERNAL_GENERAL_PARSED_ENTITY as i32 as u32
+        || !safe_entity.content.is_null()
     {
         unsafe {
             xmlFatalErr(
@@ -9895,7 +9893,7 @@ unsafe fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntity
             (*__xmlGenericError()).expect("non-null function pointer")(
                 *__xmlGenericErrorContext(),
                 b"Reading %s entity content input\n\x00" as *const u8 as *const i8,
-                (safe_entity).name,
+                safe_entity.name,
             );
         }
     }
@@ -10020,7 +10018,7 @@ unsafe fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntity
         return -(1 as i32);
     }
     unsafe {
-        (safe_entity).content = (*buf).content;
+        safe_entity.content = (*buf).content;
         (*buf).content = 0 as *mut xmlChar;
     }
     xmlBufferFree_safe(buf);
@@ -10167,8 +10165,8 @@ unsafe fn xmlParseStringPEReference(
             0 as xmlEntityPtr,
             0 as i32 as size_t,
         );
-    } else if (safe_entity).etype as u32 != XML_INTERNAL_PARAMETER_ENTITY as i32 as u32
-        && (safe_entity).etype as u32 != XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32
+    } else if safe_entity.etype as u32 != XML_INTERNAL_PARAMETER_ENTITY as i32 as u32
+        && safe_entity.etype as u32 != XML_EXTERNAL_PARAMETER_ENTITY as i32 as u32
     {
         unsafe {
             xmlWarningMsg(
@@ -12550,10 +12548,10 @@ unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTa
     }
     let mut safe_tag = unsafe { *tag };
     let mut safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_tag).prefix.is_null() {
+    if safe_tag.prefix.is_null() {
         name = xmlParseNameAndCompare(ctxt, safe_ctxt.name)
     } else {
-        name = xmlParseQNameAndCompare(ctxt, safe_ctxt.name, (safe_tag).prefix)
+        name = xmlParseQNameAndCompare(ctxt, safe_ctxt.name, safe_tag.prefix)
     }
     /*
      * We should definitely be at the ending "S? '>'" part
@@ -12599,7 +12597,7 @@ unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTa
             XML_ERR_TAG_NAME_MISMATCH,
             b"Opening and ending tag mismatch: %s line %d and %s\n\x00" as *const u8 as *const i8,
             safe_ctxt.name,
-            (safe_tag).line,
+            safe_tag.line,
             name,
         );
     }
@@ -12616,14 +12614,14 @@ unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTa
                 .expect("non-null function pointer")(
                 safe_ctxt.userData,
                 safe_ctxt.name,
-                (safe_tag).prefix,
-                (safe_tag).URI,
+                safe_tag.prefix,
+                safe_tag.URI,
             );
         }
     }
     spacePop(ctxt);
-    if (safe_tag).nsNr != 0 as i32 {
-        nsPop(ctxt, (safe_tag).nsNr);
+    if safe_tag.nsNr != 0 as i32 {
+        nsPop(ctxt, safe_tag.nsNr);
     }
 }
 /* *
