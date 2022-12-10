@@ -16,7 +16,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_targetsDefined)
 set(_targetsNotDefined)
 set(_expectedTargets)
-foreach(_expectedTarget LibXml2::LibXml2 LibXml2::xmlcatalog LibXml2::xmllint)
+foreach(_expectedTarget LibXml2::LibXml2 LibXml2::LibXml2_shard LibXml2::xmlcatalog LibXml2::xmllint)
   list(APPEND _expectedTargets ${_expectedTarget})
   if(NOT TARGET ${_expectedTarget})
     list(APPEND _targetsNotDefined ${_expectedTarget})
@@ -56,6 +56,14 @@ add_library(LibXml2::LibXml2 STATIC IMPORTED)
 set_target_properties(LibXml2::LibXml2 PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include/libxml2"
   INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:rust_project>;\$<LINK_ONLY:dl>;\$<LINK_ONLY:m>;Iconv::Iconv;\$<LINK_ONLY:LibLZMA::LibLZMA>;\$<LINK_ONLY:Threads::Threads>;\$<LINK_ONLY:ZLIB::ZLIB>"
+)
+
+# Create imported target LibXml2::LibXml2_shard
+add_library(LibXml2::LibXml2_shard SHARED IMPORTED)
+
+set_target_properties(LibXml2::LibXml2_shard PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include/libxml2"
+  INTERFACE_LINK_LIBRARIES "Iconv::Iconv"
 )
 
 # Create imported target LibXml2::xmlcatalog

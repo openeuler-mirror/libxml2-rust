@@ -9,10 +9,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "db6d7e329c562c5dfab7a46a2afabc8b987ab9a4834c9d1ca04dc54c1546cef8"
 
 [[package]]
+name = "rust_condition"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "rust_ffi"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "rust_condition",
 ]
 
 [[package]]
@@ -20,5 +28,6 @@ name = "rust_project"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "rust_condition",
  "rust_ffi",
 ]
