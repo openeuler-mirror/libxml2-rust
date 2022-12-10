@@ -8,12 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/root/code/01/10/libxml2-rust/testC14N.c" "CMakeFiles/testC14N.dir/testC14N.c.o" "gcc" "CMakeFiles/testC14N.dir/testC14N.c.o.d"
+  "/root/yhm/libxml2-rust/testC14N.c" "CMakeFiles/testC14N.dir/testC14N.c.o" "gcc" "CMakeFiles/testC14N.dir/testC14N.c.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/root/code/01/10/libxml2-rust/CMakeFiles/LibXml2.dir/DependInfo.cmake"
+  "/root/yhm/libxml2-rust/CMakeFiles/LibXml2.dir/DependInfo.cmake"
+  "/root/yhm/libxml2-rust/CMakeFiles/LibXml2_shard.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

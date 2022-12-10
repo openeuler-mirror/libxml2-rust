@@ -15,6 +15,16 @@ set_target_properties(LibXml2::LibXml2 PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS LibXml2::LibXml2 )
 list(APPEND _IMPORT_CHECK_FILES_FOR_LibXml2::LibXml2 "${_IMPORT_PREFIX}/lib64/libxml2.a" )
 
+# Import target "LibXml2::LibXml2_shard" for configuration ""
+set_property(TARGET LibXml2::LibXml2_shard APPEND PROPERTY IMPORTED_CONFIGURATIONS NOCONFIG)
+set_target_properties(LibXml2::LibXml2_shard PROPERTIES
+  IMPORTED_LOCATION_NOCONFIG "${_IMPORT_PREFIX}/lib64/libxml2.so.2.9.10"
+  IMPORTED_SONAME_NOCONFIG "libxml2.so.2.9.10"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS LibXml2::LibXml2_shard )
+list(APPEND _IMPORT_CHECK_FILES_FOR_LibXml2::LibXml2_shard "${_IMPORT_PREFIX}/lib64/libxml2.so.2.9.10" )
+
 # Import target "LibXml2::xmlcatalog" for configuration ""
 set_property(TARGET LibXml2::xmlcatalog APPEND PROPERTY IMPORTED_CONFIGURATIONS NOCONFIG)
 set_target_properties(LibXml2::xmlcatalog PROPERTIES

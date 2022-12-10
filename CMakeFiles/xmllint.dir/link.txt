@@ -1,1 +1,1 @@
-/usr/bin/cc CMakeFiles/xmllint.dir/xmllint.c.o -o xmllint   -L/root/code/01/10/libxml2-rust/rust/target/debug  -Wl,-rpath,/root/code/01/10/libxml2-rust/rust/target/debug: libxml2.a -lrust_project -ldl -lm -lc /usr/lib64/liblzma.so -lpthread /usr/lib64/libz.so 
+/usr/bin/cc CMakeFiles/xmllint.dir/xmllint.c.o -o xmllint   -L/root/yhm/libxml2-rust/rust/target/release  -Wl,-rpath,/root/yhm/libxml2-rust/rust/target/release:/root/yhm/libxml2-rust: libxml2.a libxml2.so.2.9.10 -lrust_project -ldl -lm /usr/lib64/liblzma.so -lpthread /usr/lib64/libz.so -lc 
