@@ -1,3 +1,4 @@
+pub const INT_MAX: i32 = 2147483647;
 /**
 * buf.rs
 **/
