@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/testHTML.dir/testHTML.c.o -o testHTML   -L/root/yhm/libxml2-rust/rust/target/release  -Wl,-rpath,/root/yhm/libxml2-rust/rust/target/release:/root/yhm/libxml2-rust libxml2.a libxml2.so.2.9.10 -lrust_project -ldl -lm /usr/lib64/liblzma.so -lpthread /usr/lib64/libz.so -lc 
