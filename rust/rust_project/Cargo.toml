@@ -10,6 +10,7 @@ build = "src/build.rs"
 libc = "0.2.9"
 rust_ffi = {path = "../rust_ffi"}
 rust_condition = {path = "../rust_condition"}
+c2rust-bitfields = "0.3.0"
 
 [build-dependencies]
 rust_ffi = {path = "../rust_ffi"}
