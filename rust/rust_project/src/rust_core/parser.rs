@@ -588,7 +588,10 @@ pub fn xmlPushInput(ctxt: xmlParserCtxtPtr, input: xmlParserInputPtr) -> i32 {
     {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, 0 as *const i8);
-            while (1 < (safe_ctxt).inputNr) {
+            loop {
+                if !(1 < (safe_ctxt).inputNr) {
+                    break;
+                }
                 xmlFreeInputStream_safe(inputPop_parser(ctxt));
             }
         }
@@ -631,7 +634,10 @@ pub fn xmlParseCharRef(ctxt: xmlParserCtxtPtr) -> i32 {
     } {
         SKIP(ctxt, 3);
         GROW(ctxt);
-        while unsafe { *(*(*ctxt).input).cur != ';' as u8 } {
+        loop{
+            if unsafe{*(*(*ctxt).input).cur == ';' as u8} {
+                break;
+            }
             /* loop blocked by count */
             if count > 20 {
                 count = 0;
@@ -678,7 +684,10 @@ pub fn xmlParseCharRef(ctxt: xmlParserCtxtPtr) -> i32 {
     } {
         SKIP(ctxt, 2);
         GROW(ctxt);
-        while unsafe { *(*(*ctxt).input).cur != ';' as u8 } {
+        loop{
+            if unsafe { *(*(*ctxt).input).cur == ';' as u8 } {
+                break;
+            }
             /* loop blocked by count */
             if count > 20 {
                 count = 0;
@@ -3950,36 +3959,18 @@ fn xmlParseCharDataComplex(ctxt: xmlParserCtxtPtr, cdata: i32) {
     let mut l: i32 = 0;
     let mut count: i32 = 0;
     let safe_ctxt = unsafe { &mut *ctxt };
-    if unsafe {
-        (*ctxt).progressive == 0
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
-    } {
-        xmlSHRINK(ctxt);
-    }
-    if unsafe {
-        (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-    } {
-        xmlGROW(ctxt);
-    }
+    SHRINK(ctxt);
+    GROW(ctxt);
     cur = unsafe { xmlCurrentChar(ctxt, &mut l) };
     while cur != '<' as i32
         && cur != '&' as i32
-        && (if cur < 0x100 as i32 {
-            (0x9 as i32 <= cur && cur <= 0xa as i32 || cur == 0xd as i32 || 0x20 as i32 <= cur)
-                as i32
-        } else {
-            (0x100 as i32 <= cur && cur <= 0xd7ff as i32
-                || 0xe000 as i32 <= cur && cur <= 0xfffd as i32
-                || 0x10000 as i32 <= cur && cur <= 0x10ffff as i32) as i32
-        }) != 0
+        && IS_CHAR(cur)
     {
         /* test also done in xmlCurrentChar() */
         if cur == ']' as i32
             && unsafe {
-                *(*(*ctxt).input).cur.offset(1) as i32 == ']' as i32
-                    && *(*(*ctxt).input).cur.offset(2) as i32 == '>' as i32
+                *(*(*ctxt).input).cur.offset(1) == ']' as u8
+                    && *(*(*ctxt).input).cur.offset(2) == '>' as u8
             }
         {
             if cdata != 0 {
@@ -3998,7 +3989,7 @@ fn xmlParseCharDataComplex(ctxt: xmlParserCtxtPtr, cdata: i32) {
                 xmlCopyCharMultiByte(&mut *buf.as_mut_ptr().offset(nbchar as isize), cur)
             };
         }
-        if nbchar >= 300 {
+        if nbchar >= XML_PARSER_BIG_BUFFER_SIZE as i32{
             buf[nbchar as usize] = 0;
             /*
              * OK the segment is to be consumed as chars.
@@ -4028,51 +4019,30 @@ fn xmlParseCharDataComplex(ctxt: xmlParserCtxtPtr, cdata: i32) {
                             );
                         }
                         if (*(*ctxt).sax).characters != (*(*ctxt).sax).ignorableWhitespace
-                            && *(*ctxt).space == -(1)
+                            && *(*ctxt).space == -1
                         {
-                            *(*ctxt).space = -(2)
+                            *(*ctxt).space = -2
                         }
                     }
                 }
             }
             nbchar = 0;
             /* something really bad happened in the SAX callback */
-            if (safe_ctxt).instate as i32 != XML_PARSER_CONTENT as i32 {
+            if (safe_ctxt).instate != XML_PARSER_CONTENT as i32 {
                 return;
             }
         }
         count += 1;
         if count > 50 {
-            if unsafe {
-                (*ctxt).progressive == 0
-                    && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                        > (2 * 250) as i64
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < (2 * 250) as i64
-            } {
-                xmlSHRINK(ctxt);
-            }
-            if unsafe {
-                (*ctxt).progressive == 0
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-            } {
-                xmlGROW(ctxt);
-            }
+            SHRINK(ctxt);
+            GROW(ctxt);
             count = 0;
             if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
                 return;
             }
         }
-        if unsafe { *(*(*ctxt).input).cur as i32 == '\n' as i32 } {
-            unsafe {
-                (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1
-            }
-        } else {
-            unsafe { (*(*ctxt).input).col += 1 }
-        }
+        NEXTL(ctxt, l);
         unsafe {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize);
             cur = xmlCurrentChar(ctxt, &mut l);
         }
     }
@@ -4115,14 +4085,7 @@ fn xmlParseCharDataComplex(ctxt: xmlParserCtxtPtr, cdata: i32) {
         }
     }
     if cur != 0
-        && (if cur < 0x100 as i32 {
-            (0x9 as i32 <= cur && cur <= 0xa as i32 || cur == 0xd as i32 || 0x20 as i32 <= cur)
-                as i32
-        } else {
-            (0x100 as i32 <= cur && cur <= 0xd7ff as i32
-                || 0xe000 as i32 <= cur && cur <= 0xfffd as i32
-                || 0x10000 as i32 <= cur && cur <= 0x10ffff as i32) as i32
-        }) == 0
+        && !IS_CHAR(cur)
     {
         /* Generate the error and skip the offending character */
         unsafe {
@@ -4133,15 +4096,7 @@ fn xmlParseCharDataComplex(ctxt: xmlParserCtxtPtr, cdata: i32) {
                 cur,
             );
         }
-        unsafe {
-            if *(*(*ctxt).input).cur as i32 == '\n' as i32 {
-                (*(*ctxt).input).line += 1;
-                (*(*ctxt).input).col = 1
-            } else {
-                (*(*ctxt).input).col += 1
-            }
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(l as isize)
-        };
+        NEXTL(ctxt, l);
     };
 }
 /* *
