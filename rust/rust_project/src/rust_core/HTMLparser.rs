@@ -9482,15 +9482,12 @@ fn areBlanks_htmlparser(ctxt: htmlParserCtxtPtr, str: *const xmlChar, len: i32) 
  * Returns a new document, do not initialize the DTD if not provided
  */
 
-pub unsafe fn htmlNewDocNoDtD(
-    mut URI: *const xmlChar,
-    mut ExternalID: *const xmlChar,
-) -> htmlDocPtr {
+pub fn htmlNewDocNoDtD(URI: *const xmlChar, ExternalID: *const xmlChar) -> htmlDocPtr {
     let mut cur: xmlDocPtr = 0 as *mut xmlDoc;
     /*
      * Allocate a new document and fill the fields.
      */
-    cur = xmlMalloc_safe(::std::mem::size_of::<xmlDoc>() as u64) as xmlDocPtr;
+    cur = unsafe { xmlMalloc_safe(::std::mem::size_of::<xmlDoc>() as u64) } as xmlDocPtr;
     if cur.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
@@ -9498,7 +9495,7 @@ pub unsafe fn htmlNewDocNoDtD(
         );
         return 0 as htmlDocPtr;
     }
-    memset_safe(cur as *mut (), 0, ::std::mem::size_of::<xmlDoc>() as u64);
+    unsafe { memset_safe(cur as *mut (), 0, ::std::mem::size_of::<xmlDoc>() as u64) };
     let mut curPtr = unsafe { &mut *cur };
     curPtr.type_0 = XML_HTML_DOCUMENT_NODE;
     curPtr.version = 0 as *const xmlChar;
@@ -9514,15 +9511,17 @@ pub unsafe fn htmlNewDocNoDtD(
     curPtr.ids = 0 as *mut ();
     curPtr.refs = 0 as *mut ();
     curPtr._private = 0 as *mut ();
-    curPtr.charset = XML_CHAR_ENCODING_UTF8 as i32;
+    curPtr.charset = XML_CHAR_ENCODING_UTF8;
     curPtr.properties = XML_DOC_HTML as i32 | XML_DOC_USERBUILT as i32;
     if !ExternalID.is_null() || !URI.is_null() {
-        xmlCreateIntSubset_safe(
-            cur,
-            b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ExternalID,
-            URI,
-        );
+        unsafe {
+            xmlCreateIntSubset_safe(
+                cur,
+                b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
+                ExternalID,
+                URI,
+            )
+        };
     }
     return cur;
 }
@@ -9536,7 +9535,7 @@ pub unsafe fn htmlNewDocNoDtD(
  * Returns a new document
  */
 
-pub unsafe fn htmlNewDoc(mut URI: *const xmlChar, mut ExternalID: *const xmlChar) -> htmlDocPtr {
+pub fn htmlNewDoc(URI: *const xmlChar, ExternalID: *const xmlChar) -> htmlDocPtr {
     if URI.is_null() && ExternalID.is_null() {
         return htmlNewDocNoDtD(
             b"http://www.w3.org/TR/REC-html40/loose.dtd\x00" as *const u8 as *const i8
@@ -9555,7 +9554,7 @@ pub unsafe fn htmlNewDoc(mut URI: *const xmlChar, mut ExternalID: *const xmlChar
  *
  * Returns the Tag Name parsed or NULL
  */
-unsafe fn htmlParseHTMLName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
+fn htmlParseHTMLName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
     let mut i: i32 = 0;
     let mut loc: [xmlChar; 100] = [0; 100];
     if !IS_ASCII_LETTER(CUR(ctxt))
@@ -9565,7 +9564,7 @@ unsafe fn htmlParseHTMLName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
     {
         return 0 as *const xmlChar;
     }
-    while i < 100 as i32
+    while i < 100
         && (IS_ASCII_LETTER(CUR(ctxt))
             || IS_ASCII_DIGIT(CUR(ctxt))
             || CUR(ctxt) == ':' as i32
@@ -9574,15 +9573,15 @@ unsafe fn htmlParseHTMLName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
             || CUR(ctxt) == '.' as i32)
     {
         if CUR(ctxt) >= 'A' as i32 && CUR(ctxt) <= 'Z' as i32 {
-            loc[i as usize] = (CUR(ctxt) + 0x20 as i32) as xmlChar
+            loc[i as usize] = (CUR(ctxt) + 0x20) as xmlChar
         } else {
             loc[i as usize] = CUR(ctxt) as xmlChar
         }
         i += 1;
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
     }
     let mut ctxtPtr = unsafe { &mut *ctxt };
-    return xmlDictLookup_safe(ctxtPtr.dict, loc.as_mut_ptr(), i);
+    return unsafe { xmlDictLookup_safe(ctxtPtr.dict, loc.as_mut_ptr(), i) };
 }
 /* *
  * htmlParseHTMLName_nonInvasive:
@@ -9594,31 +9593,29 @@ unsafe fn htmlParseHTMLName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
  *
  * Returns the Tag Name parsed or NULL
  */
-unsafe fn htmlParseHTMLName_nonInvasive(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
+fn htmlParseHTMLName_nonInvasive(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
     let mut i: i32 = 0;
     let mut loc: [xmlChar; 100] = [0; 100];
-    if !(IS_ASCII_LETTER(NXT(ctxt, 1 as i32)))
-        && NXT(ctxt, 1 as i32) != '_' as i32
-        && NXT(ctxt, 1 as i32) != ':' as i32
+    if !(IS_ASCII_LETTER(NXT(ctxt, 1))) && NXT(ctxt, 1) != '_' as i32 && NXT(ctxt, 1) != ':' as i32
     {
         return 0 as *const xmlChar;
     }
     while i < 100
-        && (IS_ASCII_LETTER(NXT(ctxt, 1 as i32 + i))
-            || IS_ASCII_DIGIT(NXT(ctxt, 1 as i32 + i))
-            || NXT(ctxt, 1 as i32 + i) == ':' as i32
-            || NXT(ctxt, 1 as i32 + i) == '-' as i32
-            || NXT(ctxt, 1 as i32 + i) == '_' as i32)
+        && (IS_ASCII_LETTER(NXT(ctxt, 1 + i))
+            || IS_ASCII_DIGIT(NXT(ctxt, 1 + i))
+            || NXT(ctxt, 1 + i) == ':' as i32
+            || NXT(ctxt, 1 + i) == '-' as i32
+            || NXT(ctxt, 1 + i) == '_' as i32)
     {
-        if NXT(ctxt, 1 as i32 + i) >= 'A' as i32 && NXT(ctxt, 1 as i32 + i) <= 'Z' as i32 {
-            loc[i as usize] = (NXT(ctxt, 1 as i32 + i) + 0x20 as i32) as xmlChar
+        if NXT(ctxt, 1 + i) >= 'A' as i32 && NXT(ctxt, 1 + i) <= 'Z' as i32 {
+            loc[i as usize] = (NXT(ctxt, 1 + i) + 0x20) as xmlChar
         } else {
-            loc[i as usize] = NXT(ctxt, 1 as i32 + i) as xmlChar
+            loc[i as usize] = NXT(ctxt, 1 + i) as xmlChar
         }
         i += 1
     }
     let mut ctxtPtr = unsafe { &mut *ctxt };
-    return xmlDictLookup_safe(ctxtPtr.dict, loc.as_mut_ptr(), i);
+    return unsafe { xmlDictLookup_safe(ctxtPtr.dict, loc.as_mut_ptr(), i) };
 }
 /* *
  * htmlParseName:
@@ -9628,11 +9625,11 @@ unsafe fn htmlParseHTMLName_nonInvasive(mut ctxt: htmlParserCtxtPtr) -> *const x
  *
  * Returns the Name parsed or NULL
  */
-unsafe fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
-    let mut inputPtr = unsafe { &mut *(*ctxt).input };
-    let mut in_0: *const xmlChar = 0 as *const xmlChar;
-    let mut ret: *const xmlChar = 0 as *const xmlChar;
+fn htmlParseName(ctxt: htmlParserCtxtPtr) -> *const xmlChar {
+    let ctxtPtr = unsafe { &mut *ctxt };
+    let inputPtr = unsafe { &mut *(*ctxt).input };
+    let mut in_0: *const xmlChar;
+    let ret: *const xmlChar;
     let mut count: i32 = 0;
     GROW(ctxt);
     /*
@@ -9663,11 +9660,11 @@ unsafe fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
         if in_0 == inputPtr.end {
             return 0 as *const xmlChar;
         }
-        if in_0_safe as i32 > 0 && (in_0_safe as i32) < 0x80 as i32 {
+        if in_0_safe as i32 > 0 && (in_0_safe as i32) < 0x80 {
             unsafe {
                 count = in_0.offset_from(inputPtr.cur) as i32;
             }
-            ret = xmlDictLookup_safe(ctxtPtr.dict, inputPtr.cur, count);
+            ret = unsafe { xmlDictLookup_safe(ctxtPtr.dict, inputPtr.cur, count) };
             inputPtr.cur = in_0;
             inputPtr.col += count;
             return ret;
@@ -9686,14 +9683,14 @@ unsafe fn htmlParseName(mut ctxt: htmlParserCtxtPtr) -> *const xmlChar {
  *			The parser itself				*
  *									*
  ************************************************************************/
-unsafe fn htmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
-    let mut inputPtr = unsafe { &mut *(*ctxt).input };
+fn htmlParseNameComplex(ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+    let ctxtPtr = unsafe { &mut *ctxt };
+    let inputPtr = unsafe { &mut *(*ctxt).input };
     let mut len: i32 = 0;
     let mut l: i32 = 0;
-    let mut c: i32 = 0;
+    let mut c: i32;
     let mut count: i32 = 0;
-    let mut base: *const xmlChar = inputPtr.base;
+    let base: *const xmlChar = inputPtr.base;
     /*
      * Handler for more complex cases
      */
@@ -9702,25 +9699,25 @@ unsafe fn htmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     if c == ' ' as i32
         || c == '>' as i32
         || c == '/' as i32
-        || (!IS_LETTER(c, getXmlIsBaseCharGroup()) && c != '_' as i32 && c != ':' as i32)
+        || (!IS_LETTER(c, unsafe { getXmlIsBaseCharGroup() }) && c != '_' as i32 && c != ':' as i32)
     {
         return 0 as *const xmlChar;
     }
     while c != ' ' as i32
         && c != '>' as i32
         && c != '/' as i32
-        && (IS_LETTER(c, getXmlIsBaseCharGroup())
-            || IS_DIGIT(c, getXmlIsDigitGroup())
+        && (IS_LETTER(c, unsafe { getXmlIsBaseCharGroup() })
+            || IS_DIGIT(c, unsafe { getXmlIsDigitGroup() })
             || c == '.' as i32
             || c == '-' as i32
             || c == '_' as i32
             || c == ':' as i32
-            || IS_COMBINING(c, getXmlIsCombiningGroup())
-            || IS_EXTENDER(c, getXmlIsExtenderGroup()))
+            || IS_COMBINING(c, unsafe { getXmlIsCombiningGroup() })
+            || IS_EXTENDER(c, unsafe { getXmlIsExtenderGroup() }))
     {
         let fresh15 = count;
         count = count + 1;
-        if fresh15 > 100 as i32 {
+        if fresh15 > 100 {
             count = 0;
             GROW(ctxt);
         }
@@ -9762,20 +9759,22 @@ unsafe fn htmlParseNameComplex(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
  *
  * Returns the attribute parsed or NULL
  */
-unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> *mut xmlChar {
+fn htmlParseHTMLAttribute(ctxt: htmlParserCtxtPtr, stop: xmlChar) -> *mut xmlChar {
     let mut buffer: *mut xmlChar = 0 as *mut xmlChar;
     let mut buffer_size: i32 = 0;
     let mut out: *mut xmlChar = 0 as *mut xmlChar;
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut cur: *const xmlChar = 0 as *const xmlChar;
-    let mut ent: *const htmlEntityDesc = 0 as *const htmlEntityDesc;
+    let mut ent: *const htmlEntityDesc;
     /*
      * allocate a translation buffer.
      */
-    buffer_size = 100 as i32;
-    buffer = xmlMallocAtomic_safe(
-        (buffer_size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-    ) as *mut xmlChar;
+    buffer_size = 100;
+    buffer = unsafe {
+        xmlMallocAtomic_safe(
+            (buffer_size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+        )
+    } as *mut xmlChar;
     if buffer.is_null() {
         htmlErrMemory(
             ctxt,
@@ -9796,61 +9795,41 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
         }
         unsafe {
             if CUR(ctxt) == '&' as i32 {
-                if NXT(ctxt, 1 as i32) == '#' as i32 {
+                if NXT(ctxt, 1) == '#' as i32 {
                     let mut c: u32 = 0;
                     let mut bits: i32 = 0;
                     c = htmlParseCharRef(ctxt) as u32;
-                    if c < 0x80 as u32 {
+                    if c < 0x80 {
                         let fresh16 = out;
-                        unsafe {
-                            out = out.offset(1);
-                        }
-                        unsafe {
-                            *fresh16 = c as xmlChar;
-                        }
-                        bits = -(6 as i32)
-                    } else if c < 0x800 as u32 {
+                        out = out.offset(1);
+                        *fresh16 = c as xmlChar;
+                        bits = -6
+                    } else if c < 0x800 {
                         let fresh17 = out;
-                        unsafe {
-                            out = out.offset(1);
-                        }
-                        unsafe {
-                            *fresh17 = (c >> 6 as i32 & 0x1f as u32 | 0xc0 as u32) as xmlChar;
-                        }
+                        out = out.offset(1);
+                        *fresh17 = (c >> 6 & 0x1f | 0xc0) as xmlChar;
                         bits = 0
-                    } else if c < 0x10000 as u32 {
+                    } else if c < 0x10000 {
                         let fresh18 = out;
-                        unsafe {
-                            out = out.offset(1);
-                        }
-                        unsafe {
-                            *fresh18 = (c >> 12 as i32 & 0xf as u32 | 0xe0 as u32) as xmlChar;
-                        }
-                        bits = 6 as i32
+                        out = out.offset(1);
+                        *fresh18 = (c >> 12 & 0xf | 0xe0) as xmlChar;
+                        bits = 6
                     } else {
                         let fresh19 = out;
-                        unsafe {
-                            out = out.offset(1);
-                        }
-                        unsafe {
-                            *fresh19 = (c >> 18 as i32 & 0x7 as u32 | 0xf0 as u32) as xmlChar;
-                        }
-                        bits = 12 as i32
+                        out = out.offset(1);
+                        *fresh19 = (c >> 18 & 0x7 | 0xf0) as xmlChar;
+                        bits = 12
                     }
                     while bits >= 0 {
                         let fresh20 = out;
-                        unsafe {
-                            out = out.offset(1);
-                        }
-                        unsafe {
-                            *fresh20 = (c >> bits & 0x3f as u32 | 0x80 as u32) as xmlChar;
-                        }
-                        bits -= 6 as i32
+                        out = out.offset(1);
+                        *fresh20 = (c >> bits & 0x3f | 0x80) as xmlChar;
+                        bits -= 6
                     }
-                    if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                    if out.offset_from(buffer) as i64 > (buffer_size - 100) as i64 {
                         let mut indx: i32 = out.offset_from(buffer) as i32;
                         let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                        buffer_size *= 2 as i32;
+                        buffer_size *= 2;
                         tmp = xmlRealloc_safe(
                             buffer as *mut (),
                             (buffer_size as u64)
@@ -9870,10 +9849,10 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                         let fresh21 = out;
                         out = out.offset(1);
                         *fresh21 = '&' as xmlChar;
-                        if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                        if out.offset_from(buffer) as i64 > (buffer_size - 100) as i64 {
                             let mut indx_0: i32 = out.offset_from(buffer) as i32;
                             let mut tmp_0: *mut xmlChar = 0 as *mut xmlChar;
-                            buffer_size *= 2 as i32;
+                            buffer_size *= 2;
                             tmp_0 = xmlRealloc_safe(
                                 buffer as *mut (),
                                 (buffer_size as u64)
@@ -9896,10 +9875,10 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                         *fresh22 = '&' as xmlChar;
                         cur = name;
                         while *cur as i32 != 0 {
-                            if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                            if out.offset_from(buffer) as i64 > (buffer_size - 100) as i64 {
                                 let mut indx_1: i32 = out.offset_from(buffer) as i32;
                                 let mut tmp_1: *mut xmlChar = 0 as *mut xmlChar;
-                                buffer_size *= 2 as i32;
+                                buffer_size *= 2;
                                 tmp_1 = xmlRealloc_safe(
                                     buffer as *mut (),
                                     (buffer_size as u64)
@@ -9923,12 +9902,12 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                             *fresh24 = *fresh23
                         }
                     } else {
-                        let mut c_0: u32 = 0;
-                        let mut bits_0: i32 = 0;
-                        if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                        let mut c_0: u32;
+                        let mut bits_0: i32;
+                        if out.offset_from(buffer) as i64 > (buffer_size - 100) as i64 {
                             let mut indx_2: i32 = out.offset_from(buffer) as i32;
                             let mut tmp_2: *mut xmlChar = 0 as *mut xmlChar;
-                            buffer_size *= 2 as i32;
+                            buffer_size *= 2;
                             tmp_2 = xmlRealloc_safe(
                                 buffer as *mut (),
                                 (buffer_size as u64)
@@ -9946,43 +9925,43 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                             out = &mut *buffer.offset(indx_2 as isize) as *mut xmlChar
                         }
                         c_0 = (*ent).value;
-                        if c_0 < 0x80 as u32 {
+                        if c_0 < 0x80 {
                             let fresh25 = out;
                             out = out.offset(1);
                             *fresh25 = c_0 as xmlChar;
-                            bits_0 = -(6 as i32)
-                        } else if c_0 < 0x800 as u32 {
+                            bits_0 = -6
+                        } else if c_0 < 0x800 {
                             let fresh26 = out;
                             out = out.offset(1);
-                            *fresh26 = (c_0 >> 6 as i32 & 0x1f as u32 | 0xc0 as u32) as xmlChar;
+                            *fresh26 = (c_0 >> 6 & 0x1f | 0xc0) as xmlChar;
                             bits_0 = 0
-                        } else if c_0 < 0x10000 as u32 {
+                        } else if c_0 < 0x10000 {
                             let fresh27 = out;
                             out = out.offset(1);
-                            *fresh27 = (c_0 >> 12 as i32 & 0xf as u32 | 0xe0 as u32) as xmlChar;
-                            bits_0 = 6 as i32
+                            *fresh27 = (c_0 >> 12 & 0xf | 0xe0) as xmlChar;
+                            bits_0 = 6
                         } else {
                             let fresh28 = out;
                             out = out.offset(1);
-                            *fresh28 = (c_0 >> 18 as i32 & 0x7 as u32 | 0xf0 as u32) as xmlChar;
-                            bits_0 = 12 as i32
+                            *fresh28 = (c_0 >> 18 & 0x7 | 0xf0) as xmlChar;
+                            bits_0 = 12
                         }
                         while bits_0 >= 0 {
                             let fresh29 = out;
                             out = out.offset(1);
-                            *fresh29 = (c_0 >> bits_0 & 0x3f as u32 | 0x80 as u32) as xmlChar;
-                            bits_0 -= 6 as i32
+                            *fresh29 = (c_0 >> bits_0 & 0x3f | 0x80) as xmlChar;
+                            bits_0 -= 6
                         }
                     }
                 }
             } else {
-                let mut c_1: u32 = 0;
-                let mut bits_1: i32 = 0;
+                let mut c_1: u32;
+                let mut bits_1: i32;
                 let mut l: i32 = 0;
-                if out.offset_from(buffer) as i64 > (buffer_size - 100 as i32) as i64 {
+                if out.offset_from(buffer) as i64 > (buffer_size - 100) as i64 {
                     let mut indx_3: i32 = out.offset_from(buffer) as i32;
                     let mut tmp_3: *mut xmlChar = 0 as *mut xmlChar;
-                    buffer_size *= 2 as i32;
+                    buffer_size *= 2;
                     tmp_3 = xmlRealloc_safe(
                         buffer as *mut (),
                         (buffer_size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
@@ -9996,32 +9975,32 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
                     out = &mut *buffer.offset(indx_3 as isize) as *mut xmlChar
                 }
                 c_1 = htmlCurrentChar(ctxt, &mut l) as u32;
-                if c_1 < 0x80 as u32 {
+                if c_1 < 0x80 {
                     let fresh30 = out;
                     out = out.offset(1);
                     *fresh30 = c_1 as xmlChar;
-                    bits_1 = -(6 as i32)
-                } else if c_1 < 0x800 as u32 {
+                    bits_1 = -(6)
+                } else if c_1 < 0x800 {
                     let fresh31 = out;
                     out = out.offset(1);
-                    *fresh31 = (c_1 >> 6 as i32 & 0x1f as u32 | 0xc0 as u32) as xmlChar;
+                    *fresh31 = (c_1 >> 6 & 0x1f | 0xc0) as xmlChar;
                     bits_1 = 0
-                } else if c_1 < 0x10000 as u32 {
+                } else if c_1 < 0x10000 {
                     let fresh32 = out;
                     out = out.offset(1);
-                    *fresh32 = (c_1 >> 12 as i32 & 0xf as u32 | 0xe0 as u32) as xmlChar;
-                    bits_1 = 6 as i32
+                    *fresh32 = (c_1 >> 12 & 0xf | 0xe0) as xmlChar;
+                    bits_1 = 6
                 } else {
                     let fresh33 = out;
                     out = out.offset(1);
-                    *fresh33 = (c_1 >> 18 as i32 & 0x7 as u32 | 0xf0 as u32) as xmlChar;
-                    bits_1 = 12 as i32
+                    *fresh33 = (c_1 >> 18 & 0x7 | 0xf0) as xmlChar;
+                    bits_1 = 12
                 }
                 while bits_1 >= 0 {
                     let fresh34 = out;
                     out = out.offset(1);
-                    *fresh34 = (c_1 >> bits_1 & 0x3f as u32 | 0x80 as u32) as xmlChar;
-                    bits_1 -= 6 as i32
+                    *fresh34 = (c_1 >> bits_1 & 0x3f | 0x80) as xmlChar;
+                    bits_1 -= 6
                 }
                 xmlNextChar_safe(ctxt);
             }
@@ -10045,11 +10024,11 @@ unsafe fn htmlParseHTMLAttribute(mut ctxt: htmlParserCtxtPtr, stop: xmlChar) -> 
  *         if non-NULL *str will have to be freed by the caller.
  */
 
-pub unsafe fn htmlParseEntityRef(
-    mut ctxt: htmlParserCtxtPtr,
-    mut str: *mut *const xmlChar,
+pub fn htmlParseEntityRef(
+    ctxt: htmlParserCtxtPtr,
+    str: *mut *const xmlChar,
 ) -> *const htmlEntityDesc {
-    let mut name: *const xmlChar = 0 as *const xmlChar;
+    let mut name: *const xmlChar;
     let mut ent: *const htmlEntityDesc = 0 as *const htmlEntityDesc;
     if !str.is_null() {
         unsafe { *str = 0 as *const xmlChar }
@@ -10060,7 +10039,7 @@ pub unsafe fn htmlParseEntityRef(
         }
     }
     if CUR(ctxt) == '&' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
         name = htmlParseName(ctxt);
         if name.is_null() {
             htmlParseErr(
@@ -10082,7 +10061,7 @@ pub unsafe fn htmlParseEntityRef(
                 ent = htmlEntityLookup(name);
                 if !ent.is_null() {
                     /* OK that's ugly !!! */
-                    xmlNextChar_safe(ctxt);
+                    unsafe { xmlNextChar_safe(ctxt) };
                 }
             } else {
                 htmlParseErr(
@@ -10110,10 +10089,10 @@ pub unsafe fn htmlParseEntityRef(
  *
  * Returns the AttValue parsed or NULL.
  */
-unsafe fn htmlParseAttValue(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
+fn htmlParseAttValue(ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if CUR(ctxt) == '\"' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
         ret = htmlParseHTMLAttribute(ctxt, '\"' as xmlChar);
         if CUR(ctxt) != '\"' as i32 {
             htmlParseErr(
@@ -10124,10 +10103,10 @@ unsafe fn htmlParseAttValue(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
                 0 as *const xmlChar,
             );
         } else {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
     } else if CUR(ctxt) == '\'' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
         ret = htmlParseHTMLAttribute(ctxt, '\'' as xmlChar);
         if CUR(ctxt) != '\'' as i32 {
             htmlParseErr(
@@ -10138,7 +10117,7 @@ unsafe fn htmlParseAttValue(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
                 0 as *const xmlChar,
             );
         } else {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
     } else {
         /*
@@ -10167,11 +10146,11 @@ unsafe fn htmlParseAttValue(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
  *
  * Returns the SystemLiteral parsed or NULL
  */
-unsafe fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
-    let mut len: size_t = 0 as size_t;
-    let mut startPosition: size_t = 0 as size_t;
+fn htmlParseSystemLiteral(ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
+    let mut len: size_t = 0;
+    let mut startPosition: size_t = 0;
     let mut err: i32 = 0;
-    let mut quote: i32 = 0;
+    let mut quote: i32;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
     if CUR(ctxt) != '\"' as i32 && CUR(ctxt) != '\'' as i32 {
         htmlParseErr(
@@ -10184,13 +10163,13 @@ unsafe fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
         return 0 as *mut xmlChar;
     }
     quote = CUR(ctxt);
-    xmlNextChar_safe(ctxt);
+    unsafe { xmlNextChar_safe(ctxt) };
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     if inputPtr.cur < inputPtr.base {
         return ret;
     }
     unsafe {
-        startPosition = inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t;
+        startPosition = inputPtr.cur.offset_from(inputPtr.base) as size_t;
     }
     while CUR(ctxt) != 0 && CUR(ctxt) != quote {
         /* TODO: Handle UTF-8 */
@@ -10201,9 +10180,9 @@ unsafe fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
                 b"Invalid char in SystemLiteral 0x%X\n\x00" as *const u8 as *const i8,
                 CUR(ctxt),
             );
-            err = 1 as i32
+            err = 1
         }
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
         len = len.wrapping_add(1)
     }
     if CUR(ctxt) != quote {
@@ -10215,7 +10194,7 @@ unsafe fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
             0 as *const xmlChar,
         );
     } else {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
         if err == 0 {
             unsafe {
                 ret = xmlStrndup_safe(inputPtr.base.offset(startPosition as isize), len as i32)
@@ -10234,9 +10213,9 @@ unsafe fn htmlParseSystemLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
  *
  * Returns the PubidLiteral parsed or NULL.
  */
-unsafe fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
-    let mut len: size_t = 0 as size_t;
-    let mut startPosition: size_t = 0 as size_t;
+fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
+    let mut len: size_t = 0;
+    let mut startPosition: size_t = 0;
     let mut err: i32 = 0;
     let mut quote: i32 = 0;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
@@ -10251,7 +10230,7 @@ unsafe fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
         return 0 as *mut xmlChar;
     }
     quote = CUR(ctxt);
-    xmlNextChar_safe(ctxt);
+    unsafe { xmlNextChar_safe(ctxt) };
     /*
      * Name ::= (Letter | '_') (NameChar)*
      */
@@ -10260,20 +10239,20 @@ unsafe fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
         return ret;
     }
     unsafe {
-        startPosition = inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t;
+        startPosition = inputPtr.cur.offset_from(inputPtr.base) as size_t;
     }
     while CUR(ctxt) != 0 && CUR(ctxt) != quote {
-        if getXmlIsPubidChar_tab(CUR(ctxt) as usize) == 0 {
+        if unsafe { getXmlIsPubidChar_tab(CUR(ctxt) as usize) } == 0 {
             htmlParseErrInt(
                 ctxt,
                 XML_ERR_INVALID_CHAR,
                 b"Invalid char in PubidLiteral 0x%X\n\x00" as *const u8 as *const i8,
                 CUR(ctxt),
             );
-            err = 1 as i32
+            err = 1
         }
         len = len.wrapping_add(1);
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
     }
     if CUR(ctxt) != '\"' as i32 {
         htmlParseErr(
@@ -10284,7 +10263,7 @@ unsafe fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
             0 as *const xmlChar,
         );
     } else {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
         if err == 0 {
             unsafe {
                 ret = xmlStrndup_safe(inputPtr.base.offset(startPosition as isize), len as i32)
@@ -10313,17 +10292,17 @@ unsafe fn htmlParsePubidLiteral(mut ctxt: htmlParserCtxtPtr) -> *mut xmlChar {
  *   as CDATA but SGML allows entities references in attributes so their
  *   processing is identical as other attributes
  */
-unsafe fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
+fn htmlParseScript(ctxt: htmlParserCtxtPtr) {
     let mut ctxtPtr = unsafe { &mut *ctxt };
     const BUF_SIZE: usize = (HTML_PARSER_BIG_BUFFER_SIZE + 5) as usize;
     let mut buf: [xmlChar; BUF_SIZE] = [0; BUF_SIZE];
     let mut nbchar: i32 = 0;
-    let mut cur: i32 = 0;
+    let mut cur: i32;
     let mut l: i32 = 0;
     SHRINK(ctxt);
     cur = htmlCurrentChar(ctxt, &mut l);
     while cur != 0 {
-        if cur == '<' as i32 && NXT(ctxt, 1 as i32) == '/' as i32 {
+        if cur == '<' as i32 && NXT(ctxt, 1) == '/' as i32 {
             /*
              * One should break here, the specification is clear:
              * Authors should therefore escape "</" within the content.
@@ -10336,7 +10315,7 @@ unsafe fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
              */
             if ctxtPtr.recovery != 0 {
                 unsafe {
-                    let mut inputPtr = unsafe { &mut *(*ctxt).input };
+                    let mut inputPtr = &mut *(*ctxt).input;
                     if xmlStrncasecmp_safe(
                         ctxtPtr.name,
                         inputPtr.cur.offset(2 as isize),
@@ -10355,8 +10334,8 @@ unsafe fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
                         );
                     }
                 }
-            } else if NXT(ctxt, 2 as i32) >= 'A' as i32 && NXT(ctxt, 2 as i32) <= 'Z' as i32
-                || NXT(ctxt, 2 as i32) >= 'a' as i32 && NXT(ctxt, 2 as i32) <= 'z' as i32
+            } else if NXT(ctxt, 2) >= 'A' as i32 && NXT(ctxt, 2) <= 'Z' as i32
+                || NXT(ctxt, 2) >= 'a' as i32 && NXT(ctxt, 2) <= 'z' as i32
             {
                 break;
             }
@@ -10434,11 +10413,11 @@ unsafe fn htmlParseScript(mut ctxt: htmlParserCtxtPtr) {
  *
  * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
  */
-unsafe fn htmlParseCharDataInternal(mut ctxt: htmlParserCtxtPtr, mut readahead: i32) {
+fn htmlParseCharDataInternal(ctxt: htmlParserCtxtPtr, readahead: i32) {
     const BUF_SIZE: usize = (HTML_PARSER_BIG_BUFFER_SIZE + 6) as usize;
     let mut buf: [xmlChar; BUF_SIZE] = [0; BUF_SIZE];
     let mut nbchar: i32 = 0;
-    let mut cur: i32 = 0;
+    let mut cur: i32;
     let mut l: i32 = 0;
     let mut chunk: i32 = 0;
     if readahead != 0 {
@@ -10507,7 +10486,7 @@ unsafe fn htmlParseCharDataInternal(mut ctxt: htmlParserCtxtPtr, mut readahead: 
         }
         NEXTL(ctxt, l);
         chunk += 1;
-        if chunk > 100 as i32 {
+        if chunk > 100 {
             chunk = 0;
             SHRINK(ctxt);
             GROW(ctxt);
@@ -10572,8 +10551,8 @@ unsafe fn htmlParseCharDataInternal(mut ctxt: htmlParserCtxtPtr, mut readahead: 
  *
  * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
  */
-unsafe fn htmlParseCharData(mut ctxt: htmlParserCtxtPtr) {
-    htmlParseCharDataInternal(ctxt, 0 as i32);
+fn htmlParseCharData(ctxt: htmlParserCtxtPtr) {
+    htmlParseCharDataInternal(ctxt, 0);
 }
 /* *
  * htmlParseExternalID:
@@ -10591,19 +10570,16 @@ unsafe fn htmlParseCharData(mut ctxt: htmlParserCtxtPtr) {
  *                case publicID receives PubidLiteral, is strict is off
  *                it is possible to return NULL and have publicID set.
  */
-unsafe fn htmlParseExternalID(
-    mut ctxt: htmlParserCtxtPtr,
-    mut publicID: *mut *mut xmlChar,
-) -> *mut xmlChar {
+fn htmlParseExternalID(ctxt: htmlParserCtxtPtr, publicID: *mut *mut xmlChar) -> *mut xmlChar {
     let mut URI: *mut xmlChar = 0 as *mut xmlChar;
     if UPPER(ctxt) == 'S' as i32
-        && UPP(ctxt, 1 as i32) == 'Y' as i32
-        && UPP(ctxt, 2 as i32) == 'S' as i32
-        && UPP(ctxt, 3 as i32) == 'T' as i32
-        && UPP(ctxt, 4 as i32) == 'E' as i32
-        && UPP(ctxt, 5 as i32) == 'M' as i32
+        && UPP(ctxt, 1) == 'Y' as i32
+        && UPP(ctxt, 2) == 'S' as i32
+        && UPP(ctxt, 3) == 'T' as i32
+        && UPP(ctxt, 4) == 'E' as i32
+        && UPP(ctxt, 5) == 'M' as i32
     {
-        SKIP(ctxt, 6 as i32);
+        SKIP(ctxt, 6);
         if !IS_BLANK_CH(CUR(ctxt)) {
             htmlParseErr(
                 ctxt,
@@ -10625,13 +10601,13 @@ unsafe fn htmlParseExternalID(
             );
         }
     } else if UPPER(ctxt) == 'P' as i32
-        && UPP(ctxt, 1 as i32) == 'U' as i32
-        && UPP(ctxt, 2 as i32) == 'B' as i32
-        && UPP(ctxt, 3 as i32) == 'L' as i32
-        && UPP(ctxt, 4 as i32) == 'I' as i32
-        && UPP(ctxt, 5 as i32) == 'C' as i32
+        && UPP(ctxt, 1) == 'U' as i32
+        && UPP(ctxt, 2) == 'B' as i32
+        && UPP(ctxt, 3) == 'L' as i32
+        && UPP(ctxt, 4) == 'I' as i32
+        && UPP(ctxt, 5) == 'C' as i32
     {
-        SKIP(ctxt, 6 as i32);
+        SKIP(ctxt, 6);
         if !IS_BLANK_CH(CUR(ctxt)) {
             htmlParseErr(
                 ctxt,
@@ -10672,24 +10648,24 @@ unsafe fn htmlParseExternalID(
  *
  * [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
  */
-unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
+fn htmlParsePI(ctxt: htmlParserCtxtPtr) {
+    let ctxtPtr = unsafe { &mut *ctxt };
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
     let mut len: i32 = 0;
-    let mut size: i32 = 100 as i32;
-    let mut cur: i32 = 0;
+    let mut size: i32 = 100;
+    let mut cur: i32;
     let mut l: i32 = 0;
-    let mut target: *const xmlChar = 0 as *const xmlChar;
+    let target: *const xmlChar;
     let mut state: xmlParserInputState = XML_PARSER_START;
     let mut count: i32 = 0;
     let mut sax_condition = false;
-    if RAW(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '?' as i32 {
+    if RAW(ctxt) == '<' as i32 && NXT(ctxt, 1) == '?' as i32 {
         state = ctxtPtr.instate;
         ctxtPtr.instate = XML_PARSER_PI;
         /*
          * this is a Processing Instruction.
          */
-        SKIP(ctxt, 2 as i32);
+        SKIP(ctxt, 2);
         SHRINK(ctxt);
         /*
          * Parse the target name and check for special support like
@@ -10698,7 +10674,7 @@ unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
         target = htmlParseName(ctxt);
         if !target.is_null() {
             if RAW(ctxt) == '>' as i32 {
-                SKIP(ctxt, 1 as i32);
+                SKIP(ctxt, 1);
                 /*
                  * SAX: PI detected.
                  */
@@ -10719,9 +10695,11 @@ unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
                 ctxtPtr.instate = state;
                 return;
             }
-            buf = xmlMallocAtomic_safe(
-                (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-            ) as *mut xmlChar;
+            buf = unsafe {
+                xmlMallocAtomic_safe(
+                    (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                )
+            } as *mut xmlChar;
             if buf.is_null() {
                 htmlErrMemory(ctxt, 0 as *const i8);
                 ctxtPtr.instate = state;
@@ -10740,23 +10718,25 @@ unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
             htmlSkipBlankChars(ctxt);
             cur = htmlCurrentChar(ctxt, &mut l);
             while cur != 0 && cur != '>' as i32 {
-                if len + 5 as i32 >= size {
+                if len + 5 >= size {
                     let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-                    size *= 2 as i32;
-                    tmp = xmlRealloc_safe(
-                        buf as *mut (),
-                        (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-                    ) as *mut xmlChar;
+                    size *= 2;
+                    tmp = unsafe {
+                        xmlRealloc_safe(
+                            buf as *mut (),
+                            (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                        )
+                    } as *mut xmlChar;
                     if tmp.is_null() {
                         htmlErrMemory(ctxt, 0 as *const i8);
-                        xmlFree_safe(buf as *mut ());
+                        unsafe { xmlFree_safe(buf as *mut ()) };
                         ctxtPtr.instate = state;
                         return;
                     }
                     buf = tmp
                 }
                 count += 1;
-                if count > 50 as i32 {
+                if count > 50 {
                     GROW(ctxt);
                     count = 0
                 }
@@ -10792,7 +10772,7 @@ unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
                     0 as *const xmlChar,
                 );
             } else {
-                SKIP(ctxt, 1 as i32);
+                SKIP(ctxt, 1);
                 /*
                  * SAX: PI detected.
                  */
@@ -10811,7 +10791,7 @@ unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
                     );
                 }
             }
-            xmlFree_safe(buf as *mut ());
+            unsafe { xmlFree_safe(buf as *mut ()) };
         } else {
             htmlParseErr(
                 ctxt,
@@ -10832,26 +10812,26 @@ unsafe fn htmlParsePI(mut ctxt: htmlParserCtxtPtr) {
  *
  * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
  */
-unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
+fn htmlParseComment(ctxt: htmlParserCtxtPtr) {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
-    let mut len: i32 = 0;
-    let mut size: i32 = 100 as i32;
-    let mut q: i32 = 0;
+    let mut len: i32;
+    let mut size: i32 = 100;
+    let mut q: i32;
     let mut ql: i32 = 0;
-    let mut r: i32 = 0;
+    let mut r: i32;
     let mut rl: i32 = 0;
-    let mut cur: i32 = 0;
+    let mut cur: i32;
     let mut l: i32 = 0;
-    let mut next: i32 = 0;
+    let mut next: i32;
     let mut nl: i32 = 0;
     let mut state: xmlParserInputState = XML_PARSER_START;
     /*
      * Check that there is a comment right here.
      */
     if (RAW(ctxt) != '<' as i32)
-        || (NXT(ctxt, 1 as i32) != '!' as i32)
-        || (NXT(ctxt, 2 as i32) != '-' as i32)
-        || (NXT(ctxt, 3 as i32) != '-' as i32)
+        || (NXT(ctxt, 1) != '!' as i32)
+        || (NXT(ctxt, 2) != '-' as i32)
+        || (NXT(ctxt, 3) != '-' as i32)
     {
         return;
     }
@@ -10859,9 +10839,10 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
     state = ctxtPtr.instate;
     ctxtPtr.instate = XML_PARSER_COMMENT;
     SHRINK(ctxt);
-    SKIP(ctxt, 4 as i32);
-    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
-        as *mut xmlChar;
+    SKIP(ctxt, 4);
+    buf = unsafe {
+        xmlMallocAtomic_safe((size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64))
+    } as *mut xmlChar;
     if buf.is_null() {
         htmlErrMemory(
             ctxt,
@@ -10883,7 +10864,7 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
             buf,
             0 as *const xmlChar,
         );
-        xmlFree_safe(buf as *mut ());
+        unsafe { xmlFree_safe(buf as *mut ()) };
         return;
     }
     NEXTL(ctxt, ql);
@@ -10896,7 +10877,7 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
             buf,
             0 as *const xmlChar,
         );
-        xmlFree_safe(buf as *mut ());
+        unsafe { xmlFree_safe(buf as *mut ()) };
         return;
     }
     NEXTL(ctxt, rl);
@@ -10920,15 +10901,17 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
             cur = '>' as i32;
             break;
         }
-        if (len + 5 as i32) >= size {
+        if (len + 5) >= size {
             let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
-            size *= 2 as i32;
-            tmp = xmlRealloc_safe(
-                buf as *mut (),
-                (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
-            ) as *mut xmlChar;
+            size *= 2;
+            tmp = unsafe {
+                xmlRealloc_safe(
+                    buf as *mut (),
+                    (size as u64).wrapping_mul(::std::mem::size_of::<xmlChar>() as u64),
+                )
+            } as *mut xmlChar;
             if tmp.is_null() {
-                xmlFree_safe(buf as *mut ());
+                unsafe { xmlFree_safe(buf as *mut ()) };
                 htmlErrMemory(
                     ctxt,
                     b"growing buffer failed\n\x00" as *const u8 as *const i8,
@@ -10960,7 +10943,7 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
         *buf.offset(len as isize) = 0 as xmlChar;
     }
     if cur == '>' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
         let mut sax_condition = unsafe {
             !ctxtPtr.sax.is_null() && (*(*ctxt).sax).comment.is_some() && ctxtPtr.disableSAX == 0
         };
@@ -10968,7 +10951,7 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
             let mut saxPtr = unsafe { &mut *(*ctxt).sax };
             xmlSAXHandler_comment_safe(saxPtr.comment, ctxtPtr.userData, buf);
         }
-        xmlFree_safe(buf as *mut ());
+        unsafe { xmlFree_safe(buf as *mut ()) };
         ctxtPtr.instate = state;
         return;
     }
@@ -10979,7 +10962,7 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
         buf,
         0 as *const xmlChar,
     );
-    xmlFree_safe(buf as *mut ());
+    unsafe { xmlFree_safe(buf as *mut ()) };
 }
 /* *
  * htmlParseCharRef:
@@ -10993,7 +10976,7 @@ unsafe fn htmlParseComment(mut ctxt: htmlParserCtxtPtr) {
  * Returns the value parsed (as an int)
  */
 
-pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
+pub fn htmlParseCharRef(ctxt: htmlParserCtxtPtr) -> i32 {
     let mut val: i32 = 0;
     unsafe {
         if ctxt.is_null() || (*ctxt).input.is_null() {
@@ -11008,22 +10991,22 @@ pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
         }
     }
     if CUR(ctxt) == '&' as i32
-        && NXT(ctxt, 1 as i32) == '#' as i32
-        && (NXT(ctxt, 2 as i32) == 'x' as i32 || NXT(ctxt, 2 as i32) == 'X' as i32)
+        && NXT(ctxt, 1) == '#' as i32
+        && (NXT(ctxt, 2) == 'x' as i32 || NXT(ctxt, 2) == 'X' as i32)
     {
-        SKIP(ctxt, 3 as i32);
+        SKIP(ctxt, 3);
         while CUR(ctxt) != ';' as i32 {
             if CUR(ctxt) >= '0' as i32 && CUR(ctxt) <= '9' as i32 {
-                if val < 0x110000 as i32 {
-                    val = val * 16 as i32 + (CUR(ctxt) - '0' as i32)
+                if val < 0x110000 {
+                    val = val * 16 + (CUR(ctxt) - '0' as i32)
                 }
             } else if CUR(ctxt) >= 'a' as i32 && CUR(ctxt) <= 'f' as i32 {
-                if val < 0x110000 as i32 {
-                    val = val * 16 as i32 + (CUR(ctxt) - 'a' as i32) + 10 as i32
+                if val < 0x110000 {
+                    val = val * 16 + (CUR(ctxt) - 'a' as i32) + 10
                 }
             } else if CUR(ctxt) >= 'A' as i32 && CUR(ctxt) <= 'F' as i32 {
-                if val < 0x110000 as i32 {
-                    val = val * 16 as i32 + (CUR(ctxt) - 'A' as i32) + 10 as i32
+                if val < 0x110000 {
+                    val = val * 16 + (CUR(ctxt) - 'A' as i32) + 10
                 }
             } else {
                 htmlParseErr(
@@ -11035,19 +11018,19 @@ pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
                 );
                 break;
             }
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
         if CUR(ctxt) == ';' as i32 {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
-    } else if CUR(ctxt) == '&' as i32 && NXT(ctxt, 1 as i32) == '#' as i32 {
-        SKIP(ctxt, 2 as i32);
+    } else if CUR(ctxt) == '&' as i32 && NXT(ctxt, 1) == '#' as i32 {
+        SKIP(ctxt, 2);
         while CUR(ctxt) != ';' as i32 {
             if CUR(ctxt) >= '0' as i32 && CUR(ctxt) <= '9' as i32 {
-                if val < 0x110000 as i32 {
-                    val = val * 10 as i32 + (CUR(ctxt) - '0' as i32)
+                if val < 0x110000 {
+                    val = val * 10 + (CUR(ctxt) - '0' as i32)
                 }
-                xmlNextChar_safe(ctxt);
+                unsafe { xmlNextChar_safe(ctxt) };
             } else {
                 htmlParseErr(
                     ctxt,
@@ -11060,7 +11043,7 @@ pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
             }
         }
         if CUR(ctxt) == ';' as i32 {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
     } else {
         htmlParseErr(
@@ -11077,7 +11060,7 @@ pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
     if IS_CHAR(val) {
         return val;
     } else {
-        if val >= 0x110000 as i32 {
+        if val >= 0x110000 {
             htmlParseErr(
                 ctxt,
                 XML_ERR_INVALID_CHAR,
@@ -11105,14 +11088,14 @@ pub unsafe fn htmlParseCharRef(mut ctxt: htmlParserCtxtPtr) -> i32 {
  * [28] doctypedecl ::= '<!DOCTYPE' S Name (S ExternalID)? S?
  *                      ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
  */
-unsafe fn htmlParseDocTypeDecl(mut ctxt: htmlParserCtxtPtr) {
-    let mut name: *const xmlChar = 0 as *const xmlChar;
+fn htmlParseDocTypeDecl(ctxt: htmlParserCtxtPtr) {
+    let name: *const xmlChar;
     let mut ExternalID: *mut xmlChar = 0 as *mut xmlChar;
     let mut URI: *mut xmlChar = 0 as *mut xmlChar;
     /*
      * We know that '<!DOCTYPE' has been detected.
      */
-    SKIP(ctxt, 9 as i32);
+    SKIP(ctxt, 9);
     htmlSkipBlankChars(ctxt);
     /*
      * Parse the DOCTYPE name.
@@ -11149,11 +11132,11 @@ unsafe fn htmlParseDocTypeDecl(mut ctxt: htmlParserCtxtPtr) {
         );
         /* Ignore bogus content */
         while CUR(ctxt) != 0 && CUR(ctxt) != '>' as i32 {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
     }
     if CUR(ctxt) == '>' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
     }
     /*
      * Create or update the document accordingly to the DOCTYPE
@@ -11176,10 +11159,10 @@ unsafe fn htmlParseDocTypeDecl(mut ctxt: htmlParserCtxtPtr) {
      * Cleanup, since we don't use all those identifiers
      */
     if !URI.is_null() {
-        xmlFree_safe(URI as *mut ());
+        unsafe { xmlFree_safe(URI as *mut ()) };
     }
     if !ExternalID.is_null() {
-        xmlFree_safe(ExternalID as *mut ());
+        unsafe { xmlFree_safe(ExternalID as *mut ()) };
     };
 }
 /* *
@@ -11202,11 +11185,8 @@ unsafe fn htmlParseDocTypeDecl(mut ctxt: htmlParserCtxtPtr) {
  *
  * Returns the attribute name, and the value in *value.
  */
-unsafe fn htmlParseAttribute(
-    mut ctxt: htmlParserCtxtPtr,
-    mut value: *mut *mut xmlChar,
-) -> *const xmlChar {
-    let mut name: *const xmlChar = 0 as *const xmlChar;
+fn htmlParseAttribute(ctxt: htmlParserCtxtPtr, value: *mut *mut xmlChar) -> *const xmlChar {
+    let name: *const xmlChar;
     let mut val: *mut xmlChar = 0 as *mut xmlChar;
     unsafe {
         *value = 0 as *mut xmlChar;
@@ -11227,7 +11207,7 @@ unsafe fn htmlParseAttribute(
      */
     htmlSkipBlankChars(ctxt);
     if CUR(ctxt) == '=' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
         htmlSkipBlankChars(ctxt);
         val = htmlParseAttValue(ctxt)
     }
@@ -11246,7 +11226,7 @@ unsafe fn htmlParseAttribute(
  * If a new encoding is detected the parser is switched to decode
  * it and pass UTF8
  */
-unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *const xmlChar) {
+fn htmlCheckEncodingDirect(ctxt: htmlParserCtxtPtr, mut encoding: *const xmlChar) {
     unsafe {
         if ctxt.is_null()
             || encoding.is_null()
@@ -11264,19 +11244,19 @@ unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *co
     }
     if !encoding.is_null() {
         let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
-        let mut handler: xmlCharEncodingHandlerPtr = 0 as *mut xmlCharEncodingHandler;
+        let mut handler: xmlCharEncodingHandlerPtr;
         let mut encoding_safe = unsafe { *encoding };
         while 1 < 2 {
-            if (!(encoding_safe as i32 == ' ' as i32 || encoding_safe as i32 == '\t' as i32)) {
+            if !(encoding_safe as i32 == ' ' as i32 || encoding_safe as i32 == '\t' as i32) {
                 break;
             }
             unsafe { encoding = encoding.offset(1) }
         }
         if !inputPtr.encoding.is_null() {
-            xmlFree_safe(inputPtr.encoding as *mut xmlChar as *mut ());
+            unsafe { xmlFree_safe(inputPtr.encoding as *mut xmlChar as *mut ()) };
         }
-        inputPtr.encoding = xmlStrdup_safe(encoding);
-        enc = xmlParseCharEncoding_safe(encoding as *const i8);
+        inputPtr.encoding = unsafe { xmlStrdup_safe(encoding) };
+        enc = unsafe { xmlParseCharEncoding_safe(encoding as *const i8) };
         /*
          * registered set of known encodings
          */
@@ -11297,17 +11277,17 @@ unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *co
                     0 as *const xmlChar,
                 );
             } else {
-                xmlSwitchEncoding_safe(ctxt, enc);
+                unsafe { xmlSwitchEncoding_safe(ctxt, enc) };
             }
-            ctxtPtr.charset = XML_CHAR_ENCODING_UTF8 as i32
+            ctxtPtr.charset = XML_CHAR_ENCODING_UTF8
         } else {
             /*
              * fallback for unknown encodings
              */
-            handler = xmlFindCharEncodingHandler_safe(encoding as *const i8);
+            handler = unsafe { xmlFindCharEncodingHandler_safe(encoding as *const i8) };
             if !handler.is_null() {
-                xmlSwitchToEncoding_safe(ctxt, handler);
-                ctxtPtr.charset = XML_CHAR_ENCODING_UTF8 as i32
+                unsafe { xmlSwitchToEncoding_safe(ctxt, handler) };
+                ctxtPtr.charset = XML_CHAR_ENCODING_UTF8
             } else {
                 htmlParseErr(
                     ctxt,
@@ -11334,9 +11314,9 @@ unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *co
             unsafe {
                 processed = inputPtr.cur.offset_from(inputPtr.base) as i32;
             }
-            xmlBufShrink_safe(bufPtr.buffer, processed as size_t);
-            nbchars = xmlCharEncInput_safe(inputPtr.buf, 1 as i32);
-            xmlBufResetInput_safe(bufPtr.buffer, ctxtPtr.input);
+            unsafe { xmlBufShrink_safe(bufPtr.buffer, processed as size_t) };
+            nbchars = unsafe { xmlCharEncInput_safe(inputPtr.buf, 1) };
+            unsafe { xmlBufResetInput_safe(bufPtr.buffer, ctxtPtr.input) };
             if nbchars < 0 {
                 htmlParseErr(
                     ctxt,
@@ -11359,15 +11339,17 @@ unsafe fn htmlCheckEncodingDirect(mut ctxt: htmlParserCtxtPtr, mut encoding: *co
  * If a new encoding is detected the parser is switched to decode
  * it and pass UTF8
  */
-unsafe fn htmlCheckEncoding(mut ctxt: htmlParserCtxtPtr, mut attvalue: *const xmlChar) {
+fn htmlCheckEncoding(ctxt: htmlParserCtxtPtr, attvalue: *const xmlChar) {
     let mut encoding: *const xmlChar = 0 as *const xmlChar;
     if attvalue.is_null() {
         return;
     }
-    encoding = xmlStrcasestr_safe(
-        attvalue,
-        b"charset\x00" as *const u8 as *const i8 as *mut xmlChar,
-    );
+    encoding = unsafe {
+        xmlStrcasestr_safe(
+            attvalue,
+            b"charset\x00" as *const u8 as *const i8 as *mut xmlChar,
+        )
+    };
     if !encoding.is_null() {
         unsafe { encoding = encoding.offset(7 as isize) }
     }
@@ -11395,7 +11377,7 @@ unsafe fn htmlCheckEncoding(mut ctxt: htmlParserCtxtPtr, mut attvalue: *const xm
  *
  * Checks an attributes from a Meta tag
  */
-unsafe fn htmlCheckMeta(mut ctxt: htmlParserCtxtPtr, mut atts: *mut *const xmlChar) {
+fn htmlCheckMeta(mut ctxt: htmlParserCtxtPtr, mut atts: *mut *const xmlChar) {
     let mut i: i32 = 0;
     let mut att: *const xmlChar = 0 as *const xmlChar;
     let mut value: *const xmlChar = 0 as *const xmlChar;
@@ -11417,28 +11399,36 @@ unsafe fn htmlCheckMeta(mut ctxt: htmlParserCtxtPtr, mut atts: *mut *const xmlCh
             value = *atts.offset(fresh41 as isize);
         }
         if !value.is_null()
-            && xmlStrcasecmp_safe(
-                att,
-                b"http-equiv\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ) == 0
-            && xmlStrcasecmp_safe(
-                value,
-                b"Content-Type\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ) == 0
+            && unsafe {
+                xmlStrcasecmp_safe(
+                    att,
+                    b"http-equiv\x00" as *const u8 as *const i8 as *mut xmlChar,
+                )
+            } == 0
+            && unsafe {
+                xmlStrcasecmp_safe(
+                    value,
+                    b"Content-Type\x00" as *const u8 as *const i8 as *mut xmlChar,
+                )
+            } == 0
         {
-            http = 1 as i32
+            http = 1
         } else if !value.is_null()
-            && xmlStrcasecmp_safe(
-                att,
-                b"charset\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ) == 0
+            && unsafe {
+                xmlStrcasecmp_safe(
+                    att,
+                    b"charset\x00" as *const u8 as *const i8 as *mut xmlChar,
+                )
+            } == 0
         {
             htmlCheckEncodingDirect(ctxt, value);
         } else if !value.is_null()
-            && xmlStrcasecmp_safe(
-                att,
-                b"content\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ) == 0
+            && unsafe {
+                xmlStrcasecmp_safe(
+                    att,
+                    b"content\x00" as *const u8 as *const i8 as *mut xmlChar,
+                )
+            } == 0
         {
             content = value
         }
@@ -11469,16 +11459,16 @@ unsafe fn htmlCheckMeta(mut ctxt: htmlParserCtxtPtr, mut atts: *mut *const xmlCh
  *
  * Returns 0 in case of success, -1 in case of error and 1 if discarded
  */
-unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
+fn htmlParseStartTag(ctxt: htmlParserCtxtPtr) -> i32 {
     let mut current_block: i32;
-    let mut name: *const xmlChar = 0 as *const xmlChar;
-    let mut attname: *const xmlChar = 0 as *const xmlChar;
+    let name: *const xmlChar;
+    let mut attname: *const xmlChar;
     let mut attvalue: *mut xmlChar = 0 as *mut xmlChar;
-    let mut atts: *mut *const xmlChar = 0 as *mut *const xmlChar;
+    let mut atts: *mut *const xmlChar;
     let mut nbatts: i32 = 0;
-    let mut maxatts: i32 = 0;
+    let mut maxatts: i32;
     let mut meta: i32 = 0;
-    let mut i: i32 = 0;
+    let mut i: i32;
     let mut discardtag: i32 = 0;
     unsafe {
         if ctxt.is_null() || (*ctxt).input.is_null() {
@@ -11489,17 +11479,17 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                 0 as *const xmlChar,
                 0 as *const xmlChar,
             );
-            return -(1 as i32);
+            return -1;
         }
     }
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.instate as i32 == XML_PARSER_EOF as i32 {
-        return -(1 as i32);
+        return -1;
     }
     if CUR(ctxt) != '<' as i32 {
-        return -(1 as i32);
+        return -1;
     }
-    xmlNextChar_safe(ctxt);
+    unsafe { xmlNextChar_safe(ctxt) };
     atts = ctxtPtr.atts;
     maxatts = ctxtPtr.maxatts;
     GROW(ctxt);
@@ -11522,19 +11512,20 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                 || (CUR(ctxt) >= '0' as i32 && CUR(ctxt) <= '9' as i32))
         {
             htmlParseCharDataInternal(ctxt, '<' as i32);
-            return -(1 as i32);
+            return -1;
         }
         /* Dump the bogus tag like browsers do */
         while CUR(ctxt) != 0
             && CUR(ctxt) != '>' as i32
             && ctxtPtr.instate as i32 != XML_PARSER_EOF as i32
         {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
-        return -(1 as i32);
+        return -1;
     }
-    if xmlStrEqual_safe(name, b"meta\x00" as *const u8 as *const i8 as *mut xmlChar) != 0 {
-        meta = 1 as i32
+    if unsafe { xmlStrEqual_safe(name, b"meta\x00" as *const u8 as *const i8 as *mut xmlChar) } != 0
+    {
+        meta = 1
     }
     /*
      * Check for auto-closure of HTML elements.
@@ -11548,8 +11539,9 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
      * Avoid html at any level > 0, head at any level != 1
      * or any attempt to recurse body
      */
-    if ctxtPtr.nameNr > 0 as i32
-        && xmlStrEqual_safe(name, b"html\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
+    if ctxtPtr.nameNr > 0
+        && unsafe { xmlStrEqual_safe(name, b"html\x00" as *const u8 as *const i8 as *mut xmlChar) }
+            != 0
     {
         htmlParseErr(
             ctxt,
@@ -11561,8 +11553,9 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
         discardtag = 1;
         ctxtPtr.depth += 1
     }
-    if ctxtPtr.nameNr != 1 as i32
-        && xmlStrEqual_safe(name, b"head\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
+    if ctxtPtr.nameNr != 1
+        && unsafe { xmlStrEqual_safe(name, b"head\x00" as *const u8 as *const i8 as *mut xmlChar) }
+            != 0
     {
         htmlParseErr(
             ctxt,
@@ -11574,8 +11567,9 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
         discardtag = 1;
         ctxtPtr.depth += 1
     }
-    if xmlStrEqual_safe(name, b"body\x00" as *const u8 as *const i8 as *mut xmlChar) != 0 {
-        let mut indx: i32 = 0;
+    if unsafe { xmlStrEqual_safe(name, b"body\x00" as *const u8 as *const i8 as *mut xmlChar) } != 0
+    {
+        let mut indx: i32;
         indx = 0;
         while indx < ctxtPtr.nameNr {
             unsafe {
@@ -11606,7 +11600,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
     htmlSkipBlankChars(ctxt);
     while CUR(ctxt) != 0
         && CUR(ctxt) != '>' as i32
-        && (CUR(ctxt) != '/' as i32 || NXT(ctxt, 1 as i32) != '>' as i32)
+        && (CUR(ctxt) != '/' as i32 || NXT(ctxt, 1) != '>' as i32)
     {
         GROW(ctxt);
         attname = htmlParseAttribute(ctxt, &mut attvalue);
@@ -11635,7 +11629,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                         current_block = 2;
                         break;
                     } else {
-                        i += 2 as i32
+                        i += 2
                     }
                 }
             }
@@ -11647,16 +11641,18 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                  */
                 {
                     if atts.is_null() {
-                        maxatts = 22 as i32; /* allow for 10 attrs by default */
-                        atts = xmlMalloc_safe((maxatts as u64).wrapping_mul(::std::mem::size_of::<
-                            *mut xmlChar,
-                        >(
-                        )
-                            as u64)) as *mut *const xmlChar;
+                        maxatts = 22; /* allow for 10 attrs by default */
+                        atts = unsafe {
+                            xmlMalloc_safe((maxatts as u64).wrapping_mul(::std::mem::size_of::<
+                                *mut xmlChar,
+                            >(
+                            )
+                                as u64))
+                        } as *mut *const xmlChar;
                         if atts.is_null() {
                             htmlErrMemory(ctxt, 0 as *const i8);
                             if !attvalue.is_null() {
-                                xmlFree_safe(attvalue as *mut ());
+                                unsafe { xmlFree_safe(attvalue as *mut ()) };
                             }
                             current_block = 2;
                         } else {
@@ -11664,18 +11660,20 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                             ctxtPtr.maxatts = maxatts;
                             current_block = 3;
                         }
-                    } else if nbatts + 4 as i32 > maxatts {
+                    } else if nbatts + 4 > maxatts {
                         let mut n: *mut *const xmlChar = 0 as *mut *const xmlChar;
-                        maxatts *= 2 as i32;
-                        n = xmlRealloc_safe(
-                            atts as *mut (),
-                            (maxatts as u64)
-                                .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
-                        ) as *mut *const xmlChar;
+                        maxatts *= 2;
+                        n = unsafe {
+                            xmlRealloc_safe(
+                                atts as *mut (),
+                                (maxatts as u64)
+                                    .wrapping_mul(::std::mem::size_of::<*const xmlChar>() as u64),
+                            )
+                        } as *mut *const xmlChar;
                         if n.is_null() {
                             htmlErrMemory(ctxt, 0 as *const i8);
                             if !attvalue.is_null() {
-                                xmlFree_safe(attvalue as *mut ());
+                                unsafe { xmlFree_safe(attvalue as *mut ()) };
                             }
                             current_block = 2;
                         } else {
@@ -11701,7 +11699,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                                 *fresh46 = attvalue;
                                 let ref mut fresh47 = *atts.offset(nbatts as isize);
                                 *fresh47 = 0 as *const xmlChar;
-                                let ref mut fresh48 = *atts.offset((nbatts + 1 as i32) as isize);
+                                let ref mut fresh48 = *atts.offset((nbatts + 1) as isize);
                                 *fresh48 = 0 as *const xmlChar
                             }
                         }
@@ -11710,16 +11708,16 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
             }
         } else {
             if !attvalue.is_null() {
-                xmlFree_safe(attvalue as *mut ());
+                unsafe { xmlFree_safe(attvalue as *mut ()) };
             }
             /* Dump the bogus attribute string up to the next blank or
              * the end of the tag. */
             while CUR(ctxt) != 0
                 && !(IS_BLANK_CH(CUR(ctxt)))
                 && CUR(ctxt) != '>' as i32
-                && (CUR(ctxt) != '/' as i32 || NXT(ctxt, 1 as i32) != '>' as i32)
+                && (CUR(ctxt) != '/' as i32 || NXT(ctxt, 1) != '>' as i32)
             {
-                xmlNextChar_safe(ctxt);
+                unsafe { xmlNextChar_safe(ctxt) };
             }
         }
         htmlSkipBlankChars(ctxt);
@@ -11759,7 +11757,7 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
                     xmlFree_safe(*atts.offset(i as isize) as *mut xmlChar as *mut ());
                 }
             }
-            i += 2 as i32
+            i += 2
         }
     }
     return discardtag;
@@ -11778,12 +11776,12 @@ unsafe fn htmlParseStartTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
  *
  * Returns 1 if the current level should be closed.
  */
-unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
+fn htmlParseEndTag(ctxt: htmlParserCtxtPtr) -> i32 {
     let mut name: *const xmlChar = 0 as *const xmlChar;
     let mut oldname: *const xmlChar = 0 as *const xmlChar;
     let mut i: i32 = 0;
     let mut ret: i32 = 0;
-    if CUR(ctxt) != '<' as i32 || NXT(ctxt, 1 as i32) != '/' as i32 {
+    if CUR(ctxt) != '<' as i32 || NXT(ctxt, 1) != '/' as i32 {
         htmlParseErr(
             ctxt,
             XML_ERR_LTSLASH_REQUIRED,
@@ -11793,7 +11791,7 @@ unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
         );
         return 0;
     }
-    SKIP(ctxt, 2 as i32);
+    SKIP(ctxt, 2);
     name = htmlParseHTMLName(ctxt);
     if name.is_null() {
         return 0;
@@ -11812,21 +11810,27 @@ unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
         );
         /* Skip to next '>' */
         while CUR(ctxt) != 0 && CUR(ctxt) != '>' as i32 {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
     }
     if CUR(ctxt) == '>' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
     }
     /*
      * if we ignored misplaced tags in htmlParseStartTag don't pop them
      * out now.
      */
     let mut ctxtPtr = unsafe { &mut *ctxt };
-    if ctxtPtr.depth > 0 as i32
-        && (xmlStrEqual_safe(name, b"html\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
-            || xmlStrEqual_safe(name, b"body\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
-            || xmlStrEqual_safe(name, b"head\x00" as *const u8 as *const i8 as *mut xmlChar) != 0)
+    if ctxtPtr.depth > 0
+        && (unsafe {
+            xmlStrEqual_safe(name, b"html\x00" as *const u8 as *const i8 as *mut xmlChar)
+        } != 0
+            || unsafe {
+                xmlStrEqual_safe(name, b"body\x00" as *const u8 as *const i8 as *mut xmlChar)
+            } != 0
+            || unsafe {
+                xmlStrEqual_safe(name, b"head\x00" as *const u8 as *const i8 as *mut xmlChar)
+            } != 0)
     {
         ctxtPtr.depth -= 1;
         return 0;
@@ -11863,7 +11867,7 @@ unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
      * With the exception that the autoclose may have popped stuff out
      * of the stack.
      */
-    if !ctxtPtr.name.is_null() && xmlStrEqual_safe(ctxtPtr.name, name) == 0 {
+    if !ctxtPtr.name.is_null() && unsafe { xmlStrEqual_safe(ctxtPtr.name, name) } == 0 {
         htmlParseErr(
             ctxt,
             XML_ERR_TAG_NAME_MISMATCH,
@@ -11876,7 +11880,7 @@ unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
      * SAX: End of Tag
      */
     oldname = ctxtPtr.name;
-    if !oldname.is_null() && xmlStrEqual_safe(oldname, name) != 0 {
+    if !oldname.is_null() && unsafe { xmlStrEqual_safe(oldname, name) } != 0 {
         let mut sax_condition =
             unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).endElement.is_some() };
         if sax_condition {
@@ -11885,7 +11889,7 @@ unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
         }
         htmlNodeInfoPop(ctxt);
         htmlnamePop(ctxt);
-        ret = 1 as i32
+        ret = 1
     } else {
         ret = 0
     }
@@ -11899,49 +11903,49 @@ unsafe fn htmlParseEndTag(mut ctxt: htmlParserCtxtPtr) -> i32 {
  * this will end-up in a call to character() since this is either a
  * CharRef, or a predefined entity.
  */
-unsafe fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
+fn htmlParseReference(ctxt: htmlParserCtxtPtr) {
+    let ctxtPtr = unsafe { &mut *ctxt };
     let mut sax_condition = false;
-    let mut ent: *const htmlEntityDesc = 0 as *const htmlEntityDesc;
+    let ent: *const htmlEntityDesc;
     let mut out: [xmlChar; 6] = [0; 6];
     let mut name: *const xmlChar = 0 as *const xmlChar;
     if CUR(ctxt) != '&' as i32 {
         return;
     }
-    if NXT(ctxt, 1 as i32) == '#' as i32 {
-        let mut c: u32 = 0;
-        let mut bits: i32 = 0;
+    if NXT(ctxt, 1) == '#' as i32 {
+        let mut c: u32;
+        let mut bits: i32;
         let mut i: i32 = 0;
         c = htmlParseCharRef(ctxt) as u32;
-        if c == 0 as u32 {
+        if c == 0 {
             return;
         }
-        if c < 0x80 as u32 {
+        if c < 0x80 {
             let fresh49 = i;
             i = i + 1;
             out[fresh49 as usize] = c as xmlChar;
-            bits = -(6 as i32)
-        } else if c < 0x800 as u32 {
+            bits = -6
+        } else if c < 0x800 {
             let fresh50 = i;
             i = i + 1;
-            out[fresh50 as usize] = (c >> 6 as i32 & 0x1f as u32 | 0xc0 as u32) as xmlChar;
+            out[fresh50 as usize] = (c >> 6 & 0x1f | 0xc0) as xmlChar;
             bits = 0
-        } else if c < 0x10000 as u32 {
+        } else if c < 0x10000 {
             let fresh51 = i;
             i = i + 1;
-            out[fresh51 as usize] = (c >> 12 as i32 & 0xf as u32 | 0xe0 as u32) as xmlChar;
-            bits = 6 as i32
+            out[fresh51 as usize] = (c >> 12 & 0xf | 0xe0) as xmlChar;
+            bits = 6
         } else {
             let fresh52 = i;
             i = i + 1;
-            out[fresh52 as usize] = (c >> 18 as i32 & 0x7 as u32 | 0xf0 as u32) as xmlChar;
-            bits = 12 as i32
+            out[fresh52 as usize] = (c >> 18 & 0x7 | 0xf0) as xmlChar;
+            bits = 12
         }
         while bits >= 0 {
             let fresh53 = i;
             i = i + 1;
-            out[fresh53 as usize] = (c >> bits & 0x3f as u32 | 0x80 as u32) as xmlChar;
-            bits -= 6 as i32
+            out[fresh53 as usize] = (c >> bits & 0x3f | 0x80) as xmlChar;
+            bits -= 6
         }
         out[i as usize] = 0 as xmlChar;
         htmlCheckParagraph(ctxt);
@@ -11962,7 +11966,7 @@ unsafe fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
                     saxPtr.characters,
                     ctxtPtr.userData,
                     b"&\x00" as *const u8 as *const i8 as *mut xmlChar,
-                    1 as i32,
+                    1,
                 );
             }
             return;
@@ -11978,49 +11982,51 @@ unsafe fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
                     saxPtr.characters,
                     ctxtPtr.userData,
                     b"&\x00" as *const u8 as *const i8 as *mut xmlChar,
-                    1 as i32,
+                    1,
                 );
-                xmlSAXHandler_characters_safe(
-                    saxPtr.characters,
-                    ctxtPtr.userData,
-                    name,
-                    xmlStrlen_safe(name),
-                );
+                unsafe {
+                    xmlSAXHandler_characters_safe(
+                        saxPtr.characters,
+                        ctxtPtr.userData,
+                        name,
+                        xmlStrlen_safe(name),
+                    )
+                };
                 /* ctxt->sax->characters(ctxt->userData, BAD_CAST ";", 1); */
             }
         } else {
-            let mut c_0: u32 = 0;
-            let mut bits_0: i32 = 0;
+            let mut c_0: u32;
+            let mut bits_0: i32;
             let mut i_0: i32 = 0;
             unsafe {
                 c_0 = (*ent).value;
             }
-            if c_0 < 0x80 as u32 {
+            if c_0 < 0x80 {
                 let fresh54 = i_0;
                 i_0 = i_0 + 1;
                 out[fresh54 as usize] = c_0 as xmlChar;
-                bits_0 = -(6 as i32)
-            } else if c_0 < 0x800 as u32 {
+                bits_0 = -(6)
+            } else if c_0 < 0x800 {
                 let fresh55 = i_0;
                 i_0 = i_0 + 1;
-                out[fresh55 as usize] = (c_0 >> 6 as i32 & 0x1f as u32 | 0xc0 as u32) as xmlChar;
+                out[fresh55 as usize] = (c_0 >> 6 & 0x1f | 0xc0) as xmlChar;
                 bits_0 = 0
-            } else if c_0 < 0x10000 as u32 {
+            } else if c_0 < 0x10000 {
                 let fresh56 = i_0;
                 i_0 = i_0 + 1;
-                out[fresh56 as usize] = (c_0 >> 12 as i32 & 0xf as u32 | 0xe0 as u32) as xmlChar;
-                bits_0 = 6 as i32
+                out[fresh56 as usize] = (c_0 >> 12 & 0xf | 0xe0) as xmlChar;
+                bits_0 = 6
             } else {
                 let fresh57 = i_0;
                 i_0 = i_0 + 1;
-                out[fresh57 as usize] = (c_0 >> 18 as i32 & 0x7 as u32 | 0xf0 as u32) as xmlChar;
-                bits_0 = 12 as i32
+                out[fresh57 as usize] = (c_0 >> 18 & 0x7 | 0xf0) as xmlChar;
+                bits_0 = 12
             }
             while bits_0 >= 0 {
                 let fresh58 = i_0;
                 i_0 = i_0 + 1;
-                out[fresh58 as usize] = (c_0 >> bits_0 & 0x3f as u32 | 0x80 as u32) as xmlChar;
-                bits_0 -= 6 as i32
+                out[fresh58 as usize] = (c_0 >> bits_0 & 0x3f | 0x80) as xmlChar;
+                bits_0 -= 6
             }
             out[i_0 as usize] = 0 as xmlChar;
             htmlCheckParagraph(ctxt);
@@ -12045,12 +12051,12 @@ unsafe fn htmlParseReference(mut ctxt: htmlParserCtxtPtr) {
  * Parse a content: comment, sub-element, reference or text.
  * Kept for compatibility with old code
  */
-unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
-    let mut currentNode: *mut xmlChar = 0 as *mut xmlChar;
-    let mut depth: i32 = 0;
-    let mut name: *const xmlChar = 0 as *const xmlChar;
-    currentNode = xmlStrdup_safe(ctxtPtr.name);
+fn htmlParseContent(ctxt: htmlParserCtxtPtr) {
+    let ctxtPtr = unsafe { &mut *ctxt };
+    let currentNode: *mut xmlChar;
+    let mut depth: i32;
+    let mut name: *const xmlChar;
+    currentNode = unsafe { xmlStrdup_safe(ctxtPtr.name) };
     depth = ctxtPtr.nameNr;
     loop {
         GROW(ctxt);
@@ -12060,19 +12066,19 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
         /*
          * Our tag or one of it's parent or children is ending.
          */
-        if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '/' as i32 {
+        if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1) == '/' as i32 {
             if htmlParseEndTag(ctxt) != 0 && (!currentNode.is_null() || ctxtPtr.nameNr == 0) {
                 if !currentNode.is_null() {
-                    xmlFree_safe(currentNode as *mut ());
+                    unsafe { xmlFree_safe(currentNode as *mut ()) };
                 }
                 return;
             }
             /* while */
         } else {
             if CUR(ctxt) == '<' as i32
-                && (IS_ASCII_LETTER(NXT(ctxt, 1 as i32))
-                    || NXT(ctxt, 1 as i32) == '_' as i32
-                    || NXT(ctxt, 1 as i32) == ':' as i32)
+                && (IS_ASCII_LETTER(NXT(ctxt, 1))
+                    || NXT(ctxt, 1) == '_' as i32
+                    || NXT(ctxt, 1) == ':' as i32)
             {
                 name = htmlParseHTMLName_nonInvasive(ctxt);
                 if name.is_null() {
@@ -12085,15 +12091,15 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
                     );
                     /* Dump the bogus tag like browsers do */
                     while CUR(ctxt) != 0 && CUR(ctxt) != '>' as i32 {
-                        xmlNextChar_safe(ctxt);
+                        unsafe { xmlNextChar_safe(ctxt) };
                     }
                     if !currentNode.is_null() {
-                        xmlFree_safe(currentNode as *mut ());
+                        unsafe { xmlFree_safe(currentNode as *mut ()) };
                     }
                     return;
                 }
                 if !ctxtPtr.name.is_null() {
-                    if htmlCheckAutoClose(name, ctxtPtr.name) == 1 as i32 {
+                    if htmlCheckAutoClose(name, ctxtPtr.name) == 1 {
                         htmlAutoClose(ctxt, name);
                         continue;
                     }
@@ -12103,24 +12109,28 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
              * Has this node been popped out during parsing of
              * the next element
              */
-            if ctxtPtr.nameNr > 0 as i32
+            if ctxtPtr.nameNr > 0
                 && depth >= ctxtPtr.nameNr
-                && xmlStrEqual_safe(currentNode, ctxtPtr.name) == 0
+                && unsafe { xmlStrEqual_safe(currentNode, ctxtPtr.name) } == 0
             {
                 if !currentNode.is_null() {
-                    xmlFree_safe(currentNode as *mut ());
+                    unsafe { xmlFree_safe(currentNode as *mut ()) };
                 }
                 return;
             }
             if CUR(ctxt) != 0
-                && (xmlStrEqual_safe(
-                    currentNode,
-                    b"script\x00" as *const u8 as *const i8 as *mut xmlChar,
-                ) != 0
-                    || xmlStrEqual_safe(
+                && (unsafe {
+                    xmlStrEqual_safe(
                         currentNode,
-                        b"style\x00" as *const u8 as *const i8 as *mut xmlChar,
-                    ) != 0)
+                        b"script\x00" as *const u8 as *const i8 as *mut xmlChar,
+                    )
+                } != 0
+                    || unsafe {
+                        xmlStrEqual_safe(
+                            currentNode,
+                            b"style\x00" as *const u8 as *const i8 as *mut xmlChar,
+                        )
+                    } != 0)
             {
                 /*
                  * Handle SCRIPT/STYLE separately
@@ -12131,14 +12141,14 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
                  * Sometimes DOCTYPE arrives in the middle of the document
                  */
                 if CUR(ctxt) == '<' as i32
-                    && NXT(ctxt, 1 as i32) == '!' as i32
-                    && UPP(ctxt, 2 as i32) == 'D' as i32
-                    && UPP(ctxt, 3 as i32) == 'O' as i32
-                    && UPP(ctxt, 4 as i32) == 'C' as i32
-                    && UPP(ctxt, 5 as i32) == 'T' as i32
-                    && UPP(ctxt, 6 as i32) == 'Y' as i32
-                    && UPP(ctxt, 7 as i32) == 'P' as i32
-                    && UPP(ctxt, 8 as i32) == 'E' as i32
+                    && NXT(ctxt, 1) == '!' as i32
+                    && UPP(ctxt, 2) == 'D' as i32
+                    && UPP(ctxt, 3) == 'O' as i32
+                    && UPP(ctxt, 4) == 'C' as i32
+                    && UPP(ctxt, 5) == 'T' as i32
+                    && UPP(ctxt, 6) == 'Y' as i32
+                    && UPP(ctxt, 7) == 'P' as i32
+                    && UPP(ctxt, 8) == 'E' as i32
                 {
                     htmlParseErr(
                         ctxt,
@@ -12153,12 +12163,12 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
                  * First case :  a comment
                  */
                 if CUR(ctxt) == '<' as i32
-                    && NXT(ctxt, 1 as i32) == '!' as i32
-                    && NXT(ctxt, 2 as i32) == '-' as i32
-                    && NXT(ctxt, 3 as i32) == '-' as i32
+                    && NXT(ctxt, 1) == '!' as i32
+                    && NXT(ctxt, 2) == '-' as i32
+                    && NXT(ctxt, 3) == '-' as i32
                 {
                     htmlParseComment(ctxt);
-                } else if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '?' as i32 {
+                } else if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1) == '?' as i32 {
                     htmlParsePI(ctxt);
                 } else if CUR(ctxt) == '<' as i32 {
                     htmlParseElement(ctxt);
@@ -12191,7 +12201,7 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
         }
     }
     if !currentNode.is_null() {
-        xmlFree_safe(currentNode as *mut ());
+        unsafe { xmlFree_safe(currentNode as *mut ()) };
     };
 }
 /* *
@@ -12205,11 +12215,11 @@ unsafe fn htmlParseContent(mut ctxt: htmlParserCtxtPtr) {
  *
  * [41] Attribute ::= Name Eq AttValue
  */
-pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
+pub fn htmlParseElement(ctxt: htmlParserCtxtPtr) {
     let mut sax_condition = false;
-    let mut name: *const xmlChar = 0 as *const xmlChar;
+    let name: *const xmlChar;
     let mut currentNode: *mut xmlChar = 0 as *mut xmlChar;
-    let mut info: *const htmlElemDesc = 0 as *const htmlElemDesc;
+    let info: *const htmlElemDesc;
     let mut node_info: htmlParserNodeInfo = htmlParserNodeInfo {
         node: 0 as *const _xmlNode,
         begin_pos: 0,
@@ -12217,9 +12227,9 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
         end_pos: 0,
         end_line: 0,
     };
-    let mut failed: i32 = 0;
-    let mut depth: i32 = 0;
-    let mut oldptr: *const xmlChar = 0 as *const xmlChar;
+    let mut failed: i32;
+    let mut depth: i32;
+    let mut oldptr: *const xmlChar;
     unsafe {
         if ctxt.is_null() || (*ctxt).input.is_null() {
             htmlParseErr(
@@ -12248,9 +12258,9 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
     }
     failed = htmlParseStartTag(ctxt);
     name = ctxtPtr.name;
-    if failed == -(1 as i32) || name.is_null() {
+    if failed == -1 || name.is_null() {
         if CUR(ctxt) == '>' as i32 {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
         return;
     }
@@ -12270,8 +12280,8 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
     /*
      * Check for an Empty Element labeled the XML/SGML way
      */
-    if CUR(ctxt) == '/' as i32 && NXT(ctxt, 1 as i32) == '>' as i32 {
-        SKIP(ctxt, 2 as i32);
+    if CUR(ctxt) == '/' as i32 && NXT(ctxt, 1) == '>' as i32 {
+        SKIP(ctxt, 2);
         sax_condition = unsafe {
             !ctxtPtr.sax.is_null() && (*(*ctxt).sax).endElement.is_some() && ctxtPtr.disableSAX == 0
         };
@@ -12283,7 +12293,7 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
         return;
     }
     if CUR(ctxt) == '>' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
     } else {
         htmlParseErr(
             ctxt,
@@ -12295,8 +12305,8 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
         /*
          * end of parsing of this node.
          */
-        if xmlStrEqual_safe(name, ctxtPtr.name) != 0 {
-            nodePop_safe(ctxt);
+        if unsafe { xmlStrEqual_safe(name, ctxtPtr.name) } != 0 {
+            unsafe { nodePop_safe(ctxt) };
             htmlnamePop(ctxt);
         }
         /*
@@ -12306,11 +12316,11 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
             unsafe {
                 node_info.end_pos = inputPtr
                     .consumed
-                    .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
+                    .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as u64);
             }
             node_info.end_line = inputPtr.line as u64;
             node_info.node = ctxtPtr.node as *const _xmlNode;
-            xmlParserAddNodeInfo_safe(ctxt, &mut node_info);
+            unsafe { xmlParserAddNodeInfo_safe(ctxt, &mut node_info) };
         }
         return;
     }
@@ -12333,7 +12343,7 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
     /*
      * Parse the content of the element:
      */
-    currentNode = xmlStrdup_safe(ctxtPtr.name);
+    currentNode = unsafe { xmlStrdup_safe(ctxtPtr.name) };
     depth = ctxtPtr.nameNr;
     while CUR(ctxt) != 0 {
         oldptr = inputPtr.cur;
@@ -12352,22 +12362,22 @@ pub unsafe fn htmlParseElement(mut ctxt: htmlParserCtxtPtr) {
         unsafe {
             node_info.end_pos = inputPtr
                 .consumed
-                .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
+                .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as u64);
         }
         node_info.end_line = inputPtr.line as u64;
         node_info.node = ctxtPtr.node as *const _xmlNode;
-        xmlParserAddNodeInfo_safe(ctxt, &mut node_info);
+        unsafe { xmlParserAddNodeInfo_safe(ctxt, &mut node_info) };
     }
     if CUR(ctxt) == 0 {
         htmlAutoCloseOnEnd(ctxt);
     }
     if !currentNode.is_null() {
-        xmlFree_safe(currentNode as *mut ());
+        unsafe { xmlFree_safe(currentNode as *mut ()) };
     };
 }
 
-unsafe fn htmlParserFinishElementParsing(mut ctxt: htmlParserCtxtPtr) {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
+fn htmlParserFinishElementParsing(ctxt: htmlParserCtxtPtr) {
+    let ctxtPtr = unsafe { &mut *ctxt };
     /*
      * Capture end position and add node
      */
@@ -12381,7 +12391,7 @@ unsafe fn htmlParserFinishElementParsing(mut ctxt: htmlParserCtxtPtr) {
         }
         nodeInfoPtr.end_line = inputPtr.line as u64;
         nodeInfoPtr.node = ctxtPtr.node as *const _xmlNode;
-        xmlParserAddNodeInfo_safe(ctxt, ctxtPtr.nodeInfo);
+        unsafe { xmlParserAddNodeInfo_safe(ctxt, ctxtPtr.nodeInfo) };
         htmlNodeInfoPop(ctxt);
     }
     if CUR(ctxt) == 0 {
@@ -12398,9 +12408,9 @@ unsafe fn htmlParserFinishElementParsing(mut ctxt: htmlParserCtxtPtr) {
  *
  * [41] Attribute ::= Name Eq AttValue
  */
-unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
-    let mut name: *const xmlChar = 0 as *const xmlChar;
-    let mut info: *const htmlElemDesc = 0 as *const htmlElemDesc;
+fn htmlParseElementInternal(ctxt: htmlParserCtxtPtr) {
+    let name: *const xmlChar;
+    let info: *const htmlElemDesc;
     let mut node_info: htmlParserNodeInfo = {
         let mut init = _xmlParserNodeInfo {
             node: 0 as *const _xmlNode,
@@ -12411,7 +12421,7 @@ unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
         };
         init
     };
-    let mut failed: i32 = 0;
+    let mut failed: i32;
     unsafe {
         if ctxt.is_null() || (*ctxt).input.is_null() {
             htmlParseErr(
@@ -12424,25 +12434,25 @@ unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
             return;
         }
     }
-    let mut ctxtPtr = unsafe { &mut *ctxt };
+    let ctxtPtr = unsafe { &mut *ctxt };
     if ctxtPtr.instate as i32 == XML_PARSER_EOF as i32 {
         return;
     }
     /* Capture start position */
-    let mut inputPtr = unsafe { &mut *(*ctxt).input };
+    let inputPtr = unsafe { &mut *(*ctxt).input };
     if ctxtPtr.record_info != 0 {
         unsafe {
             node_info.begin_pos = inputPtr
                 .consumed
-                .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
+                .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as u64);
         }
         node_info.begin_line = inputPtr.line as u64
     }
     failed = htmlParseStartTag(ctxt);
     name = ctxtPtr.name;
-    if failed == -(1 as i32) || name.is_null() {
+    if failed == -1 || name.is_null() {
         if CUR(ctxt) == '>' as i32 {
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
         }
         return;
     }
@@ -12463,8 +12473,8 @@ unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
      * Check for an Empty Element labeled the XML/SGML way
      */
     let mut sax_condition = false;
-    if CUR(ctxt) == '/' as i32 && NXT(ctxt, 1 as i32) == '>' as i32 {
-        SKIP(ctxt, 2 as i32);
+    if CUR(ctxt) == '/' as i32 && NXT(ctxt, 1) == '>' as i32 {
+        SKIP(ctxt, 2);
         sax_condition = unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).endElement.is_some() };
         if sax_condition {
             let mut saxPtr = unsafe { &mut *(*ctxt).sax };
@@ -12474,7 +12484,7 @@ unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
         return;
     }
     if CUR(ctxt) == '>' as i32 {
-        xmlNextChar_safe(ctxt);
+        unsafe { xmlNextChar_safe(ctxt) };
     } else {
         htmlParseErr(
             ctxt,
@@ -12486,8 +12496,8 @@ unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
         /*
          * end of parsing of this node.
          */
-        if xmlStrEqual_safe(name, ctxtPtr.name) != 0 {
-            nodePop_safe(ctxt);
+        if unsafe { xmlStrEqual_safe(name, ctxtPtr.name) } != 0 {
+            unsafe { nodePop_safe(ctxt) };
             htmlnamePop(ctxt);
         }
         if ctxtPtr.record_info != 0 {
@@ -12521,12 +12531,12 @@ unsafe fn htmlParseElementInternal(mut ctxt: htmlParserCtxtPtr) {
  * Parse a content: comment, sub-element, reference or text.
  * New version for non recursive htmlParseElementInternal
  */
-unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
-    let mut currentNode: *mut xmlChar = 0 as *mut xmlChar;
-    let mut depth: i32 = 0;
-    let mut name: *const xmlChar = 0 as *const xmlChar;
-    currentNode = xmlStrdup_safe(ctxtPtr.name);
+fn htmlParseContentInternal(ctxt: htmlParserCtxtPtr) {
+    let ctxtPtr = unsafe { &mut *ctxt };
+    let mut currentNode: *mut xmlChar;
+    let mut depth: i32;
+    let mut name: *const xmlChar;
+    currentNode = unsafe { xmlStrdup_safe(ctxtPtr.name) };
     depth = ctxtPtr.nameNr;
     loop {
         GROW(ctxt);
@@ -12536,18 +12546,18 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
         /*
          * Our tag or one of it's parent or children is ending.
          */
-        if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '/' as i32 {
+        if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1) == '/' as i32 {
             if htmlParseEndTag(ctxt) != 0 && (!currentNode.is_null() || ctxtPtr.nameNr == 0) {
                 if !currentNode.is_null() {
-                    xmlFree_safe(currentNode as *mut ());
+                    unsafe { xmlFree_safe(currentNode as *mut ()) };
                 }
-                currentNode = xmlStrdup_safe(ctxtPtr.name);
+                currentNode = unsafe { xmlStrdup_safe(ctxtPtr.name) };
                 depth = ctxtPtr.nameNr
             }
             /* while */
         } else {
             if CUR(ctxt) == '<' as i32
-                && (IS_ASCII_LETTER(NXT(ctxt, 1 as i32))
+                && (IS_ASCII_LETTER(NXT(ctxt, 1))
                     || NXT(ctxt, 1) == '_' as i32
                     || NXT(ctxt, 1) == ':' as i32)
             {
@@ -12562,17 +12572,17 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
                     );
                     /* Dump the bogus tag like browsers do */
                     while CUR(ctxt) == 0 && CUR(ctxt) != '>' as i32 {
-                        xmlNextChar_safe(ctxt);
+                        unsafe { xmlNextChar_safe(ctxt) };
                     }
                     htmlParserFinishElementParsing(ctxt);
                     if !currentNode.is_null() {
-                        xmlFree_safe(currentNode as *mut ());
+                        unsafe { xmlFree_safe(currentNode as *mut ()) };
                     }
-                    currentNode = xmlStrdup_safe(ctxtPtr.name);
+                    currentNode = unsafe { xmlStrdup_safe(ctxtPtr.name) };
                     depth = ctxtPtr.nameNr;
                     continue;
                 } else if !ctxtPtr.name.is_null() {
-                    if htmlCheckAutoClose(name, ctxtPtr.name) == 1 as i32 {
+                    if htmlCheckAutoClose(name, ctxtPtr.name) == 1 {
                         htmlAutoClose(ctxt, name);
                         continue;
                     }
@@ -12582,26 +12592,30 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
              * Has this node been popped out during parsing of
              * the next element
              */
-            if ctxtPtr.nameNr > 0 as i32
+            if ctxtPtr.nameNr > 0
                 && depth >= ctxtPtr.nameNr
-                && xmlStrEqual_safe(currentNode, ctxtPtr.name) == 0
+                && unsafe { xmlStrEqual_safe(currentNode, ctxtPtr.name) } == 0
             {
                 htmlParserFinishElementParsing(ctxt);
                 if !currentNode.is_null() {
-                    xmlFree_safe(currentNode as *mut ());
+                    unsafe { xmlFree_safe(currentNode as *mut ()) };
                 }
-                currentNode = xmlStrdup_safe(ctxtPtr.name);
+                currentNode = unsafe { xmlStrdup_safe(ctxtPtr.name) };
                 depth = ctxtPtr.nameNr
             } else {
                 if CUR(ctxt) != 0
-                    && (xmlStrEqual_safe(
-                        currentNode,
-                        b"script\x00" as *const u8 as *const i8 as *mut xmlChar,
-                    ) != 0
-                        || xmlStrEqual_safe(
+                    && (unsafe {
+                        xmlStrEqual_safe(
                             currentNode,
-                            b"style\x00" as *const u8 as *const i8 as *mut xmlChar,
-                        ) != 0)
+                            b"script\x00" as *const u8 as *const i8 as *mut xmlChar,
+                        )
+                    } != 0
+                        || unsafe {
+                            xmlStrEqual_safe(
+                                currentNode,
+                                b"style\x00" as *const u8 as *const i8 as *mut xmlChar,
+                            )
+                        } != 0)
                 {
                     /*
                      * Handle SCRIPT/STYLE separately
@@ -12612,14 +12626,14 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
                      * Sometimes DOCTYPE arrives in the middle of the document
                      */
                     if CUR(ctxt) == '<' as i32
-                        && NXT(ctxt, 1 as i32) == '!' as i32
-                        && UPP(ctxt, 2 as i32) == 'D' as i32
-                        && UPP(ctxt, 3 as i32) == 'O' as i32
-                        && UPP(ctxt, 4 as i32) == 'C' as i32
-                        && UPP(ctxt, 5 as i32) == 'T' as i32
-                        && UPP(ctxt, 6 as i32) == 'Y' as i32
-                        && UPP(ctxt, 7 as i32) == 'P' as i32
-                        && UPP(ctxt, 8 as i32) == 'E' as i32
+                        && NXT(ctxt, 1) == '!' as i32
+                        && UPP(ctxt, 2) == 'D' as i32
+                        && UPP(ctxt, 3) == 'O' as i32
+                        && UPP(ctxt, 4) == 'C' as i32
+                        && UPP(ctxt, 5) == 'T' as i32
+                        && UPP(ctxt, 6) == 'Y' as i32
+                        && UPP(ctxt, 7) == 'P' as i32
+                        && UPP(ctxt, 8) == 'E' as i32
                     {
                         htmlParseErr(
                             ctxt,
@@ -12634,19 +12648,19 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
                      * First case :  a comment
                      */
                     if CUR(ctxt) == '<' as i32
-                        && NXT(ctxt, 1 as i32) == '!' as i32
-                        && NXT(ctxt, 2 as i32) == '-' as i32
-                        && NXT(ctxt, 3 as i32) == '-' as i32
+                        && NXT(ctxt, 1) == '!' as i32
+                        && NXT(ctxt, 2) == '-' as i32
+                        && NXT(ctxt, 3) == '-' as i32
                     {
                         htmlParseComment(ctxt);
-                    } else if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '?' as i32 {
+                    } else if CUR(ctxt) == '<' as i32 && NXT(ctxt, 1) == '?' as i32 {
                         htmlParsePI(ctxt);
                     } else if CUR(ctxt) == '<' as i32 {
                         htmlParseElementInternal(ctxt);
                         if !currentNode.is_null() {
-                            xmlFree_safe(currentNode as *mut ());
+                            unsafe { xmlFree_safe(currentNode as *mut ()) };
                         }
-                        currentNode = xmlStrdup_safe(ctxtPtr.name);
+                        currentNode = unsafe { xmlStrdup_safe(ctxtPtr.name) };
                         depth = ctxtPtr.nameNr
                     } else if CUR(ctxt) == '&' as i32 {
                         htmlParseReference(ctxt);
@@ -12678,7 +12692,7 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
         }
     }
     if !currentNode.is_null() {
-        xmlFree_safe(currentNode as *mut ());
+        unsafe { xmlFree_safe(currentNode as *mut ()) };
     };
 }
 /*
@@ -12693,7 +12707,7 @@ unsafe fn htmlParseContentInternal(mut ctxt: htmlParserCtxtPtr) {
  * This is the entry point when called from parser.c
  */
 
-pub unsafe fn __htmlParseContent_htmlparser(mut ctxt: *mut ()) {
+pub fn __htmlParseContent_htmlparser(ctxt: *mut ()) {
     if !ctxt.is_null() {
         htmlParseContentInternal(ctxt as htmlParserCtxtPtr);
     };
@@ -12708,12 +12722,12 @@ pub unsafe fn __htmlParseContent_htmlparser(mut ctxt: *mut ()) {
  * Returns 0, -1 in case of error. the parser context is augmented
  *                as a result of the parsing.
  */
-pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
+pub fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
     let mut start: [xmlChar; 4] = [0; 4];
-    let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
-    let mut dtd: xmlDtdPtr = 0 as *mut xmlDtd;
-    xmlInitParser_safe();
-    htmlDefaultSAXHandlerInit_safe();
+    let mut enc: xmlCharEncoding;
+    let dtd: xmlDtdPtr;
+    unsafe { xmlInitParser_safe() };
+    unsafe { htmlDefaultSAXHandlerInit_safe() };
     unsafe {
         if ctxt.is_null() || (*ctxt).input.is_null() {
             htmlParseErr(
@@ -12738,25 +12752,27 @@ pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
         unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).setDocumentLocator.is_some() };
     if sax_condition {
         let mut saxPtr = unsafe { &mut *(*ctxt).sax };
-        xmlSAXHandler_setDocumentLocator_safe(
-            saxPtr.setDocumentLocator,
-            ctxtPtr.userData,
-            __xmlDefaultSAXLocator_safe(),
-        );
+        unsafe {
+            xmlSAXHandler_setDocumentLocator_safe(
+                saxPtr.setDocumentLocator,
+                ctxtPtr.userData,
+                __xmlDefaultSAXLocator_safe(),
+            )
+        };
     }
     let mut inputPtr = unsafe { &mut *(*ctxt).input };
     unsafe {
-        if ctxtPtr.encoding.is_null() && inputPtr.end.offset_from(inputPtr.cur) as i64 >= 4 as i64 {
+        if ctxtPtr.encoding.is_null() && inputPtr.end.offset_from(inputPtr.cur) as i64 >= 4 {
             /*
              * Get the 4 first bytes and decode the charset
              * if enc != XML_CHAR_ENCODING_NONE
              * plug some encoding conversion routines.
              */
             start[0 as usize] = RAW(ctxt) as xmlChar;
-            start[1 as usize] = NXT(ctxt, 1 as i32) as xmlChar;
-            start[2 as usize] = NXT(ctxt, 2 as i32) as xmlChar;
-            start[3 as usize] = NXT(ctxt, 3 as i32) as xmlChar;
-            enc = xmlDetectCharEncoding_safe(&mut *start.as_mut_ptr().offset(0 as isize), 4 as i32);
+            start[1 as usize] = NXT(ctxt, 1) as xmlChar;
+            start[2 as usize] = NXT(ctxt, 2) as xmlChar;
+            start[3 as usize] = NXT(ctxt, 3) as xmlChar;
+            enc = xmlDetectCharEncoding_safe(&mut *start.as_mut_ptr().offset(0 as isize), 4);
             if enc as i32 != XML_CHAR_ENCODING_NONE as i32 {
                 xmlSwitchEncoding_safe(ctxt, enc);
             }
@@ -12786,10 +12802,10 @@ pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
      * Parse possible comments and PIs before any content
      */
     while CUR(ctxt) == '<' as i32
-        && NXT(ctxt, 1 as i32) == '!' as i32
-        && NXT(ctxt, 2 as i32) == '-' as i32
-        && NXT(ctxt, 3 as i32) == '-' as i32
-        || (CUR(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '?' as i32)
+        && NXT(ctxt, 1) == '!' as i32
+        && NXT(ctxt, 2) == '-' as i32
+        && NXT(ctxt, 3) == '-' as i32
+        || (CUR(ctxt) == '<' as i32 && NXT(ctxt, 1) == '?' as i32)
     {
         htmlParseComment(ctxt);
         htmlParsePI(ctxt);
@@ -12800,14 +12816,14 @@ pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
      * (doctypedecl Misc*)?
      */
     if CUR(ctxt) == '<' as i32
-        && NXT(ctxt, 1 as i32) == '!' as i32
-        && UPP(ctxt, 2 as i32) == 'D' as i32
-        && UPP(ctxt, 3 as i32) == 'O' as i32
-        && UPP(ctxt, 4 as i32) == 'C' as i32
-        && UPP(ctxt, 5 as i32) == 'T' as i32
-        && UPP(ctxt, 6 as i32) == 'Y' as i32
-        && UPP(ctxt, 7 as i32) == 'P' as i32
-        && UPP(ctxt, 8 as i32) == 'E' as i32
+        && NXT(ctxt, 1) == '!' as i32
+        && UPP(ctxt, 2) == 'D' as i32
+        && UPP(ctxt, 3) == 'O' as i32
+        && UPP(ctxt, 4) == 'C' as i32
+        && UPP(ctxt, 5) == 'T' as i32
+        && UPP(ctxt, 6) == 'Y' as i32
+        && UPP(ctxt, 7) == 'P' as i32
+        && UPP(ctxt, 8) == 'E' as i32
     {
         htmlParseDocTypeDecl(ctxt);
     }
@@ -12816,10 +12832,10 @@ pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
      * Parse possible comments and PIs before any content
      */
     while CUR(ctxt) == '<' as i32
-        && NXT(ctxt, 1 as i32) == '!' as i32
-        && NXT(ctxt, 2 as i32) == '-' as i32
-        && NXT(ctxt, 3 as i32) == '-' as i32
-        || (CUR(ctxt) == '<' as i32 && NXT(ctxt, 1 as i32) == '?' as i32)
+        && NXT(ctxt, 1) == '!' as i32
+        && NXT(ctxt, 2) == '-' as i32
+        && NXT(ctxt, 3) == '-' as i32
+        || (CUR(ctxt) == '<' as i32 && NXT(ctxt, 1) == '?' as i32)
     {
         htmlParseComment(ctxt);
         htmlParsePI(ctxt);
@@ -12844,21 +12860,23 @@ pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
         xmlSAXHandler_endDocument_safe(saxPtr.endDocument, ctxtPtr.userData);
     }
     if ctxtPtr.options & HTML_PARSE_NODEFDTD as i32 == 0 && !ctxtPtr.myDoc.is_null() {
-        dtd = xmlGetIntSubset_safe(ctxtPtr.myDoc as *const xmlDoc);
+        dtd = unsafe { xmlGetIntSubset_safe(ctxtPtr.myDoc as *const xmlDoc) };
         if dtd.is_null() {
             let mut myDocPtr = unsafe { &mut *(*ctxt).myDoc };
-            myDocPtr.intSubset = xmlCreateIntSubset_safe(
-                ctxtPtr.myDoc,
-                b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
-                b"-//W3C//DTD HTML 4.0 Transitional//EN\x00" as *const u8 as *const i8
-                    as *mut xmlChar,
-                b"http://www.w3.org/TR/REC-html40/loose.dtd\x00" as *const u8 as *const i8
-                    as *mut xmlChar,
-            )
+            myDocPtr.intSubset = unsafe {
+                xmlCreateIntSubset_safe(
+                    ctxtPtr.myDoc,
+                    b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
+                    b"-//W3C//DTD HTML 4.0 Transitional//EN\x00" as *const u8 as *const i8
+                        as *mut xmlChar,
+                    b"http://www.w3.org/TR/REC-html40/loose.dtd\x00" as *const u8 as *const i8
+                        as *mut xmlChar,
+                )
+            }
         }
     }
     if ctxtPtr.wellFormed == 0 {
-        return -(1 as i32);
+        return -1;
     }
     return 0;
 }
@@ -12875,43 +12893,48 @@ pub unsafe fn htmlParseDocument(mut ctxt: htmlParserCtxtPtr) -> i32 {
  *
  * Returns 0 in case of success and -1 in case of error
  */
-unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
-    let mut sax: *mut htmlSAXHandler = 0 as *mut htmlSAXHandler;
+fn htmlInitParserCtxt(ctxt: htmlParserCtxtPtr) -> i32 {
+    let sax: *mut htmlSAXHandler;
     if ctxt.is_null() {
-        return -(1 as i32);
+        return -1;
     }
     let mut ctxtPtr = unsafe { &mut *ctxt };
-    memset_safe(
-        ctxt as *mut (),
-        0,
-        ::std::mem::size_of::<htmlParserCtxt>() as u64,
-    );
-    ctxtPtr.dict = xmlDictCreate_safe();
+    unsafe {
+        memset_safe(
+            ctxt as *mut (),
+            0,
+            ::std::mem::size_of::<htmlParserCtxt>() as u64,
+        )
+    };
+    ctxtPtr.dict = unsafe { xmlDictCreate_safe() };
     if ctxtPtr.dict.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
             b"htmlInitParserCtxt: out of memory\n\x00" as *const u8 as *const i8,
         );
-        return -(1 as i32);
+        return -1;
     }
-    sax = xmlMalloc_safe(::std::mem::size_of::<htmlSAXHandler>() as u64) as *mut htmlSAXHandler;
+    sax = unsafe { xmlMalloc_safe(::std::mem::size_of::<htmlSAXHandler>() as u64) }
+        as *mut htmlSAXHandler;
     if sax.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
             b"htmlInitParserCtxt: out of memory\n\x00" as *const u8 as *const i8,
         );
-        return -(1 as i32);
+        return -1;
     } else {
-        memset_safe(
-            sax as *mut (),
-            0,
-            ::std::mem::size_of::<htmlSAXHandler>() as u64,
-        );
+        unsafe {
+            memset_safe(
+                sax as *mut (),
+                0,
+                ::std::mem::size_of::<htmlSAXHandler>() as u64,
+            )
+        };
     }
     /* Allocate the Input stack */
-    ctxtPtr.inputTab =
+    ctxtPtr.inputTab = unsafe {
         xmlMalloc_safe((5 as u64).wrapping_mul(::std::mem::size_of::<htmlParserInputPtr>() as u64))
-            as *mut htmlParserInputPtr;
+    } as *mut htmlParserInputPtr;
     if ctxtPtr.inputTab.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
@@ -12920,19 +12943,19 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
         ctxtPtr.inputNr = 0;
         ctxtPtr.inputMax = 0;
         ctxtPtr.input = 0 as xmlParserInputPtr;
-        return -(1 as i32);
+        return -1;
     }
     ctxtPtr.inputNr = 0;
-    ctxtPtr.inputMax = 5 as i32;
+    ctxtPtr.inputMax = 5;
     ctxtPtr.input = 0 as xmlParserInputPtr;
     ctxtPtr.version = 0 as *const xmlChar;
     ctxtPtr.encoding = 0 as *const xmlChar;
-    ctxtPtr.standalone = -(1 as i32);
+    ctxtPtr.standalone = -1;
     ctxtPtr.instate = XML_PARSER_START;
     /* Allocate the Node stack */
-    ctxtPtr.nodeTab =
+    ctxtPtr.nodeTab = unsafe {
         xmlMalloc_safe((10 as u64).wrapping_mul(::std::mem::size_of::<htmlNodePtr>() as u64))
-            as *mut htmlNodePtr;
+    } as *mut htmlNodePtr;
     if ctxtPtr.nodeTab.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
@@ -12944,15 +12967,15 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
         ctxtPtr.inputNr = 0;
         ctxtPtr.inputMax = 0;
         ctxtPtr.input = 0 as xmlParserInputPtr;
-        return -(1 as i32);
+        return -1;
     }
     ctxtPtr.nodeNr = 0;
-    ctxtPtr.nodeMax = 10 as i32;
+    ctxtPtr.nodeMax = 10;
     ctxtPtr.node = 0 as xmlNodePtr;
     /* Allocate the Name stack */
-    ctxtPtr.nameTab =
+    ctxtPtr.nameTab = unsafe {
         xmlMalloc_safe((10 as u64).wrapping_mul(::std::mem::size_of::<*mut xmlChar>() as u64))
-            as *mut *const xmlChar;
+    } as *mut *const xmlChar;
     if ctxtPtr.nameTab.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
@@ -12967,30 +12990,32 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
         ctxtPtr.inputNr = 0;
         ctxtPtr.inputMax = 0;
         ctxtPtr.input = 0 as xmlParserInputPtr;
-        return -(1 as i32);
+        return -(1);
     }
     ctxtPtr.nameNr = 0;
-    ctxtPtr.nameMax = 10 as i32;
+    ctxtPtr.nameMax = 10;
     ctxtPtr.name = 0 as *const xmlChar;
     ctxtPtr.nodeInfoTab = 0 as *mut xmlParserNodeInfo;
     ctxtPtr.nodeInfoNr = 0;
     ctxtPtr.nodeInfoMax = 0;
     if sax.is_null() {
-        ctxtPtr.sax = __htmlDefaultSAXHandler_safe() as xmlSAXHandlerPtr
+        ctxtPtr.sax = unsafe { __htmlDefaultSAXHandler_safe() } as xmlSAXHandlerPtr
     } else {
         ctxtPtr.sax = sax;
-        memcpy_safe(
-            sax as *mut (),
-            __htmlDefaultSAXHandler_safe() as *const (),
-            ::std::mem::size_of::<xmlSAXHandlerV1>() as u64,
-        );
+        unsafe {
+            memcpy_safe(
+                sax as *mut (),
+                __htmlDefaultSAXHandler_safe() as *const (),
+                ::std::mem::size_of::<xmlSAXHandlerV1>() as u64,
+            )
+        };
     }
     ctxtPtr.userData = ctxt as *mut ();
     ctxtPtr.myDoc = 0 as xmlDocPtr;
     ctxtPtr.wellFormed = 1;
     ctxtPtr.replaceEntities = 0;
-    ctxtPtr.linenumbers = __xmlLineNumbersDefaultValue_safe();
-    ctxtPtr.keepBlanks = __xmlKeepBlanksDefaultValue_safe();
+    ctxtPtr.linenumbers = unsafe { __xmlLineNumbersDefaultValue_safe() };
+    ctxtPtr.keepBlanks = unsafe { __xmlKeepBlanksDefaultValue_safe() };
     ctxtPtr.html = 1;
     ctxtPtr.vctxt.finishDtd = 0xabcd1234 as u32;
     ctxtPtr.vctxt.userData = ctxt as *mut ();
@@ -13004,7 +13029,7 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
     ctxtPtr.validate = 0;
     ctxtPtr.checkIndex = 0 as i64;
     ctxtPtr.catalogs = 0 as *mut ();
-    xmlInitNodeInfoSeq_safe(&mut ctxtPtr.node_seq);
+    unsafe { xmlInitNodeInfoSeq_safe(&mut ctxtPtr.node_seq) };
     return 0;
 }
 /* *
@@ -13015,8 +13040,8 @@ unsafe fn htmlInitParserCtxt(mut ctxt: htmlParserCtxtPtr) -> i32 {
  * document in ctxt->myDoc is not freed.
  */
 
-pub unsafe fn htmlFreeParserCtxt(mut ctxt: htmlParserCtxtPtr) {
-    xmlFreeParserCtxt_safe(ctxt);
+pub fn htmlFreeParserCtxt(ctxt: htmlParserCtxtPtr) {
+    unsafe { xmlFreeParserCtxt_safe(ctxt) };
 }
 /* *
  * htmlNewParserCtxt:
@@ -13026,9 +13051,10 @@ pub unsafe fn htmlFreeParserCtxt(mut ctxt: htmlParserCtxtPtr) {
  * Returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
 
-pub unsafe fn htmlNewParserCtxt() -> htmlParserCtxtPtr {
-    let mut ctxt: xmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    ctxt = xmlMalloc_safe(::std::mem::size_of::<xmlParserCtxt>() as u64) as xmlParserCtxtPtr;
+pub fn htmlNewParserCtxt() -> htmlParserCtxtPtr {
+    let ctxt: xmlParserCtxtPtr;
+    ctxt = unsafe { xmlMalloc_safe(::std::mem::size_of::<xmlParserCtxt>() as u64) }
+        as xmlParserCtxtPtr;
     if ctxt.is_null() {
         htmlErrMemory(
             0 as xmlParserCtxtPtr,
@@ -13036,11 +13062,13 @@ pub unsafe fn htmlNewParserCtxt() -> htmlParserCtxtPtr {
         );
         return 0 as htmlParserCtxtPtr;
     }
-    memset_safe(
-        ctxt as *mut (),
-        0,
-        ::std::mem::size_of::<xmlParserCtxt>() as u64,
-    );
+    unsafe {
+        memset_safe(
+            ctxt as *mut (),
+            0,
+            ::std::mem::size_of::<xmlParserCtxt>() as u64,
+        )
+    };
     if htmlInitParserCtxt(ctxt) < 0 {
         htmlFreeParserCtxt(ctxt);
         return 0 as htmlParserCtxtPtr;
@@ -13057,13 +13085,10 @@ pub unsafe fn htmlNewParserCtxt() -> htmlParserCtxtPtr {
  * Returns the new parser context or NULL
  */
 
-pub unsafe fn htmlCreateMemoryParserCtxt_htmlparser(
-    mut buffer: *const i8,
-    mut size: i32,
-) -> htmlParserCtxtPtr {
-    let mut ctxt: xmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
-    let mut buf: xmlParserInputBufferPtr = 0 as *mut xmlParserInputBuffer;
+pub fn htmlCreateMemoryParserCtxt_htmlparser(buffer: *const i8, size: i32) -> htmlParserCtxtPtr {
+    let ctxt: xmlParserCtxtPtr;
+    let input: xmlParserInputPtr;
+    let buf: xmlParserInputBufferPtr;
     if buffer.is_null() {
         return 0 as htmlParserCtxtPtr;
     }
@@ -13074,21 +13099,21 @@ pub unsafe fn htmlCreateMemoryParserCtxt_htmlparser(
     if ctxt.is_null() {
         return 0 as htmlParserCtxtPtr;
     }
-    buf = xmlParserInputBufferCreateMem_safe(buffer, size, XML_CHAR_ENCODING_NONE);
+    buf = unsafe { xmlParserInputBufferCreateMem_safe(buffer, size, XML_CHAR_ENCODING_NONE) };
     if buf.is_null() {
         return 0 as htmlParserCtxtPtr;
     }
-    input = xmlNewInputStream_safe(ctxt);
+    input = unsafe { xmlNewInputStream_safe(ctxt) };
     if input.is_null() {
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as htmlParserCtxtPtr;
     }
     let mut inputPtr = unsafe { &mut (*input) };
     let mut bufPtr = unsafe { &mut (*buf) };
     inputPtr.filename = 0 as *const i8;
     inputPtr.buf = buf;
-    xmlBufResetInput_safe(bufPtr.buffer, input);
-    inputPush_safe(ctxt, input);
+    unsafe { xmlBufResetInput_safe(bufPtr.buffer, input) };
+    unsafe { inputPush_safe(ctxt, input) };
     return ctxt;
 }
 /* *
@@ -13102,17 +13127,14 @@ pub unsafe fn htmlCreateMemoryParserCtxt_htmlparser(
  *
  * Returns the new parser context or NULL
  */
-unsafe fn htmlCreateDocParserCtxt(
-    mut cur: *const xmlChar,
-    mut encoding: *const i8,
-) -> htmlParserCtxtPtr {
-    let mut len: i32 = 0;
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
+fn htmlCreateDocParserCtxt(cur: *const xmlChar, encoding: *const i8) -> htmlParserCtxtPtr {
+    let mut len: i32;
+    let ctxt: htmlParserCtxtPtr;
     if cur.is_null() {
         return 0 as htmlParserCtxtPtr;
     }
-    len = xmlStrlen_safe(cur);
-    ctxt = htmlCreateMemoryParserCtxt_safe(cur as *mut i8, len);
+    len = unsafe { xmlStrlen_safe(cur) };
+    ctxt = unsafe { htmlCreateMemoryParserCtxt_safe(cur as *mut i8, len) };
     if ctxt.is_null() {
         return 0 as htmlParserCtxtPtr;
     }
@@ -13122,15 +13144,15 @@ unsafe fn htmlCreateDocParserCtxt(
         let mut handler: xmlCharEncodingHandlerPtr = 0 as *mut xmlCharEncodingHandler;
         let mut inputPtr = unsafe { &mut *(*ctxt).input };
         if !inputPtr.encoding.is_null() {
-            xmlFree_safe(inputPtr.encoding as *mut xmlChar as *mut ());
+            unsafe { xmlFree_safe(inputPtr.encoding as *mut xmlChar as *mut ()) };
         }
-        inputPtr.encoding = xmlStrdup_safe(encoding as *const xmlChar);
-        enc = xmlParseCharEncoding_safe(encoding);
+        inputPtr.encoding = unsafe { xmlStrdup_safe(encoding as *const xmlChar) };
+        enc = unsafe { xmlParseCharEncoding_safe(encoding) };
         /*
          * registered set of known encodings
          */
         if enc as i32 != XML_CHAR_ENCODING_ERROR as i32 {
-            xmlSwitchEncoding_safe(ctxt, enc);
+            unsafe { xmlSwitchEncoding_safe(ctxt, enc) };
             if ctxtPtr.errNo == XML_ERR_UNSUPPORTED_ENCODING as i32 {
                 htmlParseErr(
                     ctxt,
@@ -13144,9 +13166,9 @@ unsafe fn htmlCreateDocParserCtxt(
             /*
              * fallback for unknown encodings
              */
-            handler = xmlFindCharEncodingHandler_safe(encoding);
+            handler = unsafe { xmlFindCharEncodingHandler_safe(encoding) };
             if !handler.is_null() {
-                xmlSwitchToEncoding_safe(ctxt, handler);
+                unsafe { xmlSwitchToEncoding_safe(ctxt, handler) };
             } else {
                 htmlParseErr(
                     ctxt,
@@ -13184,14 +13206,14 @@ unsafe fn htmlCreateDocParserCtxt(
  *      is available, -1 otherwise.
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-pub unsafe fn htmlParseLookupSequence(
-    mut ctxt: htmlParserCtxtPtr,
-    mut first: xmlChar,
-    mut next: xmlChar,
-    mut third: xmlChar,
-    mut ignoreattrval: i32,
+pub fn htmlParseLookupSequence(
+    ctxt: htmlParserCtxtPtr,
+    first: xmlChar,
+    next: xmlChar,
+    third: xmlChar,
+    ignoreattrval: i32,
 ) -> i32 {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
+    let ctxtPtr = unsafe { &mut *ctxt };
     let mut DEBUG_PUSH: i32 = 0;
     match () {
         #[cfg(DEBUG_PUSH)]
@@ -13201,26 +13223,26 @@ pub unsafe fn htmlParseLookupSequence(
         #[cfg(not(DEBUG_PUSH))]
         _ => {}
     };
-    let mut base: i32 = 0;
-    let mut len: i32 = 0;
-    let mut in_0: htmlParserInputPtr = 0 as *mut xmlParserInput;
-    let mut buf: *const xmlChar = 0 as *const xmlChar;
+    let mut base: i32;
+    let mut len: i32;
+    let mut in_0: htmlParserInputPtr;
+    let buf: *const xmlChar;
     let mut invalue: i32 = 0;
     let mut valdellim: i8 = 0;
     in_0 = ctxtPtr.input;
     if in_0.is_null() {
-        return -(1 as i32);
+        return -1;
     }
     let mut in_0Ptr = unsafe { &mut *in_0 };
     unsafe {
         base = in_0Ptr.cur.offset_from(in_0Ptr.base) as i32;
     }
     if base < 0 {
-        return -(1 as i32);
+        return -1;
     }
     if ctxtPtr.checkIndex > base as i64 {
         base = ctxtPtr.checkIndex as i32;
-        if (ctxtPtr.hasPErefs & 1 as i32) == 0 {
+        if (ctxtPtr.hasPErefs & 1) == 0 {
             invalue = 0;
         } else {
             invalue = 1;
@@ -13231,12 +13253,12 @@ pub unsafe fn htmlParseLookupSequence(
         len = in_0Ptr.length;
     } else {
         let mut in_0BufPtr = unsafe { &mut *(*in_0).buf };
-        buf = xmlBufContent_safe(in_0BufPtr.buffer as *const xmlBuf);
-        len = xmlBufUse_safe(in_0BufPtr.buffer) as i32;
+        buf = unsafe { xmlBufContent_safe(in_0BufPtr.buffer as *const xmlBuf) };
+        len = unsafe { xmlBufUse_safe(in_0BufPtr.buffer) } as i32;
     }
     /* take into account the sequence length */
     if third != 0 {
-        len -= 2 as i32;
+        len -= 2;
     } else if next != 0 {
         len -= 1;
     }
@@ -13268,14 +13290,14 @@ pub unsafe fn htmlParseLookupSequence(
         unsafe {
             if *buf.offset(base as isize) as i32 == first as i32 {
                 if third as i32 != 0 {
-                    if *buf.offset((base + 1 as i32) as isize) as i32 != next as i32
-                        || *buf.offset((base + 2 as i32) as isize) as i32 != third as i32
+                    if *buf.offset((base + 1) as isize) as i32 != next as i32
+                        || *buf.offset((base + 2) as isize) as i32 != third as i32
                     {
                         base += 1;
                         continue;
                     }
                 } else if next as i32 != 0 {
-                    if *buf.offset((base + 1 as i32) as isize) as i32 != next as i32 {
+                    if *buf.offset((base + 1) as isize) as i32 != next as i32 {
                         base += 1;
                         continue;
                     }
@@ -13315,9 +13337,9 @@ pub unsafe fn htmlParseLookupSequence(
     }
     ctxtPtr.checkIndex = base as i64;
     if invalue != 0 {
-        ctxtPtr.hasPErefs = ctxtPtr.hasPErefs | (1 as i32);
+        ctxtPtr.hasPErefs = ctxtPtr.hasPErefs | (1);
     } else {
-        ctxtPtr.hasPErefs = ctxtPtr.hasPErefs & (-2 as i32);
+        ctxtPtr.hasPErefs = ctxtPtr.hasPErefs & (-2);
     }
     if DEBUG_PUSH != 0 {
         if next as i32 == 0 {
@@ -13343,7 +13365,7 @@ pub unsafe fn htmlParseLookupSequence(
             );
         }
     }
-    return -(1 as i32);
+    return -1;
 }
 /* *
  * htmlParseLookupCommentEnd:
@@ -13360,21 +13382,20 @@ pub unsafe fn htmlParseLookupSequence(
  * Returns the index to the current parsing point if the full sequence is available, -1 otherwise.
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-unsafe fn htmlParseLookupCommentEnd(mut ctxt: htmlParserCtxtPtr) -> i32 {
-    let mut ctxtPtr = unsafe { &mut *ctxt };
-    let mut inputPtr = unsafe { &mut *(*ctxt).input };
+fn htmlParseLookupCommentEnd(ctxt: htmlParserCtxtPtr) -> i32 {
+    let ctxtPtr = unsafe { &mut *ctxt };
+    let inputPtr = unsafe { &mut *(*ctxt).input };
     let mut mark: i32 = 0;
     let mut cur: i32 = unsafe { inputPtr.cur.offset_from(inputPtr.base) as i32 };
     while mark >= 0 {
         mark = htmlParseLookupSequence(ctxt, '-' as xmlChar, '-' as xmlChar, 0 as xmlChar, 0);
-        if (mark < 0 as i32)
-            || (NXT(ctxt, mark + 2 as i32) == '>' as i32)
-            || ((NXT(ctxt, mark + 2 as i32) == '!' as i32)
-                && (NXT(ctxt, mark + 3 as i32) == '>' as i32))
+        if (mark < 0)
+            || (NXT(ctxt, mark + 2) == '>' as i32)
+            || ((NXT(ctxt, mark + 2) == '!' as i32) && (NXT(ctxt, mark + 3) == '>' as i32))
         {
             return mark;
         }
-        ctxtPtr.checkIndex = (cur + mark + 1 as i32) as i64
+        ctxtPtr.checkIndex = (cur + mark + 1) as i64
     }
     return mark;
 }
@@ -13388,7 +13409,7 @@ unsafe fn htmlParseLookupCommentEnd(mut ctxt: htmlParserCtxtPtr) -> i32 {
  * Returns zero if no parsing was possible
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i32) -> i32 {
+pub fn htmlParseTryOrFinish(ctxt: htmlParserCtxtPtr, terminate: i32) -> i32 {
     let mut DEBUG_PUSH: i32 = 0;
     match () {
         #[cfg(DEBUG_PUSH)]
@@ -13399,10 +13420,10 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
         _ => {}
     };
     let mut ret: i32 = 0;
-    let mut in_0: htmlParserInputPtr = 0 as *mut xmlParserInput;
+    let mut in_0: htmlParserInputPtr;
     let mut avail: ptrdiff_t = 0 as ptrdiff_t;
-    let mut cur: xmlChar = 0;
-    let mut next: xmlChar = 0;
+    let mut cur: xmlChar;
+    let mut next: xmlChar;
     let mut node_info: htmlParserNodeInfo = htmlParserNodeInfo {
         node: 0 as *const _xmlNode,
         begin_pos: 0,
@@ -13410,7 +13431,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
         end_pos: 0,
         end_line: 0,
     };
-    let mut ctxtPtr = unsafe { &mut *ctxt };
+    let ctxtPtr = unsafe { &mut *ctxt };
     if DEBUG_PUSH != 0 {
         match ctxtPtr.instate {
             XML_PARSER_EOF => {
@@ -13518,7 +13539,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
         if in_0.is_null() {
             break;
         }
-        let mut in_0Ptr = unsafe { &mut *in_0 };
+        let in_0Ptr = unsafe { &mut *in_0 };
         if in_0Ptr.buf.is_null() {
             unsafe { avail = in_0Ptr.length as i64 - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64 }
         } else {
@@ -13527,7 +13548,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
             }
         }
-        if avail == 0 as i64 && terminate != 0 {
+        if avail == 0 && terminate != 0 {
             htmlAutoCloseOnEnd(ctxt);
             if ctxtPtr.nameNr == 0 && ctxtPtr.instate as i32 != XML_PARSER_EOF as i32 {
                 /*
@@ -13537,12 +13558,12 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 sax_condition =
                     unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).endDocument.is_some() };
                 if sax_condition {
-                    let mut saxPtr = unsafe { &mut *(*ctxt).sax };
+                    let saxPtr = unsafe { &mut *(*ctxt).sax };
                     xmlSAXHandler_endDocument_safe(saxPtr.endDocument, ctxtPtr.userData);
                 }
             }
         }
-        if avail < 1 as i64 {
+        if avail < 1 {
             break;
         }
         /*
@@ -13552,10 +13573,10 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
          * We should consider removing this check.
          */
         unsafe {
-            cur = *in_0Ptr.cur.offset(0 as isize);
+            cur = *in_0Ptr.cur.offset(0);
         }
         if cur as i32 == 0 {
-            SKIP(ctxt, 1 as i32);
+            SKIP(ctxt, 1);
             continue;
         }
         match ctxtPtr.instate {
@@ -13566,7 +13587,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
             XML_PARSER_START => {
                 //Very first chars read from the document flow
                 unsafe {
-                    cur = *in_0Ptr.cur.offset(0 as isize);
+                    cur = *in_0Ptr.cur.offset(0);
                 }
                 if IS_BLANK_CH(cur as i32) {
                     htmlSkipBlankChars(ctxt);
@@ -13586,12 +13607,14 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     !ctxtPtr.sax.is_null() && (*(*ctxt).sax).setDocumentLocator.is_some()
                 };
                 if sax_condition {
-                    let mut saxPtr = unsafe { &mut *(*ctxt).sax };
-                    xmlSAXHandler_setDocumentLocator_safe(
-                        saxPtr.setDocumentLocator,
-                        ctxtPtr.userData,
-                        __xmlDefaultSAXLocator_safe(),
-                    );
+                    let saxPtr = unsafe { &mut *(*ctxt).sax };
+                    unsafe {
+                        xmlSAXHandler_setDocumentLocator_safe(
+                            saxPtr.setDocumentLocator,
+                            ctxtPtr.userData,
+                            __xmlDefaultSAXLocator_safe(),
+                        )
+                    };
                 }
                 sax_condition = unsafe {
                     !ctxtPtr.sax.is_null()
@@ -13599,24 +13622,24 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         && ctxtPtr.disableSAX == 0
                 };
                 if sax_condition {
-                    let mut saxPtr = unsafe { &mut *(*ctxt).sax };
+                    let saxPtr = unsafe { &mut *(*ctxt).sax };
                     xmlSAXHandler_startDocument_safe(saxPtr.startDocument, ctxtPtr.userData);
                 }
                 unsafe {
-                    cur = *in_0Ptr.cur.offset(0 as isize);
+                    cur = *in_0Ptr.cur.offset(0);
                 }
                 unsafe {
-                    next = *in_0Ptr.cur.offset(1 as isize);
+                    next = *in_0Ptr.cur.offset(1);
                 }
                 if cur as i32 == '<' as i32
                     && next as i32 == '!' as i32
-                    && UPP(ctxt, 2 as i32) == 'D' as i32
-                    && UPP(ctxt, 3 as i32) == 'O' as i32
-                    && UPP(ctxt, 4 as i32) == 'C' as i32
-                    && UPP(ctxt, 5 as i32) == 'T' as i32
-                    && UPP(ctxt, 6 as i32) == 'Y' as i32
-                    && UPP(ctxt, 7 as i32) == 'P' as i32
-                    && UPP(ctxt, 8 as i32) == 'E' as i32
+                    && UPP(ctxt, 2) == 'D' as i32
+                    && UPP(ctxt, 3) == 'O' as i32
+                    && UPP(ctxt, 4) == 'C' as i32
+                    && UPP(ctxt, 5) == 'T' as i32
+                    && UPP(ctxt, 6) == 'Y' as i32
+                    && UPP(ctxt, 7) == 'P' as i32
+                    && UPP(ctxt, 8) == 'E' as i32
                 {
                     if terminate == 0
                         && htmlParseLookupSequence(
@@ -13624,18 +13647,16 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             '>' as xmlChar,
                             0 as xmlChar,
                             0 as xmlChar,
-                            1 as i32,
-                        ) < 0 as i32
+                            1,
+                        ) < 0
                     {
                         break;
                     }
                     if DEBUG_PUSH != 0 {
-                        unsafe {
-                            __xmlGenericError_safe_macro!(
-                                __xmlGenericErrorContext_safe(),
-                                b"HPP: Parsing internal subset\n" as *const u8 as *const i8
-                            );
-                        }
+                        __xmlGenericError_safe_macro!(
+                            __xmlGenericErrorContext_safe(),
+                            b"HPP: Parsing internal subset\n" as *const u8 as *const i8
+                        );
                     }
                     htmlParseDocTypeDecl(ctxt);
                     ctxtPtr.instate = XML_PARSER_PROLOG;
@@ -13667,26 +13688,26 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
                     }
                 }
-                if avail < 1 as i64 {
+                if avail < 1 {
                     break;
                 }
-                if avail < 2 as i64 {
+                if avail < 2 {
                     if terminate == 0 {
                         break;
                     } else {
                         next = ' ' as xmlChar;
                     }
                 } else {
-                    unsafe { next = *in_0Ptr.cur.offset(1 as isize) }
+                    unsafe { next = *in_0Ptr.cur.offset(1) }
                 }
                 unsafe {
-                    cur = *in_0Ptr.cur.offset(0 as isize);
+                    cur = *in_0Ptr.cur.offset(0);
                 }
                 unsafe {
                     if cur as i32 == '<' as i32
                         && next as i32 == '!' as i32
-                        && *in_0Ptr.cur.offset(2 as isize) as i32 == '-' as i32
-                        && *in_0Ptr.cur.offset(3 as isize) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(2) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(3) as i32 == '-' as i32
                     {
                         if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 {
                             break;
@@ -13707,7 +13728,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                 0 as xmlChar,
                                 0 as xmlChar,
                                 0,
-                            ) < 0 as i32
+                            ) < 0
                         {
                             break;
                         }
@@ -13721,13 +13742,13 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         ctxtPtr.instate = XML_PARSER_MISC;
                     } else if cur as i32 == '<' as i32
                         && next as i32 == '!' as i32
-                        && UPP(ctxt, 2 as i32) == 'D' as i32
-                        && UPP(ctxt, 3 as i32) == 'O' as i32
-                        && UPP(ctxt, 4 as i32) == 'C' as i32
-                        && UPP(ctxt, 5 as i32) == 'T' as i32
-                        && UPP(ctxt, 6 as i32) == 'Y' as i32
-                        && UPP(ctxt, 7 as i32) == 'P' as i32
-                        && UPP(ctxt, 8 as i32) == 'E' as i32
+                        && UPP(ctxt, 2) == 'D' as i32
+                        && UPP(ctxt, 3) == 'O' as i32
+                        && UPP(ctxt, 4) == 'C' as i32
+                        && UPP(ctxt, 5) == 'T' as i32
+                        && UPP(ctxt, 6) == 'Y' as i32
+                        && UPP(ctxt, 7) == 'P' as i32
+                        && UPP(ctxt, 8) == 'E' as i32
                     {
                         if terminate == 0
                             && htmlParseLookupSequence(
@@ -13735,8 +13756,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                 '>' as xmlChar,
                                 0 as xmlChar,
                                 0 as xmlChar,
-                                1 as i32,
-                            ) < 0 as i32
+                                1,
+                            ) < 0
                         {
                             break;
                         }
@@ -13754,10 +13775,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                 b"HPP: entering PROLOG\n" as *const u8 as *const i8
                             );
                         }
-                    } else if cur as i32 == '<' as i32
-                        && next as i32 == '!' as i32
-                        && avail < 9 as i64
-                    {
+                    } else if cur as i32 == '<' as i32 && next as i32 == '!' as i32 && avail < 9 {
                         break;
                     } else {
                         ctxtPtr.instate = XML_PARSER_CONTENT;
@@ -13782,20 +13800,20 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
                     }
                 }
-                if avail < 2 as i64 {
+                if avail < 2 {
                     break;
                 }
                 unsafe {
-                    cur = *in_0Ptr.cur.offset(0 as isize);
+                    cur = *in_0Ptr.cur.offset(0);
                 }
                 unsafe {
-                    next = *in_0Ptr.cur.offset(1 as isize);
+                    next = *in_0Ptr.cur.offset(1);
                 }
                 unsafe {
                     if cur as i32 == '<' as i32
                         && next as i32 == '!' as i32
-                        && *in_0Ptr.cur.offset(2 as isize) as i32 == '-' as i32
-                        && *in_0Ptr.cur.offset(3 as isize) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(2) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(3) as i32 == '-' as i32
                     {
                         if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 {
                             break;
@@ -13816,7 +13834,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                 0 as xmlChar,
                                 0 as xmlChar,
                                 0,
-                            ) < 0 as i32
+                            ) < 0
                         {
                             break;
                         }
@@ -13828,10 +13846,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         }
                         htmlParsePI(ctxt);
                         ctxtPtr.instate = XML_PARSER_PROLOG;
-                    } else if cur as i32 == '<' as i32
-                        && next as i32 == '!' as i32
-                        && avail < 4 as i64
-                    {
+                    } else if cur as i32 == '<' as i32 && next as i32 == '!' as i32 && avail < 4 {
                         break;
                     } else {
                         ctxtPtr.instate = XML_PARSER_CONTENT;
@@ -13855,27 +13870,27 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             - in_0Ptr.cur.offset_from(in_0Ptr.base) as i64
                     }
                 }
-                if avail < 1 as i64 {
+                if avail < 1 {
                     break;
                 }
                 unsafe {
-                    cur = *in_0Ptr.cur.offset(0 as isize);
+                    cur = *in_0Ptr.cur.offset(0);
                 }
                 if IS_BLANK_CH(cur as i32) {
                     htmlParseCharData(ctxt);
                     break;
                 }
-                if avail < 2 as i64 {
+                if avail < 2 {
                     break;
                 }
                 unsafe {
-                    next = *in_0Ptr.cur.offset(1 as isize);
+                    next = *in_0Ptr.cur.offset(1);
                 }
                 unsafe {
                     if cur as i32 == '<' as i32
                         && next as i32 == '!' as i32
-                        && *in_0Ptr.cur.offset(2 as isize) as i32 == '-' as i32
-                        && *in_0Ptr.cur.offset(3 as isize) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(2) as i32 == '-' as i32
+                        && *in_0Ptr.cur.offset(3) as i32 == '-' as i32
                     {
                         if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 {
                             break;
@@ -13896,7 +13911,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                 0 as xmlChar,
                                 0 as xmlChar,
                                 0,
-                            ) < 0 as i32
+                            ) < 0
                         {
                             break;
                         }
@@ -13908,10 +13923,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         }
                         htmlParsePI(ctxt);
                         ctxtPtr.instate = XML_PARSER_EPILOG;
-                    } else if cur as i32 == '<' as i32
-                        && next as i32 == '!' as i32
-                        && avail < 4 as i64
-                    {
+                    } else if cur as i32 == '<' as i32 && next as i32 == '!' as i32 && avail < 4 {
                         break;
                     } else {
                         ctxtPtr.errNo = XML_ERR_DOCUMENT_END as i32;
@@ -13923,11 +13935,10 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                 b"HPP: entering EOF\n" as *const u8 as *const i8
                             );
                         }
-                        sax_condition = unsafe {
-                            !ctxtPtr.sax.is_null() && (*(*ctxt).sax).endDocument.is_some()
-                        };
+                        sax_condition =
+                            !ctxtPtr.sax.is_null() && (*(*ctxt).sax).endDocument.is_some();
                         if sax_condition {
-                            let mut saxPtr = unsafe { &mut *(*ctxt).sax };
+                            let mut saxPtr = &mut *(*ctxt).sax;
                             xmlSAXHandler_endDocument_safe(saxPtr.endDocument, ctxtPtr.userData);
                         }
                         break;
@@ -13935,23 +13946,23 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 }
             }
             XML_PARSER_START_TAG => {
-                let mut name: *const xmlChar = 0 as *const xmlChar;
-                let mut failed: i32 = 0;
-                let mut info: *const htmlElemDesc = 0 as *const htmlElemDesc;
-                if avail < 1 as i64 {
+                let name: *const xmlChar;
+                let mut failed: i32;
+                let info: *const htmlElemDesc;
+                if avail < 1 {
                     break;
                 }
-                if avail < 2 as i64 {
+                if avail < 2 {
                     if terminate == 0 {
                         break;
                     } else {
                         next = ' ' as xmlChar;
                     }
                 } else {
-                    unsafe { next = *in_0Ptr.cur.offset(1 as isize) }
+                    unsafe { next = *in_0Ptr.cur.offset(1) }
                 }
                 unsafe {
-                    cur = *in_0Ptr.cur.offset(0 as isize);
+                    cur = *in_0Ptr.cur.offset(0);
                 }
                 if cur as i32 != '<' as i32 {
                     ctxtPtr.instate = XML_PARSER_CONTENT;
@@ -13965,7 +13976,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 }
                 if next as i32 == '/' as i32 {
                     ctxtPtr.instate = XML_PARSER_END_TAG;
-                    ctxtPtr.checkIndex = 0 as i64;
+                    ctxtPtr.checkIndex = 0;
                     if DEBUG_PUSH != 0 {
                         __xmlGenericError_safe_macro!(
                             __xmlGenericErrorContext_safe(),
@@ -13975,13 +13986,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     continue;
                 }
                 if terminate == 0
-                    && htmlParseLookupSequence(
-                        ctxt,
-                        '>' as xmlChar,
-                        0 as xmlChar,
-                        0 as xmlChar,
-                        1 as i32,
-                    ) < 0 as i32
+                    && htmlParseLookupSequence(ctxt, '>' as xmlChar, 0 as xmlChar, 0 as xmlChar, 1)
+                        < 0
                 {
                     break;
                 }
@@ -13991,15 +13997,15 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     unsafe {
                         node_info.begin_pos = inputPtr
                             .consumed
-                            .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as i64 as u64);
+                            .wrapping_add(inputPtr.cur.offset_from(inputPtr.base) as u64);
                     }
                     node_info.begin_line = inputPtr.line as u64;
                 }
                 failed = htmlParseStartTag(ctxt);
                 name = ctxtPtr.name;
-                if failed == -(1 as i32) || name.is_null() {
+                if failed == -1 || name.is_null() {
                     if CUR(ctxt) == '>' as i32 {
-                        xmlNextChar_safe(ctxt);
+                        unsafe { xmlNextChar_safe(ctxt) };
                     }
                     continue;
                 }
@@ -14016,8 +14022,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         0 as *const xmlChar,
                     );
                 }
-                if CUR(ctxt) == '/' as i32 && NXT(ctxt, 1 as i32) == '>' as i32 {
-                    SKIP(ctxt, 2 as i32);
+                if CUR(ctxt) == '/' as i32 && NXT(ctxt, 1) == '>' as i32 {
+                    SKIP(ctxt, 2);
                     sax_condition =
                         unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).endElement.is_some() };
                     if sax_condition {
@@ -14035,7 +14041,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     continue;
                 }
                 if CUR(ctxt) == '>' as i32 {
-                    xmlNextChar_safe(ctxt);
+                    unsafe { xmlNextChar_safe(ctxt) };
                 } else {
                     htmlParseErr(
                         ctxt,
@@ -14047,8 +14053,8 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     /*
                      * end of parsing of this node.
                      */
-                    if xmlStrEqual_safe(name, ctxtPtr.name) != 0 {
-                        nodePop_safe(ctxt);
+                    if unsafe { xmlStrEqual_safe(name, ctxtPtr.name) } != 0 {
+                        unsafe { nodePop_safe(ctxt) };
                         htmlnamePop(ctxt);
                     }
                     if ctxtPtr.record_info != 0 {
@@ -14098,15 +14104,15 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             saxPtr.characters,
                             ctxtPtr.userData,
                             chr.as_mut_ptr(),
-                            1 as i32,
+                            1,
                         );
                     }
                     ctxtPtr.token = 0;
                     ctxtPtr.checkIndex = 0 as i64
                 }
-                if avail == 1 as i64 && terminate != 0 {
+                if avail == 1 && terminate != 0 {
                     unsafe {
-                        cur = *in_0Ptr.cur.offset(0 as isize);
+                        cur = *in_0Ptr.cur.offset(0);
                     }
                     if cur as i32 != '<' as i32 && cur as i32 != '&' as i32 {
                         if !ctxtPtr.sax.is_null() {
@@ -14119,7 +14125,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                             saxPtr.characters,
                                             ctxtPtr.userData,
                                             chr.as_mut_ptr(),
-                                            1 as i32,
+                                            1,
                                         );
                                     }
                                 } else {
@@ -14128,7 +14134,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                             saxPtr.ignorableWhitespace,
                                             ctxtPtr.userData,
                                             chr.as_mut_ptr(),
-                                            1 as i32,
+                                            1,
                                         );
                                     }
                                 }
@@ -14139,37 +14145,41 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                                         saxPtr.characters,
                                         ctxtPtr.userData,
                                         chr.as_mut_ptr(),
-                                        1 as i32,
+                                        1,
                                     );
                                 }
                             }
                         }
                         ctxtPtr.token = 0;
-                        ctxtPtr.checkIndex = 0 as i64;
+                        ctxtPtr.checkIndex = 0;
                         unsafe {
                             in_0Ptr.cur = in_0Ptr.cur.offset(1);
                         }
                         continue;
                     }
                 }
-                if avail < 2 as i64 {
+                if avail < 2 {
                     break;
                 }
                 unsafe {
-                    cur = *in_0Ptr.cur.offset(0 as isize);
+                    cur = *in_0Ptr.cur.offset(0);
                 }
                 unsafe {
-                    next = *in_0Ptr.cur.offset(1 as isize);
+                    next = *in_0Ptr.cur.offset(1);
                 }
                 //cons = (*ctxt).nbChars;
-                if xmlStrEqual_safe(
-                    ctxtPtr.name,
-                    b"script\x00" as *const u8 as *const i8 as *mut xmlChar,
-                ) != 0
-                    || xmlStrEqual_safe(
+                if unsafe {
+                    xmlStrEqual_safe(
                         ctxtPtr.name,
-                        b"style\x00" as *const u8 as *const i8 as *mut xmlChar,
-                    ) != 0
+                        b"script\x00" as *const u8 as *const i8 as *mut xmlChar,
+                    )
+                } != 0
+                    || unsafe {
+                        xmlStrEqual_safe(
+                            ctxtPtr.name,
+                            b"style\x00" as *const u8 as *const i8 as *mut xmlChar,
+                        )
+                    } != 0
                 {
                     /*
                      * Handle SCRIPT/STYLE separately
@@ -14188,7 +14198,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                             break;
                         }
                         unsafe {
-                            val = *in_0Ptr.cur.offset((idx + 2 as i32) as isize);
+                            val = *in_0Ptr.cur.offset((idx + 2) as isize);
                         }
                         if val as i32 == 0 {
                             break;
@@ -14197,7 +14207,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     htmlParseScript(ctxt);
                     if cur as i32 == '<' as i32 && next as i32 == '/' as i32 {
                         ctxtPtr.instate = XML_PARSER_END_TAG;
-                        ctxtPtr.checkIndex = 0 as i64;
+                        ctxtPtr.checkIndex = 0;
                         if DEBUG_PUSH != 0 {
                             __xmlGenericError_safe_macro!(
                                 __xmlGenericErrorContext_safe(),
@@ -14207,172 +14217,169 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                         continue;
                     }
                 } else {
-                    unsafe {
-                        if cur as i32 == '<' as i32
-                            && next as i32 == '!' as i32
-                            && UPP(ctxt, 2 as i32) == 'D' as i32
-                            && UPP(ctxt, 3 as i32) == 'O' as i32
-                            && UPP(ctxt, 4 as i32) == 'C' as i32
-                            && UPP(ctxt, 5 as i32) == 'T' as i32
-                            && UPP(ctxt, 6 as i32) == 'Y' as i32
-                            && UPP(ctxt, 7 as i32) == 'P' as i32
-                            && UPP(ctxt, 8 as i32) == 'E' as i32
-                        {
-                            if terminate == 0
-                                && htmlParseLookupSequence(
-                                    ctxt,
-                                    '>' as xmlChar,
-                                    0 as xmlChar,
-                                    0 as xmlChar,
-                                    1 as i32,
-                                ) < 0 as i32
-                            {
-                                break;
-                            }
-                            htmlParseErr(
+                    if cur as i32 == '<' as i32
+                        && next as i32 == '!' as i32
+                        && UPP(ctxt, 2) == 'D' as i32
+                        && UPP(ctxt, 3) == 'O' as i32
+                        && UPP(ctxt, 4) == 'C' as i32
+                        && UPP(ctxt, 5) == 'T' as i32
+                        && UPP(ctxt, 6) == 'Y' as i32
+                        && UPP(ctxt, 7) == 'P' as i32
+                        && UPP(ctxt, 8) == 'E' as i32
+                    {
+                        if terminate == 0
+                            && htmlParseLookupSequence(
                                 ctxt,
-                                XML_HTML_STRUCURE_ERROR,
-                                b"Misplaced DOCTYPE declaration\n\x00" as *const u8 as *const i8,
-                                b"DOCTYPE\x00" as *const u8 as *const i8 as *mut xmlChar,
-                                0 as *const xmlChar,
-                            );
-                            htmlParseDocTypeDecl(ctxt);
-                        } else if cur as i32 == '<' as i32
-                            && next as i32 == '!' as i32
-                            && *in_0Ptr.cur.offset(2 as isize) as i32 == '-' as i32
-                            && *in_0Ptr.cur.offset(3 as isize) as i32 == '-' as i32
-                        {
-                            if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 {
-                                break;
-                            }
-                            if DEBUG_PUSH != 0 {
-                                __xmlGenericError_safe_macro!(
-                                    __xmlGenericErrorContext_safe(),
-                                    b"HPP: Parsing Comment\n" as *const u8 as *const i8
-                                );
-                            }
-                            htmlParseComment(ctxt);
-                            ctxtPtr.instate = XML_PARSER_CONTENT;
-                        } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32 {
-                            if terminate == 0
-                                && htmlParseLookupSequence(
-                                    ctxt,
-                                    '>' as xmlChar,
-                                    0 as xmlChar,
-                                    0 as xmlChar,
-                                    0,
-                                ) < 0 as i32
-                            {
-                                break;
-                            }
-                            if DEBUG_PUSH != 0 {
-                                __xmlGenericError_safe_macro!(
-                                    __xmlGenericErrorContext_safe(),
-                                    b"HPP: Parsing PI\n" as *const u8 as *const i8
-                                );
-                            }
-                            htmlParsePI(ctxt);
-                            ctxtPtr.instate = XML_PARSER_CONTENT;
-                        } else if cur as i32 == '<' as i32
-                            && next as i32 == '!' as i32
-                            && avail < 4 as i64
+                                '>' as xmlChar,
+                                0 as xmlChar,
+                                0 as xmlChar,
+                                1,
+                            ) < 0
                         {
                             break;
-                        } else if cur as i32 == '<' as i32 && next as i32 == '/' as i32 {
-                            ctxtPtr.instate = XML_PARSER_END_TAG;
-                            ctxtPtr.checkIndex = 0 as i64;
+                        }
+                        htmlParseErr(
+                            ctxt,
+                            XML_HTML_STRUCURE_ERROR,
+                            b"Misplaced DOCTYPE declaration\n\x00" as *const u8 as *const i8,
+                            b"DOCTYPE\x00" as *const u8 as *const i8 as *mut xmlChar,
+                            0 as *const xmlChar,
+                        );
+                        htmlParseDocTypeDecl(ctxt);
+                    } else if cur as i32 == '<' as i32
+                        && next as i32 == '!' as i32
+                        && unsafe { *in_0Ptr.cur.offset(2) } as i32 == '-' as i32
+                        && unsafe { *in_0Ptr.cur.offset(3) } as i32 == '-' as i32
+                    {
+                        if terminate == 0 && htmlParseLookupCommentEnd(ctxt) < 0 {
+                            break;
+                        }
+                        if DEBUG_PUSH != 0 {
+                            __xmlGenericError_safe_macro!(
+                                __xmlGenericErrorContext_safe(),
+                                b"HPP: Parsing Comment\n" as *const u8 as *const i8
+                            );
+                        }
+                        htmlParseComment(ctxt);
+                        ctxtPtr.instate = XML_PARSER_CONTENT;
+                    } else if cur as i32 == '<' as i32 && next as i32 == '?' as i32 {
+                        if terminate == 0
+                            && htmlParseLookupSequence(
+                                ctxt,
+                                '>' as xmlChar,
+                                0 as xmlChar,
+                                0 as xmlChar,
+                                0,
+                            ) < 0
+                        {
+                            break;
+                        }
+                        if DEBUG_PUSH != 0 {
+                            __xmlGenericError_safe_macro!(
+                                __xmlGenericErrorContext_safe(),
+                                b"HPP: Parsing PI\n" as *const u8 as *const i8
+                            );
+                        }
+                        htmlParsePI(ctxt);
+                        ctxtPtr.instate = XML_PARSER_CONTENT;
+                    } else if cur as i32 == '<' as i32 && next as i32 == '!' as i32 && avail < 4 {
+                        break;
+                    } else if cur as i32 == '<' as i32 && next as i32 == '/' as i32 {
+                        ctxtPtr.instate = XML_PARSER_END_TAG;
+                        ctxtPtr.checkIndex = 0;
+                        if DEBUG_PUSH != 0 {
+                            __xmlGenericError_safe_macro!(
+                                __xmlGenericErrorContext_safe(),
+                                b"HPP: entering END_TAG\n" as *const u8 as *const i8
+                            );
+                        }
+                        continue;
+                    } else if cur as i32 == '<' as i32 {
+                        if terminate == 0 && next as i32 == 0 {
+                            break;
+                        }
+                        if IS_ASCII_LETTER(next as i32)
+                            || next as i32 == '_' as i32
+                            || next as i32 == ':' as i32
+                            || next as i32 == '.' as i32
+                        {
+                            ctxtPtr.instate = XML_PARSER_START_TAG;
+                            ctxtPtr.checkIndex = 0;
                             if DEBUG_PUSH != 0 {
                                 __xmlGenericError_safe_macro!(
                                     __xmlGenericErrorContext_safe(),
-                                    b"HPP: entering END_TAG\n" as *const u8 as *const i8
+                                    b"HPP: entering START_TAG\n" as *const u8 as *const i8
                                 );
                             }
-                            continue;
-                        } else if cur as i32 == '<' as i32 {
-                            if terminate == 0 && next as i32 == 0 {
-                                break;
-                            }
-                            if IS_ASCII_LETTER(next as i32)
-                                || next as i32 == '_' as i32
-                                || next as i32 == ':' as i32
-                                || next as i32 == '.' as i32
-                            {
-                                ctxtPtr.instate = XML_PARSER_START_TAG;
-                                ctxtPtr.checkIndex = 0 as i64;
-                                if DEBUG_PUSH != 0 {
-                                    __xmlGenericError_safe_macro!(
-                                        __xmlGenericErrorContext_safe(),
-                                        b"HPP: entering START_TAG\n" as *const u8 as *const i8
-                                    );
-                                }
-                            } else {
-                                htmlParseErr(
-                                    ctxt,
-                                    XML_ERR_NAME_REQUIRED,
-                                    b"htmlParseTryOrFinish: invalid element name\n\x00" as *const u8
-                                        as *const i8,
-                                    0 as *const xmlChar,
-                                    0 as *const xmlChar,
-                                );
-                                htmlCheckParagraph(ctxt);
-                                sax_condition = unsafe {
-                                    !ctxtPtr.sax.is_null() && (*(*ctxt).sax).characters.is_some()
-                                };
-                                if sax_condition {
-                                    let mut saxPtr = unsafe { &mut *(*ctxt).sax };
+                        } else {
+                            htmlParseErr(
+                                ctxt,
+                                XML_ERR_NAME_REQUIRED,
+                                b"htmlParseTryOrFinish: invalid element name\n\x00" as *const u8
+                                    as *const i8,
+                                0 as *const xmlChar,
+                                0 as *const xmlChar,
+                            );
+                            htmlCheckParagraph(ctxt);
+                            sax_condition = unsafe {
+                                !ctxtPtr.sax.is_null() && (*(*ctxt).sax).characters.is_some()
+                            };
+                            if sax_condition {
+                                let mut saxPtr = unsafe { &mut *(*ctxt).sax };
+                                unsafe {
                                     xmlSAXHandler_characters_safe(
                                         saxPtr.characters,
                                         ctxtPtr.userData,
-                                        &*in_0Ptr.cur.offset(0 as isize),
-                                        1 as i32,
-                                    );
-                                }
-                                xmlNextChar_safe(ctxt);
+                                        &*in_0Ptr.cur.offset(0),
+                                        1,
+                                    )
+                                };
                             }
-                            continue;
-                        } else {
-                            if terminate == 0
-                                && htmlParseLookupSequence(
-                                    ctxt,
-                                    '<' as xmlChar,
-                                    0 as xmlChar,
-                                    0 as xmlChar,
-                                    0,
-                                ) < 0 as i32
-                            {
-                                break;
+                            unsafe { xmlNextChar_safe(ctxt) };
+                        }
+                        continue;
+                    } else {
+                        if terminate == 0
+                            && htmlParseLookupSequence(
+                                ctxt,
+                                '<' as xmlChar,
+                                0 as xmlChar,
+                                0 as xmlChar,
+                                0,
+                            ) < 0
+                        {
+                            break;
+                        }
+                        ctxtPtr.checkIndex = 0;
+                        if DEBUG_PUSH != 0 {
+                            __xmlGenericError_safe_macro!(
+                                __xmlGenericErrorContext_safe(),
+                                b"HPP: Parsing char data\n" as *const u8 as *const i8
+                            );
+                        }
+                        while ctxtPtr.instate != XML_PARSER_START_TAG
+                            && cur as i32 != '<' as i32
+                            && in_0Ptr.cur < in_0Ptr.end
+                        {
+                            if cur as i32 == '&' as i32 {
+                                htmlParseReference(ctxt);
+                            } else {
+                                htmlParseCharData(ctxt);
                             }
-                            ctxtPtr.checkIndex = 0 as i64;
-                            if DEBUG_PUSH != 0 {
-                                __xmlGenericError_safe_macro!(
-                                    __xmlGenericErrorContext_safe(),
-                                    b"HPP: Parsing char data\n" as *const u8 as *const i8
-                                );
-                            }
-                            while ctxtPtr.instate != XML_PARSER_START_TAG
-                                && cur as i32 != '<' as i32
-                                && in_0Ptr.cur < in_0Ptr.end
-                            {
-                                if cur as i32 == '&' as i32 {
-                                    htmlParseReference(ctxt);
-                                } else {
-                                    htmlParseCharData(ctxt);
-                                }
-                                unsafe {
-                                    cur = *in_0Ptr.cur.offset((0 as i32) as isize);
-                                }
+                            unsafe {
+                                cur = *in_0Ptr.cur.offset(0);
                             }
                         }
                     }
                 }
             }
             XML_PARSER_END_TAG => {
-                if avail < 2 as i64 {
+                if avail < 2 {
                     break;
                 }
                 if terminate == 0
                     && htmlParseLookupSequence(ctxt, '>' as xmlChar, 0 as xmlChar, 0 as xmlChar, 0)
-                        < 0 as i32
+                        < 0
                 {
                     break;
                 }
@@ -14382,7 +14389,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                 } else {
                     ctxtPtr.instate = XML_PARSER_CONTENT;
                 }
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14399,7 +14406,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14416,7 +14423,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14433,7 +14440,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14450,7 +14457,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14467,7 +14474,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14484,7 +14491,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14502,7 +14509,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_START_TAG;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14520,7 +14527,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14538,7 +14545,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14556,7 +14563,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
                     0 as *const xmlChar,
                 );
                 ctxtPtr.instate = XML_PARSER_CONTENT;
-                ctxtPtr.checkIndex = 0 as i64;
+                ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
                     __xmlGenericError_safe_macro!(
                         __xmlGenericErrorContext_safe(),
@@ -14568,7 +14575,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
         }
     }
     /* bad cut of input */
-    if avail == 0 as i64 && terminate != 0 {
+    if avail == 0 && terminate != 0 {
         htmlAutoCloseOnEnd(ctxt);
         if ctxtPtr.nameNr == 0 && ctxtPtr.instate as i32 != XML_PARSER_EOF as i32 {
             /*
@@ -14589,18 +14596,20 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
             || ctxtPtr.instate as i32 == XML_PARSER_EOF as i32
             || ctxtPtr.instate as i32 == XML_PARSER_EPILOG as i32)
     {
-        let mut dtd: xmlDtdPtr = 0 as *mut xmlDtd;
-        dtd = xmlGetIntSubset_safe(ctxtPtr.myDoc as *const xmlDoc);
+        let dtd: xmlDtdPtr;
+        dtd = unsafe { xmlGetIntSubset_safe(ctxtPtr.myDoc as *const xmlDoc) };
         if dtd.is_null() {
             let mut myDocPtr = unsafe { &mut *(*ctxt).myDoc };
-            myDocPtr.intSubset = xmlCreateIntSubset_safe(
-                ctxtPtr.myDoc,
-                b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
-                b"-//W3C//DTD HTML 4.0 Transitional//EN\x00" as *const u8 as *const i8
-                    as *mut xmlChar,
-                b"http://www.w3.org/TR/REC-html40/loose.dtd\x00" as *const u8 as *const i8
-                    as *mut xmlChar,
-            )
+            myDocPtr.intSubset = unsafe {
+                xmlCreateIntSubset_safe(
+                    ctxtPtr.myDoc,
+                    b"html\x00" as *const u8 as *const i8 as *mut xmlChar,
+                    b"-//W3C//DTD HTML 4.0 Transitional//EN\x00" as *const u8 as *const i8
+                        as *mut xmlChar,
+                    b"http://www.w3.org/TR/REC-html40/loose.dtd\x00" as *const u8 as *const i8
+                        as *mut xmlChar,
+                )
+            }
         }
         if DEBUG_PUSH != 0 {
             __xmlGenericError_safe_macro!(
@@ -14624,12 +14633,7 @@ pub unsafe fn htmlParseTryOrFinish(mut ctxt: htmlParserCtxtPtr, mut terminate: i
  * Returns zero if no error, the xmlParserErrors otherwise.
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-pub unsafe fn htmlParseChunk(
-    mut ctxt: htmlParserCtxtPtr,
-    mut chunk: *const i8,
-    mut size: i32,
-    mut terminate: i32,
-) -> i32 {
+pub fn htmlParseChunk(ctxt: htmlParserCtxtPtr, chunk: *const i8, size: i32, terminate: i32) -> i32 {
     let mut DEBUG_PUSH: i32 = 0;
     match () {
         #[cfg(DEBUG_PUSH)]
@@ -14651,22 +14655,22 @@ pub unsafe fn htmlParseChunk(
             return XML_ERR_INTERNAL_ERROR as i32;
         }
     }
-    let mut ctxtPtr = unsafe { &mut *ctxt };
+    let ctxtPtr = unsafe { &mut *ctxt };
     let mut flag1 = unsafe {
-        size > 0 as i32
+        size > 0
             && !chunk.is_null()
             && !ctxtPtr.input.is_null()
             && !(*(*ctxt).input).buf.is_null()
             && ctxtPtr.instate as i32 != XML_PARSER_EOF as i32
     };
     if flag1 {
-        let mut inputPtr = unsafe { &mut *(*ctxt).input };
-        let mut bufPtr = unsafe { &mut *(*(*ctxt).input).buf };
-        let mut base: size_t = xmlBufGetInputBase_safe(bufPtr.buffer, ctxtPtr.input);
+        let inputPtr = unsafe { &mut *(*ctxt).input };
+        let bufPtr = unsafe { &mut *(*(*ctxt).input).buf };
+        let mut base: size_t = unsafe { xmlBufGetInputBase_safe(bufPtr.buffer, ctxtPtr.input) };
         let mut cur: size_t = unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t };
-        let mut res: i32 = 0;
-        res = xmlParserInputBufferPush_safe(inputPtr.buf, size, chunk);
-        xmlBufSetInputBaseCur_safe(bufPtr.buffer, ctxtPtr.input, base, cur);
+        let mut res: i32;
+        res = unsafe { xmlParserInputBufferPush_safe(inputPtr.buf, size, chunk) };
+        unsafe { xmlBufSetInputBaseCur_safe(bufPtr.buffer, ctxtPtr.input, base, cur) };
         if res < 0 {
             ctxtPtr.errNo = XML_PARSER_EOF as i32;
             ctxtPtr.disableSAX = 1;
@@ -14686,11 +14690,12 @@ pub unsafe fn htmlParseChunk(
             let mut in_0: xmlParserInputBufferPtr = inputPtr.buf;
             let mut in_0Ptr = unsafe { &mut *in_0 };
             if !in_0Ptr.encoder.is_null() && !in_0Ptr.buffer.is_null() && !in_0Ptr.raw.is_null() {
-                let mut nbchars: i32 = 0;
-                let mut base_0: size_t = xmlBufGetInputBase_safe(in_0Ptr.buffer, ctxtPtr.input);
+                let mut nbchars: i32;
+                let mut base_0: size_t =
+                    unsafe { xmlBufGetInputBase_safe(in_0Ptr.buffer, ctxtPtr.input) };
                 let mut current: size_t =
                     unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t };
-                nbchars = xmlCharEncInput_safe(in_0, terminate);
+                nbchars = unsafe { xmlCharEncInput_safe(in_0, terminate) };
                 if nbchars < 0 {
                     htmlParseErr(
                         ctxt,
@@ -14701,7 +14706,9 @@ pub unsafe fn htmlParseChunk(
                     );
                     return XML_ERR_INVALID_ENCODING as i32;
                 }
-                xmlBufSetInputBaseCur_safe(in_0Ptr.buffer, ctxtPtr.input, base_0, current);
+                unsafe {
+                    xmlBufSetInputBaseCur_safe(in_0Ptr.buffer, ctxtPtr.input, base_0, current)
+                };
             }
         }
     }
@@ -14724,7 +14731,7 @@ pub unsafe fn htmlParseChunk(
         }
         ctxtPtr.instate = XML_PARSER_EOF
     }
-    return ctxtPtr.errNo as xmlParserErrors as i32;
+    return ctxtPtr.errNo as i32;
 }
 /* ***********************************************************************
  *									*
@@ -14747,13 +14754,13 @@ pub unsafe fn htmlParseChunk(
  * Returns the new parser context or NULL
  */
 #[cfg(LIBXML_PUSH_ENABLED)]
-pub unsafe fn htmlCreatePushParserCtxt(
-    mut sax: htmlSAXHandlerPtr,
-    mut user_data: *mut (),
-    mut chunk: *const i8,
-    mut size: i32,
-    mut filename: *const i8,
-    mut enc: xmlCharEncoding,
+pub fn htmlCreatePushParserCtxt(
+    sax: htmlSAXHandlerPtr,
+    user_data: *mut (),
+    chunk: *const i8,
+    size: i32,
+    filename: *const i8,
+    enc: xmlCharEncoding,
 ) -> htmlParserCtxtPtr {
     let mut DEBUG_PUSH: i32 = 0;
     match () {
@@ -14764,40 +14771,42 @@ pub unsafe fn htmlCreatePushParserCtxt(
         #[cfg(not(DEBUG_PUSH))]
         _ => {}
     };
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    let mut inputStream: htmlParserInputPtr = 0 as *mut xmlParserInput;
-    let mut buf: xmlParserInputBufferPtr = 0 as *mut xmlParserInputBuffer;
-    xmlInitParser_safe();
-    buf = xmlAllocParserInputBuffer_safe(enc);
+    let ctxt: htmlParserCtxtPtr;
+    let inputStream: htmlParserInputPtr;
+    let buf: xmlParserInputBufferPtr;
+    unsafe { xmlInitParser_safe() };
+    buf = unsafe { xmlAllocParserInputBuffer_safe(enc) };
     if buf.is_null() {
         return 0 as htmlParserCtxtPtr;
     }
     ctxt = htmlNewParserCtxt();
     if ctxt.is_null() {
-        xmlFreeParserInputBuffer_safe(buf);
+        unsafe { xmlFreeParserInputBuffer_safe(buf) };
         return 0 as htmlParserCtxtPtr;
     }
-    let mut ctxtPtr = unsafe { &mut *ctxt };
-    let mut bufPtr = unsafe { &mut *buf };
-    if enc as i32 == XML_CHAR_ENCODING_UTF8 as i32 || !bufPtr.encoder.is_null() {
-        ctxtPtr.charset = XML_CHAR_ENCODING_UTF8 as i32
+    let ctxtPtr = unsafe { &mut *ctxt };
+    let bufPtr = unsafe { &mut *buf };
+    if enc as i32 == XML_CHAR_ENCODING_UTF8 || !bufPtr.encoder.is_null() {
+        ctxtPtr.charset = XML_CHAR_ENCODING_UTF8
     }
     if !sax.is_null() {
-        if ctxtPtr.sax != __htmlDefaultSAXHandler_safe() as xmlSAXHandlerPtr {
-            xmlFree_safe(ctxtPtr.sax as *mut ());
+        if ctxtPtr.sax != unsafe { __htmlDefaultSAXHandler_safe() } as xmlSAXHandlerPtr {
+            unsafe { xmlFree_safe(ctxtPtr.sax as *mut ()) };
         }
-        ctxtPtr.sax =
-            xmlMalloc_safe(::std::mem::size_of::<htmlSAXHandler>() as u64) as htmlSAXHandlerPtr;
+        ctxtPtr.sax = unsafe { xmlMalloc_safe(::std::mem::size_of::<htmlSAXHandler>() as u64) }
+            as htmlSAXHandlerPtr;
         if ctxtPtr.sax.is_null() {
-            xmlFree_safe(buf as *mut ());
-            xmlFree_safe(ctxt as *mut ());
+            unsafe { xmlFree_safe(buf as *mut ()) };
+            unsafe { xmlFree_safe(ctxt as *mut ()) };
             return 0 as htmlParserCtxtPtr;
         }
-        memcpy_safe(
-            ctxtPtr.sax as *mut (),
-            sax as *const (),
-            ::std::mem::size_of::<htmlSAXHandler>() as u64,
-        );
+        unsafe {
+            memcpy_safe(
+                ctxtPtr.sax as *mut (),
+                sax as *const (),
+                ::std::mem::size_of::<htmlSAXHandler>() as u64,
+            )
+        };
         if !user_data.is_null() {
             ctxtPtr.userData = user_data
         }
@@ -14805,36 +14814,34 @@ pub unsafe fn htmlCreatePushParserCtxt(
     if filename.is_null() {
         ctxtPtr.directory = 0 as *mut i8
     } else {
-        ctxtPtr.directory = xmlParserGetDirectory_safe(filename)
+        ctxtPtr.directory = unsafe { xmlParserGetDirectory_safe(filename) }
     }
     inputStream = htmlNewInputStream(ctxt);
     if inputStream.is_null() {
-        xmlFreeParserCtxt_safe(ctxt);
-        xmlFree_safe(buf as *mut ());
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
+        unsafe { xmlFree_safe(buf as *mut ()) };
         return 0 as htmlParserCtxtPtr;
     }
     let mut inputStreamPtr = unsafe { &mut *inputStream };
     if filename.is_null() {
         inputStreamPtr.filename = 0 as *const i8
     } else {
-        inputStreamPtr.filename = xmlCanonicPath_safe(filename as *const xmlChar) as *mut i8
+        inputStreamPtr.filename =
+            unsafe { xmlCanonicPath_safe(filename as *const xmlChar) } as *mut i8
     }
     inputStreamPtr.buf = buf;
-    xmlBufResetInput_safe(bufPtr.buffer, inputStream);
-    inputPush_safe(ctxt, inputStream);
+    unsafe { xmlBufResetInput_safe(bufPtr.buffer, inputStream) };
+    unsafe { inputPush_safe(ctxt, inputStream) };
     let mut flag = unsafe {
-        size > 0 as i32
-            && !chunk.is_null()
-            && !ctxtPtr.input.is_null()
-            && !(*(*ctxt).input).buf.is_null()
+        size > 0 && !chunk.is_null() && !ctxtPtr.input.is_null() && !(*(*ctxt).input).buf.is_null()
     };
     if flag {
         let mut inputPtr = unsafe { &mut *(*ctxt).input };
         let mut bufPtr = unsafe { &mut *(*(*ctxt).input).buf };
-        let mut base: size_t = xmlBufGetInputBase_safe(bufPtr.buffer, ctxtPtr.input);
+        let mut base: size_t = unsafe { xmlBufGetInputBase_safe(bufPtr.buffer, ctxtPtr.input) };
         let mut cur: size_t = unsafe { inputPtr.cur.offset_from(inputPtr.base) as i64 as size_t };
-        xmlParserInputBufferPush_safe(inputPtr.buf, size, chunk);
-        xmlBufSetInputBaseCur_safe(bufPtr.buffer, ctxtPtr.input, base, cur);
+        unsafe { xmlParserInputBufferPush_safe(inputPtr.buf, size, chunk) };
+        unsafe { xmlBufSetInputBaseCur_safe(bufPtr.buffer, ctxtPtr.input, base, cur) };
         if DEBUG_PUSH != 0 {
             __xmlGenericError_safe_macro!(
                 __xmlGenericErrorContext_safe(),
@@ -14862,15 +14869,15 @@ pub unsafe fn htmlCreatePushParserCtxt(
  *     not well formed.
  */
 
-pub unsafe fn htmlSAXParseDoc(
-    mut cur: *const xmlChar,
-    mut encoding: *const i8,
-    mut sax: htmlSAXHandlerPtr,
-    mut userData: *mut (),
+pub fn htmlSAXParseDoc(
+    cur: *const xmlChar,
+    encoding: *const i8,
+    sax: htmlSAXHandlerPtr,
+    userData: *mut (),
 ) -> htmlDocPtr {
-    let mut ret: htmlDocPtr = 0 as *mut xmlDoc;
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    xmlInitParser_safe();
+    let ret: htmlDocPtr;
+    let ctxt: htmlParserCtxtPtr;
+    unsafe { xmlInitParser_safe() };
     if cur.is_null() {
         return 0 as htmlDocPtr;
     }
@@ -14881,7 +14888,7 @@ pub unsafe fn htmlSAXParseDoc(
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if !sax.is_null() {
         if !ctxtPtr.sax.is_null() {
-            xmlFree_safe(ctxtPtr.sax as *mut ());
+            unsafe { xmlFree_safe(ctxtPtr.sax as *mut ()) };
         }
         ctxtPtr.sax = sax;
         ctxtPtr.userData = userData
@@ -14905,7 +14912,7 @@ pub unsafe fn htmlSAXParseDoc(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlParseDoc(mut cur: *const xmlChar, mut encoding: *const i8) -> htmlDocPtr {
+pub fn htmlParseDoc(cur: *const xmlChar, encoding: *const i8) -> htmlDocPtr {
     return htmlSAXParseDoc(cur, encoding, 0 as htmlSAXHandlerPtr, 0 as *mut ());
 }
 /* *
@@ -14920,15 +14927,12 @@ pub unsafe fn htmlParseDoc(mut cur: *const xmlChar, mut encoding: *const i8) -> 
  * Returns the new parser context or NULL
  */
 
-pub unsafe fn htmlCreateFileParserCtxt(
-    mut filename: *const i8,
-    mut encoding: *const i8,
-) -> htmlParserCtxtPtr {
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    let mut inputStream: htmlParserInputPtr = 0 as *mut xmlParserInput;
-    let mut canonicFilename: *mut i8 = 0 as *mut i8;
+pub fn htmlCreateFileParserCtxt(filename: *const i8, encoding: *const i8) -> htmlParserCtxtPtr {
+    let ctxt: htmlParserCtxtPtr;
+    let inputStream: htmlParserInputPtr;
+    let canonicFilename: *mut i8;
     /* htmlCharEncoding enc; */
-    let mut content: *mut xmlChar = 0 as *mut xmlChar;
+    let content: *mut xmlChar;
     let mut content_line: *mut xmlChar = b"charset=\x00" as *const u8 as *const i8 as *mut xmlChar;
     if filename.is_null() {
         return 0 as htmlParserCtxtPtr;
@@ -14937,7 +14941,7 @@ pub unsafe fn htmlCreateFileParserCtxt(
     if ctxt.is_null() {
         return 0 as htmlParserCtxtPtr;
     }
-    canonicFilename = xmlCanonicPath_safe(filename as *const xmlChar) as *mut i8;
+    canonicFilename = unsafe { xmlCanonicPath_safe(filename as *const xmlChar) } as *mut i8;
     if canonicFilename.is_null() {
         match () {
             #[cfg(LIBXML_SAX1_ENABLED)]
@@ -14957,30 +14961,32 @@ pub unsafe fn htmlCreateFileParserCtxt(
             #[cfg(not(LIBXML_SAX1_ENABLED))]
             _ => {}
         };
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as htmlParserCtxtPtr;
     }
-    inputStream = xmlLoadExternalEntity_safe(canonicFilename, 0 as *const i8, ctxt);
-    xmlFree_safe(canonicFilename as *mut ());
+    inputStream = unsafe { xmlLoadExternalEntity_safe(canonicFilename, 0 as *const i8, ctxt) };
+    unsafe { xmlFree_safe(canonicFilename as *mut ()) };
     if inputStream.is_null() {
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as htmlParserCtxtPtr;
     }
-    inputPush_safe(ctxt, inputStream);
+    unsafe { inputPush_safe(ctxt, inputStream) };
     /* set encoding */
     if !encoding.is_null() {
-        let mut l: size_t = strlen_safe(encoding);
-        if l < 1000 as u64 {
-            content = xmlMallocAtomic_safe(
-                (xmlStrlen_safe(content_line) as u64)
-                    .wrapping_add(l)
-                    .wrapping_add(1 as u64),
-            ) as *mut xmlChar;
+        let mut l: size_t = unsafe { strlen_safe(encoding) };
+        if l < 1000 {
+            content = unsafe {
+                xmlMallocAtomic_safe(
+                    (xmlStrlen_safe(content_line) as u64)
+                        .wrapping_add(l)
+                        .wrapping_add(1),
+                )
+            } as *mut xmlChar;
             if !content.is_null() {
-                strcpy_safe(content as *mut i8, content_line as *mut i8);
-                strcat_safe(content as *mut i8, encoding as *mut i8);
+                unsafe { strcpy_safe(content as *mut i8, content_line as *mut i8) };
+                unsafe { strcat_safe(content as *mut i8, encoding as *mut i8) };
                 htmlCheckEncoding(ctxt, content);
-                xmlFree_safe(content as *mut ());
+                unsafe { xmlFree_safe(content as *mut ()) };
             }
         }
     }
@@ -15002,21 +15008,21 @@ pub unsafe fn htmlCreateFileParserCtxt(
  *     not well formed.
  */
 
-pub unsafe fn htmlSAXParseFile(
-    mut filename: *const i8,
-    mut encoding: *const i8,
-    mut sax: htmlSAXHandlerPtr,
-    mut userData: *mut (),
+pub fn htmlSAXParseFile(
+    filename: *const i8,
+    encoding: *const i8,
+    sax: htmlSAXHandlerPtr,
+    userData: *mut (),
 ) -> htmlDocPtr {
-    let mut ret: htmlDocPtr = 0 as *mut xmlDoc;
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
+    let ret: htmlDocPtr;
+    let ctxt: htmlParserCtxtPtr;
     let mut oldsax: htmlSAXHandlerPtr = 0 as htmlSAXHandlerPtr;
-    xmlInitParser_safe();
+    unsafe { xmlInitParser_safe() };
     ctxt = htmlCreateFileParserCtxt(filename, encoding);
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    let mut ctxtPtr = unsafe { &mut *ctxt };
+    let ctxtPtr = unsafe { &mut *ctxt };
     if !sax.is_null() {
         oldsax = ctxtPtr.sax;
         ctxtPtr.sax = sax;
@@ -15042,7 +15048,7 @@ pub unsafe fn htmlSAXParseFile(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlParseFile(mut filename: *const i8, mut encoding: *const i8) -> htmlDocPtr {
+pub fn htmlParseFile(filename: *const i8, encoding: *const i8) -> htmlDocPtr {
     return htmlSAXParseFile(filename, encoding, 0 as htmlSAXHandlerPtr, 0 as *mut ());
 }
 /* *
@@ -15054,7 +15060,7 @@ pub unsafe fn htmlParseFile(mut filename: *const i8, mut encoding: *const i8) ->
  * Returns the last value for 0 for no handling, 1 for auto insertion.
  */
 
-pub unsafe fn htmlHandleOmittedElem(mut val: i32) -> i32 {
+pub fn htmlHandleOmittedElem(val: i32) -> i32 {
     let mut old: i32 = getHtmlOmittedDefaultValue();
     setHtmlOmittedDefaultValue(val);
     return old;
@@ -15070,11 +15076,8 @@ pub unsafe fn htmlHandleOmittedElem(mut val: i32) -> i32 {
  * Returns 1 if allowed; 0 otherwise.
  */
 
-pub unsafe fn htmlElementAllowedHere(
-    mut parent: *const htmlElemDesc,
-    mut elt: *const xmlChar,
-) -> i32 {
-    let mut p: *mut *const i8 = 0 as *mut *const i8;
+pub fn htmlElementAllowedHere(parent: *const htmlElemDesc, elt: *const xmlChar) -> i32 {
+    let mut p: *mut *const i8;
     unsafe {
         if elt.is_null() || parent.is_null() || (*parent).subelts.is_null() {
             return 0;
@@ -15101,10 +15104,7 @@ pub unsafe fn htmlElementAllowedHere(
  * Returns one of HTML_VALID, HTML_DEPRECATED, HTML_INVALID
  */
 
-pub unsafe fn htmlElementStatusHere(
-    mut parent: *const htmlElemDesc,
-    mut elt: *const htmlElemDesc,
-) -> htmlStatus {
+pub fn htmlElementStatusHere(parent: *const htmlElemDesc, elt: *const htmlElemDesc) -> htmlStatus {
     if parent.is_null() || elt.is_null() {
         return HTML_INVALID;
     }
@@ -15130,12 +15130,8 @@ pub unsafe fn htmlElementStatusHere(
  * Returns one of HTML_REQUIRED, HTML_VALID, HTML_DEPRECATED, HTML_INVALID
  */
 
-pub unsafe fn htmlAttrAllowed(
-    mut elt: *const htmlElemDesc,
-    mut attr: *const xmlChar,
-    mut legacy: i32,
-) -> htmlStatus {
-    let mut p: *mut *const i8 = 0 as *mut *const i8;
+pub fn htmlAttrAllowed(elt: *const htmlElemDesc, attr: *const xmlChar, legacy: i32) -> htmlStatus {
+    let mut p: *mut *const i8;
     if elt.is_null() || attr.is_null() {
         return HTML_INVALID;
     }
@@ -15190,14 +15186,14 @@ pub unsafe fn htmlAttrAllowed(
  *	for other nodes, HTML_NA (no checks performed)
  */
 
-pub unsafe fn htmlNodeStatus(node: htmlNodePtr, mut legacy: i32) -> htmlStatus {
+pub fn htmlNodeStatus(node: htmlNodePtr, legacy: i32) -> htmlStatus {
     if node.is_null() {
         return HTML_INVALID;
     }
-    let mut nodePtr = unsafe { &mut *node };
-    let mut parentPtr = unsafe { &mut *(*node).parent };
+    let nodePtr = unsafe { &mut *node };
+    let parentPtr = unsafe { &mut *(*node).parent };
     match nodePtr.type_0 as u32 {
-        1 => {
+        XML_ELEMENT_NODE => {
             return if legacy != 0 {
                 (if htmlElementAllowedHere(htmlTagLookup(parentPtr.name), nodePtr.name) != 0 {
                     HTML_VALID as i32
@@ -15209,7 +15205,7 @@ pub unsafe fn htmlNodeStatus(node: htmlNodePtr, mut legacy: i32) -> htmlStatus {
                     as u32
             } as htmlStatus;
         }
-        2 => {
+        XML_ATTRIBUTE_NODE => {
             return htmlAttrAllowed(htmlTagLookup(parentPtr.name), nodePtr.name, legacy);
         }
         _ => {
@@ -15236,31 +15232,31 @@ pub unsafe fn htmlNodeStatus(node: htmlNodePtr, mut legacy: i32) -> htmlStatus {
  * Reset a parser context
  */
 
-pub unsafe fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
-    let mut input: xmlParserInputPtr = 0 as *mut xmlParserInput;
-    let mut dict: xmlDictPtr = 0 as *mut xmlDict;
+pub fn htmlCtxtReset(ctxt: htmlParserCtxtPtr) {
+    let mut input: xmlParserInputPtr;
+    let dict: xmlDictPtr;
     if ctxt.is_null() {
         return;
     }
-    xmlInitParser_safe();
+    unsafe { xmlInitParser_safe() };
     let mut ctxtPtr = unsafe { &mut *ctxt };
     dict = ctxtPtr.dict;
     loop {
-        input = inputPop_safe(ctxt);
+        input = unsafe { inputPop_safe(ctxt) };
         if input.is_null() {
             break;
         }
         /* Non consuming */
-        xmlFreeInputStream_safe(input);
+        unsafe { xmlFreeInputStream_safe(input) };
     }
     ctxtPtr.inputNr = 0;
     ctxtPtr.input = 0 as xmlParserInputPtr;
     ctxtPtr.spaceNr = 0;
     if !ctxtPtr.spaceTab.is_null() {
         unsafe {
-            *ctxtPtr.spaceTab.offset(0 as isize) = -(1 as i32);
+            *ctxtPtr.spaceTab.offset(0 as isize) = -1;
         }
-        unsafe { ctxtPtr.space = &mut *ctxtPtr.spaceTab.offset(0 as isize) as *mut i32 }
+        unsafe { ctxtPtr.space = &mut *ctxtPtr.spaceTab.offset(0) as *mut i32 }
     } else {
         ctxtPtr.space = 0 as *mut i32
     }
@@ -15269,40 +15265,43 @@ pub unsafe fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
     ctxtPtr.nameNr = 0;
     ctxtPtr.name = 0 as *const xmlChar;
     if !ctxtPtr.version.is_null()
-        && (dict.is_null() || xmlDictOwns_safe(dict, ctxtPtr.version) == 0)
+        && (dict.is_null() || unsafe { xmlDictOwns_safe(dict, ctxtPtr.version) } == 0)
     {
-        xmlFree_safe(ctxtPtr.version as *mut i8 as *mut ());
+        unsafe { xmlFree_safe(ctxtPtr.version as *mut i8 as *mut ()) };
     }
     ctxtPtr.version = 0 as *const xmlChar;
     if !ctxtPtr.encoding.is_null()
-        && (dict.is_null() || xmlDictOwns_safe(dict, ctxtPtr.encoding) == 0)
+        && (dict.is_null() || unsafe { xmlDictOwns_safe(dict, ctxtPtr.encoding) } == 0)
     {
-        xmlFree_safe(ctxtPtr.encoding as *mut i8 as *mut ());
+        unsafe { xmlFree_safe(ctxtPtr.encoding as *mut i8 as *mut ()) };
     }
     ctxtPtr.encoding = 0 as *const xmlChar;
     if !ctxtPtr.directory.is_null()
-        && (dict.is_null() || xmlDictOwns_safe(dict, ctxtPtr.directory as *const xmlChar) == 0)
+        && (dict.is_null()
+            || unsafe { xmlDictOwns_safe(dict, ctxtPtr.directory as *const xmlChar) } == 0)
     {
-        xmlFree_safe(ctxtPtr.directory as *mut ());
+        unsafe { xmlFree_safe(ctxtPtr.directory as *mut ()) };
     }
     ctxtPtr.directory = 0 as *mut i8;
     if !ctxtPtr.extSubURI.is_null()
-        && (dict.is_null() || xmlDictOwns_safe(dict, ctxtPtr.extSubURI as *const xmlChar) == 0)
+        && (dict.is_null()
+            || unsafe { xmlDictOwns_safe(dict, ctxtPtr.extSubURI as *const xmlChar) } == 0)
     {
-        xmlFree_safe(ctxtPtr.extSubURI as *mut i8 as *mut ());
+        unsafe { xmlFree_safe(ctxtPtr.extSubURI as *mut i8 as *mut ()) };
     }
     ctxtPtr.extSubURI = 0 as *mut xmlChar;
     if !ctxtPtr.extSubSystem.is_null()
-        && (dict.is_null() || xmlDictOwns_safe(dict, ctxtPtr.extSubSystem as *const xmlChar) == 0)
+        && (dict.is_null()
+            || unsafe { xmlDictOwns_safe(dict, ctxtPtr.extSubSystem as *const xmlChar) } == 0)
     {
-        xmlFree_safe(ctxtPtr.extSubSystem as *mut i8 as *mut ());
+        unsafe { xmlFree_safe(ctxtPtr.extSubSystem as *mut i8 as *mut ()) };
     }
     ctxtPtr.extSubSystem = 0 as *mut xmlChar;
     if !ctxtPtr.myDoc.is_null() {
-        xmlFreeDoc_safe(ctxtPtr.myDoc);
+        unsafe { xmlFreeDoc_safe(ctxtPtr.myDoc) };
     }
     ctxtPtr.myDoc = 0 as xmlDocPtr;
-    ctxtPtr.standalone = -(1 as i32);
+    ctxtPtr.standalone = -1;
     ctxtPtr.hasExternalSubset = 0;
     ctxtPtr.hasPErefs = 0;
     ctxtPtr.html = 1;
@@ -15321,25 +15320,27 @@ pub unsafe fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
         xmlParserValidityWarning as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
     );
     ctxtPtr.record_info = 0;
-    ctxtPtr.checkIndex = 0 as i64;
+    ctxtPtr.checkIndex = 0;
     ctxtPtr.inSubset = 0;
     ctxtPtr.errNo = XML_ERR_OK as i32;
     ctxtPtr.depth = 0;
     ctxtPtr.charset = XML_CHAR_ENCODING_NONE as i32;
     ctxtPtr.catalogs = 0 as *mut ();
-    xmlInitNodeInfoSeq_safe(&mut ctxtPtr.node_seq);
+    unsafe { xmlInitNodeInfoSeq_safe(&mut ctxtPtr.node_seq) };
     if !ctxtPtr.attsDefault.is_null() {
-        xmlHashFree_safe(
-            ctxtPtr.attsDefault,
-            Some(
-                xmlHashDefaultDeallocator
-                    as unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> (),
-            ),
-        );
+        unsafe {
+            xmlHashFree_safe(
+                ctxtPtr.attsDefault,
+                Some(
+                    xmlHashDefaultDeallocator
+                        as unsafe extern "C" fn(_: *mut (), _: *const xmlChar) -> (),
+                ),
+            )
+        };
         ctxtPtr.attsDefault = 0 as xmlHashTablePtr
     }
     if !ctxtPtr.attsSpecial.is_null() {
-        xmlHashFree_safe(ctxtPtr.attsSpecial, None);
+        unsafe { xmlHashFree_safe(ctxtPtr.attsSpecial, None) };
         ctxtPtr.attsSpecial = 0 as xmlHashTablePtr
     };
 }
@@ -15354,9 +15355,9 @@ pub unsafe fn htmlCtxtReset(mut ctxt: htmlParserCtxtPtr) {
  *         in case of error.
  */
 
-pub unsafe fn htmlCtxtUseOptions(mut ctxt: htmlParserCtxtPtr, mut options: i32) -> i32 {
+pub fn htmlCtxtUseOptions(ctxt: htmlParserCtxtPtr, mut options: i32) -> i32 {
     if ctxt.is_null() {
-        return -(1 as i32);
+        return -1;
     }
     let mut ctxtPtr = unsafe { &mut *ctxt };
     let mut saxPtr = unsafe { &mut *(*ctxt).sax };
@@ -15389,7 +15390,7 @@ pub unsafe fn htmlCtxtUseOptions(mut ctxt: htmlParserCtxtPtr, mut options: i32) 
         options -= XML_PARSE_NOBLANKS as i32;
         ctxtPtr.options |= XML_PARSE_NOBLANKS as i32
     } else {
-        ctxtPtr.keepBlanks = 1 as i32
+        ctxtPtr.keepBlanks = 1
     }
     if options & HTML_PARSE_RECOVER as i32 != 0 {
         ctxtPtr.recovery = 1;
@@ -15432,27 +15433,27 @@ pub unsafe fn htmlCtxtUseOptions(mut ctxt: htmlParserCtxtPtr, mut options: i32) 
  *
  * Returns the resulting document tree or NULL
  */
-unsafe fn htmlDoRead(
-    mut ctxt: htmlParserCtxtPtr,
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
-    mut reuse: i32,
+fn htmlDoRead(
+    ctxt: htmlParserCtxtPtr,
+    URL: *const i8,
+    encoding: *const i8,
+    options: i32,
+    reuse: i32,
 ) -> htmlDocPtr {
-    let mut ret: htmlDocPtr = 0 as *mut xmlDoc;
+    let mut ret: htmlDocPtr;
     htmlCtxtUseOptions(ctxt, options);
     let mut ctxtPtr = unsafe { &mut *ctxt };
     ctxtPtr.html = 1;
     if !encoding.is_null() {
         let mut inputPtr = unsafe { &mut *(*ctxt).input };
         let mut hdlr: xmlCharEncodingHandlerPtr = 0 as *mut xmlCharEncodingHandler;
-        hdlr = xmlFindCharEncodingHandler_safe(encoding);
+        hdlr = unsafe { xmlFindCharEncodingHandler_safe(encoding) };
         if !hdlr.is_null() {
-            xmlSwitchToEncoding_safe(ctxt, hdlr);
+            unsafe { xmlSwitchToEncoding_safe(ctxt, hdlr) };
             if !inputPtr.encoding.is_null() {
-                xmlFree_safe(inputPtr.encoding as *mut xmlChar as *mut ());
+                unsafe { xmlFree_safe(inputPtr.encoding as *mut xmlChar as *mut ()) };
             }
-            inputPtr.encoding = xmlStrdup_safe(encoding as *mut xmlChar)
+            inputPtr.encoding = unsafe { xmlStrdup_safe(encoding as *mut xmlChar) }
         }
     }
     let mut flag = unsafe {
@@ -15460,7 +15461,7 @@ unsafe fn htmlDoRead(
     };
     if flag {
         let mut inputPtr = unsafe { &mut *(*ctxt).input };
-        inputPtr.filename = xmlStrdup_safe(URL as *const xmlChar) as *mut i8
+        inputPtr.filename = unsafe { xmlStrdup_safe(URL as *const xmlChar) } as *mut i8
     }
     htmlParseDocument(ctxt);
     ret = ctxtPtr.myDoc;
@@ -15471,7 +15472,7 @@ unsafe fn htmlDoRead(
                 ctxtPtr.dict = 0 as xmlDictPtr
             }
         }
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
     }
     return ret;
 }
@@ -15487,22 +15488,22 @@ unsafe fn htmlDoRead(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlReadDoc(
-    mut cur: *const xmlChar,
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
+pub fn htmlReadDoc(
+    cur: *const xmlChar,
+    URL: *const i8,
+    encoding: *const i8,
+    options: i32,
 ) -> htmlDocPtr {
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
+    let mut ctxt: htmlParserCtxtPtr;
     if cur.is_null() {
         return 0 as htmlDocPtr;
     }
-    xmlInitParser_safe();
+    unsafe { xmlInitParser_safe() };
     ctxt = htmlCreateDocParserCtxt(cur, 0 as *const i8);
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    return htmlDoRead(ctxt, URL, encoding, options, 0 as i32);
+    return htmlDoRead(ctxt, URL, encoding, options, 0);
 }
 /* *
  * htmlReadFile:
@@ -15515,18 +15516,14 @@ pub unsafe fn htmlReadDoc(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlReadFile(
-    mut filename: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
-) -> htmlDocPtr {
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    xmlInitParser_safe();
+pub fn htmlReadFile(filename: *const i8, encoding: *const i8, options: i32) -> htmlDocPtr {
+    let mut ctxt: htmlParserCtxtPtr;
+    unsafe { xmlInitParser_safe() };
     ctxt = htmlCreateFileParserCtxt(filename, encoding);
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    return htmlDoRead(ctxt, 0 as *const i8, 0 as *const i8, options, 0 as i32);
+    return htmlDoRead(ctxt, 0 as *const i8, 0 as *const i8, options, 0);
 }
 /* *
  * htmlReadMemory:
@@ -15541,29 +15538,31 @@ pub unsafe fn htmlReadFile(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlReadMemory(
-    mut buffer: *const i8,
-    mut size: i32,
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
+pub fn htmlReadMemory(
+    buffer: *const i8,
+    size: i32,
+    URL: *const i8,
+    encoding: *const i8,
+    options: i32,
 ) -> htmlDocPtr {
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    xmlInitParser_safe();
-    ctxt = xmlCreateMemoryParserCtxt_safe(buffer, size);
+    let mut ctxt: htmlParserCtxtPtr;
+    unsafe { xmlInitParser_safe() };
+    ctxt = unsafe { xmlCreateMemoryParserCtxt_safe(buffer, size) };
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    htmlDefaultSAXHandlerInit_safe();
+    unsafe { htmlDefaultSAXHandlerInit_safe() };
     let mut ctxtPtr = unsafe { &mut *ctxt };
     if !ctxtPtr.sax.is_null() {
-        memcpy_safe(
-            ctxtPtr.sax as *mut (),
-            __htmlDefaultSAXHandler_safe() as *const (),
-            ::std::mem::size_of::<xmlSAXHandlerV1>() as u64,
-        );
+        unsafe {
+            memcpy_safe(
+                ctxtPtr.sax as *mut (),
+                __htmlDefaultSAXHandler_safe() as *const (),
+                ::std::mem::size_of::<xmlSAXHandlerV1>() as u64,
+            )
+        };
     }
-    return htmlDoRead(ctxt, URL, encoding, options, 0 as i32);
+    return htmlDoRead(ctxt, URL, encoding, options, 0);
 }
 /* *
  * htmlReadFd:
@@ -15577,37 +15576,32 @@ pub unsafe fn htmlReadMemory(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlReadFd(
-    mut fd: i32,
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
-) -> htmlDocPtr {
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    let mut input: xmlParserInputBufferPtr = 0 as *mut xmlParserInputBuffer;
-    let mut stream: xmlParserInputPtr = 0 as *mut xmlParserInput;
+pub fn htmlReadFd(fd: i32, URL: *const i8, encoding: *const i8, options: i32) -> htmlDocPtr {
+    let mut ctxt: htmlParserCtxtPtr;
+    let mut input: xmlParserInputBufferPtr;
+    let mut stream: xmlParserInputPtr;
     if fd < 0 {
         return 0 as htmlDocPtr;
     }
-    xmlInitParser_safe();
-    xmlInitParser_safe();
-    input = xmlParserInputBufferCreateFd_safe(fd, XML_CHAR_ENCODING_NONE);
+    unsafe { xmlInitParser_safe() };
+    unsafe { xmlInitParser_safe() };
+    input = unsafe { xmlParserInputBufferCreateFd_safe(fd, XML_CHAR_ENCODING_NONE) };
     if input.is_null() {
         return 0 as htmlDocPtr;
     }
-    ctxt = xmlNewParserCtxt_safe();
+    ctxt = unsafe { xmlNewParserCtxt_safe() };
     if ctxt.is_null() {
-        xmlFreeParserInputBuffer_safe(input);
+        unsafe { xmlFreeParserInputBuffer_safe(input) };
         return 0 as htmlDocPtr;
     }
-    stream = xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE);
+    stream = unsafe { xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE) };
     if stream.is_null() {
-        xmlFreeParserInputBuffer_safe(input);
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserInputBuffer_safe(input) };
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as htmlDocPtr;
     }
-    inputPush_safe(ctxt, stream);
-    return htmlDoRead(ctxt, URL, encoding, options, 0 as i32);
+    unsafe { inputPush_safe(ctxt, stream) };
+    return htmlDoRead(ctxt, URL, encoding, options, 0);
 }
 /* *
  * htmlReadIO:
@@ -15623,22 +15617,24 @@ pub unsafe fn htmlReadFd(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlReadIO(
-    mut ioread: xmlInputReadCallback,
-    mut ioclose: xmlInputCloseCallback,
-    mut ioctx: *mut (),
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
+pub fn htmlReadIO(
+    ioread: xmlInputReadCallback,
+    ioclose: xmlInputCloseCallback,
+    ioctx: *mut (),
+    URL: *const i8,
+    encoding: *const i8,
+    options: i32,
 ) -> htmlDocPtr {
-    let mut ctxt: htmlParserCtxtPtr = 0 as *mut xmlParserCtxt;
-    let mut input: xmlParserInputBufferPtr = 0 as *mut xmlParserInputBuffer;
-    let mut stream: xmlParserInputPtr = 0 as *mut xmlParserInput;
+    let mut ctxt: htmlParserCtxtPtr;
+    let mut input: xmlParserInputBufferPtr;
+    let mut stream: xmlParserInputPtr;
     if ioread.is_none() {
         return 0 as htmlDocPtr;
     }
-    xmlInitParser_safe();
-    input = xmlParserInputBufferCreateIO_safe(ioread, ioclose, ioctx, XML_CHAR_ENCODING_NONE);
+    unsafe { xmlInitParser_safe() };
+    input = unsafe {
+        xmlParserInputBufferCreateIO_safe(ioread, ioclose, ioctx, XML_CHAR_ENCODING_NONE)
+    };
     if input.is_null() {
         if ioclose.is_some() {
             ioclose_safe(ioclose, ioctx);
@@ -15647,17 +15643,17 @@ pub unsafe fn htmlReadIO(
     }
     ctxt = htmlNewParserCtxt();
     if ctxt.is_null() {
-        xmlFreeParserInputBuffer_safe(input);
+        unsafe { xmlFreeParserInputBuffer_safe(input) };
         return 0 as htmlDocPtr;
     }
-    stream = xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE);
+    stream = unsafe { xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE) };
     if stream.is_null() {
-        xmlFreeParserInputBuffer_safe(input);
-        xmlFreeParserCtxt_safe(ctxt);
+        unsafe { xmlFreeParserInputBuffer_safe(input) };
+        unsafe { xmlFreeParserCtxt_safe(ctxt) };
         return 0 as htmlDocPtr;
     }
-    inputPush_safe(ctxt, stream);
-    return htmlDoRead(ctxt, URL, encoding, options, 0 as i32);
+    unsafe { inputPush_safe(ctxt, stream) };
+    return htmlDoRead(ctxt, URL, encoding, options, 0);
 }
 /* *
  * htmlCtxtReadDoc:
@@ -15673,28 +15669,28 @@ pub unsafe fn htmlReadIO(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlCtxtReadDoc(
-    mut ctxt: htmlParserCtxtPtr,
-    mut cur: *const xmlChar,
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
+pub fn htmlCtxtReadDoc(
+    ctxt: htmlParserCtxtPtr,
+    cur: *const xmlChar,
+    URL: *const i8,
+    encoding: *const i8,
+    options: i32,
 ) -> htmlDocPtr {
-    let mut stream: xmlParserInputPtr = 0 as *mut xmlParserInput;
+    let mut stream: xmlParserInputPtr;
     if cur.is_null() {
         return 0 as htmlDocPtr;
     }
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    xmlInitParser_safe();
+    unsafe { xmlInitParser_safe() };
     htmlCtxtReset(ctxt);
-    stream = xmlNewStringInputStream_safe(ctxt, cur);
+    stream = unsafe { xmlNewStringInputStream_safe(ctxt, cur) };
     if stream.is_null() {
         return 0 as htmlDocPtr;
     }
-    inputPush_safe(ctxt, stream);
-    return htmlDoRead(ctxt, URL, encoding, options, 1 as i32);
+    unsafe { inputPush_safe(ctxt, stream) };
+    return htmlDoRead(ctxt, URL, encoding, options, 1);
 }
 /* *
  * htmlCtxtReadFile:
@@ -15709,27 +15705,27 @@ pub unsafe fn htmlCtxtReadDoc(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlCtxtReadFile(
-    mut ctxt: htmlParserCtxtPtr,
-    mut filename: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
+pub fn htmlCtxtReadFile(
+    ctxt: htmlParserCtxtPtr,
+    filename: *const i8,
+    encoding: *const i8,
+    options: i32,
 ) -> htmlDocPtr {
-    let mut stream: xmlParserInputPtr = 0 as *mut xmlParserInput;
+    let mut stream: xmlParserInputPtr;
     if filename.is_null() {
         return 0 as htmlDocPtr;
     }
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    xmlInitParser_safe();
+    unsafe { xmlInitParser_safe() };
     htmlCtxtReset(ctxt);
-    stream = xmlLoadExternalEntity_safe(filename, 0 as *const i8, ctxt);
+    stream = unsafe { xmlLoadExternalEntity_safe(filename, 0 as *const i8, ctxt) };
     if stream.is_null() {
         return 0 as htmlDocPtr;
     }
-    inputPush_safe(ctxt, stream);
-    return htmlDoRead(ctxt, 0 as *const i8, encoding, options, 1 as i32);
+    unsafe { inputPush_safe(ctxt, stream) };
+    return htmlDoRead(ctxt, 0 as *const i8, encoding, options, 1);
 }
 /* *
  * htmlCtxtReadMemory:
@@ -15746,35 +15742,35 @@ pub unsafe fn htmlCtxtReadFile(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlCtxtReadMemory(
-    mut ctxt: htmlParserCtxtPtr,
-    mut buffer: *const i8,
-    mut size: i32,
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
+pub fn htmlCtxtReadMemory(
+    ctxt: htmlParserCtxtPtr,
+    buffer: *const i8,
+    size: i32,
+    URL: *const i8,
+    encoding: *const i8,
+    options: i32,
 ) -> htmlDocPtr {
-    let mut input: xmlParserInputBufferPtr = 0 as *mut xmlParserInputBuffer;
-    let mut stream: xmlParserInputPtr = 0 as *mut xmlParserInput;
+    let mut input: xmlParserInputBufferPtr;
+    let mut stream: xmlParserInputPtr;
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
     if buffer.is_null() {
         return 0 as htmlDocPtr;
     }
-    xmlInitParser_safe();
+    unsafe { xmlInitParser_safe() };
     htmlCtxtReset(ctxt);
-    input = xmlParserInputBufferCreateMem_safe(buffer, size, XML_CHAR_ENCODING_NONE);
+    input = unsafe { xmlParserInputBufferCreateMem_safe(buffer, size, XML_CHAR_ENCODING_NONE) };
     if input.is_null() {
         return 0 as htmlDocPtr;
     }
-    stream = xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE);
+    stream = unsafe { xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE) };
     if stream.is_null() {
-        xmlFreeParserInputBuffer_safe(input);
+        unsafe { xmlFreeParserInputBuffer_safe(input) };
         return 0 as htmlDocPtr;
     }
-    inputPush_safe(ctxt, stream);
-    return htmlDoRead(ctxt, URL, encoding, options, 1 as i32);
+    unsafe { inputPush_safe(ctxt, stream) };
+    return htmlDoRead(ctxt, URL, encoding, options, 1);
 }
 /* *
  * htmlCtxtReadFd:
@@ -15790,34 +15786,34 @@ pub unsafe fn htmlCtxtReadMemory(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlCtxtReadFd(
-    mut ctxt: htmlParserCtxtPtr,
-    mut fd: i32,
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
+pub fn htmlCtxtReadFd(
+    ctxt: htmlParserCtxtPtr,
+    fd: i32,
+    URL: *const i8,
+    encoding: *const i8,
+    options: i32,
 ) -> htmlDocPtr {
-    let mut input: xmlParserInputBufferPtr = 0 as *mut xmlParserInputBuffer;
-    let mut stream: xmlParserInputPtr = 0 as *mut xmlParserInput;
+    let mut input: xmlParserInputBufferPtr;
+    let mut stream: xmlParserInputPtr;
     if fd < 0 {
         return 0 as htmlDocPtr;
     }
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    xmlInitParser_safe();
+    unsafe { xmlInitParser_safe() };
     htmlCtxtReset(ctxt);
-    input = xmlParserInputBufferCreateFd_safe(fd, XML_CHAR_ENCODING_NONE);
+    input = unsafe { xmlParserInputBufferCreateFd_safe(fd, XML_CHAR_ENCODING_NONE) };
     if input.is_null() {
         return 0 as htmlDocPtr;
     }
-    stream = xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE);
+    stream = unsafe { xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE) };
     if stream.is_null() {
-        xmlFreeParserInputBuffer_safe(input);
+        unsafe { xmlFreeParserInputBuffer_safe(input) };
         return 0 as htmlDocPtr;
     }
-    inputPush_safe(ctxt, stream);
-    return htmlDoRead(ctxt, URL, encoding, options, 1 as i32);
+    unsafe { inputPush_safe(ctxt, stream) };
+    return htmlDoRead(ctxt, URL, encoding, options, 1);
 }
 /* *
  * htmlCtxtReadIO:
@@ -15835,53 +15831,51 @@ pub unsafe fn htmlCtxtReadFd(
  * Returns the resulting document tree
  */
 
-pub unsafe fn htmlCtxtReadIO(
-    mut ctxt: htmlParserCtxtPtr,
-    mut ioread: xmlInputReadCallback,
-    mut ioclose: xmlInputCloseCallback,
-    mut ioctx: *mut (),
-    mut URL: *const i8,
-    mut encoding: *const i8,
-    mut options: i32,
+pub fn htmlCtxtReadIO(
+    ctxt: htmlParserCtxtPtr,
+    ioread: xmlInputReadCallback,
+    ioclose: xmlInputCloseCallback,
+    ioctx: *mut (),
+    URL: *const i8,
+    encoding: *const i8,
+    options: i32,
 ) -> htmlDocPtr {
-    let mut input: xmlParserInputBufferPtr = 0 as *mut xmlParserInputBuffer;
-    let mut stream: xmlParserInputPtr = 0 as *mut xmlParserInput;
+    let mut input: xmlParserInputBufferPtr;
+    let mut stream: xmlParserInputPtr;
     if ioread.is_none() {
         return 0 as htmlDocPtr;
     }
     if ctxt.is_null() {
         return 0 as htmlDocPtr;
     }
-    xmlInitParser_safe();
+    unsafe { xmlInitParser_safe() };
     htmlCtxtReset(ctxt);
-    input = xmlParserInputBufferCreateIO_safe(ioread, ioclose, ioctx, XML_CHAR_ENCODING_NONE);
+    input = unsafe {
+        xmlParserInputBufferCreateIO_safe(ioread, ioclose, ioctx, XML_CHAR_ENCODING_NONE)
+    };
     if input.is_null() {
         if ioclose.is_some() {
             ioclose_safe(ioclose, ioctx);
         }
         return 0 as htmlDocPtr;
     }
-    stream = xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE);
+    stream = unsafe { xmlNewIOInputStream_safe(ctxt, input, XML_CHAR_ENCODING_NONE) };
     if stream.is_null() {
-        xmlFreeParserInputBuffer_safe(input);
+        unsafe { xmlFreeParserInputBuffer_safe(input) };
         return 0 as htmlDocPtr;
     }
-    inputPush_safe(ctxt, stream);
-    return htmlDoRead(ctxt, URL, encoding, options, 1 as i32);
+    unsafe { inputPush_safe(ctxt, stream) };
+    return htmlDoRead(ctxt, URL, encoding, options, 1);
 }
 /* LIBXML_HTML_ENABLED */
 
-unsafe fn xmlSAXHandler_endElement_safe(
-    func: endElementSAXFunc,
-    arg1: *mut (),
-    arg2: *const xmlChar,
-) {
+fn xmlSAXHandler_endElement_safe(func: endElementSAXFunc, arg1: *mut (), arg2: *const xmlChar) {
     unsafe {
         func.expect("non-null function pointer")(arg1, arg2);
     }
 }
 
-unsafe fn xmlSAXHandler_startElement_safe(
+fn xmlSAXHandler_startElement_safe(
     func: startElementSAXFunc,
     arg1: *mut (),
     arg2: *const xmlChar,
@@ -15892,7 +15886,7 @@ unsafe fn xmlSAXHandler_startElement_safe(
     }
 }
 
-unsafe fn xmlSAXHandler_cdataBlock_safe(
+fn xmlSAXHandler_cdataBlock_safe(
     func: cdataBlockSAXFunc,
     arg1: *mut (),
     arg2: *const xmlChar,
@@ -15903,7 +15897,7 @@ unsafe fn xmlSAXHandler_cdataBlock_safe(
     }
 }
 
-unsafe fn xmlSAXHandler_characters_safe(
+fn xmlSAXHandler_characters_safe(
     func: charactersSAXFunc,
     arg1: *mut (),
     arg2: *const xmlChar,
@@ -15914,7 +15908,7 @@ unsafe fn xmlSAXHandler_characters_safe(
     }
 }
 
-unsafe fn xmlSAXHandler_ignorableWhitespace_safe(
+fn xmlSAXHandler_ignorableWhitespace_safe(
     func: ignorableWhitespaceSAXFunc,
     arg1: *mut (),
     arg2: *const xmlChar,
@@ -15925,7 +15919,7 @@ unsafe fn xmlSAXHandler_ignorableWhitespace_safe(
     }
 }
 
-unsafe fn xmlSAXHandler_processingInstruction_safe(
+fn xmlSAXHandler_processingInstruction_safe(
     func: processingInstructionSAXFunc,
     arg1: *mut (),
     arg2: *const xmlChar,
@@ -15936,13 +15930,13 @@ unsafe fn xmlSAXHandler_processingInstruction_safe(
     }
 }
 
-unsafe fn xmlSAXHandler_comment_safe(func: commentSAXFunc, arg1: *mut (), arg2: *const xmlChar) {
+fn xmlSAXHandler_comment_safe(func: commentSAXFunc, arg1: *mut (), arg2: *const xmlChar) {
     unsafe {
         func.expect("non-null function pointer")(arg1, arg2);
     }
 }
 
-unsafe fn xmlSAXHandler_internalSubset_safe(
+fn xmlSAXHandler_internalSubset_safe(
     func: internalSubsetSAXFunc,
     arg1: *mut (),
     arg2: *const xmlChar,
@@ -15954,19 +15948,19 @@ unsafe fn xmlSAXHandler_internalSubset_safe(
     }
 }
 
-unsafe fn xmlSAXHandler_endDocument_safe(func: endDocumentSAXFunc, arg1: *mut ()) {
+fn xmlSAXHandler_endDocument_safe(func: endDocumentSAXFunc, arg1: *mut ()) {
     unsafe {
         func.expect("non-null function pointer")(arg1);
     }
 }
 
-unsafe fn xmlSAXHandler_startDocument_safe(func: startDocumentSAXFunc, arg1: *mut ()) {
+fn xmlSAXHandler_startDocument_safe(func: startDocumentSAXFunc, arg1: *mut ()) {
     unsafe {
         func.expect("non-null function pointer")(arg1);
     }
 }
 
-unsafe fn xmlSAXHandler_setDocumentLocator_safe(
+fn xmlSAXHandler_setDocumentLocator_safe(
     func: setDocumentLocatorSAXFunc,
     arg1: *mut (),
     arg2: xmlSAXLocatorPtr,
@@ -15976,49 +15970,49 @@ unsafe fn xmlSAXHandler_setDocumentLocator_safe(
     }
 }
 
-unsafe fn ioclose_safe(func: xmlInputCloseCallback, arg1: *mut ()) {
+fn ioclose_safe(func: xmlInputCloseCallback, arg1: *mut ()) {
     unsafe {
         func.expect("non-null function pointer")(arg1);
     }
 }
 
-unsafe fn getHtmlEndPriority(index: usize) -> elementPriority {
+fn getHtmlEndPriority(index: usize) -> elementPriority {
     unsafe {
         return htmlEndPriority[index];
     }
 }
 
-unsafe fn getHtmlOmittedDefaultValue() -> i32 {
+fn getHtmlOmittedDefaultValue() -> i32 {
     unsafe {
         return htmlOmittedDefaultValue;
     }
 }
 
-unsafe fn setHtmlOmittedDefaultValue(val: i32) {
+fn setHtmlOmittedDefaultValue(val: i32) {
     unsafe {
         htmlOmittedDefaultValue = val;
     }
 }
 
-unsafe fn getHtmlNoContentElements(index: usize) -> *const i8 {
+fn getHtmlNoContentElements(index: usize) -> *const i8 {
     unsafe {
         return htmlNoContentElements[index];
     }
 }
 
-unsafe fn getHtmlScriptAttributes(index: usize) -> *const i8 {
+fn getHtmlScriptAttributes(index: usize) -> *const i8 {
     unsafe {
         return htmlScriptAttributes[index];
     }
 }
 
-unsafe fn getHtml40EntitiesTable(index: usize) -> htmlEntityDesc {
+fn getHtml40EntitiesTable(index: usize) -> htmlEntityDesc {
     unsafe {
         return html40EntitiesTable[index];
     }
 }
 
-unsafe fn getAllowPCData(index: usize) -> *const i8 {
+fn getAllowPCData(index: usize) -> *const i8 {
     unsafe {
         return allowPCData[index];
     }
