@@ -17060,7 +17060,7 @@ fn xmlXPathNodeCollectAndTest(
         || unsafe { (*safe_ctxt.value).type_0 as u32 } != XPATH_NODESET as u32
     {
         unsafe { xmlXPathErr(ctxt, XPATH_INVALID_TYPE as i32) };
-        return 0 ;
+        return 0;
     }
     obj = unsafe { valuePop(ctxt) };
     /*
