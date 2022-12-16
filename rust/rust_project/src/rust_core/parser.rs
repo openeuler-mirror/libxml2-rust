@@ -7104,7 +7104,7 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                             (*ctxt).disableSAX = 1
                         }
                         (*ctxt).instate = XML_PARSER_IGNORE;
-                        loop{
+                        loop {
                             if *(*(*ctxt).input).cur == 0 {
                                 break;
                             }
