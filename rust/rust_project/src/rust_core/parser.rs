@@ -4136,6 +4136,27 @@ fn CMP6(cur: *const u8, c1: char, c2: char, c3: char, c4: char, c5: char, c6: ch
     };
 }
 
+fn CMP7(
+    cur: *const u8,
+    c1: char,
+    c2: char,
+    c3: char,
+    c4: char,
+    c5: char,
+    c6: char,
+    c7: char,
+) -> bool {
+    return unsafe {
+        *(cur as *mut u8).offset(0) == c1 as u8
+            && *(cur as *mut u8).offset(1) == c2 as u8
+            && *(cur as *mut u8).offset(2) == c3 as u8
+            && *(cur as *mut u8).offset(3) == c4 as u8
+            && *(cur as *mut u8).offset(4) == c5 as u8
+            && *(cur as *mut u8).offset(5) == c6 as u8
+            && *(cur as *mut u8).offset(6) == c7 as u8
+    };
+}
+
 fn CMP8(
     cur: *const u8,
     c1: char,
@@ -4156,6 +4177,31 @@ fn CMP8(
             && *(cur as *mut u8).offset(5) == c6 as u8
             && *(cur as *mut u8).offset(6) == c7 as u8
             && *(cur as *mut u8).offset(7) == c8 as u8
+    };
+}
+
+fn CMP9(
+    cur: *const u8,
+    c1: char,
+    c2: char,
+    c3: char,
+    c4: char,
+    c5: char,
+    c6: char,
+    c7: char,
+    c8: char,
+    c9: char,
+) -> bool {
+    return unsafe {
+        *(cur as *mut u8).offset(0) == c1 as u8
+            && *(cur as *mut u8).offset(1) == c2 as u8
+            && *(cur as *mut u8).offset(2) == c3 as u8
+            && *(cur as *mut u8).offset(3) == c4 as u8
+            && *(cur as *mut u8).offset(4) == c5 as u8
+            && *(cur as *mut u8).offset(5) == c6 as u8
+            && *(cur as *mut u8).offset(6) == c7 as u8
+            && *(cur as *mut u8).offset(7) == c8 as u8
+            && *(cur as *mut u8).offset(8) == c9 as u8
     };
 }
 
@@ -5650,52 +5696,28 @@ pub fn xmlParseDefaultDecl(ctxt: xmlParserCtxtPtr, value: *mut *mut xmlChar) -> 
     //@todo 削减unsafe范围
     unsafe {
         *value = 0 as *mut xmlChar;
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'R' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'Q' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'U' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'R' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(8) as i32 == 'D' as i32
-        {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9);
-            (*(*ctxt).input).col += 9;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+        if CMP9(
+            (*(*ctxt).input).cur,
+            '#',
+            'R',
+            'E',
+            'Q',
+            'U',
+            'I',
+            'R',
+            'E',
+            'D',
+        ) {
+            SKIP(ctxt, 9);
             return XML_ATTRIBUTE_REQUIRED as i32;
         }
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'M' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'P' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'L' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'D' as i32
-        {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
-            (*(*ctxt).input).col += 8;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+        if CMP8((*(*ctxt).input).cur, '#', 'I', 'M', 'P', 'L', 'I', 'E', 'D') {
+            SKIP(ctxt, 8);
             return XML_ATTRIBUTE_IMPLIED as i32;
         }
         val = XML_ATTRIBUTE_NONE as i32;
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'F' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'X' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'D' as i32
-        {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
-            (*(*ctxt).input).col += 6;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+        if CMP6((*(*ctxt).input).cur, '#', 'F', 'I', 'X', 'E', 'D') {
+            SKIP(ctxt, 6);
             val = XML_ATTRIBUTE_FIXED as i32;
             if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
@@ -5737,54 +5759,43 @@ pub fn xmlParseDefaultDecl(ctxt: xmlParserCtxtPtr, value: *mut *mut xmlChar) -> 
 */
 
 pub fn xmlParseNotationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
-    let mut name: *const xmlChar = 0 as *const xmlChar;
+    let mut name: *const xmlChar;
     let mut ret: xmlEnumerationPtr = 0 as xmlEnumerationPtr;
     let mut last: xmlEnumerationPtr = 0 as xmlEnumerationPtr;
-    let mut cur: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
-    let mut tmp: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
+    let mut cur: xmlEnumerationPtr;
+    let mut tmp: xmlEnumerationPtr;
     let safe_ctxt = unsafe { &mut *ctxt };
     unsafe {
-        if *(*(*ctxt).input).cur as i32 != '(' as i32 {
+        if *(*(*ctxt).input).cur != '(' as u8 {
             xmlFatalErr(ctxt, XML_ERR_NOTATION_NOT_STARTED, 0 as *const i8);
             return 0 as xmlEnumerationPtr;
         }
     }
-
-    if unsafe {
-        (*ctxt).progressive == 0
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
-    } {
-        xmlSHRINK(ctxt);
-    }
+    SHRINK(ctxt);
     loop {
         unsafe { xmlNextChar_safe(ctxt) };
         xmlSkipBlankChars(ctxt);
         name = xmlParseName(ctxt);
         if name.is_null() {
-            unsafe {
-                xmlFatalErrMsg(
-                    ctxt,
-                    XML_ERR_NAME_REQUIRED,
-                    b"Name expected in NOTATION declaration\n\x00" as *const u8 as *const i8,
-                );
-            }
+            xmlFatalErrMsg(
+                ctxt,
+                XML_ERR_NAME_REQUIRED,
+                b"Name expected in NOTATION declaration\n\x00" as *const u8 as *const i8,
+            );
             unsafe { xmlFreeEnumeration_safe(ret) };
             return 0 as xmlEnumerationPtr;
         }
         tmp = ret;
         while !tmp.is_null() {
             if unsafe { xmlStrEqual_safe(name, unsafe { (*tmp).name }) } != 0 {
-                unsafe {
-                    xmlValidityError(
-                        ctxt,
-                        XML_DTD_DUP_TOKEN,
-                        b"standalone: attribute notation value token %s duplicated\n\x00"
-                            as *const u8 as *const i8,
-                        name,
-                        0 as *const xmlChar,
-                    );
-                }
+                xmlValidityError(
+                    ctxt,
+                    XML_DTD_DUP_TOKEN,
+                    b"standalone: attribute notation value token %s duplicated\n\x00" as *const u8
+                        as *const i8,
+                    name,
+                    0 as *const xmlChar,
+                );
                 if unsafe { xmlDictOwns_safe((safe_ctxt).dict, name) } == 0 {
                     unsafe { xmlFree_safe(name as *mut xmlChar as *mut ()) };
                 }
@@ -5810,11 +5821,11 @@ pub fn xmlParseNotationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
             }
         }
         xmlSkipBlankChars(ctxt);
-        if unsafe { !(*(*(*ctxt).input).cur as i32 == '|' as i32) } {
+        if unsafe { !(*(*(*ctxt).input).cur == '|' as u8) } {
             break;
         }
     }
-    if unsafe { *(*(*ctxt).input).cur as i32 != ')' as i32 } {
+    if unsafe { *(*(*ctxt).input).cur != ')' as u8 } {
         unsafe {
             xmlFatalErr(ctxt, XML_ERR_NOTATION_NOT_FINISHED, 0 as *const i8);
         }
@@ -5840,25 +5851,19 @@ pub fn xmlParseNotationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
 */
 
 pub fn xmlParseEnumerationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
-    let mut name: *mut xmlChar = 0 as *mut xmlChar;
+    let mut name: *mut xmlChar;
     let mut ret: xmlEnumerationPtr = 0 as xmlEnumerationPtr;
     let mut last: xmlEnumerationPtr = 0 as xmlEnumerationPtr;
-    let mut cur: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
-    let mut tmp: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
+    let mut cur: xmlEnumerationPtr;
+    let mut tmp: xmlEnumerationPtr;
     let safe_ctxt = unsafe { &mut *ctxt };
     unsafe {
-        if *(*(*ctxt).input).cur as i32 != '(' as i32 {
+        if *(*(*ctxt).input).cur != '(' as u8 {
             xmlFatalErr(ctxt, XML_ERR_ATTLIST_NOT_STARTED, 0 as *const i8);
             return 0 as xmlEnumerationPtr;
         }
     }
-    if unsafe {
-        (*ctxt).progressive == 0
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
-    } {
-        xmlSHRINK(ctxt);
-    }
+    SHRINK(ctxt);
     loop {
         unsafe { xmlNextChar_safe(ctxt) };
         xmlSkipBlankChars(ctxt);
@@ -5872,16 +5877,14 @@ pub fn xmlParseEnumerationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
         tmp = ret;
         while !tmp.is_null() {
             if unsafe { xmlStrEqual_safe(name, unsafe { (*tmp).name }) } != 0 {
-                unsafe {
-                    xmlValidityError(
-                        ctxt,
-                        XML_DTD_DUP_TOKEN,
-                        b"standalone: attribute enumeration value token %s duplicated\n\x00"
-                            as *const u8 as *const i8,
-                        name,
-                        0 as *const xmlChar,
-                    );
-                }
+                xmlValidityError(
+                    ctxt,
+                    XML_DTD_DUP_TOKEN,
+                    b"standalone: attribute enumeration value token %s duplicated\n\x00"
+                        as *const u8 as *const i8,
+                    name,
+                    0 as *const xmlChar,
+                );
                 if unsafe { xmlDictOwns_safe((safe_ctxt).dict, name) } == 0 {
                     unsafe { xmlFree_safe(name as *mut ()) };
                 }
@@ -5910,12 +5913,12 @@ pub fn xmlParseEnumerationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
             }
         }
         xmlSkipBlankChars(ctxt);
-        if unsafe { !(*(*(*ctxt).input).cur as i32 == '|' as i32) } {
+        if unsafe { !(*(*(*ctxt).input).cur == '|' as u8) } {
             break;
         }
     }
     unsafe {
-        if *(*(*ctxt).input).cur as i32 != ')' as i32 {
+        if *(*(*ctxt).input).cur != ')' as u8 {
             xmlFatalErr(ctxt, XML_ERR_ATTLIST_NOT_FINISHED, 0 as *const i8);
             return ret;
         }
@@ -5939,22 +5942,9 @@ pub fn xmlParseEnumerationType(ctxt: xmlParserCtxtPtr) -> xmlEnumerationPtr {
 */
 
 pub fn xmlParseEnumeratedType(ctxt: xmlParserCtxtPtr, tree: *mut xmlEnumerationPtr) -> i32 {
-    //@todo 削减unsafe范围
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'N' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'O' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'O' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'N' as i32
-        {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
-            (*(*ctxt).input).col += 8;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+        if CMP8((*(*ctxt).input).cur, 'N', 'O', 'T', 'A', 'T', 'I', 'O', 'N') {
+            SKIP(ctxt, 8);
             if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
@@ -6025,143 +6015,32 @@ pub fn xmlParseEnumeratedType(ctxt: xmlParserCtxtPtr, tree: *mut xmlEnumerationP
 pub fn xmlParseAttributeType(ctxt: xmlParserCtxtPtr, tree: *mut xmlEnumerationPtr) -> i32 {
     //@todo 削减unsafe范围
     unsafe {
-        if (*ctxt).progressive == 0
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < (2 * 250) as i64
-        {
-            xmlSHRINK(ctxt);
-        }
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'C' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'D' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'A' as i32
-        {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
-            (*(*ctxt).input).col += 5;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+        SHRINK(ctxt);
+        if CMP5((*(*ctxt).input).cur, 'C', 'D', 'A', 'T', 'A') {
+            SKIP(ctxt, 5);
             return XML_ATTRIBUTE_CDATA as i32;
-        } else {
-            if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'I' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'D' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'R' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'E' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'F' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'S' as i32
-            {
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
-                (*(*ctxt).input).col += 6;
-                if *(*(*ctxt).input).cur as i32 == 0 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                }
-                return XML_ATTRIBUTE_IDREFS as i32;
-            } else {
-                if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'I' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'D' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'R' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'E' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'F' as i32
-                {
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
-                    (*(*ctxt).input).col += 5;
-                    if *(*(*ctxt).input).cur as i32 == 0 {
-                        xmlParserInputGrow_safe((*ctxt).input, 250);
-                    }
-                    return XML_ATTRIBUTE_IDREF as i32;
-                } else {
-                    if *(*(*ctxt).input).cur as i32 == 'I' as i32
-                        && *(*(*ctxt).input).cur.offset(1) as i32 == 'D' as i32
-                    {
-                        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
-                        (*(*ctxt).input).col += 2;
-                        if *(*(*ctxt).input).cur as i32 == 0 {
-                            xmlParserInputGrow_safe((*ctxt).input, 250);
-                        }
-                        return XML_ATTRIBUTE_ID as i32;
-                    } else {
-                        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'E' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'N' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'T' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'I' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
-                            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'Y' as i32
-                        {
-                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
-                            (*(*ctxt).input).col += 6;
-                            if *(*(*ctxt).input).cur as i32 == 0 {
-                                xmlParserInputGrow_safe((*ctxt).input, 250);
-                            }
-                            return XML_ATTRIBUTE_ENTITY as i32;
-                        } else {
-                            if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'E' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'N' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'T' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'I' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'I' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'E' as i32
-                                && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'S' as i32
-                            {
-                                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
-                                (*(*ctxt).input).col += 8;
-                                if *(*(*ctxt).input).cur as i32 == 0 {
-                                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                                }
-                                return XML_ATTRIBUTE_ENTITIES as i32;
-                            } else {
-                                if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'N' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32
-                                        == 'M' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32
-                                        == 'T' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32
-                                        == 'O' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32
-                                        == 'K' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32
-                                        == 'E' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32
-                                        == 'N' as i32
-                                    && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32
-                                        == 'S' as i32
-                                {
-                                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(8);
-                                    (*(*ctxt).input).col += 8;
-                                    if *(*(*ctxt).input).cur as i32 == 0 {
-                                        xmlParserInputGrow_safe((*ctxt).input, 250);
-                                    }
-                                    return XML_ATTRIBUTE_NMTOKENS as i32;
-                                } else {
-                                    if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32
-                                        == 'N' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32
-                                            == 'M' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32
-                                            == 'T' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32
-                                            == 'O' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32
-                                            == 'K' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32
-                                            == 'E' as i32
-                                        && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32
-                                            == 'N' as i32
-                                    {
-                                        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(7);
-                                        (*(*ctxt).input).col += 7;
-                                        if *(*(*ctxt).input).cur as i32 == 0 {
-                                            xmlParserInputGrow_safe((*ctxt).input, 250);
-                                        }
-                                        return XML_ATTRIBUTE_NMTOKEN as i32;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        } else if CMP6((*(*ctxt).input).cur, 'I', 'D', 'R', 'E', 'F', 'S') {
+            SKIP(ctxt, 6);
+            return XML_ATTRIBUTE_IDREFS as i32;
+        } else if CMP5((*(*ctxt).input).cur, 'I', 'D', 'R', 'E', 'F') {
+            SKIP(ctxt, 5);
+            return XML_ATTRIBUTE_IDREF as i32;
+        } else if *(*(*ctxt).input).cur == 'I' as u8 && *(*(*ctxt).input).cur.offset(1) == 'D' as u8
+        {
+            SKIP(ctxt, 2);
+            return XML_ATTRIBUTE_ID as i32;
+        } else if CMP6((*(*ctxt).input).cur, 'E', 'N', 'T', 'I', 'T', 'Y') {
+            SKIP(ctxt, 6);
+            return XML_ATTRIBUTE_ENTITY as i32;
+        } else if CMP8((*(*ctxt).input).cur, 'E', 'N', 'T', 'I', 'T', 'I', 'E', 'S') {
+            SKIP(ctxt, 8);
+            return XML_ATTRIBUTE_ENTITIES as i32;
+        } else if CMP8((*(*ctxt).input).cur, 'N', 'M', 'T', 'O', 'K', 'E', 'N', 'S') {
+            SKIP(ctxt, 8);
+            return XML_ATTRIBUTE_NMTOKENS as i32;
+        } else if CMP7((*(*ctxt).input).cur, 'N', 'M', 'T', 'O', 'K', 'E', 'N') {
+            SKIP(ctxt, 7);
+            return XML_ATTRIBUTE_NMTOKEN as i32;
         }
     }
     return xmlParseEnumeratedType(ctxt, tree);
@@ -6179,27 +6058,25 @@ pub fn xmlParseAttributeType(ctxt: xmlParserCtxtPtr, tree: *mut xmlEnumerationPt
 */
 
 pub fn xmlParseAttributeListDecl(ctxt: xmlParserCtxtPtr) {
-    let mut elemName: *const xmlChar = 0 as *const xmlChar;
-    let mut attrName: *const xmlChar = 0 as *const xmlChar;
-    let mut tree: xmlEnumerationPtr = 0 as *mut xmlEnumeration;
+    let mut elemName: *const xmlChar;
+    let mut attrName: *const xmlChar;
+    let mut tree: xmlEnumerationPtr;
     //@todo 削减unsafe范围
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '<' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == '!' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'L' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'I' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'S' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(8) as i32 == 'T' as i32
-        {
+        if CMP9(
+            (*(*ctxt).input).cur,
+            '<',
+            '!',
+            'A',
+            'T',
+            'T',
+            'L',
+            'I',
+            'S',
+            'T',
+        ) {
             let inputid: i32 = (*(*ctxt).input).id;
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9);
-            (*(*ctxt).input).col += 9;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+            SKIP(ctxt, 9);
             if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
@@ -6217,25 +6094,17 @@ pub fn xmlParseAttributeListDecl(ctxt: xmlParserCtxtPtr) {
                 return;
             }
             xmlSkipBlankChars(ctxt);
-            if (*ctxt).progressive == 0
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-            {
-                xmlGROW(ctxt);
-            }
-            while 1 < 2 {
-                if (!(*(*(*ctxt).input).cur as i32 != '>' as i32
-                    && (*ctxt).instate as i32 != XML_PARSER_EOF as i32))
+            GROW(ctxt);
+            loop {
+                if (!(*(*(*ctxt).input).cur != '>' as u8
+                    && (*ctxt).instate != XML_PARSER_EOF as i32))
                 {
                     break;
                 }
-                let mut type_0: i32 = 0;
-                let mut def: i32 = 0;
+                let mut type_0: i32;
+                let mut def: i32;
                 let mut defaultValue: *mut xmlChar = 0 as *mut xmlChar;
-                if (*ctxt).progressive == 0
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-                {
-                    xmlGROW(ctxt);
-                }
+                GROW(ctxt);
                 tree = 0 as xmlEnumerationPtr;
                 attrName = xmlParseName(ctxt);
                 if attrName.is_null() {
@@ -6245,122 +6114,97 @@ pub fn xmlParseAttributeListDecl(ctxt: xmlParserCtxtPtr) {
                         b"ATTLIST: no name for Attribute\n\x00" as *const u8 as *const i8,
                     );
                     break;
-                } else {
-                    if (*ctxt).progressive == 0
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-                    {
-                        xmlGROW(ctxt);
+                }
+                GROW(ctxt);
+                if xmlSkipBlankChars(ctxt) == 0 {
+                    xmlFatalErrMsg(
+                        ctxt,
+                        XML_ERR_SPACE_REQUIRED,
+                        b"Space required after the attribute name\n\x00" as *const u8 as *const i8,
+                    );
+                    break;
+                }
+                type_0 = xmlParseAttributeType(ctxt, &mut tree);
+                if type_0 <= 0 {
+                    break;
+                }
+                GROW(ctxt);
+                if xmlSkipBlankChars(ctxt) == 0 {
+                    xmlFatalErrMsg(
+                        ctxt,
+                        XML_ERR_SPACE_REQUIRED,
+                        b"Space required after the attribute type\n\x00" as *const u8 as *const i8,
+                    );
+                    if !tree.is_null() {
+                        xmlFreeEnumeration_safe(tree);
                     }
+                    break;
+                }
+                def = xmlParseDefaultDecl(ctxt, &mut defaultValue);
+                if def <= 0 {
+                    if !defaultValue.is_null() {
+                        xmlFree_safe(defaultValue as *mut ());
+                    }
+                    if !tree.is_null() {
+                        xmlFreeEnumeration_safe(tree);
+                    }
+                    break;
+                }
+                if type_0 != XML_ATTRIBUTE_CDATA as i32 && !defaultValue.is_null() {
+                    xmlAttrNormalizeSpace(defaultValue, defaultValue);
+                }
+                GROW(ctxt);
+                if *(*(*ctxt).input).cur != '>' as u8 {
                     if xmlSkipBlankChars(ctxt) == 0 {
                         xmlFatalErrMsg(
                             ctxt,
                             XML_ERR_SPACE_REQUIRED,
-                            b"Space required after the attribute name\n\x00" as *const u8
+                            b"Space required after the attribute default value\n\x00" as *const u8
                                 as *const i8,
                         );
+                        if !defaultValue.is_null() {
+                            xmlFree_safe(defaultValue as *mut ());
+                        }
+                        if !tree.is_null() {
+                            xmlFreeEnumeration_safe(tree);
+                        }
                         break;
-                    } else {
-                        type_0 = xmlParseAttributeType(ctxt, &mut tree);
-                        if type_0 <= 0 {
-                            break;
-                        }
-                        if (*ctxt).progressive == 0
-                            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-                        {
-                            xmlGROW(ctxt);
-                        }
-                        if xmlSkipBlankChars(ctxt) == 0 {
-                            xmlFatalErrMsg(
-                                ctxt,
-                                XML_ERR_SPACE_REQUIRED,
-                                b"Space required after the attribute type\n\x00" as *const u8
-                                    as *const i8,
-                            );
-                            if !tree.is_null() {
-                                xmlFreeEnumeration_safe(tree);
-                            }
-                            break;
-                        } else {
-                            def = xmlParseDefaultDecl(ctxt, &mut defaultValue);
-                            if def <= 0 {
-                                if !defaultValue.is_null() {
-                                    xmlFree_safe(defaultValue as *mut ());
-                                }
-                                if !tree.is_null() {
-                                    xmlFreeEnumeration_safe(tree);
-                                }
-                                break;
-                            } else {
-                                if type_0 != XML_ATTRIBUTE_CDATA as i32 && !defaultValue.is_null() {
-                                    xmlAttrNormalizeSpace(defaultValue, defaultValue);
-                                }
-                                if (*ctxt).progressive == 0
-                                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur)
-                                        as i64)
-                                        < 250
-                                {
-                                    xmlGROW(ctxt);
-                                }
-                                if *(*(*ctxt).input).cur as i32 != '>' as i32 {
-                                    if xmlSkipBlankChars(ctxt) == 0 {
-                                        xmlFatalErrMsg(ctxt,
-                                                           XML_ERR_SPACE_REQUIRED,
-                                                           b"Space required after the attribute default value\n\x00"
-                                                           as *const u8 as
-                                                           *const i8);
-                                        if !defaultValue.is_null() {
-                                            xmlFree_safe(defaultValue as *mut ());
-                                        }
-                                        if !tree.is_null() {
-                                            xmlFreeEnumeration_safe(tree);
-                                        }
-                                        break;
-                                    }
-                                }
-                                if !(*ctxt).sax.is_null()
-                                    && (*ctxt).disableSAX == 0
-                                    && (*(*ctxt).sax).attributeDecl.is_some()
-                                {
-                                    (*(*ctxt).sax)
-                                        .attributeDecl
-                                        .expect("non-null function pointer")(
-                                        (*ctxt).userData,
-                                        elemName,
-                                        attrName,
-                                        type_0,
-                                        def,
-                                        defaultValue,
-                                        tree,
-                                    );
-                                } else if !tree.is_null() {
-                                    xmlFreeEnumeration_safe(tree);
-                                }
-                                if (*ctxt).sax2 != 0
-                                    && !defaultValue.is_null()
-                                    && def != XML_ATTRIBUTE_IMPLIED as i32
-                                    && def != XML_ATTRIBUTE_REQUIRED as i32
-                                {
-                                    xmlAddDefAttrs(ctxt, elemName, attrName, defaultValue);
-                                }
-                                if (*ctxt).sax2 != 0 {
-                                    xmlAddSpecialAttr(ctxt, elemName, attrName, type_0);
-                                }
-                                if !defaultValue.is_null() {
-                                    xmlFree_safe(defaultValue as *mut ());
-                                }
-                                if (*ctxt).progressive == 0
-                                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur)
-                                        as i64)
-                                        < 250
-                                {
-                                    xmlGROW(ctxt);
-                                }
-                            }
-                        }
                     }
                 }
+                if !(*ctxt).sax.is_null()
+                    && (*ctxt).disableSAX == 0
+                    && (*(*ctxt).sax).attributeDecl.is_some()
+                {
+                    (*(*ctxt).sax)
+                        .attributeDecl
+                        .expect("non-null function pointer")(
+                        (*ctxt).userData,
+                        elemName,
+                        attrName,
+                        type_0,
+                        def,
+                        defaultValue,
+                        tree,
+                    );
+                } else if !tree.is_null() {
+                    xmlFreeEnumeration_safe(tree);
+                }
+                if (*ctxt).sax2 != 0
+                    && !defaultValue.is_null()
+                    && def != XML_ATTRIBUTE_IMPLIED as i32
+                    && def != XML_ATTRIBUTE_REQUIRED as i32
+                {
+                    xmlAddDefAttrs(ctxt, elemName, attrName, defaultValue);
+                }
+                if (*ctxt).sax2 != 0 {
+                    xmlAddSpecialAttr(ctxt, elemName, attrName, type_0);
+                }
+                if !defaultValue.is_null() {
+                    xmlFree_safe(defaultValue as *mut ());
+                }
+                GROW(ctxt);
             }
-            if *(*(*ctxt).input).cur as i32 == '>' as i32 {
+            if *(*(*ctxt).input).cur == '>' as u8 {
                 if inputid != (*(*ctxt).input).id {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                    b"Attribute list declaration doesn\'t start and stop in the same entity\n\x00"
@@ -6399,35 +6243,13 @@ pub fn xmlParseElementMixedContentDecl(
     let mut cur: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut n: xmlElementContentPtr = 0 as *mut xmlElementContent;
     let mut elem: *const xmlChar = 0 as *const xmlChar;
-    //@todo 削减unsafe范围
     unsafe {
-        if (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-        {
-            xmlGROW(ctxt);
-        }
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'P' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'C' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'D' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'A' as i32
-        {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(7);
-            (*(*ctxt).input).col += 7;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+        GROW(ctxt);
+        if CMP7((*(*ctxt).input).cur, '#', 'P', 'C', 'D', 'A', 'T', 'A') {
+            SKIP(ctxt, 7);
             xmlSkipBlankChars(ctxt);
-            if (*ctxt).progressive == 0
-                && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < (2 * 250) as i64
-            {
-                xmlSHRINK(ctxt);
-            }
-            if *(*(*ctxt).input).cur as i32 == ')' as i32 {
+            SHRINK(ctxt);
+            if *(*(*ctxt).input).cur == ')' as u8 {
                 if (*(*ctxt).input).id != inputchk {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                    b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
@@ -6442,15 +6264,13 @@ pub fn xmlParseElementMixedContentDecl(
                 if ret.is_null() {
                     return 0 as xmlElementContentPtr;
                 }
-                if *(*(*ctxt).input).cur as i32 == '*' as i32 {
+                if *(*(*ctxt).input).cur == '*' as u8 {
                     (*ret).ocur = XML_ELEMENT_CONTENT_MULT;
                     xmlNextChar_safe(ctxt);
                 }
                 return ret;
             }
-            if *(*(*ctxt).input).cur as i32 == '(' as i32
-                || *(*(*ctxt).input).cur as i32 == '|' as i32
-            {
+            if *(*(*ctxt).input).cur == '(' as u8 || *(*(*ctxt).input).cur == '|' as u8 {
                 cur = xmlNewDocElementContent_safe(
                     (*ctxt).myDoc,
                     0 as *const xmlChar,
@@ -6461,10 +6281,8 @@ pub fn xmlParseElementMixedContentDecl(
                     return 0 as xmlElementContentPtr;
                 }
             }
-            while 1 < 2 {
-                if (!(*(*(*ctxt).input).cur as i32 == '|' as i32
-                    && (*ctxt).instate as i32 != XML_PARSER_EOF as i32))
-                {
+            loop {
+                if (!(*(*(*ctxt).input).cur == '|' as u8 && (*ctxt).instate != XML_PARSER_EOF)) {
                     break;
                 }
                 xmlNextChar_safe(ctxt);
@@ -6520,15 +6338,9 @@ pub fn xmlParseElementMixedContentDecl(
                     return 0 as xmlElementContentPtr;
                 }
                 xmlSkipBlankChars(ctxt);
-                if (*ctxt).progressive == 0
-                    && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-                {
-                    xmlGROW(ctxt);
-                }
+                GROW(ctxt);
             }
-            if *(*(*ctxt).input).cur as i32 == ')' as i32
-                && *(*(*ctxt).input).cur.offset(1) as i32 == '*' as i32
-            {
+            if *(*(*ctxt).input).cur == ')' as u8 && *(*(*ctxt).input).cur.offset(1) == '*' as u8 {
                 if !elem.is_null() {
                     (*cur).c2 = xmlNewDocElementContent_safe(
                         (*ctxt).myDoc,
@@ -6547,11 +6359,7 @@ pub fn xmlParseElementMixedContentDecl(
                                    b"Element content declaration doesn\'t start and stop in the same entity\n\x00"
                                    as *const u8 as *const i8);
                 }
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
-                (*(*ctxt).input).col += 2;
-                if *(*(*ctxt).input).cur as i32 == 0 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                }
+                SKIP(ctxt, 2);
             } else {
                 xmlFreeDocElementContent_safe((*ctxt).myDoc, ret);
                 xmlFatalErr(ctxt, XML_ERR_MIXED_NOT_STARTED, 0 as *const i8);
@@ -6604,7 +6412,7 @@ fn xmlParseElementChildrenContentDeclPriv(
     let mut cur: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut last: xmlElementContentPtr = 0 as xmlElementContentPtr;
     let mut op: xmlElementContentPtr = 0 as xmlElementContentPtr;
-    let mut elem: *const xmlChar = 0 as *const xmlChar;
+    let mut elem: *const xmlChar;
     let mut type_0: xmlChar = 0;
     let safe_ctxt = unsafe { &mut *ctxt };
     if depth > 128 && (safe_ctxt).options & XML_PARSE_HUGE as i32 == 0 || depth > 2048 {
@@ -6620,12 +6428,8 @@ fn xmlParseElementChildrenContentDeclPriv(
         return 0 as xmlElementContentPtr;
     }
     xmlSkipBlankChars(ctxt);
-    if (safe_ctxt).progressive == 0
-        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
-    {
-        xmlGROW(ctxt);
-    }
-    if unsafe { *(*(*ctxt).input).cur as i32 == '(' as i32 } {
+    GROW(ctxt);
+    if unsafe { *(*(*ctxt).input).cur == '(' as u8 } {
         let inputid: i32 = unsafe { (*(*ctxt).input).id };
         /* Recurse on first child */
         unsafe { xmlNextChar_safe(ctxt) };
@@ -6636,12 +6440,7 @@ fn xmlParseElementChildrenContentDeclPriv(
             return 0 as xmlElementContentPtr;
         }
         xmlSkipBlankChars(ctxt);
-        if unsafe {
-            (*ctxt).progressive == 0
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-        } {
-            xmlGROW(ctxt);
-        }
+        GROW(ctxt);
     } else {
         elem = xmlParseName(ctxt);
         if elem.is_null() {
@@ -6660,64 +6459,43 @@ fn xmlParseElementChildrenContentDeclPriv(
             }
             return 0 as xmlElementContentPtr;
         }
-        if (safe_ctxt).progressive == 0
-            && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
-        {
-            xmlGROW(ctxt);
-        }
+        GROW(ctxt);
         unsafe {
-            if *(*(*ctxt).input).cur as i32 == '?' as i32 {
+            if *(*(*ctxt).input).cur == '?' as u8 {
                 (*cur).ocur = XML_ELEMENT_CONTENT_OPT;
                 xmlNextChar_safe(ctxt);
-            } else if *(*(*ctxt).input).cur as i32 == '*' as i32 {
+            } else if *(*(*ctxt).input).cur == '*' as u8 {
                 (*cur).ocur = XML_ELEMENT_CONTENT_MULT;
                 xmlNextChar_safe(ctxt);
-            } else if *(*(*ctxt).input).cur as i32 == '+' as i32 {
+            } else if *(*(*ctxt).input).cur == '+' as u8 {
                 (*cur).ocur = XML_ELEMENT_CONTENT_PLUS;
                 xmlNextChar_safe(ctxt);
             } else {
                 (*cur).ocur = XML_ELEMENT_CONTENT_ONCE
             }
         }
-        if (safe_ctxt).progressive == 0
-            && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
-        {
-            xmlGROW(ctxt);
-        }
+        GROW(ctxt);
     }
     xmlSkipBlankChars(ctxt);
-    if (safe_ctxt).progressive == 0
-        && unsafe {
-            (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > (2 * 250) as i64
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                    < (2 * 250) as i64
-        }
-    {
-        xmlSHRINK(ctxt);
-    }
-    while 1 < 2 {
-        if (!(unsafe {
-            *(*(*ctxt).input).cur as i32 != ')' as i32
-                && (*ctxt).instate as i32 != XML_PARSER_EOF as i32
-        })) {
+    SHRINK(ctxt);
+    loop {
+        if (!(unsafe { *(*(*ctxt).input).cur != ')' as u8 && (*ctxt).instate != XML_PARSER_EOF })) {
             break;
         }
         /*
          * Each loop we parse one separator and one element.
          */
-        if unsafe { *(*(*ctxt).input).cur as i32 == ',' as i32 } {
-            if type_0 as i32 == 0 {
+        if unsafe { *(*(*ctxt).input).cur == ',' as u8 } {
+            if type_0 == 0 {
                 unsafe { type_0 = *(*(*ctxt).input).cur };
-            } else if unsafe { type_0 as i32 != *(*(*ctxt).input).cur as i32 } {
-                unsafe {
-                    xmlFatalErrMsgInt(
-                        ctxt,
-                        XML_ERR_SEPARATOR_REQUIRED,
-                        b"xmlParseElementChildrenContentDecl : \'%c\' expected\n\x00" as *const u8
-                            as *const i8,
-                        type_0 as i32,
-                    );
-                }
+            } else if unsafe { type_0 != *(*(*ctxt).input).cur } {
+                xmlFatalErrMsgInt(
+                    ctxt,
+                    XML_ERR_SEPARATOR_REQUIRED,
+                    b"xmlParseElementChildrenContentDecl : \'%c\' expected\n\x00" as *const u8
+                        as *const i8,
+                    type_0 as i32,
+                );
                 if !last.is_null() && last != ret {
                     unsafe { xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last) };
                 }
@@ -6764,19 +6542,17 @@ fn xmlParseElementChildrenContentDeclPriv(
                 cur = op;
                 last = 0 as xmlElementContentPtr
             }
-        } else if unsafe { *(*(*ctxt).input).cur as i32 == '|' as i32 } {
-            if type_0 as i32 == 0 {
+        } else if unsafe { *(*(*ctxt).input).cur == '|' as u8 } {
+            if type_0 == 0 {
                 type_0 = unsafe { *(*(*ctxt).input).cur }
-            } else if unsafe { type_0 as i32 != *(*(*ctxt).input).cur as i32 } {
-                unsafe {
-                    xmlFatalErrMsgInt(
-                        ctxt,
-                        XML_ERR_SEPARATOR_REQUIRED,
-                        b"xmlParseElementChildrenContentDecl : \'%c\' expected\n\x00" as *const u8
-                            as *const i8,
-                        type_0 as i32,
-                    );
-                }
+            } else if unsafe { type_0 != *(*(*ctxt).input).cur } {
+                xmlFatalErrMsgInt(
+                    ctxt,
+                    XML_ERR_SEPARATOR_REQUIRED,
+                    b"xmlParseElementChildrenContentDecl : \'%c\' expected\n\x00" as *const u8
+                        as *const i8,
+                    type_0 as i32,
+                );
                 if !last.is_null() && last != ret {
                     unsafe { xmlFreeDocElementContent_safe((safe_ctxt).myDoc, last) };
                 }
@@ -6837,20 +6613,10 @@ fn xmlParseElementChildrenContentDeclPriv(
             }
             return 0 as xmlElementContentPtr;
         }
-        if unsafe {
-            (*ctxt).progressive == 0
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-        } {
-            xmlGROW(ctxt);
-        }
+        GROW(ctxt);
         xmlSkipBlankChars(ctxt);
-        if unsafe {
-            (*ctxt).progressive == 0
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-        } {
-            xmlGROW(ctxt);
-        }
-        if unsafe { *(*(*ctxt).input).cur as i32 == '(' as i32 } {
+        GROW(ctxt);
+        if unsafe { *(*(*ctxt).input).cur == '(' as u8 } {
             let inputid_0: i32 = unsafe { (*(*ctxt).input).id };
             /*
              * Detect "Name | Name , Name" error
@@ -6890,13 +6656,13 @@ fn xmlParseElementChildrenContentDeclPriv(
                 return 0 as xmlElementContentPtr;
             }
             unsafe {
-                if *(*(*ctxt).input).cur as i32 == '?' as i32 {
+                if *(*(*ctxt).input).cur == '?' as u8 {
                     (*last).ocur = XML_ELEMENT_CONTENT_OPT;
                     xmlNextChar_safe(ctxt);
-                } else if *(*(*ctxt).input).cur as i32 == '*' as i32 {
+                } else if *(*(*ctxt).input).cur == '*' as u8 {
                     (*last).ocur = XML_ELEMENT_CONTENT_MULT;
                     xmlNextChar_safe(ctxt);
-                } else if *(*(*ctxt).input).cur as i32 == '+' as i32 {
+                } else if *(*(*ctxt).input).cur == '+' as u8 {
                     (*last).ocur = XML_ELEMENT_CONTENT_PLUS;
                     xmlNextChar_safe(ctxt);
                 } else {
@@ -6905,12 +6671,7 @@ fn xmlParseElementChildrenContentDeclPriv(
             }
         }
         xmlSkipBlankChars(ctxt);
-        if unsafe {
-            (*ctxt).progressive == 0
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-        } {
-            xmlGROW(ctxt);
-        }
+        GROW(ctxt);
     }
     if !cur.is_null() && !last.is_null() {
         unsafe {
@@ -6932,7 +6693,7 @@ fn xmlParseElementChildrenContentDeclPriv(
     }
     unsafe { xmlNextChar_safe(ctxt) };
     unsafe {
-        if *(*(*ctxt).input).cur as i32 == '?' as i32 {
+        if *(*(*ctxt).input).cur == '?' as u8 {
             if !ret.is_null() {
                 if (*ret).ocur as u32 == XML_ELEMENT_CONTENT_PLUS as u32
                     || (*ret).ocur as u32 == XML_ELEMENT_CONTENT_MULT as u32
@@ -6943,7 +6704,7 @@ fn xmlParseElementChildrenContentDeclPriv(
                 }
             }
             xmlNextChar_safe(ctxt);
-        } else if *(*(*ctxt).input).cur as i32 == '*' as i32 {
+        } else if *(*(*ctxt).input).cur == '*' as u8 {
             if !ret.is_null() {
                 (*ret).ocur = XML_ELEMENT_CONTENT_MULT;
                 cur = ret;
@@ -6968,7 +6729,7 @@ fn xmlParseElementChildrenContentDeclPriv(
                 }
             }
             xmlNextChar_safe(ctxt);
-        } else if *(*(*ctxt).input).cur as i32 == '+' as i32 {
+        } else if *(*(*ctxt).input).cur == '+' as u8 {
             if !ret.is_null() {
                 let mut found: i32 = 0;
                 if (*ret).ocur as u32 == XML_ELEMENT_CONTENT_OPT as u32
@@ -7072,7 +6833,7 @@ pub fn xmlParseElementContentDecl(
     let mut res: i32 = 0;
     unsafe {
         *result = 0 as xmlElementContentPtr;
-        if *(*(*ctxt).input).cur as i32 != '(' as i32 {
+        if *(*(*ctxt).input).cur != '(' as u8 {
             xmlFatalErrMsgStr(
                 ctxt,
                 XML_ERR_ELEMCONTENT_NOT_STARTED,
@@ -7083,24 +6844,21 @@ pub fn xmlParseElementContentDecl(
         }
     }
     unsafe { xmlNextChar_safe(ctxt) };
-    if (safe_ctxt).progressive == 0
-        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
-    {
-        xmlGROW(ctxt);
-    }
-    if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
+    GROW(ctxt);
+    if (safe_ctxt).instate == XML_PARSER_EOF {
         return -(1);
     }
     xmlSkipBlankChars(ctxt);
-    if unsafe {
-        *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '#' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'P' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'C' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'D' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'A' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'T' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'A' as i32
-    } {
+    if CMP7(
+        unsafe { (*(*ctxt).input).cur },
+        '#',
+        'P',
+        'C',
+        'D',
+        'A',
+        'T',
+        'A',
+    ) {
         tree = xmlParseElementMixedContentDecl(ctxt, inputid);
         res = XML_ELEMENT_TYPE_MIXED as i32
     } else {
@@ -7126,28 +6884,25 @@ pub fn xmlParseElementContentDecl(
 */
 
 pub fn xmlParseElementDecl(ctxt: xmlParserCtxtPtr) -> i32 {
-    let mut name: *const xmlChar = 0 as *const xmlChar;
+    let mut name: *const xmlChar;
     let mut ret: i32 = -(1);
     let mut content: xmlElementContentPtr = 0 as xmlElementContentPtr;
     /* GROW; done in the caller */
-    //@todo 削减unsafe范围
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '<' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == '!' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'L' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'M' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'E' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(7) as i32 == 'N' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(8) as i32 == 'T' as i32
-        {
+        if CMP9(
+            (*(*ctxt).input).cur,
+            '<',
+            '!',
+            'E',
+            'L',
+            'E',
+            'M',
+            'E',
+            'N',
+            'T',
+        ) {
             let inputid: i32 = (*(*ctxt).input).id;
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9);
-            (*(*ctxt).input).col += 9;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+            SKIP(ctxt, 9);
             if xmlSkipBlankChars(ctxt) == 0 {
                 xmlFatalErrMsg(
                     ctxt,
@@ -7172,30 +6927,17 @@ pub fn xmlParseElementDecl(ctxt: xmlParserCtxtPtr) -> i32 {
                     b"Space required after the element name\n\x00" as *const u8 as *const i8,
                 );
             }
-            if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'E' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'M' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'P' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'T' as i32
-                && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'Y' as i32
-            {
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
-                (*(*ctxt).input).col += 5;
-                if *(*(*ctxt).input).cur as i32 == 0 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                }
+            if CMP5((*(*ctxt).input).cur, 'E', 'M', 'P', 'T', 'Y') {
+                SKIP(ctxt, 5);
                 /*
                  * Element must always be empty.
                  */
                 ret = XML_ELEMENT_TYPE_EMPTY as i32
-            } else if *(*(*ctxt).input).cur as i32 == 'A' as i32
-                && *(*(*ctxt).input).cur.offset(1) as i32 == 'N' as i32
-                && *(*(*ctxt).input).cur.offset(2) as i32 == 'Y' as i32
+            } else if *(*(*ctxt).input).cur == 'A' as u8
+                && *(*(*ctxt).input).cur.offset(1) == 'N' as u8
+                && *(*(*ctxt).input).cur.offset(2) == 'Y' as u8
             {
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
-                (*(*ctxt).input).col += 3;
-                if *(*(*ctxt).input).cur as i32 == 0 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                }
+                SKIP(ctxt, 3);
                 /*
                  * Element is a generic container.
                  */
@@ -7206,7 +6948,7 @@ pub fn xmlParseElementDecl(ctxt: xmlParserCtxtPtr) -> i32 {
                 /*
                  * [ WFC: PEs in Internal Subset ] error handling.
                  */
-                if *(*(*ctxt).input).cur as i32 == '%' as i32
+                if *(*(*ctxt).input).cur == '%' as u8
                     && (*ctxt).external == 0
                     && (*ctxt).inputNr == 1
                 {
@@ -7227,7 +6969,7 @@ pub fn xmlParseElementDecl(ctxt: xmlParserCtxtPtr) -> i32 {
                 return -(1);
             }
             xmlSkipBlankChars(ctxt);
-            if *(*(*ctxt).input).cur as i32 != '>' as i32 {
+            if *(*(*ctxt).input).cur != '>' as u8 {
                 xmlFatalErr(ctxt, XML_ERR_GT_REQUIRED, 0 as *const i8);
                 if !content.is_null() {
                     xmlFreeDocElementContent_safe((*ctxt).myDoc, content);
@@ -7286,37 +7028,22 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
     let mut inputIdsSize: size_t = 0;
     let mut depth: size_t = 0;
     let safe_ctxt = unsafe { &mut *ctxt };
-    's_11: while 1 < 2 {
-        if (!((safe_ctxt).instate as i32 != XML_PARSER_EOF as i32)) {
+    loop {
+        if (!((safe_ctxt).instate != XML_PARSER_EOF)) {
             break;
         }
         unsafe {
-            if *(*(*ctxt).input).cur as i32 == '<' as i32
-                && *(*(*ctxt).input).cur.offset(1) as i32 == '!' as i32
-                && *(*(*ctxt).input).cur.offset(2) as i32 == '[' as i32
+            if *(*(*ctxt).input).cur == '<' as u8
+                && *(*(*ctxt).input).cur.offset(1) == '!' as u8
+                && *(*(*ctxt).input).cur.offset(2) == '[' as u8
             {
                 let id: i32 = (*(*ctxt).input).id;
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
-                (*(*ctxt).input).col += 3;
-                if *(*(*ctxt).input).cur as i32 == 0 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                }
+                SKIP(ctxt, 3);
                 xmlSkipBlankChars(ctxt);
-                if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'I' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'N' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'C' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'L' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'U' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'D' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(6) as i32 == 'E' as i32
-                {
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(7);
-                    (*(*ctxt).input).col += 7;
-                    if *(*(*ctxt).input).cur as i32 == 0 {
-                        xmlParserInputGrow_safe((*ctxt).input, 250);
-                    }
+                if CMP7((*(*ctxt).input).cur, 'I', 'N', 'C', 'L', 'U', 'D', 'E') {
+                    SKIP(ctxt, 7);
                     xmlSkipBlankChars(ctxt);
-                    if *(*(*ctxt).input).cur as i32 != '[' as i32 {
+                    if *(*(*ctxt).input).cur != '[' as u8 {
                         xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, 0 as *const i8);
                         xmlHaltParser(ctxt);
                         break;
@@ -7329,11 +7056,11 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                         }
                         xmlNextChar_safe(ctxt);
                         if inputIdsSize <= depth {
-                            let mut tmp: *mut i32 = 0 as *mut i32;
+                            let mut tmp: *mut i32;
                             inputIdsSize = if inputIdsSize == 0 {
                                 4
                             } else {
-                                inputIdsSize.wrapping_mul(2)
+                                inputIdsSize * 2
                             };
                             tmp = xmlRealloc_safe(
                                 inputIds as *mut (),
@@ -7349,23 +7076,13 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                         *inputIds.offset(depth as isize) = id;
                         depth = depth.wrapping_add(1)
                     }
-                } else if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == 'I' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == 'G' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'N' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'O' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'R' as i32
-                    && *((*(*ctxt).input).cur as *mut u8).offset(5) as i32 == 'E' as i32
-                {
+                } else if CMP6((*(*ctxt).input).cur, 'I', 'G', 'N', 'O', 'R', 'E') {
                     let mut state: i32 = 0;
                     let mut instate: xmlParserInputState = XML_PARSER_START;
                     let mut ignoreDepth: size_t = 0;
-                    (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(6);
-                    (*(*ctxt).input).col += 6;
-                    if *(*(*ctxt).input).cur as i32 == 0 {
-                        xmlParserInputGrow_safe((*ctxt).input, 250);
-                    }
+                    SKIP(ctxt, 6);
                     xmlSkipBlankChars(ctxt);
-                    if *(*(*ctxt).input).cur as i32 != '[' as i32 {
+                    if *(*(*ctxt).input).cur != '[' as u8 {
                         xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, 0 as *const i8);
                         xmlHaltParser(ctxt);
                         break;
@@ -7387,43 +7104,35 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                             (*ctxt).disableSAX = 1
                         }
                         (*ctxt).instate = XML_PARSER_IGNORE;
-                        while *(*(*ctxt).input).cur as i32 != 0 {
-                            if *(*(*ctxt).input).cur as i32 == '<' as i32
-                                && *(*(*ctxt).input).cur.offset(1) as i32 == '!' as i32
-                                && *(*(*ctxt).input).cur.offset(2) as i32 == '[' as i32
+                        while *(*(*ctxt).input).cur != 0 {
+                            if *(*(*ctxt).input).cur == '<' as u8
+                                && *(*(*ctxt).input).cur.offset(1) == '!' as u8
+                                && *(*(*ctxt).input).cur.offset(2) == '[' as u8
                             {
-                                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
-                                (*(*ctxt).input).col += 3;
-                                if *(*(*ctxt).input).cur as i32 == 0 {
-                                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                                }
-                                ignoreDepth = ignoreDepth.wrapping_add(1);
+                                SKIP(ctxt, 3);
+                                ignoreDepth += 1;
                                 /* Check for integer overflow */
                                 if !(ignoreDepth == 0) {
                                     continue;
                                 }
                                 xmlErrMemory(ctxt, 0 as *const i8);
-                                break 's_11;
-                            } else if *(*(*ctxt).input).cur as i32 == ']' as i32
-                                && *(*(*ctxt).input).cur.offset(1) as i32 == ']' as i32
-                                && *(*(*ctxt).input).cur.offset(2) as i32 == '>' as i32
+                                break;
+                            } else if *(*(*ctxt).input).cur == ']' as u8
+                                && *(*(*ctxt).input).cur.offset(1) == ']' as u8
+                                && *(*(*ctxt).input).cur.offset(2) == '>' as u8
                             {
                                 if ignoreDepth == 0 {
                                     break;
                                 }
-                                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
-                                (*(*ctxt).input).col += 3;
-                                if *(*(*ctxt).input).cur as i32 == 0 {
-                                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                                }
-                                ignoreDepth = ignoreDepth.wrapping_sub(1)
+                                SKIP(ctxt, 3);
+                                ignoreDepth -= 1;
                             } else {
                                 xmlNextChar_safe(ctxt);
                             }
                         }
                         (*ctxt).disableSAX = state;
                         (*ctxt).instate = instate;
-                        if *(*(*ctxt).input).cur as i32 == 0 {
+                        if *(*(*ctxt).input).cur == 0 {
                             xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, 0 as *const i8);
                             break;
                         } else {
@@ -7433,11 +7142,7 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                                                as *const u8 as
                                                *const i8);
                             }
-                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
-                            (*(*ctxt).input).col += 3;
-                            if *(*(*ctxt).input).cur as i32 == 0 {
-                                xmlParserInputGrow_safe((*ctxt).input, 250);
-                            }
+                            SKIP(ctxt, 3);
                         }
                     }
                 } else {
@@ -7446,11 +7151,11 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                     break;
                 }
             } else if depth > 0
-                && *(*(*ctxt).input).cur as i32 == ']' as i32
-                && *(*(*ctxt).input).cur.offset(1) as i32 == ']' as i32
-                && *(*(*ctxt).input).cur.offset(2) as i32 == '>' as i32
+                && *(*(*ctxt).input).cur == ']' as u8
+                && *(*(*ctxt).input).cur.offset(1) == ']' as u8
+                && *(*(*ctxt).input).cur.offset(2) == '>' as u8
             {
-                depth = depth.wrapping_sub(1);
+                depth -= 1;
                 if (*(*ctxt).input).id != *inputIds.offset(depth as isize) {
                     xmlFatalErrMsg(
                         ctxt,
@@ -7459,11 +7164,7 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                             as *const u8 as *const i8,
                     );
                 }
-                (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(3);
-                (*(*ctxt).input).col += 3;
-                if *(*(*ctxt).input).cur as i32 == 0 {
-                    xmlParserInputGrow_safe((*ctxt).input, 250);
-                }
+                SKIP(ctxt, 3);
             } else {
                 let check: *const xmlChar = (*(*ctxt).input).cur;
                 let cons: u32 = (*(*ctxt).input).consumed as u32;
@@ -7478,11 +7179,7 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
                 break;
             }
             xmlSkipBlankChars(ctxt);
-            if (*ctxt).progressive == 0
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-            {
-                xmlGROW(ctxt);
-            }
+            GROW(ctxt);
         }
     }
     unsafe { xmlFree_safe(inputIds as *mut ()) };
@@ -7512,35 +7209,30 @@ fn xmlParseConditionalSections(ctxt: xmlParserCtxtPtr) {
 
 pub fn xmlParseMarkupDecl(ctxt: xmlParserCtxtPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
-    if (safe_ctxt).progressive == 0
-        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
-    {
-        xmlGROW(ctxt);
-    }
-    //@todo 削减unsafe范围
+    GROW(ctxt);
     unsafe {
-        if *(*(*ctxt).input).cur as i32 == '<' as i32 {
-            if *(*(*ctxt).input).cur.offset(1) as i32 == '!' as i32 {
-                match *(*(*ctxt).input).cur.offset(2) as i32 {
-                    69 => {
-                        if *(*(*ctxt).input).cur.offset(3) as i32 == 'L' as i32 {
+        if *(*(*ctxt).input).cur == '<' as u8 {
+            if *(*(*ctxt).input).cur.offset(1) == '!' as u8 {
+                match *(*(*ctxt).input).cur.offset(2) as char {
+                    'E' => {
+                        if *(*(*ctxt).input).cur.offset(3) == 'L' as u8 {
                             xmlParseElementDecl(ctxt);
-                        } else if *(*(*ctxt).input).cur.offset(3) as i32 == 'N' as i32 {
+                        } else if *(*(*ctxt).input).cur.offset(3) == 'N' as u8 {
                             xmlParseEntityDecl(ctxt);
                         }
                     }
-                    65 => {
+                    'A' => {
                         xmlParseAttributeListDecl(ctxt);
                     }
-                    78 => {
+                    'N' => {
                         xmlParseNotationDecl(ctxt);
                     }
-                    45 => {
+                    '-' => {
                         xmlParseComment(ctxt);
                     }
                     _ => {}
                 }
-            } else if *(*(*ctxt).input).cur.offset(1) as i32 == '?' as i32 {
+            } else if *(*(*ctxt).input).cur.offset(1) == '?' as u8 {
                 xmlParsePI(ctxt);
             }
         }
@@ -7549,7 +7241,7 @@ pub fn xmlParseMarkupDecl(ctxt: xmlParserCtxtPtr) {
      * detect requirement to exit there and act accordingly
      * and avoid having instate overridden later on
      */
-    if (safe_ctxt).instate as i32 == XML_PARSER_EOF as i32 {
+    if (safe_ctxt).instate == XML_PARSER_EOF {
         return;
     }
     (safe_ctxt).instate = XML_PARSER_DTD;
@@ -7572,21 +7264,10 @@ pub fn xmlParseTextDecl(ctxt: xmlParserCtxtPtr) {
      * We know that '<?xml' is here.
      */
     unsafe {
-        if *((*(*ctxt).input).cur as *mut u8).offset(0) as i32 == '<' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(1) as i32 == '?' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(2) as i32 == 'x' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(3) as i32 == 'm' as i32
-            && *((*(*ctxt).input).cur as *mut u8).offset(4) as i32 == 'l' as i32
-            && (*(*(*ctxt).input).cur.offset(5) as i32 == 0x20 as i32
-                || 0x9 as i32 <= *(*(*ctxt).input).cur.offset(5) as i32
-                    && *(*(*ctxt).input).cur.offset(5) as i32 <= 0xa as i32
-                || *(*(*ctxt).input).cur.offset(5) as i32 == 0xd as i32)
+        if CMP5((*(*ctxt).input).cur, '<', '?', 'x', 'm', 'l')
+            && IS_BLANK_CH((*(*ctxt).input).cur.offset(5))
         {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(5);
-            (*(*ctxt).input).col += 5;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
+            SKIP(ctxt, 5);
         } else {
             xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_STARTED, 0 as *const i8);
             return;
@@ -7648,21 +7329,15 @@ pub fn xmlParseTextDecl(ctxt: xmlParserCtxtPtr) {
     }
     xmlSkipBlankChars(ctxt);
     unsafe {
-        if *(*(*ctxt).input).cur as i32 == '?' as i32
-            && *(*(*ctxt).input).cur.offset(1) as i32 == '>' as i32
-        {
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
-            (*(*ctxt).input).col += 2;
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
-        } else if *(*(*ctxt).input).cur as i32 == '>' as i32 {
+        if *(*(*ctxt).input).cur == '?' as u8 && *(*(*ctxt).input).cur.offset(1) == '>' as u8 {
+            SKIP(ctxt, 2);
+        } else if *(*(*ctxt).input).cur == '>' as u8 {
             /* Deprecated old WD ... */
             xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_FINISHED, 0 as *const i8);
             xmlNextChar_safe(ctxt);
         } else {
             xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_FINISHED, 0 as *const i8);
-            while *(*(*ctxt).input).cur as i32 != 0 && *(*(*ctxt).input).cur as i32 != '>' as i32 {
+            while *(*(*ctxt).input).cur != 0 && *(*(*ctxt).input).cur != '>' as u8 {
                 (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(1)
             }
             xmlNextChar_safe(ctxt);
