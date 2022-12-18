@@ -1,10 +1,10 @@
-Start testing: Dec 10 12:32 CST
+Start testing: Dec 17 15:42 CST
 ----------------------------------------------------------
 1/6 Testing: testapi
 1/6 Test: testapi
-Command: "/root/yhm/libxml2-rust/testapi"
-Directory: /root/yhm/libxml2-rust
-"testapi" start time: Dec 10 12:32 CST
+Command: "/root/zt/libxml2-rust/testapi"
+Directory: /root/zt/libxml2-rust
+"testapi" start time: Dec 17 15:42 CST
 Output:
 ----------------------------------------------------------
 Fatal: program compiled against libxml 20 using libxml 2
@@ -51,18 +51,18 @@ Testing xpathInternals : 106 of 117 functions ...
 Testing xpointer : 17 of 21 functions ...
 Total: 1168 functions, 284058 tests, 0 errors
 <end of output>
-Test time =   4.49 sec
+Test time =   3.57 sec
 ----------------------------------------------------------
 Test Passed.
-"testapi" end time: Dec 10 12:32 CST
-"testapi" time elapsed: 00:00:04
+"testapi" end time: Dec 17 15:42 CST
+"testapi" time elapsed: 00:00:03
 ----------------------------------------------------------
 
 2/6 Testing: testchar
 2/6 Test: testchar
-Command: "/root/yhm/libxml2-rust/testchar"
-Directory: /root/yhm/libxml2-rust
-"testchar" start time: Dec 10 12:32 CST
+Command: "/root/zt/libxml2-rust/testchar"
+Directory: /root/zt/libxml2-rust
+"testchar" start time: Dec 17 15:42 CST
 Output:
 ----------------------------------------------------------
 Fatal: program compiled against libxml 20 using libxml 2
@@ -72,18 +72,18 @@ testing char range: 1 2 3 4 done
 testing 1 byte char in document: 1 2 3 4 done
 testing 2 byte char in document: 1 2 3 4 done
 <end of output>
-Test time =   0.63 sec
+Test time =   0.61 sec
 ----------------------------------------------------------
 Test Passed.
-"testchar" end time: Dec 10 12:32 CST
+"testchar" end time: Dec 17 15:43 CST
 "testchar" time elapsed: 00:00:00
 ----------------------------------------------------------
 
 3/6 Testing: testdict
 3/6 Test: testdict
-Command: "/root/yhm/libxml2-rust/testdict"
-Directory: /root/yhm/libxml2-rust
-"testdict" start time: Dec 10 12:32 CST
+Command: "/root/zt/libxml2-rust/testdict"
+Directory: /root/zt/libxml2-rust
+"testdict" start time: Dec 17 15:43 CST
 Output:
 ----------------------------------------------------------
 Fatal: program compiled against libxml 20 using libxml 2
@@ -94,15 +94,15 @@ dictionary tests succeeded 20000 strings
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"testdict" end time: Dec 10 12:32 CST
+"testdict" end time: Dec 17 15:43 CST
 "testdict" time elapsed: 00:00:00
 ----------------------------------------------------------
 
 4/6 Testing: testrecurse
 4/6 Test: testrecurse
-Command: "/root/yhm/libxml2-rust/testrecurse"
-Directory: /root/yhm/libxml2-rust
-"testrecurse" start time: Dec 10 12:32 CST
+Command: "/root/zt/libxml2-rust/testrecurse"
+Directory: /root/zt/libxml2-rust
+"testrecurse" start time: Dec 17 15:43 CST
 Output:
 ----------------------------------------------------------
 .........
@@ -111,18 +111,18 @@ Output:
 ## Parsing non-recursive huge case
 Total 9 tests, no errors
 <end of output>
-Test time =   9.44 sec
+Test time =   9.02 sec
 ----------------------------------------------------------
 Test Passed.
-"testrecurse" end time: Dec 10 12:32 CST
+"testrecurse" end time: Dec 17 15:43 CST
 "testrecurse" time elapsed: 00:00:09
 ----------------------------------------------------------
 
 5/6 Testing: runtest
 5/6 Test: runtest
-Command: "/root/yhm/libxml2-rust/runtest" "--out" "/root/yhm/libxml2-rust"
-Directory: /root/yhm/libxml2-rust
-"runtest" start time: Dec 10 12:32 CST
+Command: "/root/zt/libxml2-rust/runtest" "--out" "/root/zt/libxml2-rust"
+Directory: /root/zt/libxml2-rust
+"runtest" start time: Dec 17 15:43 CST
 Output:
 ----------------------------------------------------------
 ## XML regression tests
@@ -171,26 +171,26 @@ Output:
 ## Catalog and Threads regression tests
 Total 3237 tests, no errors
 <end of output>
-Test time =   4.23 sec
+Test time =   2.95 sec
 ----------------------------------------------------------
 Test Passed.
-"runtest" end time: Dec 10 12:32 CST
-"runtest" time elapsed: 00:00:04
+"runtest" end time: Dec 17 15:43 CST
+"runtest" time elapsed: 00:00:02
 ----------------------------------------------------------
 
 6/6 Testing: testThreads
 6/6 Test: testThreads
-Command: "/root/yhm/libxml2-rust/testThreads"
-Directory: /root/yhm/libxml2-rust
-"testThreads" start time: Dec 10 12:32 CST
+Command: "/root/zt/libxml2-rust/testThreads"
+Directory: /root/zt/libxml2-rust
+"testThreads" start time: Dec 17 15:43 CST
 Output:
 ----------------------------------------------------------
 <end of output>
 Test time =   0.38 sec
 ----------------------------------------------------------
 Test Passed.
-"testThreads" end time: Dec 10 12:32 CST
+"testThreads" end time: Dec 17 15:43 CST
 "testThreads" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Dec 10 12:32 CST
+End testing: Dec 17 15:43 CST
