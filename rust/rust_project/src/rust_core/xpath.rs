@@ -53,7 +53,7 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
      * a couple of optimizations which will avoid computations in most cases
      */
     match safe_node1.type_0 {
-        1 => {
+        XML_ELEMENT_NODE => {
             if safe_node2.type_0 == XML_ELEMENT_NODE as u32 {
                 if 0 > safe_node1.content as ptrdiff_t
                     && 0 > safe_node2.content as ptrdiff_t
@@ -75,14 +75,14 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
                 current_block = 721385680381463314;
             }
         }
-        2 => {
+        XML_ATTRIBUTE_NODE => {
             precedence1 = 1;
             miscNode1 = node1;
             node1 = safe_node1.parent;
             misc = 1 as i32;
             current_block = 721385680381463314;
         }
-        3 | 4 | 8 | 7 => {
+        XML_TEXT_NODE | XML_CDATA_SECTION_NODE | XML_COMMENT_NODE | XML_PI_NODE => {
             miscNode1 = node1;
             /*
              * Find nearest element node.
@@ -124,11 +124,11 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
             }
             current_block = 721385680381463314;
         }
-        18 => {
+        XML_NAMESPACE_DECL => {
             /*
              * TODO: why do we return 1 for namespace nodes?
              */
-            return 1 as i32;
+            return 1;
         }
         _ => {
             current_block = 721385680381463314; /* element is owner */
@@ -258,7 +258,9 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
         _ => {}
     }
 
-    // turtle_comparison: if node1 == unsafe{(*node2).prev} { return 1 as i32 }
+    if node1 == unsafe { (*node2).prev } {
+        return 1;
+    }
     if node1 == unsafe { (*node2).next } {
         return -1;
     }
@@ -4435,21 +4437,23 @@ pub fn xmlXPathOrderDocElems(doc: xmlDocPtr) -> i64 {
         }
         if !safe_cur.next.is_null() {
             cur = safe_cur.next;
-        } else {
-            loop {
-                cur = safe_cur.parent;
-                if cur.is_null() {
-                    break;
-                }
-                if cur == doc as xmlNodePtr {
-                    cur = 0 as xmlNodePtr;
-                    break;
-                } else if !safe_cur.next.is_null() {
-                    cur = safe_cur.next;
-                    break;
-                } else if cur.is_null() {
-                    break;
-                }
+            continue;
+        }
+        loop {
+            cur = safe_cur.parent;
+            if cur.is_null() {
+                break;
+            }
+            if cur == doc as xmlNodePtr {
+                cur = 0 as xmlNodePtr;
+                break;
+            }
+            if !safe_cur.next.is_null() {
+                cur = safe_cur.next;
+                break;
+            }
+            if cur.is_null() {
+                break;
             }
         }
     }
@@ -7700,7 +7704,7 @@ fn xmlXPathReleaseObject(ctxt: xmlXPathContextPtr, obj: xmlXPathObjectPtr) {
     } else {
         let mut cache: xmlXPathContextCachePtr = safe_ctxt.cache as xmlXPathContextCachePtr;
         match safe_obj.type_0 {
-            1 | 9 => {
+            XPATH_NODESET | XPATH_XSLT_TREE => {
                 if !safe_obj.nodesetval.is_null() {
                     if safe_obj.boolval != 0 {
                         /*
@@ -7756,7 +7760,7 @@ fn xmlXPathReleaseObject(ctxt: xmlXPathContextPtr, obj: xmlXPathObjectPtr) {
                     current_block = 2290177392965769716;
                 }
             }
-            4 => {
+            XPATH_STRING => {
                 if !safe_obj.stringval.is_null() {
                     unsafe {
                         xmlFree.expect("non-null function pointer")((*obj).stringval as *mut ())
@@ -7793,7 +7797,7 @@ fn xmlXPathReleaseObject(ctxt: xmlXPathContextPtr, obj: xmlXPathObjectPtr) {
                     current_block = 2290177392965769716;
                 }
             }
-            2 => {
+            XPATH_BOOLEAN => {
                 if unsafe {
                     (*cache).booleanObjs.is_null()
                         || (*(*cache).booleanObjs).number < (*cache).maxBoolean
@@ -7828,7 +7832,7 @@ fn xmlXPathReleaseObject(ctxt: xmlXPathContextPtr, obj: xmlXPathObjectPtr) {
                     current_block = 2290177392965769716;
                 }
             }
-            3 => {
+            XPATH_NUMBER => {
                 if unsafe {
                     (*cache).numberObjs.is_null()
                         || (*(*cache).numberObjs).number < (*cache).maxNumber
@@ -7860,7 +7864,7 @@ fn xmlXPathReleaseObject(ctxt: xmlXPathContextPtr, obj: xmlXPathObjectPtr) {
                     current_block = 2290177392965769716;
                 }
             }
-            7 => {
+            XPATH_LOCATIONSET => {
                 if !safe_obj.user.is_null() {
                     unsafe { xmlXPtrFreeLocationSet((*obj).user as xmlLocationSetPtr) };
                 }
@@ -7934,8 +7938,7 @@ fn xmlXPathReleaseObject(ctxt: xmlXPathContextPtr, obj: xmlXPathObjectPtr) {
                         while i < unsafe { (*tmpset).nodeNr } {
                             unsafe { node = *(*tmpset).nodeTab.offset(i as isize) };
                             if unsafe {
-                                !node.is_null()
-                                    && (*node).type_0 as u32 == XML_NAMESPACE_DECL as i32 as u32
+                                !node.is_null() && (*node).type_0 as u32 == XML_NAMESPACE_DECL
                             } {
                                 xmlXPathNodeSetFreeNs(node as xmlNsPtr);
                             }
