@@ -6217,7 +6217,7 @@ fn htmlAutoCloseOnClose(ctxt: htmlParserCtxtPtr, newtag: *const xmlChar) {
 
     while unsafe { xmlStrEqual_safe(newtag, ctxtPtr.name) } == 0 {
         info = htmlTagLookup(ctxtPtr.name);
-        let info_condition = unsafe { !info.is_null() && (*info).endTag as i32 == 3 as i32 };
+        let info_condition = unsafe { !info.is_null() && (*info).endTag == 3 };
         if info_condition {
             htmlParseErr(
                 ctxt,
@@ -6657,7 +6657,7 @@ pub fn htmlIsScriptAttribute(name: *const xmlChar) -> i32 {
             return 0;
         }
     }
-    i = 0 as u32;
+    i = 0;
     while (i as u64)
         < ((::std::mem::size_of::<[*const i8; 18]>() as u64)
             / (::std::mem::size_of::<*const i8>()) as u64)
@@ -6679,7 +6679,7 @@ pub fn htmlIsScriptAttribute(name: *const xmlChar) -> i32 {
 static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     {
         let init = _htmlEntityDesc {
-            value: 34 as u32,
+            value: 34,
             name: b"quot\x00" as *const u8 as *const i8,
             desc: b"quotation mark = APL quote, U+0022 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6687,7 +6687,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 38 as u32,
+            value: 38,
             name: b"amp\x00" as *const u8 as *const i8,
             desc: b"ampersand, U+0026 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6695,7 +6695,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 39 as u32,
+            value: 39,
             name: b"apos\x00" as *const u8 as *const i8,
             desc: b"single quote\x00" as *const u8 as *const i8,
         };
@@ -6703,7 +6703,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 60 as u32,
+            value: 60,
             name: b"lt\x00" as *const u8 as *const i8,
             desc: b"less-than sign, U+003C ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6711,7 +6711,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 62 as u32,
+            value: 62,
             name: b"gt\x00" as *const u8 as *const i8,
             desc: b"greater-than sign, U+003E ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6719,7 +6719,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 160 as u32,
+            value: 160,
             name: b"nbsp\x00" as *const u8 as *const i8,
             desc: b"no-break space = non-breaking space, U+00A0 ISOnum\x00" as *const u8
                 as *const i8,
@@ -6728,7 +6728,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 161 as u32,
+            value: 161,
             name: b"iexcl\x00" as *const u8 as *const i8,
             desc: b"inverted exclamation mark, U+00A1 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6736,7 +6736,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 162 as u32,
+            value: 162,
             name: b"cent\x00" as *const u8 as *const i8,
             desc: b"cent sign, U+00A2 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6744,7 +6744,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 163 as u32,
+            value: 163,
             name: b"pound\x00" as *const u8 as *const i8,
             desc: b"pound sign, U+00A3 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6752,7 +6752,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 164 as u32,
+            value: 164,
             name: b"curren\x00" as *const u8 as *const i8,
             desc: b"currency sign, U+00A4 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6760,7 +6760,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 165 as u32,
+            value: 165,
             name: b"yen\x00" as *const u8 as *const i8,
             desc: b"yen sign = yuan sign, U+00A5 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6768,7 +6768,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 166 as u32,
+            value: 166,
             name: b"brvbar\x00" as *const u8 as *const i8,
             desc: b"broken bar = broken vertical bar, U+00A6 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6776,7 +6776,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 167 as u32,
+            value: 167,
             name: b"sect\x00" as *const u8 as *const i8,
             desc: b"section sign, U+00A7 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6784,7 +6784,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 168 as u32,
+            value: 168,
             name: b"uml\x00" as *const u8 as *const i8,
             desc: b"diaeresis = spacing diaeresis, U+00A8 ISOdia\x00" as *const u8 as *const i8,
         };
@@ -6792,7 +6792,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 169 as u32,
+            value: 169,
             name: b"copy\x00" as *const u8 as *const i8,
             desc: b"copyright sign, U+00A9 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6800,7 +6800,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 170 as u32,
+            value: 170,
             name: b"ordf\x00" as *const u8 as *const i8,
             desc: b"feminine ordinal indicator, U+00AA ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6808,7 +6808,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 171 as u32,
+            value: 171,
             name:
             b"laquo\x00" as *const u8 as *const i8,
             desc:
@@ -6819,7 +6819,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 172 as u32,
+            value: 172,
             name: b"not\x00" as *const u8 as *const i8,
             desc: b"not sign, U+00AC ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6827,7 +6827,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 173 as u32,
+            value: 173,
             name: b"shy\x00" as *const u8 as *const i8,
             desc: b"soft hyphen = discretionary hyphen, U+00AD ISOnum\x00" as *const u8
                 as *const i8,
@@ -6836,7 +6836,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 174 as u32,
+            value: 174,
             name: b"reg\x00" as *const u8 as *const i8,
             desc: b"registered sign = registered trade mark sign, U+00AE ISOnum\x00" as *const u8
                 as *const i8,
@@ -6845,7 +6845,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 175 as u32,
+            value: 175,
             name: b"macr\x00" as *const u8 as *const i8,
             desc: b"macron = spacing macron = overline = APL overbar, U+00AF ISOdia\x00"
                 as *const u8 as *const i8,
@@ -6854,7 +6854,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 176 as u32,
+            value: 176,
             name: b"deg\x00" as *const u8 as *const i8,
             desc: b"degree sign, U+00B0 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6862,7 +6862,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 177 as u32,
+            value: 177,
             name: b"plusmn\x00" as *const u8 as *const i8,
             desc: b"plus-minus sign = plus-or-minus sign, U+00B1 ISOnum\x00" as *const u8
                 as *const i8,
@@ -6871,7 +6871,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 178 as u32,
+            value: 178,
             name: b"sup2\x00" as *const u8 as *const i8,
             desc: b"superscript two = superscript digit two = squared, U+00B2 ISOnum\x00"
                 as *const u8 as *const i8,
@@ -6880,7 +6880,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 179 as u32,
+            value: 179,
             name: b"sup3\x00" as *const u8 as *const i8,
             desc: b"superscript three = superscript digit three = cubed, U+00B3 ISOnum\x00"
                 as *const u8 as *const i8,
@@ -6889,7 +6889,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 180 as u32,
+            value: 180,
             name: b"acute\x00" as *const u8 as *const i8,
             desc: b"acute accent = spacing acute, U+00B4 ISOdia\x00" as *const u8 as *const i8,
         };
@@ -6897,7 +6897,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 181 as u32,
+            value: 181,
             name: b"micro\x00" as *const u8 as *const i8,
             desc: b"micro sign, U+00B5 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6905,7 +6905,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 182 as u32,
+            value: 182,
             name: b"para\x00" as *const u8 as *const i8,
             desc: b"pilcrow sign = paragraph sign, U+00B6 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6913,7 +6913,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 183 as u32,
+            value: 183,
             name: b"middot\x00" as *const u8 as *const i8,
             desc: b"middle dot = Georgian comma Greek middle dot, U+00B7 ISOnum\x00" as *const u8
                 as *const i8,
@@ -6922,7 +6922,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 184 as u32,
+            value: 184,
             name: b"cedil\x00" as *const u8 as *const i8,
             desc: b"cedilla = spacing cedilla, U+00B8 ISOdia\x00" as *const u8 as *const i8,
         };
@@ -6930,7 +6930,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 185 as u32,
+            value: 185,
             name: b"sup1\x00" as *const u8 as *const i8,
             desc: b"superscript one = superscript digit one, U+00B9 ISOnum\x00" as *const u8
                 as *const i8,
@@ -6939,7 +6939,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 186 as u32,
+            value: 186,
             name: b"ordm\x00" as *const u8 as *const i8,
             desc: b"masculine ordinal indicator, U+00BA ISOnum\x00" as *const u8 as *const i8,
         };
@@ -6947,7 +6947,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 187 as u32,
+            value: 187,
             name:
             b"raquo\x00" as *const u8 as *const i8,
             desc:
@@ -6958,7 +6958,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 188 as u32,
+            value: 188,
             name: b"frac14\x00" as *const u8 as *const i8,
             desc: b"vulgar fraction one quarter = fraction one quarter, U+00BC ISOnum\x00"
                 as *const u8 as *const i8,
@@ -6967,7 +6967,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 189 as u32,
+            value: 189,
             name: b"frac12\x00" as *const u8 as *const i8,
             desc: b"vulgar fraction one half = fraction one half, U+00BD ISOnum\x00" as *const u8
                 as *const i8,
@@ -6976,7 +6976,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 190 as u32,
+            value: 190,
             name: b"frac34\x00" as *const u8 as *const i8,
             desc: b"vulgar fraction three quarters = fraction three quarters, U+00BE ISOnum\x00"
                 as *const u8 as *const i8,
@@ -6985,7 +6985,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 191 as u32,
+            value: 191,
             name: b"iquest\x00" as *const u8 as *const i8,
             desc: b"inverted question mark = turned question mark, U+00BF ISOnum\x00" as *const u8
                 as *const i8,
@@ -6994,7 +6994,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 192 as u32,
+            value: 192,
             name:
             b"Agrave\x00" as *const u8 as *const i8,
             desc:
@@ -7005,7 +7005,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 193 as u32,
+            value: 193,
             name: b"Aacute\x00" as *const u8 as *const i8,
             desc: b"latin capital letter A with acute, U+00C1 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7014,7 +7014,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 194 as u32,
+            value: 194,
             name: b"Acirc\x00" as *const u8 as *const i8,
             desc: b"latin capital letter A with circumflex, U+00C2 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7023,7 +7023,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 195 as u32,
+            value: 195,
             name: b"Atilde\x00" as *const u8 as *const i8,
             desc: b"latin capital letter A with tilde, U+00C3 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7032,7 +7032,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 196 as u32,
+            value: 196,
             name: b"Auml\x00" as *const u8 as *const i8,
             desc: b"latin capital letter A with diaeresis, U+00C4 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7041,7 +7041,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 197 as u32,
+            value: 197,
             name:
             b"Aring\x00" as *const u8 as *const i8,
             desc:
@@ -7052,7 +7052,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 198 as u32,
+            value: 198,
             name: b"AElig\x00" as *const u8 as *const i8,
             desc: b"latin capital letter AE = latin capital ligature AE, U+00C6 ISOlat1\x00"
                 as *const u8 as *const i8,
@@ -7061,7 +7061,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 199 as u32,
+            value: 199,
             name: b"Ccedil\x00" as *const u8 as *const i8,
             desc: b"latin capital letter C with cedilla, U+00C7 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7070,7 +7070,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 200 as u32,
+            value: 200,
             name: b"Egrave\x00" as *const u8 as *const i8,
             desc: b"latin capital letter E with grave, U+00C8 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7079,7 +7079,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 201 as u32,
+            value: 201,
             name: b"Eacute\x00" as *const u8 as *const i8,
             desc: b"latin capital letter E with acute, U+00C9 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7088,7 +7088,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 202 as u32,
+            value: 202,
             name: b"Ecirc\x00" as *const u8 as *const i8,
             desc: b"latin capital letter E with circumflex, U+00CA ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7097,7 +7097,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 203 as u32,
+            value: 203,
             name: b"Euml\x00" as *const u8 as *const i8,
             desc: b"latin capital letter E with diaeresis, U+00CB ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7106,7 +7106,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 204 as u32,
+            value: 204,
             name: b"Igrave\x00" as *const u8 as *const i8,
             desc: b"latin capital letter I with grave, U+00CC ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7115,7 +7115,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 205 as u32,
+            value: 205,
             name: b"Iacute\x00" as *const u8 as *const i8,
             desc: b"latin capital letter I with acute, U+00CD ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7124,7 +7124,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 206 as u32,
+            value: 206,
             name: b"Icirc\x00" as *const u8 as *const i8,
             desc: b"latin capital letter I with circumflex, U+00CE ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7133,7 +7133,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 207 as u32,
+            value: 207,
             name: b"Iuml\x00" as *const u8 as *const i8,
             desc: b"latin capital letter I with diaeresis, U+00CF ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7142,7 +7142,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 208 as u32,
+            value: 208,
             name: b"ETH\x00" as *const u8 as *const i8,
             desc: b"latin capital letter ETH, U+00D0 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7150,7 +7150,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 209 as u32,
+            value: 209,
             name: b"Ntilde\x00" as *const u8 as *const i8,
             desc: b"latin capital letter N with tilde, U+00D1 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7159,7 +7159,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 210 as u32,
+            value: 210,
             name: b"Ograve\x00" as *const u8 as *const i8,
             desc: b"latin capital letter O with grave, U+00D2 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7168,7 +7168,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 211 as u32,
+            value: 211,
             name: b"Oacute\x00" as *const u8 as *const i8,
             desc: b"latin capital letter O with acute, U+00D3 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7177,7 +7177,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 212 as u32,
+            value: 212,
             name: b"Ocirc\x00" as *const u8 as *const i8,
             desc: b"latin capital letter O with circumflex, U+00D4 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7186,7 +7186,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 213 as u32,
+            value: 213,
             name: b"Otilde\x00" as *const u8 as *const i8,
             desc: b"latin capital letter O with tilde, U+00D5 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7195,7 +7195,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 214 as u32,
+            value: 214,
             name: b"Ouml\x00" as *const u8 as *const i8,
             desc: b"latin capital letter O with diaeresis, U+00D6 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7204,7 +7204,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 215 as u32,
+            value: 215,
             name: b"times\x00" as *const u8 as *const i8,
             desc: b"multiplication sign, U+00D7 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -7212,7 +7212,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 216 as u32,
+            value: 216,
             name:
             b"Oslash\x00" as *const u8 as *const i8,
             desc:
@@ -7223,7 +7223,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 217 as u32,
+            value: 217,
             name: b"Ugrave\x00" as *const u8 as *const i8,
             desc: b"latin capital letter U with grave, U+00D9 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7232,7 +7232,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 218 as u32,
+            value: 218,
             name: b"Uacute\x00" as *const u8 as *const i8,
             desc: b"latin capital letter U with acute, U+00DA ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7241,7 +7241,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 219 as u32,
+            value: 219,
             name: b"Ucirc\x00" as *const u8 as *const i8,
             desc: b"latin capital letter U with circumflex, U+00DB ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7250,7 +7250,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 220 as u32,
+            value: 220,
             name: b"Uuml\x00" as *const u8 as *const i8,
             desc: b"latin capital letter U with diaeresis, U+00DC ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7259,7 +7259,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 221 as u32,
+            value: 221,
             name: b"Yacute\x00" as *const u8 as *const i8,
             desc: b"latin capital letter Y with acute, U+00DD ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7268,7 +7268,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 222 as u32,
+            value: 222,
             name: b"THORN\x00" as *const u8 as *const i8,
             desc: b"latin capital letter THORN, U+00DE ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7276,7 +7276,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 223 as u32,
+            value: 223,
             name: b"szlig\x00" as *const u8 as *const i8,
             desc: b"latin small letter sharp s = ess-zed, U+00DF ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7285,7 +7285,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 224 as u32,
+            value: 224,
             name: b"agrave\x00" as *const u8 as *const i8,
             desc:
                 b"latin small letter a with grave = latin small letter a grave, U+00E0 ISOlat1\x00"
@@ -7295,7 +7295,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 225 as u32,
+            value: 225,
             name: b"aacute\x00" as *const u8 as *const i8,
             desc: b"latin small letter a with acute, U+00E1 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7303,7 +7303,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 226 as u32,
+            value: 226,
             name: b"acirc\x00" as *const u8 as *const i8,
             desc: b"latin small letter a with circumflex, U+00E2 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7312,7 +7312,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 227 as u32,
+            value: 227,
             name: b"atilde\x00" as *const u8 as *const i8,
             desc: b"latin small letter a with tilde, U+00E3 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7320,7 +7320,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 228 as u32,
+            value: 228,
             name: b"auml\x00" as *const u8 as *const i8,
             desc: b"latin small letter a with diaeresis, U+00E4 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7329,7 +7329,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 229 as u32,
+            value: 229,
             name:
             b"aring\x00" as *const u8 as *const i8,
             desc:
@@ -7340,7 +7340,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 230 as u32,
+            value: 230,
             name: b"aelig\x00" as *const u8 as *const i8,
             desc: b"latin small letter ae = latin small ligature ae, U+00E6 ISOlat1\x00"
                 as *const u8 as *const i8,
@@ -7349,7 +7349,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 231 as u32,
+            value: 231,
             name: b"ccedil\x00" as *const u8 as *const i8,
             desc: b"latin small letter c with cedilla, U+00E7 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7358,7 +7358,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 232 as u32,
+            value: 232,
             name: b"egrave\x00" as *const u8 as *const i8,
             desc: b"latin small letter e with grave, U+00E8 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7366,7 +7366,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 233 as u32,
+            value: 233,
             name: b"eacute\x00" as *const u8 as *const i8,
             desc: b"latin small letter e with acute, U+00E9 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7374,7 +7374,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 234 as u32,
+            value: 234,
             name: b"ecirc\x00" as *const u8 as *const i8,
             desc: b"latin small letter e with circumflex, U+00EA ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7383,7 +7383,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 235 as u32,
+            value: 235,
             name: b"euml\x00" as *const u8 as *const i8,
             desc: b"latin small letter e with diaeresis, U+00EB ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7392,7 +7392,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 236 as u32,
+            value: 236,
             name: b"igrave\x00" as *const u8 as *const i8,
             desc: b"latin small letter i with grave, U+00EC ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7400,7 +7400,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 237 as u32,
+            value: 237,
             name: b"iacute\x00" as *const u8 as *const i8,
             desc: b"latin small letter i with acute, U+00ED ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7408,7 +7408,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 238 as u32,
+            value: 238,
             name: b"icirc\x00" as *const u8 as *const i8,
             desc: b"latin small letter i with circumflex, U+00EE ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7417,7 +7417,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 239 as u32,
+            value: 239,
             name: b"iuml\x00" as *const u8 as *const i8,
             desc: b"latin small letter i with diaeresis, U+00EF ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7426,7 +7426,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 240 as u32,
+            value: 240,
             name: b"eth\x00" as *const u8 as *const i8,
             desc: b"latin small letter eth, U+00F0 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7434,7 +7434,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 241 as u32,
+            value: 241,
             name: b"ntilde\x00" as *const u8 as *const i8,
             desc: b"latin small letter n with tilde, U+00F1 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7442,7 +7442,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 242 as u32,
+            value: 242,
             name: b"ograve\x00" as *const u8 as *const i8,
             desc: b"latin small letter o with grave, U+00F2 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7450,7 +7450,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 243 as u32,
+            value: 243,
             name: b"oacute\x00" as *const u8 as *const i8,
             desc: b"latin small letter o with acute, U+00F3 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7458,7 +7458,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 244 as u32,
+            value: 244,
             name: b"ocirc\x00" as *const u8 as *const i8,
             desc: b"latin small letter o with circumflex, U+00F4 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7467,7 +7467,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 245 as u32,
+            value: 245,
             name: b"otilde\x00" as *const u8 as *const i8,
             desc: b"latin small letter o with tilde, U+00F5 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7475,7 +7475,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 246 as u32,
+            value: 246,
             name: b"ouml\x00" as *const u8 as *const i8,
             desc: b"latin small letter o with diaeresis, U+00F6 ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7484,7 +7484,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 247 as u32,
+            value: 247,
             name: b"divide\x00" as *const u8 as *const i8,
             desc: b"division sign, U+00F7 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -7492,7 +7492,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 248 as u32,
+            value: 248,
             name:
             b"oslash\x00" as *const u8 as *const i8,
             desc:
@@ -7503,7 +7503,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 249 as u32,
+            value: 249,
             name: b"ugrave\x00" as *const u8 as *const i8,
             desc: b"latin small letter u with grave, U+00F9 ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7511,7 +7511,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 250 as u32,
+            value: 250,
             name: b"uacute\x00" as *const u8 as *const i8,
             desc: b"latin small letter u with acute, U+00FA ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7519,7 +7519,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 251 as u32,
+            value: 251,
             name: b"ucirc\x00" as *const u8 as *const i8,
             desc: b"latin small letter u with circumflex, U+00FB ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7528,7 +7528,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 252 as u32,
+            value: 252,
             name: b"uuml\x00" as *const u8 as *const i8,
             desc: b"latin small letter u with diaeresis, U+00FC ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7537,7 +7537,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 253 as u32,
+            value: 253,
             name: b"yacute\x00" as *const u8 as *const i8,
             desc: b"latin small letter y with acute, U+00FD ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7545,7 +7545,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 254 as u32,
+            value: 254,
             name: b"thorn\x00" as *const u8 as *const i8,
             desc: b"latin small letter thorn with, U+00FE ISOlat1\x00" as *const u8 as *const i8,
         };
@@ -7553,7 +7553,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 255 as u32,
+            value: 255,
             name: b"yuml\x00" as *const u8 as *const i8,
             desc: b"latin small letter y with diaeresis, U+00FF ISOlat1\x00" as *const u8
                 as *const i8,
@@ -7562,7 +7562,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 338 as u32,
+            value: 338,
             name: b"OElig\x00" as *const u8 as *const i8,
             desc: b"latin capital ligature OE, U+0152 ISOlat2\x00" as *const u8 as *const i8,
         };
@@ -7570,7 +7570,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 339 as u32,
+            value: 339,
             name: b"oelig\x00" as *const u8 as *const i8,
             desc: b"latin small ligature oe, U+0153 ISOlat2\x00" as *const u8 as *const i8,
         };
@@ -7578,7 +7578,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 352 as u32,
+            value: 352,
             name: b"Scaron\x00" as *const u8 as *const i8,
             desc: b"latin capital letter S with caron, U+0160 ISOlat2\x00" as *const u8
                 as *const i8,
@@ -7587,7 +7587,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 353 as u32,
+            value: 353,
             name: b"scaron\x00" as *const u8 as *const i8,
             desc: b"latin small letter s with caron, U+0161 ISOlat2\x00" as *const u8 as *const i8,
         };
@@ -7595,7 +7595,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 376 as u32,
+            value: 376,
             name: b"Yuml\x00" as *const u8 as *const i8,
             desc: b"latin capital letter Y with diaeresis, U+0178 ISOlat2\x00" as *const u8
                 as *const i8,
@@ -7604,7 +7604,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 402 as u32,
+            value: 402,
             name: b"fnof\x00" as *const u8 as *const i8,
             desc: b"latin small f with hook = function = florin, U+0192 ISOtech\x00" as *const u8
                 as *const i8,
@@ -7613,7 +7613,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 710 as u32,
+            value: 710,
             name: b"circ\x00" as *const u8 as *const i8,
             desc: b"modifier letter circumflex accent, U+02C6 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -7621,7 +7621,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 732 as u32,
+            value: 732,
             name: b"tilde\x00" as *const u8 as *const i8,
             desc: b"small tilde, U+02DC ISOdia\x00" as *const u8 as *const i8,
         };
@@ -7629,7 +7629,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 913 as u32,
+            value: 913,
             name: b"Alpha\x00" as *const u8 as *const i8,
             desc: b"greek capital letter alpha, U+0391\x00" as *const u8 as *const i8,
         };
@@ -7637,7 +7637,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 914 as u32,
+            value: 914,
             name: b"Beta\x00" as *const u8 as *const i8,
             desc: b"greek capital letter beta, U+0392\x00" as *const u8 as *const i8,
         };
@@ -7645,7 +7645,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 915 as u32,
+            value: 915,
             name: b"Gamma\x00" as *const u8 as *const i8,
             desc: b"greek capital letter gamma, U+0393 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7653,7 +7653,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 916 as u32,
+            value: 916,
             name: b"Delta\x00" as *const u8 as *const i8,
             desc: b"greek capital letter delta, U+0394 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7661,7 +7661,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 917 as u32,
+            value: 917,
             name: b"Epsilon\x00" as *const u8 as *const i8,
             desc: b"greek capital letter epsilon, U+0395\x00" as *const u8 as *const i8,
         };
@@ -7669,7 +7669,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 918 as u32,
+            value: 918,
             name: b"Zeta\x00" as *const u8 as *const i8,
             desc: b"greek capital letter zeta, U+0396\x00" as *const u8 as *const i8,
         };
@@ -7677,7 +7677,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 919 as u32,
+            value: 919,
             name: b"Eta\x00" as *const u8 as *const i8,
             desc: b"greek capital letter eta, U+0397\x00" as *const u8 as *const i8,
         };
@@ -7685,7 +7685,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 920 as u32,
+            value: 920,
             name: b"Theta\x00" as *const u8 as *const i8,
             desc: b"greek capital letter theta, U+0398 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7693,7 +7693,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 921 as u32,
+            value: 921,
             name: b"Iota\x00" as *const u8 as *const i8,
             desc: b"greek capital letter iota, U+0399\x00" as *const u8 as *const i8,
         };
@@ -7701,7 +7701,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 922 as u32,
+            value: 922,
             name: b"Kappa\x00" as *const u8 as *const i8,
             desc: b"greek capital letter kappa, U+039A\x00" as *const u8 as *const i8,
         };
@@ -7709,7 +7709,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 923 as u32,
+            value: 923,
             name: b"Lambda\x00" as *const u8 as *const i8,
             desc: b"greek capital letter lambda, U+039B ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7717,7 +7717,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 924 as u32,
+            value: 924,
             name: b"Mu\x00" as *const u8 as *const i8,
             desc: b"greek capital letter mu, U+039C\x00" as *const u8 as *const i8,
         };
@@ -7725,7 +7725,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 925 as u32,
+            value: 925,
             name: b"Nu\x00" as *const u8 as *const i8,
             desc: b"greek capital letter nu, U+039D\x00" as *const u8 as *const i8,
         };
@@ -7733,7 +7733,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 926 as u32,
+            value: 926,
             name: b"Xi\x00" as *const u8 as *const i8,
             desc: b"greek capital letter xi, U+039E ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7741,7 +7741,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 927 as u32,
+            value: 927,
             name: b"Omicron\x00" as *const u8 as *const i8,
             desc: b"greek capital letter omicron, U+039F\x00" as *const u8 as *const i8,
         };
@@ -7749,7 +7749,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 928 as u32,
+            value: 928,
             name: b"Pi\x00" as *const u8 as *const i8,
             desc: b"greek capital letter pi, U+03A0 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7757,7 +7757,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 929 as u32,
+            value: 929,
             name: b"Rho\x00" as *const u8 as *const i8,
             desc: b"greek capital letter rho, U+03A1\x00" as *const u8 as *const i8,
         };
@@ -7765,7 +7765,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 931 as u32,
+            value: 931,
             name: b"Sigma\x00" as *const u8 as *const i8,
             desc: b"greek capital letter sigma, U+03A3 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7773,7 +7773,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 932 as u32,
+            value: 932,
             name: b"Tau\x00" as *const u8 as *const i8,
             desc: b"greek capital letter tau, U+03A4\x00" as *const u8 as *const i8,
         };
@@ -7781,7 +7781,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 933 as u32,
+            value: 933,
             name: b"Upsilon\x00" as *const u8 as *const i8,
             desc: b"greek capital letter upsilon, U+03A5 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7789,7 +7789,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 934 as u32,
+            value: 934,
             name: b"Phi\x00" as *const u8 as *const i8,
             desc: b"greek capital letter phi, U+03A6 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7797,7 +7797,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 935 as u32,
+            value: 935,
             name: b"Chi\x00" as *const u8 as *const i8,
             desc: b"greek capital letter chi, U+03A7\x00" as *const u8 as *const i8,
         };
@@ -7805,7 +7805,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 936 as u32,
+            value: 936,
             name: b"Psi\x00" as *const u8 as *const i8,
             desc: b"greek capital letter psi, U+03A8 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7813,7 +7813,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 937 as u32,
+            value: 937,
             name: b"Omega\x00" as *const u8 as *const i8,
             desc: b"greek capital letter omega, U+03A9 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7821,7 +7821,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 945 as u32,
+            value: 945,
             name: b"alpha\x00" as *const u8 as *const i8,
             desc: b"greek small letter alpha, U+03B1 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7829,7 +7829,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 946 as u32,
+            value: 946,
             name: b"beta\x00" as *const u8 as *const i8,
             desc: b"greek small letter beta, U+03B2 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7837,7 +7837,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 947 as u32,
+            value: 947,
             name: b"gamma\x00" as *const u8 as *const i8,
             desc: b"greek small letter gamma, U+03B3 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7845,7 +7845,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 948 as u32,
+            value: 948,
             name: b"delta\x00" as *const u8 as *const i8,
             desc: b"greek small letter delta, U+03B4 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7853,7 +7853,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 949 as u32,
+            value: 949,
             name: b"epsilon\x00" as *const u8 as *const i8,
             desc: b"greek small letter epsilon, U+03B5 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7861,7 +7861,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 950 as u32,
+            value: 950,
             name: b"zeta\x00" as *const u8 as *const i8,
             desc: b"greek small letter zeta, U+03B6 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7869,7 +7869,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 951 as u32,
+            value: 951,
             name: b"eta\x00" as *const u8 as *const i8,
             desc: b"greek small letter eta, U+03B7 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7877,7 +7877,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 952 as u32,
+            value: 952,
             name: b"theta\x00" as *const u8 as *const i8,
             desc: b"greek small letter theta, U+03B8 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7885,7 +7885,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 953 as u32,
+            value: 953,
             name: b"iota\x00" as *const u8 as *const i8,
             desc: b"greek small letter iota, U+03B9 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7893,7 +7893,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 954 as u32,
+            value: 954,
             name: b"kappa\x00" as *const u8 as *const i8,
             desc: b"greek small letter kappa, U+03BA ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7901,7 +7901,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 955 as u32,
+            value: 955,
             name: b"lambda\x00" as *const u8 as *const i8,
             desc: b"greek small letter lambda, U+03BB ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7909,7 +7909,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 956 as u32,
+            value: 956,
             name: b"mu\x00" as *const u8 as *const i8,
             desc: b"greek small letter mu, U+03BC ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7917,7 +7917,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 957 as u32,
+            value: 957,
             name: b"nu\x00" as *const u8 as *const i8,
             desc: b"greek small letter nu, U+03BD ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7925,7 +7925,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 958 as u32,
+            value: 958,
             name: b"xi\x00" as *const u8 as *const i8,
             desc: b"greek small letter xi, U+03BE ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7933,7 +7933,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 959 as u32,
+            value: 959,
             name: b"omicron\x00" as *const u8 as *const i8,
             desc: b"greek small letter omicron, U+03BF NEW\x00" as *const u8 as *const i8,
         };
@@ -7941,7 +7941,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 960 as u32,
+            value: 960,
             name: b"pi\x00" as *const u8 as *const i8,
             desc: b"greek small letter pi, U+03C0 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7949,7 +7949,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 961 as u32,
+            value: 961,
             name: b"rho\x00" as *const u8 as *const i8,
             desc: b"greek small letter rho, U+03C1 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7957,7 +7957,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 962 as u32,
+            value: 962,
             name: b"sigmaf\x00" as *const u8 as *const i8,
             desc: b"greek small letter final sigma, U+03C2 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7965,7 +7965,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 963 as u32,
+            value: 963,
             name: b"sigma\x00" as *const u8 as *const i8,
             desc: b"greek small letter sigma, U+03C3 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7973,7 +7973,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 964 as u32,
+            value: 964,
             name: b"tau\x00" as *const u8 as *const i8,
             desc: b"greek small letter tau, U+03C4 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7981,7 +7981,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 965 as u32,
+            value: 965,
             name: b"upsilon\x00" as *const u8 as *const i8,
             desc: b"greek small letter upsilon, U+03C5 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7989,7 +7989,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 966 as u32,
+            value: 966,
             name: b"phi\x00" as *const u8 as *const i8,
             desc: b"greek small letter phi, U+03C6 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -7997,7 +7997,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 967 as u32,
+            value: 967,
             name: b"chi\x00" as *const u8 as *const i8,
             desc: b"greek small letter chi, U+03C7 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -8005,7 +8005,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 968 as u32,
+            value: 968,
             name: b"psi\x00" as *const u8 as *const i8,
             desc: b"greek small letter psi, U+03C8 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -8013,7 +8013,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 969 as u32,
+            value: 969,
             name: b"omega\x00" as *const u8 as *const i8,
             desc: b"greek small letter omega, U+03C9 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -8021,7 +8021,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 977 as u32,
+            value: 977,
             name: b"thetasym\x00" as *const u8 as *const i8,
             desc: b"greek small letter theta symbol, U+03D1 NEW\x00" as *const u8 as *const i8,
         };
@@ -8029,7 +8029,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 978 as u32,
+            value: 978,
             name: b"upsih\x00" as *const u8 as *const i8,
             desc: b"greek upsilon with hook symbol, U+03D2 NEW\x00" as *const u8 as *const i8,
         };
@@ -8037,7 +8037,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 982 as u32,
+            value: 982,
             name: b"piv\x00" as *const u8 as *const i8,
             desc: b"greek pi symbol, U+03D6 ISOgrk3\x00" as *const u8 as *const i8,
         };
@@ -8045,7 +8045,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8194 as u32,
+            value: 8194,
             name: b"ensp\x00" as *const u8 as *const i8,
             desc: b"en space, U+2002 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8053,7 +8053,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8195 as u32,
+            value: 8195,
             name: b"emsp\x00" as *const u8 as *const i8,
             desc: b"em space, U+2003 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8061,7 +8061,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8201 as u32,
+            value: 8201,
             name: b"thinsp\x00" as *const u8 as *const i8,
             desc: b"thin space, U+2009 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8069,7 +8069,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8204 as u32,
+            value: 8204,
             name: b"zwnj\x00" as *const u8 as *const i8,
             desc: b"zero width non-joiner, U+200C NEW RFC 2070\x00" as *const u8 as *const i8,
         };
@@ -8077,7 +8077,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8205 as u32,
+            value: 8205,
             name: b"zwj\x00" as *const u8 as *const i8,
             desc: b"zero width joiner, U+200D NEW RFC 2070\x00" as *const u8 as *const i8,
         };
@@ -8085,7 +8085,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8206 as u32,
+            value: 8206,
             name: b"lrm\x00" as *const u8 as *const i8,
             desc: b"left-to-right mark, U+200E NEW RFC 2070\x00" as *const u8 as *const i8,
         };
@@ -8093,7 +8093,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8207 as u32,
+            value: 8207,
             name: b"rlm\x00" as *const u8 as *const i8,
             desc: b"right-to-left mark, U+200F NEW RFC 2070\x00" as *const u8 as *const i8,
         };
@@ -8101,7 +8101,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8211 as u32,
+            value: 8211,
             name: b"ndash\x00" as *const u8 as *const i8,
             desc: b"en dash, U+2013 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8109,7 +8109,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8212 as u32,
+            value: 8212,
             name: b"mdash\x00" as *const u8 as *const i8,
             desc: b"em dash, U+2014 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8117,7 +8117,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8216 as u32,
+            value: 8216,
             name: b"lsquo\x00" as *const u8 as *const i8,
             desc: b"left single quotation mark, U+2018 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8125,7 +8125,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8217 as u32,
+            value: 8217,
             name: b"rsquo\x00" as *const u8 as *const i8,
             desc: b"right single quotation mark, U+2019 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8133,7 +8133,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8218 as u32,
+            value: 8218,
             name: b"sbquo\x00" as *const u8 as *const i8,
             desc: b"single low-9 quotation mark, U+201A NEW\x00" as *const u8 as *const i8,
         };
@@ -8141,7 +8141,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8220 as u32,
+            value: 8220,
             name: b"ldquo\x00" as *const u8 as *const i8,
             desc: b"left double quotation mark, U+201C ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8149,7 +8149,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8221 as u32,
+            value: 8221,
             name: b"rdquo\x00" as *const u8 as *const i8,
             desc: b"right double quotation mark, U+201D ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8157,7 +8157,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8222 as u32,
+            value: 8222,
             name: b"bdquo\x00" as *const u8 as *const i8,
             desc: b"double low-9 quotation mark, U+201E NEW\x00" as *const u8 as *const i8,
         };
@@ -8165,7 +8165,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8224 as u32,
+            value: 8224,
             name: b"dagger\x00" as *const u8 as *const i8,
             desc: b"dagger, U+2020 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8173,7 +8173,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8225 as u32,
+            value: 8225,
             name: b"Dagger\x00" as *const u8 as *const i8,
             desc: b"double dagger, U+2021 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8181,7 +8181,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8226 as u32,
+            value: 8226,
             name: b"bull\x00" as *const u8 as *const i8,
             desc: b"bullet = black small circle, U+2022 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8189,7 +8189,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8230 as u32,
+            value: 8230,
             name: b"hellip\x00" as *const u8 as *const i8,
             desc: b"horizontal ellipsis = three dot leader, U+2026 ISOpub\x00" as *const u8
                 as *const i8,
@@ -8198,7 +8198,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8240 as u32,
+            value: 8240,
             name: b"permil\x00" as *const u8 as *const i8,
             desc: b"per mille sign, U+2030 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8206,7 +8206,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8242 as u32,
+            value: 8242,
             name: b"prime\x00" as *const u8 as *const i8,
             desc: b"prime = minutes = feet, U+2032 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8214,7 +8214,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8243 as u32,
+            value: 8243,
             name: b"Prime\x00" as *const u8 as *const i8,
             desc: b"double prime = seconds = inches, U+2033 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8222,7 +8222,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8249 as u32,
+            value: 8249,
             name: b"lsaquo\x00" as *const u8 as *const i8,
             desc: b"single left-pointing angle quotation mark, U+2039 ISO proposed\x00" as *const u8
                 as *const i8,
@@ -8231,7 +8231,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8250 as u32,
+            value: 8250,
             name: b"rsaquo\x00" as *const u8 as *const i8,
             desc: b"single right-pointing angle quotation mark, U+203A ISO proposed\x00"
                 as *const u8 as *const i8,
@@ -8240,7 +8240,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8254 as u32,
+            value: 8254,
             name: b"oline\x00" as *const u8 as *const i8,
             desc: b"overline = spacing overscore, U+203E NEW\x00" as *const u8 as *const i8,
         };
@@ -8248,7 +8248,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8260 as u32,
+            value: 8260,
             name: b"frasl\x00" as *const u8 as *const i8,
             desc: b"fraction slash, U+2044 NEW\x00" as *const u8 as *const i8,
         };
@@ -8256,7 +8256,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8364 as u32,
+            value: 8364,
             name: b"euro\x00" as *const u8 as *const i8,
             desc: b"euro sign, U+20AC NEW\x00" as *const u8 as *const i8,
         };
@@ -8264,7 +8264,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8465 as u32,
+            value: 8465,
             name: b"image\x00" as *const u8 as *const i8,
             desc: b"blackletter capital I = imaginary part, U+2111 ISOamso\x00" as *const u8
                 as *const i8,
@@ -8273,7 +8273,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8472 as u32,
+            value: 8472,
             name: b"weierp\x00" as *const u8 as *const i8,
             desc: b"script capital P = power set = Weierstrass p, U+2118 ISOamso\x00" as *const u8
                 as *const i8,
@@ -8282,7 +8282,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8476 as u32,
+            value: 8476,
             name: b"real\x00" as *const u8 as *const i8,
             desc: b"blackletter capital R = real part symbol, U+211C ISOamso\x00" as *const u8
                 as *const i8,
@@ -8291,7 +8291,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8482 as u32,
+            value: 8482,
             name: b"trade\x00" as *const u8 as *const i8,
             desc: b"trade mark sign, U+2122 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8299,7 +8299,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8501 as u32,
+            value: 8501,
             name: b"alefsym\x00" as *const u8 as *const i8,
             desc: b"alef symbol = first transfinite cardinal, U+2135 NEW\x00" as *const u8
                 as *const i8,
@@ -8308,7 +8308,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8592 as u32,
+            value: 8592,
             name: b"larr\x00" as *const u8 as *const i8,
             desc: b"leftwards arrow, U+2190 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8316,7 +8316,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8593 as u32,
+            value: 8593,
             name: b"uarr\x00" as *const u8 as *const i8,
             desc: b"upwards arrow, U+2191 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8324,7 +8324,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8594 as u32,
+            value: 8594,
             name: b"rarr\x00" as *const u8 as *const i8,
             desc: b"rightwards arrow, U+2192 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8332,7 +8332,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8595 as u32,
+            value: 8595,
             name: b"darr\x00" as *const u8 as *const i8,
             desc: b"downwards arrow, U+2193 ISOnum\x00" as *const u8 as *const i8,
         };
@@ -8340,7 +8340,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8596 as u32,
+            value: 8596,
             name: b"harr\x00" as *const u8 as *const i8,
             desc: b"left right arrow, U+2194 ISOamsa\x00" as *const u8 as *const i8,
         };
@@ -8348,7 +8348,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8629 as u32,
+            value: 8629,
             name: b"crarr\x00" as *const u8 as *const i8,
             desc: b"downwards arrow with corner leftwards = carriage return, U+21B5 NEW\x00"
                 as *const u8 as *const i8,
@@ -8357,7 +8357,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8656 as u32,
+            value: 8656,
             name: b"lArr\x00" as *const u8 as *const i8,
             desc: b"leftwards double arrow, U+21D0 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8365,7 +8365,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8657 as u32,
+            value: 8657,
             name: b"uArr\x00" as *const u8 as *const i8,
             desc: b"upwards double arrow, U+21D1 ISOamsa\x00" as *const u8 as *const i8,
         };
@@ -8373,7 +8373,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8658 as u32,
+            value: 8658,
             name: b"rArr\x00" as *const u8 as *const i8,
             desc: b"rightwards double arrow, U+21D2 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8381,7 +8381,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8659 as u32,
+            value: 8659,
             name: b"dArr\x00" as *const u8 as *const i8,
             desc: b"downwards double arrow, U+21D3 ISOamsa\x00" as *const u8 as *const i8,
         };
@@ -8389,7 +8389,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8660 as u32,
+            value: 8660,
             name: b"hArr\x00" as *const u8 as *const i8,
             desc: b"left right double arrow, U+21D4 ISOamsa\x00" as *const u8 as *const i8,
         };
@@ -8397,7 +8397,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8704 as u32,
+            value: 8704,
             name: b"forall\x00" as *const u8 as *const i8,
             desc: b"for all, U+2200 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8405,7 +8405,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8706 as u32,
+            value: 8706,
             name: b"part\x00" as *const u8 as *const i8,
             desc: b"partial differential, U+2202 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8413,7 +8413,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8707 as u32,
+            value: 8707,
             name: b"exist\x00" as *const u8 as *const i8,
             desc: b"there exists, U+2203 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8421,7 +8421,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8709 as u32,
+            value: 8709,
             name: b"empty\x00" as *const u8 as *const i8,
             desc: b"empty set = null set = diameter, U+2205 ISOamso\x00" as *const u8 as *const i8,
         };
@@ -8429,7 +8429,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8711 as u32,
+            value: 8711,
             name: b"nabla\x00" as *const u8 as *const i8,
             desc: b"nabla = backward difference, U+2207 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8437,7 +8437,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8712 as u32,
+            value: 8712,
             name: b"isin\x00" as *const u8 as *const i8,
             desc: b"element of, U+2208 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8445,7 +8445,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8713 as u32,
+            value: 8713,
             name: b"notin\x00" as *const u8 as *const i8,
             desc: b"not an element of, U+2209 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8453,7 +8453,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8715 as u32,
+            value: 8715,
             name: b"ni\x00" as *const u8 as *const i8,
             desc: b"contains as member, U+220B ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8461,7 +8461,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8719 as u32,
+            value: 8719,
             name: b"prod\x00" as *const u8 as *const i8,
             desc: b"n-ary product = product sign, U+220F ISOamsb\x00" as *const u8 as *const i8,
         };
@@ -8469,7 +8469,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8721 as u32,
+            value: 8721,
             name: b"sum\x00" as *const u8 as *const i8,
             desc: b"n-ary summation, U+2211 ISOamsb\x00" as *const u8 as *const i8,
         };
@@ -8477,7 +8477,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8722 as u32,
+            value: 8722,
             name: b"minus\x00" as *const u8 as *const i8,
             desc: b"minus sign, U+2212 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8485,7 +8485,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8727 as u32,
+            value: 8727,
             name: b"lowast\x00" as *const u8 as *const i8,
             desc: b"asterisk operator, U+2217 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8493,7 +8493,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8730 as u32,
+            value: 8730,
             name: b"radic\x00" as *const u8 as *const i8,
             desc: b"square root = radical sign, U+221A ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8501,7 +8501,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8733 as u32,
+            value: 8733,
             name: b"prop\x00" as *const u8 as *const i8,
             desc: b"proportional to, U+221D ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8509,7 +8509,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8734 as u32,
+            value: 8734,
             name: b"infin\x00" as *const u8 as *const i8,
             desc: b"infinity, U+221E ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8517,7 +8517,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8736 as u32,
+            value: 8736,
             name: b"ang\x00" as *const u8 as *const i8,
             desc: b"angle, U+2220 ISOamso\x00" as *const u8 as *const i8,
         };
@@ -8525,7 +8525,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8743 as u32,
+            value: 8743,
             name: b"and\x00" as *const u8 as *const i8,
             desc: b"logical and = wedge, U+2227 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8533,7 +8533,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8744 as u32,
+            value: 8744,
             name: b"or\x00" as *const u8 as *const i8,
             desc: b"logical or = vee, U+2228 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8541,7 +8541,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8745 as u32,
+            value: 8745,
             name: b"cap\x00" as *const u8 as *const i8,
             desc: b"intersection = cap, U+2229 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8549,7 +8549,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8746 as u32,
+            value: 8746,
             name: b"cup\x00" as *const u8 as *const i8,
             desc: b"union = cup, U+222A ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8557,7 +8557,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8747 as u32,
+            value: 8747,
             name: b"int\x00" as *const u8 as *const i8,
             desc: b"integral, U+222B ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8565,7 +8565,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8756 as u32,
+            value: 8756,
             name: b"there4\x00" as *const u8 as *const i8,
             desc: b"therefore, U+2234 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8573,7 +8573,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8764 as u32,
+            value: 8764,
             name: b"sim\x00" as *const u8 as *const i8,
             desc: b"tilde operator = varies with = similar to, U+223C ISOtech\x00" as *const u8
                 as *const i8,
@@ -8582,7 +8582,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8773 as u32,
+            value: 8773,
             name: b"cong\x00" as *const u8 as *const i8,
             desc: b"approximately equal to, U+2245 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8590,7 +8590,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8776 as u32,
+            value: 8776,
             name: b"asymp\x00" as *const u8 as *const i8,
             desc: b"almost equal to = asymptotic to, U+2248 ISOamsr\x00" as *const u8 as *const i8,
         };
@@ -8598,7 +8598,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8800 as u32,
+            value: 8800,
             name: b"ne\x00" as *const u8 as *const i8,
             desc: b"not equal to, U+2260 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8606,7 +8606,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8801 as u32,
+            value: 8801,
             name: b"equiv\x00" as *const u8 as *const i8,
             desc: b"identical to, U+2261 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8614,7 +8614,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8804 as u32,
+            value: 8804,
             name: b"le\x00" as *const u8 as *const i8,
             desc: b"less-than or equal to, U+2264 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8622,7 +8622,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8805 as u32,
+            value: 8805,
             name: b"ge\x00" as *const u8 as *const i8,
             desc: b"greater-than or equal to, U+2265 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8630,7 +8630,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8834 as u32,
+            value: 8834,
             name: b"sub\x00" as *const u8 as *const i8,
             desc: b"subset of, U+2282 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8638,7 +8638,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8835 as u32,
+            value: 8835,
             name: b"sup\x00" as *const u8 as *const i8,
             desc: b"superset of, U+2283 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8646,7 +8646,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8836 as u32,
+            value: 8836,
             name: b"nsub\x00" as *const u8 as *const i8,
             desc: b"not a subset of, U+2284 ISOamsn\x00" as *const u8 as *const i8,
         };
@@ -8654,7 +8654,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8838 as u32,
+            value: 8838,
             name: b"sube\x00" as *const u8 as *const i8,
             desc: b"subset of or equal to, U+2286 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8662,7 +8662,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8839 as u32,
+            value: 8839,
             name: b"supe\x00" as *const u8 as *const i8,
             desc: b"superset of or equal to, U+2287 ISOtech\x00" as *const u8 as *const i8,
         };
@@ -8670,7 +8670,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8853 as u32,
+            value: 8853,
             name: b"oplus\x00" as *const u8 as *const i8,
             desc: b"circled plus = direct sum, U+2295 ISOamsb\x00" as *const u8 as *const i8,
         };
@@ -8678,7 +8678,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8855 as u32,
+            value: 8855,
             name: b"otimes\x00" as *const u8 as *const i8,
             desc: b"circled times = vector product, U+2297 ISOamsb\x00" as *const u8 as *const i8,
         };
@@ -8686,7 +8686,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8869 as u32,
+            value: 8869,
             name: b"perp\x00" as *const u8 as *const i8,
             desc: b"up tack = orthogonal to = perpendicular, U+22A5 ISOtech\x00" as *const u8
                 as *const i8,
@@ -8695,7 +8695,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8901 as u32,
+            value: 8901,
             name: b"sdot\x00" as *const u8 as *const i8,
             desc: b"dot operator, U+22C5 ISOamsb\x00" as *const u8 as *const i8,
         };
@@ -8703,7 +8703,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8968 as u32,
+            value: 8968,
             name: b"lceil\x00" as *const u8 as *const i8,
             desc: b"left ceiling = apl upstile, U+2308 ISOamsc\x00" as *const u8 as *const i8,
         };
@@ -8711,7 +8711,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8969 as u32,
+            value: 8969,
             name: b"rceil\x00" as *const u8 as *const i8,
             desc: b"right ceiling, U+2309 ISOamsc\x00" as *const u8 as *const i8,
         };
@@ -8719,7 +8719,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8970 as u32,
+            value: 8970,
             name: b"lfloor\x00" as *const u8 as *const i8,
             desc: b"left floor = apl downstile, U+230A ISOamsc\x00" as *const u8 as *const i8,
         };
@@ -8727,7 +8727,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 8971 as u32,
+            value: 8971,
             name: b"rfloor\x00" as *const u8 as *const i8,
             desc: b"right floor, U+230B ISOamsc\x00" as *const u8 as *const i8,
         };
@@ -8735,7 +8735,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 9001 as u32,
+            value: 9001,
             name: b"lang\x00" as *const u8 as *const i8,
             desc: b"left-pointing angle bracket = bra, U+2329 ISOtech\x00" as *const u8
                 as *const i8,
@@ -8744,7 +8744,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 9002 as u32,
+            value: 9002,
             name: b"rang\x00" as *const u8 as *const i8,
             desc: b"right-pointing angle bracket = ket, U+232A ISOtech\x00" as *const u8
                 as *const i8,
@@ -8753,7 +8753,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 9674 as u32,
+            value: 9674,
             name: b"loz\x00" as *const u8 as *const i8,
             desc: b"lozenge, U+25CA ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8761,7 +8761,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 9824 as u32,
+            value: 9824,
             name: b"spades\x00" as *const u8 as *const i8,
             desc: b"black spade suit, U+2660 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8769,7 +8769,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 9827 as u32,
+            value: 9827,
             name: b"clubs\x00" as *const u8 as *const i8,
             desc: b"black club suit = shamrock, U+2663 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8777,7 +8777,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 9829 as u32,
+            value: 9829,
             name: b"hearts\x00" as *const u8 as *const i8,
             desc: b"black heart suit = valentine, U+2665 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8785,7 +8785,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
     },
     {
         let init = _htmlEntityDesc {
-            value: 9830 as u32,
+            value: 9830,
             name: b"diams\x00" as *const u8 as *const i8,
             desc: b"black diamond suit, U+2666 ISOpub\x00" as *const u8 as *const i8,
         };
@@ -8813,7 +8813,7 @@ static mut html40EntitiesTable: [htmlEntityDesc; 253] = [
 
 pub fn htmlEntityLookup(name: *const xmlChar) -> *const htmlEntityDesc {
     let mut i: u32 = 0;
-    i = 0 as u32;
+    i = 0;
     while (i as u64)
         < ((::std::mem::size_of::<[htmlEntityDesc; 253]>() as u64)
             / (::std::mem::size_of::<htmlEntityDesc>()) as u64)
@@ -8847,7 +8847,7 @@ pub fn htmlEntityLookup(name: *const xmlChar) -> *const htmlEntityDesc {
 
 pub fn htmlEntityValueLookup(value: u32) -> *const htmlEntityDesc {
     let mut i: u32 = 0;
-    i = 0 as u32;
+    i = 0;
     while (i as u64)
         < ((::std::mem::size_of::<[htmlEntityDesc; 253]>() as u64)
             / (::std::mem::size_of::<htmlEntityDesc>()) as u64)
@@ -8895,7 +8895,7 @@ pub fn UTF8ToHtml(mut out: *mut u8, outlen: *mut i32, mut in_0: *const u8, inlen
     let mut d: u32 = 0;
     let mut trailing: i32 = 0;
     if out.is_null() || outlen.is_null() || inlen.is_null() {
-        return -(1 as i32);
+        return -1;
     }
     if in_0.is_null() {
         /*
@@ -8903,8 +8903,6 @@ pub fn UTF8ToHtml(mut out: *mut u8, outlen: *mut i32, mut in_0: *const u8, inlen
          */
         unsafe {
             *outlen = 0;
-        }
-        unsafe {
             *inlen = 0;
         }
         return 0;
@@ -9010,8 +9008,8 @@ pub fn UTF8ToHtml(mut out: *mut u8, outlen: *mut i32, mut in_0: *const u8, inlen
             } else {
                 unsafe { cp = (*ent).name }
             }
-            len = unsafe { strlen_safe(cp) as i32 };
             unsafe {
+                len = strlen_safe(cp) as i32;
                 if out.offset(2 as isize).offset(len as isize) >= outend as *mut u8 {
                     break;
                 }
@@ -9019,26 +9017,23 @@ pub fn UTF8ToHtml(mut out: *mut u8, outlen: *mut i32, mut in_0: *const u8, inlen
             let fresh7 = out;
             unsafe {
                 out = out.offset(1);
-            }
-            unsafe {
+
                 *fresh7 = '&' as u8;
-            }
-            unsafe { memcpy_safe(out as *mut (), cp as *const (), len as u64) };
-            unsafe {
+                memcpy_safe(out as *mut (), cp as *const (), len as u64);
+
                 out = out.offset(len as isize);
             }
             let fresh8 = out;
             unsafe {
                 out = out.offset(1);
+                *fresh8 = ';' as u8
             }
-            unsafe { *fresh8 = ';' as u8 }
         }
         processed = in_0
     }
     unsafe {
         *outlen = out.offset_from(outstart) as i32;
-    }
-    unsafe {
+
         *inlen = processed.offset_from(instart) as i32;
     }
     return 0;
@@ -9079,16 +9074,12 @@ pub fn htmlEncodeEntities(
     }
     unsafe {
         outend = out.offset(*outlen as isize);
-    }
-    unsafe {
         inend = in_0.offset(*inlen as isize);
     }
     while in_0 < inend {
         let fresh9 = in_0;
         unsafe {
             in_0 = in_0.offset(1);
-        }
-        unsafe {
             d = *fresh9 as u32;
         }
         if d < 0x80 as u32 {
@@ -9398,24 +9389,22 @@ fn areBlanks_htmlparser(ctxt: htmlParserCtxtPtr, str: *const xmlChar, len: i32) 
     } != 0
         && !ctxtPtr.myDoc.is_null()
     {
-        dtd = unsafe { xmlGetIntSubset_safe(ctxtPtr.myDoc as *const xmlDoc) };
-        let mut dtd_condition = unsafe { !dtd.is_null() && !(*dtd).ExternalID.is_null() };
-        if dtd_condition {
-            let mut dtdPtr = unsafe { &mut *dtd };
-            if unsafe {
-                xmlStrcasecmp_safe(
+        unsafe {
+            dtd = xmlGetIntSubset_safe(ctxtPtr.myDoc as *const xmlDoc);
+            let dtd_condition = !dtd.is_null() && !(*dtd).ExternalID.is_null();
+            if dtd_condition {
+                let mut dtdPtr = unsafe { &mut *dtd };
+                if xmlStrcasecmp_safe(
                     dtdPtr.ExternalID,
                     b"-//W3C//DTD HTML 4.01//EN\x00" as *const u8 as *const i8 as *mut xmlChar,
-                )
-            } == 0
-                || unsafe {
-                    xmlStrcasecmp_safe(
+                ) == 0
+                    || xmlStrcasecmp_safe(
                         dtdPtr.ExternalID,
                         b"-//W3C//DTD HTML 4//EN\x00" as *const u8 as *const i8 as *mut xmlChar,
-                    )
-                } == 0
-            {
-                return 1;
+                    ) == 0
+                {
+                    return 1;
+                }
             }
         }
     }
@@ -9435,7 +9424,7 @@ fn areBlanks_htmlparser(ctxt: htmlParserCtxtPtr, str: *const xmlChar, len: i32) 
         }
         /* keep ws in constructs like ...<b> </b>...
         for all tags "b" allowing PCDATA */
-        i = 0 as u32;
+        i = 0;
         while (i as u64)
             < ((::std::mem::size_of::<[*const i8; 53]>() as u64)
                 / (::std::mem::size_of::<*const i8>()) as u64)
@@ -9452,7 +9441,7 @@ fn areBlanks_htmlparser(ctxt: htmlParserCtxtPtr, str: *const xmlChar, len: i32) 
     } else {
         /* keep ws in constructs like <p><b>xy</b> <i>z</i><p>
         for all tags "p" allowing PCDATA */
-        i = 0 as u32;
+        i = 0;
         while (i as u64)
             < ((::std::mem::size_of::<[*const i8; 53]>() as u64)
                 / (::std::mem::size_of::<*const i8>()) as u64)
