@@ -1270,9 +1270,7 @@ pub fn xmlStringLenDecodeEntities(
                             || (safe_ctxt).options & XML_PARSE_DTDVALID as i32 != 0
                             || (safe_ctxt).validate != 0
                         {
-                            unsafe {
-                                xmlLoadEntityContent(ctxt, ent);
-                            }
+                            xmlLoadEntityContent(ctxt, ent);
                         } else {
                             unsafe {
                                 xmlWarningMsg(
@@ -1308,7 +1306,7 @@ pub fn xmlStringLenDecodeEntities(
                             if !(nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
                                 continue;
                             }
-                            if unsafe { xmlParserEntityCheck(ctxt, nbchars, ent, 0) } != 0 {
+                            if xmlParserEntityCheck(ctxt, nbchars, ent, 0) != 0 {
                                 current_block = 7451279748152143041;
                                 break;
                             }
@@ -1359,7 +1357,7 @@ pub fn xmlStringLenDecodeEntities(
                 }
             }
             if str < last {
-                unsafe { c = xmlStringCurrentChar(ctxt, str, &mut l) }
+                c = xmlStringCurrentChar(ctxt, str, &mut l)
             } else {
                 c = 0
             }
@@ -7366,7 +7364,7 @@ pub fn xmlParseExternalSubset(
     ExternalID: *const xmlChar,
     SystemID: *const xmlChar,
 ) {
-    unsafe { xmlDetectSAX2(ctxt) };
+    xmlDetectSAX2(ctxt);
     let mut safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.progressive == 0
         && unsafe { ((*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64) < 250 }
@@ -7411,9 +7409,8 @@ pub fn xmlParseExternalSubset(
         safe_ctxt.myDoc =
             unsafe { xmlNewDoc_safe(b"1.0\x00" as *const u8 as *const i8 as *mut xmlChar) };
         if safe_ctxt.myDoc.is_null() {
-            unsafe {
-                xmlErrMemory(ctxt, b"New Doc failed\x00" as *const u8 as *const i8);
-            }
+            xmlErrMemory(ctxt, b"New Doc failed\x00" as *const u8 as *const i8);
+
             return;
         }
         unsafe { (*safe_ctxt.myDoc).properties = XML_DOC_INTERNAL as i32 }
@@ -7582,7 +7579,7 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
     /*
      * We are seeing an entity reference
      */
-    ent = unsafe { xmlParseEntityRef(ctxt) };
+    ent = xmlParseEntityRef(ctxt);
     if ent.is_null() {
         return;
     }
@@ -7654,35 +7651,30 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
          */
         if safe_ent.etype == XML_INTERNAL_GENERAL_ENTITY {
             safe_ctxt.depth += 1;
-            ret = unsafe {
-                xmlParseBalancedChunkMemoryInternal(ctxt, safe_ent.content, user_data, &mut list)
-            };
+            ret = xmlParseBalancedChunkMemoryInternal(ctxt, safe_ent.content, user_data, &mut list);
             safe_ctxt.depth -= 1
         } else if safe_ent.etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY {
             safe_ctxt.depth += 1;
-            ret = unsafe {
-                xmlParseExternalEntityPrivate(
-                    safe_ctxt.myDoc,
-                    ctxt,
-                    safe_ctxt.sax,
-                    user_data,
-                    safe_ctxt.depth,
-                    safe_ent.URI,
-                    safe_ent.ExternalID,
-                    &mut list,
-                )
-            };
+            ret = xmlParseExternalEntityPrivate(
+                safe_ctxt.myDoc,
+                ctxt,
+                safe_ctxt.sax,
+                user_data,
+                safe_ctxt.depth,
+                safe_ent.URI,
+                safe_ent.ExternalID,
+                &mut list,
+            );
             safe_ctxt.depth -= 1
         } else {
             ret = XML_ERR_ENTITY_PE_INTERNAL;
-            unsafe {
-                xmlErrMsgStr(
-                    ctxt,
-                    XML_ERR_INTERNAL_ERROR,
-                    b"invalid entity type found\n\x00" as *const u8 as *const i8,
-                    0 as *const xmlChar,
-                );
-            }
+
+            xmlErrMsgStr(
+                ctxt,
+                XML_ERR_INTERNAL_ERROR,
+                b"invalid entity type found\n\x00" as *const u8 as *const i8,
+                0 as *const xmlChar,
+            );
         }
         /*
          * Store the number of entities needing parsing for this entity
@@ -7706,7 +7698,7 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             unsafe { xmlFreeNodeList_safe(list) };
             return;
         }
-        if unsafe { xmlParserEntityCheck(ctxt, 0 as size_t, ent, 0 as size_t) != 0 } {
+        if xmlParserEntityCheck(ctxt, 0 as size_t, ent, 0 as size_t) != 0 {
             unsafe { xmlFreeNodeList_safe(list) };
             return;
         }
@@ -7753,9 +7745,7 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                         #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
                         _ => {
                             if safe_ent.etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY {
-                                unsafe {
-                                    xmlAddEntityReference(ent, list, 0 as xmlNodePtr);
-                                }
+                                xmlAddEntityReference(ent, list, 0 as xmlNodePtr);
                             }
                         }
                         #[cfg(not(HAVE_parser_LIBXML_LEGACY_ENABLED))]
@@ -7769,18 +7759,17 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                 list = 0 as xmlNodePtr
             }
         } else if ret != XML_ERR_OK && ret != XML_WAR_UNDECLARED_ENTITY {
-            unsafe {
-                xmlFatalErrMsgStr(
-                    ctxt,
-                    XML_ERR_UNDECLARED_ENTITY,
-                    b"Entity \'%s\' failed to parse\n\x00" as *const u8 as *const i8,
-                    safe_ent.name,
-                );
-            }
+            xmlFatalErrMsgStr(
+                ctxt,
+                XML_ERR_UNDECLARED_ENTITY,
+                b"Entity \'%s\' failed to parse\n\x00" as *const u8 as *const i8,
+                safe_ent.name,
+            );
+
             if !safe_ent.content.is_null() {
                 unsafe { *safe_ent.content.offset(0 as isize) = 0 }
             }
-            unsafe { xmlParserEntityCheck(ctxt, 0 as size_t, ent, 0 as size_t) };
+            xmlParserEntityCheck(ctxt, 0 as size_t, ent, 0 as size_t);
         } else if !list.is_null() {
             unsafe { xmlFreeNodeList_safe(list) };
             list = 0 as xmlNodePtr
@@ -7819,40 +7808,35 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
             }
             if safe_ent.etype == XML_INTERNAL_GENERAL_ENTITY {
                 safe_ctxt.depth += 1;
-                ret = unsafe {
-                    xmlParseBalancedChunkMemoryInternal(
-                        ctxt,
-                        safe_ent.content,
-                        user_data,
-                        0 as *mut xmlNodePtr,
-                    )
-                };
+                ret = xmlParseBalancedChunkMemoryInternal(
+                    ctxt,
+                    safe_ent.content,
+                    user_data,
+                    0 as *mut xmlNodePtr,
+                );
                 safe_ctxt.depth -= 1
             } else if safe_ent.etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY {
                 safe_ctxt.depth += 1;
-                ret = unsafe {
-                    xmlParseExternalEntityPrivate(
-                        safe_ctxt.myDoc,
-                        ctxt,
-                        safe_ctxt.sax,
-                        user_data,
-                        safe_ctxt.depth,
-                        safe_ent.URI,
-                        safe_ent.ExternalID,
-                        0 as *mut xmlNodePtr,
-                    )
-                };
+                ret = xmlParseExternalEntityPrivate(
+                    safe_ctxt.myDoc,
+                    ctxt,
+                    safe_ctxt.sax,
+                    user_data,
+                    safe_ctxt.depth,
+                    safe_ent.URI,
+                    safe_ent.ExternalID,
+                    0 as *mut xmlNodePtr,
+                );
                 safe_ctxt.depth -= 1
             } else {
                 ret = XML_ERR_ENTITY_PE_INTERNAL;
-                unsafe {
-                    xmlErrMsgStr(
-                        ctxt,
-                        XML_ERR_INTERNAL_ERROR,
-                        b"invalid entity type found\n\x00" as *const u8 as *const i8,
-                        0 as *const xmlChar,
-                    );
-                }
+
+                xmlErrMsgStr(
+                    ctxt,
+                    XML_ERR_INTERNAL_ERROR,
+                    b"invalid entity type found\n\x00" as *const u8 as *const i8,
+                    0 as *const xmlChar,
+                );
             }
             if ret == XML_ERR_ENTITY_LOOP {
                 unsafe {
@@ -7925,9 +7909,7 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                 let mut firstChild: xmlNodePtr = 0 as xmlNodePtr;
                 /* LIBXML_LEGACY_ENABLED */
                 safe_ctxt.sizeentcopy = safe_ctxt.sizeentcopy + (safe_ent.length + 5) as u64;
-                if unsafe {
-                    xmlParserEntityCheck(ctxt, 0 as size_t, ent, safe_ctxt.sizeentcopy) != 0
-                } {
+                if xmlParserEntityCheck(ctxt, 0 as size_t, ent, safe_ctxt.sizeentcopy) != 0 {
                     return;
                 }
                 cur = safe_ent.children;
@@ -7964,9 +7946,7 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                     #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
                     _ => {
                         if safe_ent.etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY {
-                            unsafe {
-                                xmlAddEntityReference(ent, firstChild, nw);
-                            }
+                            xmlAddEntityReference(ent, firstChild, nw);
                         }
                     }
                     #[cfg(not(HAVE_parser_LIBXML_LEGACY_ENABLEDb))]
@@ -7980,9 +7960,7 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                 let mut firstChild: xmlNodePtr = 0 as xmlNodePtr;
                 /* LIBXML_LEGACY_ENABLED */
                 safe_ctxt.sizeentcopy = safe_ctxt.sizeentcopy + (safe_ent.length + 5) as u64;
-                if unsafe {
-                    xmlParserEntityCheck(ctxt, 0 as size_t, ent, safe_ctxt.sizeentcopy) != 0
-                } {
+                if xmlParserEntityCheck(ctxt, 0 as size_t, ent, safe_ctxt.sizeentcopy) != 0 {
                     return;
                 }
                 cur = safe_ent.children;
@@ -8019,9 +7997,7 @@ pub fn xmlParseReference(mut ctxt: xmlParserCtxtPtr) {
                     #[cfg(HAVE_parser_LIBXML_LEGACY_ENABLED)]
                     _ => {
                         if safe_ent.etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY {
-                            unsafe {
-                                xmlAddEntityReference(ent, firstChild, nw);
-                            }
+                            xmlAddEntityReference(ent, firstChild, nw);
                         }
                     }
                     #[cfg(not(HAVE_parser_LIBXML_LEGACY_ENABLED))]
@@ -8120,13 +8096,12 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
     unsafe { xmlNextChar_safe(ctxt) };
     name = xmlParseName(ctxt);
     if name.is_null() {
-        unsafe {
-            xmlFatalErrMsg(
-                ctxt,
-                XML_ERR_NAME_REQUIRED,
-                b"xmlParseEntityRef: no name\n\x00" as *const u8 as *const i8,
-            );
-        }
+        xmlFatalErrMsg(
+            ctxt,
+            XML_ERR_NAME_REQUIRED,
+            b"xmlParseEntityRef: no name\n\x00" as *const u8 as *const i8,
+        );
+
         return 0 as xmlEntityPtr;
     }
     if unsafe { *safe_input.cur != ';' as u8 } {
@@ -8201,14 +8176,12 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
     if ent.is_null() {
         if safe_ctxt.standalone == 1 || safe_ctxt.hasExternalSubset == 0 && safe_ctxt.hasPErefs == 0
         {
-            unsafe {
-                xmlFatalErrMsgStr(
-                    ctxt,
-                    XML_ERR_UNDECLARED_ENTITY,
-                    b"Entity \'%s\' not defined\n\x00" as *const u8 as *const i8,
-                    name,
-                );
-            }
+            xmlFatalErrMsgStr(
+                ctxt,
+                XML_ERR_UNDECLARED_ENTITY,
+                b"Entity \'%s\' not defined\n\x00" as *const u8 as *const i8,
+                name,
+            );
         } else {
             unsafe {
                 xmlErrMsgStr(
@@ -8229,28 +8202,24 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
                 }
             }
         }
-        unsafe { xmlParserEntityCheck(ctxt, 0 as size_t, ent, 0 as size_t) };
+        xmlParserEntityCheck(ctxt, 0 as size_t, ent, 0 as size_t);
         safe_ctxt.valid = 0
     } else if safe_ent.etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY {
-        unsafe {
-            xmlFatalErrMsgStr(
-                ctxt,
-                XML_ERR_UNPARSED_ENTITY,
-                b"Entity reference to unparsed entity %s\n\x00" as *const u8 as *const i8,
-                name,
-            );
-        }
+        xmlFatalErrMsgStr(
+            ctxt,
+            XML_ERR_UNPARSED_ENTITY,
+            b"Entity reference to unparsed entity %s\n\x00" as *const u8 as *const i8,
+            name,
+        );
     } else if safe_ctxt.instate == XML_PARSER_ATTRIBUTE_VALUE as i32
         && safe_ent.etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY
     {
-        unsafe {
-            xmlFatalErrMsgStr(
-                ctxt,
-                XML_ERR_ENTITY_IS_EXTERNAL,
-                b"Attribute references external entity \'%s\'\n\x00" as *const u8 as *const i8,
-                name,
-            );
-        }
+        xmlFatalErrMsgStr(
+            ctxt,
+            XML_ERR_ENTITY_IS_EXTERNAL,
+            b"Attribute references external entity \'%s\'\n\x00" as *const u8 as *const i8,
+            name,
+        );
     } else if safe_ctxt.instate == XML_PARSER_ATTRIBUTE_VALUE as i32
         && !ent.is_null()
         && safe_ent.etype != XML_INTERNAL_PREDEFINED_ENTITY
@@ -8259,15 +8228,13 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
             && !safe_ent.content.is_null()
             && !unsafe { xmlStrchr_safe(safe_ent.content, '<' as u8 as xmlChar).is_null() }
         {
-            unsafe {
-                xmlFatalErrMsgStr(
-                    ctxt,
-                    XML_ERR_LT_IN_ATTRIBUTE,
-                    b"\'<\' in entity \'%s\' is not allowed in attributes values\n\x00" as *const u8
-                        as *const i8,
-                    name,
-                );
-            }
+            xmlFatalErrMsgStr(
+                ctxt,
+                XML_ERR_LT_IN_ATTRIBUTE,
+                b"\'<\' in entity \'%s\' is not allowed in attributes values\n\x00" as *const u8
+                    as *const i8,
+                name,
+            );
         }
     } else {
         /*
@@ -8290,7 +8257,7 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
          * Internal check, no parameter entities here ...
          */
         match safe_ent.etype {
-            XML_INTERNAL_PARAMETER_ENTITY | XML_EXTERNAL_PARAMETER_ENTITY => unsafe {
+            XML_INTERNAL_PARAMETER_ENTITY | XML_EXTERNAL_PARAMETER_ENTITY => {
                 xmlFatalErrMsgStr(
                     ctxt,
                     XML_ERR_ENTITY_IS_PARAMETER,
@@ -8298,7 +8265,7 @@ pub fn xmlParseEntityRef(mut ctxt: xmlParserCtxtPtr) -> xmlEntityPtr {
                         as *const i8,
                     name,
                 );
-            },
+            }
             _ => {}
         }
     }
@@ -8454,61 +8421,51 @@ fn xmlParseStringEntityRef(
     if ent.is_null() {
         if safe_ctxt.standalone == 1 || safe_ctxt.hasExternalSubset == 0 && safe_ctxt.hasPErefs == 0
         {
-            unsafe {
-                xmlFatalErrMsgStr(
-                    ctxt,
-                    XML_ERR_UNDECLARED_ENTITY,
-                    b"Entity \'%s\' not defined\n\x00" as *const u8 as *const i8,
-                    name,
-                );
-            }
-        } else {
-            unsafe {
-                xmlErrMsgStr(
-                    ctxt,
-                    XML_WAR_UNDECLARED_ENTITY,
-                    b"Entity \'%s\' not defined\n\x00" as *const u8 as *const i8,
-                    name,
-                );
-            }
-        }
-        unsafe { xmlParserEntityCheck(ctxt, 0 as size_t, ent, 0 as size_t) };
-    /* TODO ? check regressions ctxt->valid = 0; */
-    } else if safe_ent.etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY {
-        unsafe {
             xmlFatalErrMsgStr(
                 ctxt,
-                XML_ERR_UNPARSED_ENTITY,
-                b"Entity reference to unparsed entity %s\n\x00" as *const u8 as *const i8,
+                XML_ERR_UNDECLARED_ENTITY,
+                b"Entity \'%s\' not defined\n\x00" as *const u8 as *const i8,
+                name,
+            );
+        } else {
+            xmlErrMsgStr(
+                ctxt,
+                XML_WAR_UNDECLARED_ENTITY,
+                b"Entity \'%s\' not defined\n\x00" as *const u8 as *const i8,
                 name,
             );
         }
+        xmlParserEntityCheck(ctxt, 0 as size_t, ent, 0 as size_t);
+    /* TODO ? check regressions ctxt->valid = 0; */
+    } else if safe_ent.etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY {
+        xmlFatalErrMsgStr(
+            ctxt,
+            XML_ERR_UNPARSED_ENTITY,
+            b"Entity reference to unparsed entity %s\n\x00" as *const u8 as *const i8,
+            name,
+        );
     } else if safe_ctxt.instate == XML_PARSER_ATTRIBUTE_VALUE as i32
         && safe_ent.etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY
     {
-        unsafe {
-            xmlFatalErrMsgStr(
-                ctxt,
-                XML_ERR_ENTITY_IS_EXTERNAL,
-                b"Attribute references external entity \'%s\'\n\x00" as *const u8 as *const i8,
-                name,
-            );
-        }
+        xmlFatalErrMsgStr(
+            ctxt,
+            XML_ERR_ENTITY_IS_EXTERNAL,
+            b"Attribute references external entity \'%s\'\n\x00" as *const u8 as *const i8,
+            name,
+        );
     } else if safe_ctxt.instate == XML_PARSER_ATTRIBUTE_VALUE as i32
         && !ent.is_null()
         && !safe_ent.content.is_null()
         && safe_ent.etype != XML_INTERNAL_PREDEFINED_ENTITY
         && !unsafe { xmlStrchr_safe(safe_ent.content, '<' as xmlChar).is_null() }
     {
-        unsafe {
-            xmlFatalErrMsgStr(
-                ctxt,
-                XML_ERR_LT_IN_ATTRIBUTE,
-                b"\'<\' in entity \'%s\' is not allowed in attributes values\n\x00" as *const u8
-                    as *const i8,
-                name,
-            );
-        }
+        xmlFatalErrMsgStr(
+            ctxt,
+            XML_ERR_LT_IN_ATTRIBUTE,
+            b"\'<\' in entity \'%s\' is not allowed in attributes values\n\x00" as *const u8
+                as *const i8,
+            name,
+        );
     } else {
         /*
          * [ WFC: Parsed Entity ]
@@ -8530,7 +8487,7 @@ fn xmlParseStringEntityRef(
          * Internal check, no parameter entities here ...
          */
         match safe_ent.etype {
-            XML_INTERNAL_PARAMETER_ENTITY | XML_EXTERNAL_PARAMETER_ENTITY => unsafe {
+            XML_INTERNAL_PARAMETER_ENTITY | XML_EXTERNAL_PARAMETER_ENTITY => {
                 xmlFatalErrMsgStr(
                     ctxt,
                     XML_ERR_ENTITY_IS_PARAMETER,
@@ -8538,7 +8495,7 @@ fn xmlParseStringEntityRef(
                         as *const i8,
                     name,
                 );
-            },
+            }
             _ => {}
         }
     }
@@ -8595,13 +8552,12 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
     unsafe { xmlNextChar_safe(ctxt) };
     name = xmlParseName(ctxt);
     if name.is_null() {
-        unsafe {
-            xmlFatalErrMsg(
-                ctxt,
-                XML_ERR_PEREF_NO_NAME,
-                b"PEReference: no name\n\x00" as *const u8 as *const i8,
-            );
-        }
+        xmlFatalErrMsg(
+            ctxt,
+            XML_ERR_PEREF_NO_NAME,
+            b"PEReference: no name\n\x00" as *const u8 as *const i8,
+        );
+
         return;
     }
     unsafe {
@@ -8648,14 +8604,12 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
          */
         if safe_ctxt.standalone == 1 || safe_ctxt.hasExternalSubset == 0 && safe_ctxt.hasPErefs == 0
         {
-            unsafe {
-                xmlFatalErrMsgStr(
-                    ctxt,
-                    XML_ERR_UNDECLARED_ENTITY,
-                    b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
-                    name,
-                );
-            }
+            xmlFatalErrMsgStr(
+                ctxt,
+                XML_ERR_UNDECLARED_ENTITY,
+                b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
+                name,
+            );
         } else {
             /*
              * [ VC: Entity Declared ]
@@ -8665,45 +8619,39 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
              * precede any reference to it...
              */
             if safe_ctxt.validate != 0 && safe_ctxt.vctxt.error.is_some() {
-                unsafe {
-                    xmlValidityError(
-                        ctxt,
-                        XML_WAR_UNDECLARED_ENTITY,
-                        b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
-                        name,
-                        0 as *const xmlChar,
-                    );
-                }
+                xmlValidityError(
+                    ctxt,
+                    XML_WAR_UNDECLARED_ENTITY,
+                    b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
+                    name,
+                    0 as *const xmlChar,
+                );
             } else {
-                unsafe {
-                    xmlWarningMsg(
-                        ctxt,
-                        XML_WAR_UNDECLARED_ENTITY,
-                        b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
-                        name,
-                        0 as *const xmlChar,
-                    );
-                }
+                xmlWarningMsg(
+                    ctxt,
+                    XML_WAR_UNDECLARED_ENTITY,
+                    b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
+                    name,
+                    0 as *const xmlChar,
+                );
             }
             safe_ctxt.valid = 0
         }
-        unsafe { xmlParserEntityCheck(ctxt, 0 as size_t, 0 as xmlEntityPtr, 0 as size_t) };
+        xmlParserEntityCheck(ctxt, 0 as size_t, 0 as xmlEntityPtr, 0 as size_t);
     } else if safe_entity.etype != XML_INTERNAL_PARAMETER_ENTITY
         && safe_entity.etype != XML_EXTERNAL_PARAMETER_ENTITY
     {
-        unsafe {
-            xmlWarningMsg(
-                ctxt,
-                XML_WAR_UNDECLARED_ENTITY,
-                b"Internal: %%%s; is not a parameter entity\n\x00" as *const u8 as *const i8,
-                name,
-                0 as *const xmlChar,
-            );
-        }
+        xmlWarningMsg(
+            ctxt,
+            XML_WAR_UNDECLARED_ENTITY,
+            b"Internal: %%%s; is not a parameter entity\n\x00" as *const u8 as *const i8,
+            name,
+            0 as *const xmlChar,
+        );
     } else {
         let mut start: [xmlChar; 4] = [0; 4];
         let mut enc: xmlCharEncoding = XML_CHAR_ENCODING_NONE;
-        if unsafe { xmlParserEntityCheck(ctxt, 0 as size_t, entity, 0 as size_t) != 0 } {
+        if xmlParserEntityCheck(ctxt, 0 as size_t, entity, 0 as size_t) != 0 {
             return;
         }
         if safe_entity.etype == XML_EXTERNAL_PARAMETER_ENTITY
@@ -8716,7 +8664,7 @@ pub fn xmlParsePEReference(mut ctxt: xmlParserCtxtPtr) {
         {
             return;
         }
-        input = unsafe { xmlNewEntityInputStream(ctxt, entity) };
+        input = xmlNewEntityInputStream(ctxt, entity);
         if xmlPushInput(ctxt, input) < 0 {
             unsafe { xmlFreeInputStream_safe(input) };
             return;
@@ -8826,7 +8774,7 @@ fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) ->
         }
         return -1;
     }
-    input = unsafe { xmlNewEntityInputStream(ctxt, entity) };
+    input = xmlNewEntityInputStream(ctxt, entity);
     if input.is_null() {
         unsafe {
             xmlFatalErr(
@@ -8851,9 +8799,9 @@ fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) ->
     {
         xmlGROW(ctxt);
     }
-    unsafe {
-        c = xmlCurrentChar(ctxt, &mut l);
-    }
+
+    c = xmlCurrentChar(ctxt, &mut l);
+
     let safe_input = unsafe { &mut *safe_ctxt.input };
     while safe_ctxt.input == input
         && safe_input.cur < safe_input.end
@@ -8888,7 +8836,7 @@ fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) ->
             safe_input.col += 1
         }
         safe_input.cur = unsafe { safe_input.cur.offset(l as isize) };
-        c = unsafe { xmlCurrentChar(ctxt, &mut l) };
+        c = xmlCurrentChar(ctxt, &mut l);
 
         if c == 0 {
             count = 0;
@@ -8902,9 +8850,8 @@ fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) ->
                 unsafe { xmlBufferFree_safe(buf) };
                 return -1;
             }
-            unsafe {
-                c = xmlCurrentChar(ctxt, &mut l);
-            }
+
+            c = xmlCurrentChar(ctxt, &mut l);
         }
     }
     if safe_ctxt.input == input && safe_input.cur >= safe_input.end {
@@ -8916,14 +8863,13 @@ fn xmlLoadEntityContent(mut ctxt: xmlParserCtxtPtr, mut entity: xmlEntityPtr) ->
             as i32
     } == 0
     {
-        unsafe {
-            xmlFatalErrMsgInt(
-                ctxt,
-                XML_ERR_INVALID_CHAR,
-                b"xmlLoadEntityContent: invalid char value %d\n\x00" as *const u8 as *const i8,
-                c,
-            );
-        }
+        xmlFatalErrMsgInt(
+            ctxt,
+            XML_ERR_INVALID_CHAR,
+            b"xmlLoadEntityContent: invalid char value %d\n\x00" as *const u8 as *const i8,
+            c,
+        );
+
         unsafe { xmlBufferFree_safe(buf) };
         return -1;
     }
@@ -9041,14 +8987,12 @@ fn xmlParseStringPEReference(
          */
         if safe_ctxt.standalone == 1 || safe_ctxt.hasExternalSubset == 0 && safe_ctxt.hasPErefs == 0
         {
-            unsafe {
-                xmlFatalErrMsgStr(
-                    ctxt,
-                    XML_ERR_UNDECLARED_ENTITY,
-                    b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
-                    name,
-                );
-            }
+            xmlFatalErrMsgStr(
+                ctxt,
+                XML_ERR_UNDECLARED_ENTITY,
+                b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
+                name,
+            );
         } else {
             /*
              * [ VC: Entity Declared ]
@@ -9057,30 +9001,28 @@ fn xmlParseStringPEReference(
              * ... The declaration of a parameter entity must
              * precede any reference to it...
              */
-            unsafe {
-                xmlWarningMsg(
-                    ctxt,
-                    XML_WAR_UNDECLARED_ENTITY,
-                    b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
-                    name,
-                    0 as *const xmlChar,
-                );
-            }
-            safe_ctxt.valid = 0
-        }
-        unsafe { xmlParserEntityCheck(ctxt, 0 as size_t, 0 as xmlEntityPtr, 0 as size_t) };
-    } else if safe_entity.etype != XML_INTERNAL_PARAMETER_ENTITY
-        && safe_entity.etype != XML_EXTERNAL_PARAMETER_ENTITY
-    {
-        unsafe {
+
             xmlWarningMsg(
                 ctxt,
                 XML_WAR_UNDECLARED_ENTITY,
-                b"%%%s; is not a parameter entity\n\x00" as *const u8 as *const i8,
+                b"PEReference: %%%s; not found\n\x00" as *const u8 as *const i8,
                 name,
                 0 as *const xmlChar,
             );
+
+            safe_ctxt.valid = 0
         }
+        xmlParserEntityCheck(ctxt, 0 as size_t, 0 as xmlEntityPtr, 0 as size_t);
+    } else if safe_entity.etype != XML_INTERNAL_PARAMETER_ENTITY
+        && safe_entity.etype != XML_EXTERNAL_PARAMETER_ENTITY
+    {
+        xmlWarningMsg(
+            ctxt,
+            XML_WAR_UNDECLARED_ENTITY,
+            b"%%%s; is not a parameter entity\n\x00" as *const u8 as *const i8,
+            name,
+            0 as *const xmlChar,
+        );
     }
     safe_ctxt.hasPErefs = 1;
     unsafe { xmlFree_safe(name as *mut ()) };
@@ -9127,13 +9069,11 @@ pub fn xmlParseDocTypeDecl(mut ctxt: xmlParserCtxtPtr) {
      */
     name = xmlParseName(ctxt);
     if name.is_null() {
-        unsafe {
-            xmlFatalErrMsg(
-                ctxt,
-                XML_ERR_NAME_REQUIRED,
-                b"xmlParseDocTypeDecl : no DOCTYPE name !\n\x00" as *const u8 as *const i8,
-            );
-        }
+        xmlFatalErrMsg(
+            ctxt,
+            XML_ERR_NAME_REQUIRED,
+            b"xmlParseDocTypeDecl : no DOCTYPE name !\n\x00" as *const u8 as *const i8,
+        );
     }
     safe_ctxt.intSubName = name;
     xmlSkipBlankChars(ctxt);
@@ -9314,13 +9254,12 @@ pub fn xmlParseAttribute(
     }
     name = xmlParseName(ctxt);
     if name.is_null() {
-        unsafe {
-            xmlFatalErrMsg(
-                ctxt,
-                XML_ERR_NAME_REQUIRED,
-                b"error parsing attribute name\n\x00" as *const u8 as *const i8,
-            );
-        }
+        xmlFatalErrMsg(
+            ctxt,
+            XML_ERR_NAME_REQUIRED,
+            b"error parsing attribute name\n\x00" as *const u8 as *const i8,
+        );
+
         return 0 as *const xmlChar;
     }
     /*
@@ -9333,14 +9272,13 @@ pub fn xmlParseAttribute(
         val = xmlParseAttValue(ctxt);
         safe_ctxt.instate = XML_PARSER_CONTENT
     } else {
-        unsafe {
-            xmlFatalErrMsgStr(
-                ctxt,
-                XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
-                b"Specification mandates value for attribute %s\n\x00" as *const u8 as *const i8,
-                name,
-            );
-        }
+        xmlFatalErrMsgStr(
+            ctxt,
+            XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
+            b"Specification mandates value for attribute %s\n\x00" as *const u8 as *const i8,
+            name,
+        );
+
         return 0 as *const xmlChar;
     }
     /*
@@ -9356,16 +9294,14 @@ pub fn xmlParseAttribute(
             ) != 0
         }
     {
-        if unsafe { xmlCheckLanguageID(val) == 0 } {
-            unsafe {
-                xmlWarningMsg(
-                    ctxt,
-                    XML_WAR_LANG_VALUE,
-                    b"Malformed value for xml:lang : %s\n\x00" as *const u8 as *const i8,
-                    val,
-                    0 as *const xmlChar,
-                );
-            }
+        if xmlCheckLanguageID(val) == 0 {
+            xmlWarningMsg(
+                ctxt,
+                XML_WAR_LANG_VALUE,
+                b"Malformed value for xml:lang : %s\n\x00" as *const u8 as *const i8,
+                val,
+                0 as *const xmlChar,
+            );
         }
     }
     /*
@@ -9392,12 +9328,14 @@ pub fn xmlParseAttribute(
         } {
             unsafe { *safe_ctxt.space = 1 }
         } else {
-            unsafe {
-                xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
-          b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
-              as *const u8 as *const i8, val,
-          0 as *const xmlChar);
-            }
+            xmlWarningMsg(
+                ctxt,
+                XML_WAR_SPACE_VALUE,
+                b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
+                    as *const u8 as *const i8,
+                val,
+                0 as *const xmlChar,
+            );
         }
     }
     unsafe { *value = val };
@@ -9431,35 +9369,35 @@ pub fn xmlParseAttribute(
 * Returns the element name parsed
 */
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
-pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
+pub fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut safe_input = unsafe { &mut *safe_ctxt.input };
     let mut current_block: u64;
-    let mut name: *const xmlChar = 0 as *const xmlChar;
+    let name: *const xmlChar;
     let mut attname: *const xmlChar = 0 as *const xmlChar;
     let mut attvalue: *mut xmlChar = 0 as *mut xmlChar;
     let mut atts: *mut *const xmlChar = safe_ctxt.atts;
     let mut nbatts: i32 = 0;
     let mut maxatts: i32 = safe_ctxt.maxatts;
     let mut i: i32 = 0;
-    unsafe {
-        if *(*(*ctxt).input).cur != '<' as u8 {
-            return 0 as *const xmlChar;
-        }
-        (*(*ctxt).input).col += 1;
-        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(1);
-        if *(*(*ctxt).input).cur as i32 == 0 {
-            xmlParserInputGrow_safe(safe_ctxt.input, 250);
-        }
+
+    if unsafe { *safe_input.cur != '<' as u8 } {
+        return 0 as *const xmlChar;
     }
+    safe_input.col += 1;
+    safe_input.cur = unsafe { safe_input.cur.offset(1) };
+    if unsafe { *safe_input.cur as i32 == 0 } {
+        unsafe { xmlParserInputGrow_safe(safe_ctxt.input, 250) };
+    }
+
     name = xmlParseName(ctxt);
     if name.is_null() {
-        unsafe {
-            xmlFatalErrMsg(
-                ctxt,
-                XML_ERR_NAME_REQUIRED,
-                b"xmlParseStartTag: invalid element name\n\x00" as *const u8 as *const i8,
-            );
-        }
+        xmlFatalErrMsg(
+            ctxt,
+            XML_ERR_NAME_REQUIRED,
+            b"xmlParseStartTag: invalid element name\n\x00" as *const u8 as *const i8,
+        );
+
         return 0 as *const xmlChar;
     }
     /*
@@ -9469,20 +9407,20 @@ pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
      */
     xmlSkipBlankChars(ctxt);
     if safe_ctxt.progressive == 0
-        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
+        && unsafe { (safe_input.end.offset_from((*safe_ctxt.input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
     while unsafe {
-        *(*(*ctxt).input).cur != '>' as u8
-            && (*(*(*ctxt).input).cur != '/' as u8 || *(*(*ctxt).input).cur.offset(1) != '>' as u8)
-            && (0x9 <= *(*(*ctxt).input).cur as i32 && *(*(*ctxt).input).cur as i32 <= 0xa
-                || *(*(*ctxt).input).cur as i32 == 0xd
-                || 0x20 <= *(*(*ctxt).input).cur as i32)
+        *safe_input.cur != '>' as u8
+            && (*safe_input.cur != '/' as u8 || *safe_input.cur.offset(1) != '>' as u8)
+            && (0x9 <= *safe_input.cur as i32 && *safe_input.cur as i32 <= 0xa
+                || *safe_input.cur as i32 == 0xd
+                || 0x20 <= *safe_input.cur as i32)
     } && safe_ctxt.instate != XML_PARSER_EOF
     {
-        let mut q: *const xmlChar = unsafe { (*(*ctxt).input).cur };
-        let mut cons: u32 = unsafe { (*(*ctxt).input).consumed as u32 };
+        let q: *const xmlChar = safe_input.cur;
+        let cons: u64 = safe_input.consumed;
         attname = xmlParseAttribute(ctxt, &mut attvalue);
         if !attname.is_null() && !attvalue.is_null() {
             /*
@@ -9492,138 +9430,125 @@ pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
              */
             i = 0;
             loop {
-                if !(i < nbatts) {
-                    current_block = 3437258052017859086;
+                if i >= nbatts {
+                    current_block = 1;
                     break;
                 }
                 if unsafe { xmlStrEqual_safe(*atts.offset(i as isize), attname) != 0 } {
                     xmlErrAttributeDup(ctxt, 0 as *const xmlChar, attname);
-                    xmlFree_safe(attvalue as *mut ());
-                    current_block = 13942178848302774114;
+                    unsafe { xmlFree_safe(attvalue as *mut ()) };
+                    current_block = 0;
                     break;
                 } else {
-                    i += 2 as i32
+                    i += 2
                 }
             }
             match current_block {
-                13942178848302774114 => {}
+                0 => {}
                 _ =>
                 /*
                  * Add the pair to atts
                  */
                 {
                     if atts.is_null() {
-                        maxatts = 22 as i32; /* allow for 10 attrs by default */
-                        atts = xmlMalloc_safe(
-                            (maxatts as u64).wrapping_mul(size_of::<*mut xmlChar>() as u64),
-                        ) as *mut *const xmlChar;
+                        maxatts = 22; /* allow for 10 attrs by default */
+                        atts = unsafe {
+                            xmlMalloc_safe(maxatts as u64 * size_of::<*mut xmlChar>() as u64)
+                        } as *mut *const xmlChar;
                         if atts.is_null() {
-                            unsafe {
-                                xmlErrMemory(ctxt, 0 as *const i8);
-                            }
+                            xmlErrMemory(ctxt, 0 as *const i8);
+
                             if !attvalue.is_null() {
-                                xmlFree_safe(attvalue as *mut ());
+                                unsafe { xmlFree_safe(attvalue as *mut ()) };
                             }
-                            current_block = 13942178848302774114;
+                            current_block = 0;
                         } else {
                             safe_ctxt.atts = atts;
                             safe_ctxt.maxatts = maxatts;
-                            current_block = 11763295167351361500;
+                            current_block = 2;
                         }
-                    } else if nbatts + 4 as i32 > maxatts {
+                    } else if nbatts + 4 > maxatts {
                         let mut n: *mut *const xmlChar = 0 as *mut *const xmlChar;
-                        maxatts *= 2 as i32;
-                        n = xmlRealloc_safe(
-                            atts as *mut (),
-                            (maxatts as u64).wrapping_mul(size_of::<*const xmlChar>() as u64),
-                        ) as *mut *const xmlChar;
+                        maxatts *= 2;
+                        n = unsafe {
+                            xmlRealloc_safe(
+                                atts as *mut (),
+                                maxatts as u64 * size_of::<*const xmlChar>() as u64,
+                            )
+                        } as *mut *const xmlChar;
                         if n.is_null() {
-                            unsafe {
-                                xmlErrMemory(ctxt, 0 as *const i8);
-                            }
+                            xmlErrMemory(ctxt, 0 as *const i8);
+
                             if !attvalue.is_null() {
-                                xmlFree_safe(attvalue as *mut ());
+                                unsafe { xmlFree_safe(attvalue as *mut ()) };
                             }
-                            current_block = 13942178848302774114;
+                            current_block = 0;
                         } else {
                             atts = n;
                             safe_ctxt.atts = atts;
                             safe_ctxt.maxatts = maxatts;
-                            current_block = 11763295167351361500;
+                            current_block = 2;
                         }
                     } else {
-                        current_block = 11763295167351361500;
+                        current_block = 2;
                     }
                     match current_block {
-                        13942178848302774114 => {}
+                        0 => {}
                         _ => unsafe {
-                            let fresh89 = nbatts;
+                            *atts.offset(nbatts as isize) = attname;
                             nbatts = nbatts + 1;
-                            let ref mut fresh90 = *atts.offset(fresh89 as isize);
-                            *fresh90 = attname;
-                            let fresh91 = nbatts;
+                            *atts.offset(nbatts as isize) = attvalue;
                             nbatts = nbatts + 1;
-                            let ref mut fresh92 = *atts.offset(fresh91 as isize);
-                            *fresh92 = attvalue;
-                            let ref mut fresh93 = *atts.offset(nbatts as isize);
-                            *fresh93 = 0 as *const xmlChar;
-                            let ref mut fresh94 = *atts.offset((nbatts + 1 as i32) as isize);
-                            *fresh94 = 0 as *const xmlChar
+                            *atts.offset(nbatts as isize) = 0 as *const xmlChar;
+                            *atts.offset((nbatts + 1) as isize) = 0 as *const xmlChar
                         },
                     }
                 }
             }
         } else if !attvalue.is_null() {
-            xmlFree_safe(attvalue as *mut ());
+            unsafe { xmlFree_safe(attvalue as *mut ()) };
         }
         if safe_ctxt.progressive == 0
-            && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
+            && unsafe { (safe_input.end.offset_from((*safe_ctxt.input).cur) as i64) < 250 }
         {
             xmlGROW(ctxt);
         }
         if unsafe {
-            *(*(*ctxt).input).cur == '>' as u8
-                || *(*(*ctxt).input).cur == '/' as u8
-                    && *(*(*ctxt).input).cur.offset(1) == '>' as u8
+            *safe_input.cur == '>' as u8
+                || *safe_input.cur == '/' as u8 && *safe_input.cur.offset(1) == '>' as u8
         } {
             break;
         }
         if xmlSkipBlankChars(ctxt) == 0 {
-            unsafe {
-                xmlFatalErrMsg(
-                    ctxt,
-                    XML_ERR_SPACE_REQUIRED,
-                    b"attributes construct error\n\x00" as *const u8 as *const i8,
-                );
-            }
+            xmlFatalErrMsg(
+                ctxt,
+                XML_ERR_SPACE_REQUIRED,
+                b"attributes construct error\n\x00" as *const u8 as *const i8,
+            );
         }
-        if unsafe {
-            cons as u64 == (*(*ctxt).input).consumed
-                && q == (*(*ctxt).input).cur
-                && attname.is_null()
-                && attvalue.is_null()
-        } {
-            unsafe {
-                xmlFatalErrMsg(
-                    ctxt,
-                    XML_ERR_INTERNAL_ERROR,
-                    b"xmlParseStartTag: problem parsing attributes\n\x00" as *const u8 as *const i8,
-                );
-            }
+        if cons == safe_input.consumed
+            && q == safe_input.cur
+            && attname.is_null()
+            && attvalue.is_null()
+        {
+            xmlFatalErrMsg(
+                ctxt,
+                XML_ERR_INTERNAL_ERROR,
+                b"xmlParseStartTag: problem parsing attributes\n\x00" as *const u8 as *const i8,
+            );
+
             break;
         } else {
             if safe_ctxt.progressive == 0
                 && unsafe {
-                    (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                        > (2 as i32 * 250) as i64
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                            < (2 as i32 * 250) as i64
+                    safe_input.cur.offset_from(safe_input.base) as i64 > (2 * 250)
+                        && (safe_input.end.offset_from(safe_input.cur) as i64) < (2 * 250)
                 }
             {
                 xmlSHRINK(ctxt);
             }
             if safe_ctxt.progressive == 0
-                && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
+                && unsafe { (safe_input.end.offset_from(safe_input.cur) as i64) < 250 }
             {
                 xmlGROW(ctxt);
             }
@@ -9633,12 +9558,12 @@ pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
      * SAX: Start of Element !
      */
     if !safe_ctxt.sax.is_null()
-        && unsafe { (*(*ctxt).sax).startElement.is_some() }
+        && unsafe { (*safe_ctxt.sax).startElement.is_some() }
         && safe_ctxt.disableSAX == 0
     {
         if nbatts > 0 {
             unsafe {
-                (*(*ctxt).sax)
+                (*safe_ctxt.sax)
                     .startElement
                     .expect("non-null function pointer")(
                     safe_ctxt.userData, name, atts
@@ -9646,7 +9571,7 @@ pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
             }
         } else {
             unsafe {
-                (*(*ctxt).sax)
+                (*safe_ctxt.sax)
                     .startElement
                     .expect("non-null function pointer")(
                     safe_ctxt.userData,
@@ -9658,14 +9583,14 @@ pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
     }
     if !atts.is_null() {
         /* Free only the content strings */
-        i = 1 as i32;
+        i = 1;
         while i < nbatts {
             unsafe {
                 if !(*atts.offset(i as isize)).is_null() {
                     xmlFree_safe(*atts.offset(i as isize) as *mut xmlChar as *mut ());
                 }
             }
-            i += 2 as i32
+            i += 2
         }
     }
     return name;
@@ -9685,81 +9610,86 @@ pub unsafe fn xmlParseStartTag(mut ctxt: xmlParserCtxtPtr) -> *const xmlChar {
 * [NS 9] ETag ::= '</' QName S? '>'
 */
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
-unsafe fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: i32) {
+fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: i32) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
-    //@todo 削减unsafe范围
-    unsafe {
-        if (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-        {
-            xmlGROW(ctxt);
-        }
-        if *(*(*ctxt).input).cur != '<' as u8 || *(*(*ctxt).input).cur.offset(1) != '/' as u8 {
-            xmlFatalErrMsg(
-                ctxt,
-                XML_ERR_LTSLASH_REQUIRED,
-                b"xmlParseEndTag: \'</\' not found\n\x00" as *const u8 as *const i8,
-            );
-            return;
-        }
-        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
-        (*(*ctxt).input).col += 2 as i32;
-        if *(*(*ctxt).input).cur as i32 == 0 {
-            xmlParserInputGrow_safe((*ctxt).input, 250);
-        }
-        name = xmlParseNameAndCompare(ctxt, (*ctxt).name);
-        /*
-         * We should definitely be at the ending "S? '>'" part
-         */
-        if (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-        {
-            xmlGROW(ctxt);
-        }
-        xmlSkipBlankChars(ctxt);
-        if !(0x9 <= *(*(*ctxt).input).cur as i32 && *(*(*ctxt).input).cur as i32 <= 0xa
-            || *(*(*ctxt).input).cur as i32 == 0xd
-            || 0x20 <= *(*(*ctxt).input).cur as i32)
-            || *(*(*ctxt).input).cur != '>' as u8
-        {
-            xmlFatalErr(ctxt, XML_ERR_GT_REQUIRED, 0 as *const i8);
-        } else {
-            (*(*ctxt).input).col += 1;
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(1);
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
-            }
-        }
-        /*
-         * [ WFC: Element Type Match ]
-         * The Name in an element's end-tag must match the element type in the
-         * start-tag.
-         *
-         */
-        if name != 1 as i32 as *mut xmlChar {
-            if name.is_null() {
-                name = b"unparsable\x00" as *const u8 as *const i8 as *mut xmlChar
-            }
-            xmlFatalErrMsgStrIntStr(
-                ctxt,
-                XML_ERR_TAG_NAME_MISMATCH,
-                b"Opening and ending tag mismatch: %s line %d and %s\n\x00" as *const u8
-                    as *const i8,
-                (*ctxt).name,
-                line,
-                name,
-            );
-        }
-        /*
-         * SAX: End of Tag
-         */
-        if !(*ctxt).sax.is_null() && (*(*ctxt).sax).endElement.is_some() && (*ctxt).disableSAX == 0
-        {
-            (*(*ctxt).sax)
-                .endElement
-                .expect("non-null function pointer")((*ctxt).userData, (*ctxt).name);
+    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut safe_input = unsafe { &mut *safe_ctxt.input };
+
+    if safe_ctxt.progressive == 0
+        && unsafe { (safe_input.end.offset_from(safe_input.cur) as i64) < 250 }
+    {
+        xmlGROW(ctxt);
+    }
+    if unsafe { *safe_input.cur != '<' as u8 || *safe_input.cur.offset(1) != '/' as u8 } {
+        xmlFatalErrMsg(
+            ctxt,
+            XML_ERR_LTSLASH_REQUIRED,
+            b"xmlParseEndTag: \'</\' not found\n\x00" as *const u8 as *const i8,
+        );
+        return;
+    }
+    safe_input.cur = unsafe { safe_input.cur.offset(2) };
+    safe_input.col += 2;
+    if unsafe { *safe_input.cur as i32 == 0 } {
+        unsafe { xmlParserInputGrow_safe(safe_ctxt.input, 250) };
+    }
+    name = xmlParseNameAndCompare(ctxt, safe_ctxt.name);
+    /*
+     * We should definitely be at the ending "S? '>'" part
+     */
+    if safe_ctxt.progressive == 0
+        && unsafe { (safe_input.end.offset_from(safe_input.cur) as i64) < 250 }
+    {
+        xmlGROW(ctxt);
+    }
+    xmlSkipBlankChars(ctxt);
+    if unsafe {
+        !(0x9 <= *safe_input.cur as i32 && *safe_input.cur as i32 <= 0xa
+            || *safe_input.cur as i32 == 0xd
+            || 0x20 <= *safe_input.cur as i32)
+            || *safe_input.cur != '>' as u8
+    } {
+        unsafe { xmlFatalErr(ctxt, XML_ERR_GT_REQUIRED, 0 as *const i8) };
+    } else {
+        safe_input.col += 1;
+        safe_input.cur = unsafe { safe_input.cur.offset(1) };
+        if unsafe { *safe_input.cur as i32 == 0 } {
+            unsafe { xmlParserInputGrow_safe(safe_ctxt.input, 250) };
         }
     }
+    /*
+     * [ WFC: Element Type Match ]
+     * The Name in an element's end-tag must match the element type in the
+     * start-tag.
+     *
+     */
+    if name != 1 as *mut xmlChar {
+        if name.is_null() {
+            name = b"unparsable\x00" as *const u8 as *const i8 as *mut xmlChar
+        }
+        xmlFatalErrMsgStrIntStr(
+            ctxt,
+            XML_ERR_TAG_NAME_MISMATCH,
+            b"Opening and ending tag mismatch: %s line %d and %s\n\x00" as *const u8 as *const i8,
+            safe_ctxt.name,
+            line,
+            name,
+        );
+    }
+    /*
+     * SAX: End of Tag
+     */
+    if !safe_ctxt.sax.is_null()
+        && unsafe { (*safe_ctxt.sax).endElement.is_some() }
+        && safe_ctxt.disableSAX == 0
+    {
+        unsafe {
+            (*safe_ctxt.sax)
+                .endElement
+                .expect("non-null function pointer")(safe_ctxt.userData, safe_ctxt.name)
+        };
+    }
+
     namePop(ctxt);
     spacePop(ctxt);
 }
@@ -9776,7 +9706,7 @@ unsafe fn xmlParseEndTag1(mut ctxt: xmlParserCtxtPtr, mut line: i32) {
 * [NS 9] ETag ::= '</' QName S? '>'
 */
 #[cfg(HAVE_parser_LIBXML_SAX1_ENABLED)]
-pub unsafe fn xmlParseEndTag(mut ctxt: xmlParserCtxtPtr) {
+pub fn xmlParseEndTag(mut ctxt: xmlParserCtxtPtr) {
     xmlParseEndTag1(ctxt, 0);
 }
 /* LIBXML_SAX1_ENABLED */
@@ -9795,26 +9725,23 @@ pub unsafe fn xmlParseEndTag(mut ctxt: xmlParserCtxtPtr) {
 *
 * Returns the namespace name or NULL if not bound
 */
-unsafe fn xmlGetNamespace(
-    mut ctxt: xmlParserCtxtPtr,
-    mut prefix: *const xmlChar,
-) -> *const xmlChar {
+fn xmlGetNamespace(mut ctxt: xmlParserCtxtPtr, prefix: *const xmlChar) -> *const xmlChar {
     let mut i: i32 = 0;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     if prefix == safe_ctxt.str_xml {
         return safe_ctxt.str_xml_ns;
     }
-    i = safe_ctxt.nsNr - 2 as i32;
+    i = safe_ctxt.nsNr - 2;
     while i >= 0 {
-        unsafe {
-            if *(*ctxt).nsTab.offset(i as isize) == prefix {
-                if prefix.is_null() && **(*ctxt).nsTab.offset((i + 1 as i32) as isize) as i32 == 0 {
-                    return 0 as *const xmlChar;
-                }
-                return *(*ctxt).nsTab.offset((i + 1 as i32) as isize);
+        if unsafe { *safe_ctxt.nsTab.offset(i as isize) } == prefix {
+            if prefix.is_null() && unsafe { **safe_ctxt.nsTab.offset((i + 1) as isize) as i32 == 0 }
+            {
+                return 0 as *const xmlChar;
             }
+            return unsafe { *safe_ctxt.nsTab.offset((i + 1) as isize) };
         }
-        i -= 2 as i32
+
+        i -= 2
     }
     return 0 as *const xmlChar;
 }
@@ -9831,22 +9758,19 @@ unsafe fn xmlGetNamespace(
 *
 * Returns the Name parsed or NULL
 */
-unsafe fn xmlParseQName(
-    mut ctxt: xmlParserCtxtPtr,
-    mut prefix: *mut *const xmlChar,
-) -> *const xmlChar {
+fn xmlParseQName(mut ctxt: xmlParserCtxtPtr, mut prefix: *mut *const xmlChar) -> *const xmlChar {
     let mut l: *const xmlChar = 0 as *const xmlChar;
     let mut p: *const xmlChar = 0 as *const xmlChar;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     if safe_ctxt.progressive == 0
-        && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
+        && unsafe { ((*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64) < 250 }
     {
         xmlGROW(ctxt);
     }
     l = xmlParseNCName(ctxt);
     if l.is_null() {
         unsafe {
-            if *(*(*ctxt).input).cur == ':' as u8 {
+            if *(*safe_ctxt.input).cur == ':' as u8 {
                 l = xmlParseName(ctxt);
                 if !l.is_null() {
                     xmlNsErr(
@@ -9864,8 +9788,8 @@ unsafe fn xmlParseQName(
         }
         return 0 as *const xmlChar;
     }
-    if unsafe { *(*(*ctxt).input).cur == ':' as u8 } {
-        xmlNextChar_safe(ctxt);
+    if unsafe { *(*safe_ctxt.input).cur == ':' as u8 } {
+        unsafe { xmlNextChar_safe(ctxt) };
         p = l;
         l = xmlParseNCName(ctxt);
         if l.is_null() {
@@ -9886,26 +9810,28 @@ unsafe fn xmlParseQName(
                 if safe_ctxt.instate == XML_PARSER_EOF {
                     return 0 as *const xmlChar;
                 }
-                tmp = xmlBuildQName_safe(
-                    b"\x00" as *const u8 as *const i8 as *mut xmlChar,
-                    p,
-                    0 as *mut xmlChar,
-                    0,
-                )
+                tmp = unsafe {
+                    xmlBuildQName_safe(
+                        b"\x00" as *const u8 as *const i8 as *mut xmlChar,
+                        p,
+                        0 as *mut xmlChar,
+                        0,
+                    )
+                }
             } else {
-                tmp = xmlBuildQName_safe(l, p, 0 as *mut xmlChar, 0);
-                xmlFree_safe(l as *mut i8 as *mut ());
+                tmp = unsafe { xmlBuildQName_safe(l, p, 0 as *mut xmlChar, 0) };
+                unsafe { xmlFree_safe(l as *mut i8 as *mut ()) };
             }
-            p = xmlDictLookup_safe(safe_ctxt.dict, tmp, -(1 as i32));
+            p = unsafe { xmlDictLookup_safe(safe_ctxt.dict, tmp, -1) };
             if !tmp.is_null() {
-                xmlFree_safe(tmp as *mut ());
+                unsafe { xmlFree_safe(tmp as *mut ()) };
             }
             unsafe {
                 *prefix = 0 as *const xmlChar;
             }
             return p;
         }
-        if unsafe { *(*(*ctxt).input).cur == ':' as u8 } {
+        if unsafe { *(*safe_ctxt.input).cur == ':' as u8 } {
             let mut tmp_0: *mut xmlChar = 0 as *mut xmlChar;
             xmlNsErr(
                 ctxt,
@@ -9915,13 +9841,13 @@ unsafe fn xmlParseQName(
                 l,
                 0 as *const xmlChar,
             );
-            xmlNextChar_safe(ctxt);
+            unsafe { xmlNextChar_safe(ctxt) };
             tmp_0 = xmlParseName(ctxt) as *mut xmlChar;
             if !tmp_0.is_null() {
-                tmp_0 = xmlBuildQName_safe(tmp_0, l, 0 as *mut xmlChar, 0);
-                l = xmlDictLookup_safe(safe_ctxt.dict, tmp_0, -(1 as i32));
+                tmp_0 = unsafe { xmlBuildQName_safe(tmp_0, l, 0 as *mut xmlChar, 0) };
+                l = unsafe { xmlDictLookup_safe(safe_ctxt.dict, tmp_0, -1) };
                 if !tmp_0.is_null() {
-                    xmlFree_safe(tmp_0 as *mut ());
+                    unsafe { xmlFree_safe(tmp_0 as *mut ()) };
                 }
                 unsafe {
                     *prefix = p;
@@ -9931,15 +9857,17 @@ unsafe fn xmlParseQName(
             if safe_ctxt.instate == XML_PARSER_EOF {
                 return 0 as *const xmlChar;
             }
-            tmp_0 = xmlBuildQName_safe(
-                b"\x00" as *const u8 as *const i8 as *mut xmlChar,
-                l,
-                0 as *mut xmlChar,
-                0,
-            );
-            l = xmlDictLookup_safe(safe_ctxt.dict, tmp_0, -(1 as i32));
+            tmp_0 = unsafe {
+                xmlBuildQName_safe(
+                    b"\x00" as *const u8 as *const i8 as *mut xmlChar,
+                    l,
+                    0 as *mut xmlChar,
+                    0,
+                )
+            };
+            l = unsafe { xmlDictLookup_safe(safe_ctxt.dict, tmp_0, -1) };
             if !tmp_0.is_null() {
-                xmlFree_safe(tmp_0 as *mut ());
+                unsafe { xmlFree_safe(tmp_0 as *mut ()) };
             }
             unsafe {
                 *prefix = p;
@@ -9968,59 +9896,64 @@ unsafe fn xmlParseQName(
 * Returns NULL for an illegal name, (xmlChar*) 1 for success
 * and the name for mismatch
 */
-unsafe fn xmlParseQNameAndCompare(
+fn xmlParseQNameAndCompare(
     mut ctxt: xmlParserCtxtPtr,
-    mut name: *const xmlChar,
-    mut prefix: *const xmlChar,
+    name: *const xmlChar,
+    prefix: *const xmlChar,
 ) -> *const xmlChar {
-    let mut cmp: *const xmlChar = 0 as *const xmlChar;
-    let mut in_0: *const xmlChar = 0 as *const xmlChar;
-    let mut ret: *const xmlChar = 0 as *const xmlChar;
+    let mut cmp: *const xmlChar;
+    let mut in_0: *const xmlChar;
+    let ret: *const xmlChar;
     let mut prefix2: *const xmlChar = 0 as *const xmlChar;
+    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut safe_input = unsafe { &mut *safe_ctxt.input };
     if prefix.is_null() {
         return xmlParseNameAndCompare(ctxt, name);
     }
     if unsafe {
-        (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
+        safe_ctxt.progressive == 0
+            && ((*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64) < 250
     } {
         xmlGROW(ctxt);
     }
-    in_0 = unsafe { (*(*ctxt).input).cur };
+    in_0 = unsafe { (*safe_ctxt.input).cur };
     cmp = prefix;
-    unsafe {
-        while *in_0 != 0 && *in_0 as i32 == *cmp as i32 {
-            in_0 = in_0.offset(1);
-            cmp = cmp.offset(1)
+    let mut safe_in_0 = unsafe { *in_0 };
+    let mut safe_cmp = unsafe { *cmp };
+    while safe_in_0 != 0 && safe_in_0 == safe_cmp {
+        in_0 = unsafe { in_0.offset(1) };
+        cmp = unsafe { cmp.offset(1) };
+        safe_in_0 = unsafe { *in_0 };
+        safe_cmp = unsafe { *cmp };
+    }
+    if safe_cmp == 0 && safe_in_0 == ':' as u8 {
+        in_0 = unsafe { in_0.offset(1) };
+        cmp = name;
+        safe_in_0 = unsafe { *in_0 };
+        safe_cmp = unsafe { *cmp };
+        while safe_in_0 != 0 && safe_in_0 == safe_cmp {
+            in_0 = unsafe { in_0.offset(1) };
+            cmp = unsafe { cmp.offset(1) };
+            safe_in_0 = unsafe { *in_0 };
+            safe_cmp = unsafe { *cmp };
         }
-        if *cmp as i32 == 0 && *in_0 == ':' as u8 {
-            in_0 = in_0.offset(1);
-            cmp = name;
-            while *in_0 != 0 && *in_0 as i32 == *cmp as i32 {
-                in_0 = in_0.offset(1);
-                cmp = cmp.offset(1)
-            }
-            if *cmp as i32 == 0
-                && (*in_0 == '>' as u8
-                    || (*in_0 == 0x20
-                        || 0x9 <= *in_0 as i32 && *in_0 as i32 <= 0xa
-                        || *in_0 as i32 == 0xd))
-            {
-                /* success */
-                (*(*ctxt).input).col = ((*(*ctxt).input).col as i64
-                    + in_0.offset_from((*(*ctxt).input).cur) as i64)
-                    as i32;
-                (*(*ctxt).input).cur = in_0;
-                return 1 as i32 as *const xmlChar;
-            }
+        if safe_cmp == 0
+            && (safe_in_0 == '>' as u8
+                || (safe_in_0 == 0x20 || 0x9 <= safe_in_0 && safe_in_0 <= 0xa || safe_in_0 == 0xd))
+        {
+            /* success */
+            safe_input.col = safe_input.col + unsafe { in_0.offset_from(safe_input.cur) } as i32;
+            safe_input.cur = in_0;
+            return 1 as *const xmlChar;
         }
     }
+
     /*
      * all strings coms from the dictionary, equality can be done directly
      */
     ret = xmlParseQName(ctxt, &mut prefix2);
     if ret == name && prefix == prefix2 {
-        return 1 as i32 as *const xmlChar;
+        return 1 as *const xmlChar;
     }
     return ret;
 }
@@ -10057,166 +9990,166 @@ unsafe fn xmlParseQNameAndCompare(
 * Returns the AttValue parsed or NULL. The value has to be freed by the
 *     caller if it was copied, this can be detected by val[*len] == 0.
 */
-unsafe fn xmlParseAttValueInternal(
+fn xmlParseAttValueInternal(
     mut ctxt: xmlParserCtxtPtr,
     mut len: *mut i32,
     mut alloc: *mut i32,
-    mut normalize: i32,
+    normalize: i32,
 ) -> *mut xmlChar {
     let mut current_block: u64;
     let mut limit: xmlChar = 0 as xmlChar;
     let mut in_0: *const xmlChar = 0 as *const xmlChar;
-    let mut start: *const xmlChar = 0 as *const xmlChar;
-    let mut end: *const xmlChar = 0 as *const xmlChar;
-    let mut last: *const xmlChar = 0 as *const xmlChar;
+    let mut start: *const xmlChar;
+    let mut end: *const xmlChar;
+    let mut last: *const xmlChar;
     let mut ret: *mut xmlChar = 0 as *mut xmlChar;
-    let mut line: i32 = 0;
-    let mut col: i32 = 0;
+    let mut line: i32;
+    let mut col: i32;
     let mut safe_ctxt = unsafe { &mut *ctxt };
-    if unsafe {
-        (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-    } {
+    let mut safe_input = unsafe { &mut *safe_ctxt.input };
+    if safe_ctxt.progressive == 0
+        && unsafe { safe_input.end.offset_from(safe_input.cur) as i64 } < 250
+    {
         xmlGROW(ctxt);
     }
-    unsafe {
-        in_0 = (*(*ctxt).input).cur as *mut xmlChar;
-        line = (*(*ctxt).input).line;
-        col = (*(*ctxt).input).col;
-        if *in_0 != '\"' as u8 && *in_0 != '\'' as u8 {
-            xmlFatalErr(ctxt, XML_ERR_ATTRIBUTE_NOT_STARTED, 0 as *const i8);
-            return 0 as *mut xmlChar;
-        }
+
+    in_0 = safe_input.cur as *mut xmlChar;
+    line = safe_input.line;
+    col = safe_input.col;
+    let mut safe_in_0 = unsafe { *in_0 };
+    if safe_in_0 != '\"' as u8 && safe_in_0 != '\'' as u8 {
+        unsafe { xmlFatalErr(ctxt, XML_ERR_ATTRIBUTE_NOT_STARTED, 0 as *const i8) };
+        return 0 as *mut xmlChar;
     }
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+
     safe_ctxt.instate = XML_PARSER_ATTRIBUTE_VALUE;
     /*
      * try to handle in this routine the most common case where no
      * allocation of a new string is required and where content is
      * pure ASCII.
      */
-    let fresh95 = in_0;
-    unsafe {
-        in_0 = in_0.offset(1);
-        limit = *fresh95;
-        col += 1;
-        end = (*(*ctxt).input).end;
-    }
+
+    limit = safe_in_0;
+    in_0 = unsafe { in_0.offset(1) };
+    col += 1;
+    end = safe_input.end;
+
     start = in_0;
     if in_0 >= end {
-        let mut oldbase: *const xmlChar = unsafe { (*(*ctxt).input).base };
+        let oldbase: *const xmlChar = safe_input.base;
         if safe_ctxt.progressive == 0
-            && unsafe { ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250 }
+            && unsafe { (safe_input.end.offset_from(safe_input.cur) as i64) < 250 }
         {
             xmlGROW(ctxt);
         }
         if safe_ctxt.instate == XML_PARSER_EOF {
             return 0 as *mut xmlChar;
         }
-        unsafe {
-            if oldbase != (*(*ctxt).input).base {
-                let mut delta: ptrdiff_t = (*(*ctxt).input).base.offset_from(oldbase) as i64;
+
+        if oldbase != safe_input.base {
+            unsafe {
+                let delta: ptrdiff_t = safe_input.base.offset_from(oldbase) as i64;
                 start = start.offset(delta as isize);
                 in_0 = in_0.offset(delta as isize)
             }
-            end = (*(*ctxt).input).end
         }
+        end = safe_input.end
     }
+    safe_in_0 = unsafe { *in_0 };
     if normalize != 0 {
         /*
          * Skip any leading spaces
          */
         while in_0 < end
-            && unsafe { *in_0 } as i32 != limit as i32
-            && (unsafe { *in_0 } as i32 == 0x20
-                || unsafe { *in_0 } as i32 == 0x9
-                || unsafe { *in_0 } as i32 == 0xa
-                || unsafe { *in_0 } as i32 == 0xd)
+            && safe_in_0 != limit
+            && (safe_in_0 == 0x20 || safe_in_0 == 0x9 || safe_in_0 == 0xa || safe_in_0 == 0xd)
         {
-            if unsafe { *in_0 } as i32 == 0xa {
+            if safe_in_0 == 0xa {
                 line += 1;
-                col = 1 as i32
+                col = 1
             } else {
                 col += 1
             }
             in_0 = unsafe { in_0.offset(1) };
+            safe_in_0 = unsafe { *in_0 };
             start = in_0;
             if in_0 >= end {
-                let mut oldbase_0: *const xmlChar = unsafe { (*(*ctxt).input).base };
-                if unsafe {
-                    (*ctxt).progressive == 0
-                        && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-                } {
-                    xmlGROW(ctxt);
-                }
-                if safe_ctxt.instate == XML_PARSER_EOF {
-                    return 0 as *mut xmlChar;
-                }
-                unsafe {
-                    if oldbase_0 != (*(*ctxt).input).base {
-                        let mut delta_0: ptrdiff_t =
-                            (*(*ctxt).input).base.offset_from(oldbase_0) as i64;
-                        start = start.offset(delta_0 as isize);
-                        in_0 = in_0.offset(delta_0 as isize)
-                    }
-                    end = (*(*ctxt).input).end;
-                    if in_0.offset_from(start) as i64 > 10000000 as i64
-                        && (*ctxt).options & XML_PARSE_HUGE as i32 == 0
-                    {
-                        xmlFatalErrMsg(
-                            ctxt,
-                            XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                            b"AttValue length too long\n\x00" as *const u8 as *const i8,
-                        );
-                        return 0 as *mut xmlChar;
-                    }
-                }
-            }
-        }
-        while in_0 < end
-            && unsafe { *in_0 } != limit
-            && unsafe { *in_0 } as i32 >= 0x20
-            && unsafe { *in_0 } as i32 <= 0x7f
-            && unsafe { *in_0 } != '&' as u8
-            && unsafe { *in_0 } != '<' as u8
-        {
-            col += 1;
-            let fresh96 = in_0;
-            in_0 = unsafe { in_0.offset(1) };
-            if unsafe { *fresh96 } as i32 == 0x20 && unsafe { *in_0 } as i32 == 0x20 {
-                break;
-            }
-            if in_0 >= end {
-                let mut oldbase_1: *const xmlChar = unsafe { (*(*ctxt).input).base };
+                let oldbase: *const xmlChar = safe_input.base;
                 if safe_ctxt.progressive == 0
-                    && unsafe {
-                        ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-                    }
+                    && unsafe { (safe_input.end.offset_from(safe_input.cur) as i64) } < 250
                 {
                     xmlGROW(ctxt);
                 }
                 if safe_ctxt.instate == XML_PARSER_EOF {
                     return 0 as *mut xmlChar;
                 }
-                unsafe {
-                    if oldbase_1 != (*(*ctxt).input).base {
-                        let mut delta_1: ptrdiff_t =
-                            (*(*ctxt).input).base.offset_from(oldbase_1) as i64;
-                        start = start.offset(delta_1 as isize);
-                        in_0 = in_0.offset(delta_1 as isize)
-                    }
-                    end = (*(*ctxt).input).end;
-                    if in_0.offset_from(start) as i64 > 10000000 as i64
-                        && (*ctxt).options & XML_PARSE_HUGE as i32 == 0
-                    {
-                        xmlFatalErrMsg(
-                            ctxt,
-                            XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                            b"AttValue length too long\n\x00" as *const u8 as *const i8,
-                        );
-                        return 0 as *mut xmlChar;
+
+                if oldbase != safe_input.base {
+                    unsafe {
+                        let delta: ptrdiff_t = safe_input.base.offset_from(oldbase) as i64;
+                        start = start.offset(delta as isize);
+                        in_0 = in_0.offset(delta as isize)
                     }
                 }
+                end = safe_input.end;
+                if unsafe { in_0.offset_from(start) } as i64 > 10000000 as i64
+                    && safe_ctxt.options & XML_PARSE_HUGE as i32 == 0
+                {
+                    xmlFatalErrMsg(
+                        ctxt,
+                        XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                        b"AttValue length too long\n\x00" as *const u8 as *const i8,
+                    );
+                    return 0 as *mut xmlChar;
+                }
+                safe_in_0 = unsafe { *in_0 };
+            }
+        }
+        safe_in_0 = unsafe { *in_0 };
+        while in_0 < end
+            && safe_in_0 != limit
+            && safe_in_0 >= 0x20
+            && safe_in_0 <= 0x7f
+            && safe_in_0 != '&' as u8
+            && safe_in_0 != '<' as u8
+        {
+            col += 1;
+            let in_0_old = unsafe { *in_0 };
+            in_0 = unsafe { in_0.offset(1) };
+            safe_in_0 = unsafe { *in_0 };
+            if in_0_old == 0x20 && safe_in_0 == 0x20 {
+                break;
+            }
+            if in_0 >= end {
+                let oldbase: *const xmlChar = safe_input.base;
+                if safe_ctxt.progressive == 0
+                    && unsafe { (safe_input.end.offset_from(safe_input.cur) as i64) < 250 }
+                {
+                    xmlGROW(ctxt);
+                }
+                if safe_ctxt.instate == XML_PARSER_EOF {
+                    return 0 as *mut xmlChar;
+                }
+
+                if oldbase != safe_input.base {
+                    unsafe {
+                        let delta: ptrdiff_t = safe_input.base.offset_from(oldbase) as i64;
+                        start = start.offset(delta as isize);
+                        in_0 = in_0.offset(delta as isize)
+                    }
+                }
+                end = safe_input.end;
+                if unsafe { in_0.offset_from(start) } as i64 > 10000000 as i64
+                    && safe_ctxt.options & XML_PARSE_HUGE as i32 == 0
+                {
+                    xmlFatalErrMsg(
+                        ctxt,
+                        XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                        b"AttValue length too long\n\x00" as *const u8 as *const i8,
+                    );
+                    return 0 as *mut xmlChar;
+                }
+                safe_in_0 = unsafe { *in_0 };
             }
         }
         last = in_0;
@@ -10224,142 +10157,139 @@ unsafe fn xmlParseAttValueInternal(
          * skip the trailing blanks
          */
         unsafe {
-            while *last.offset(-(1 as i32) as isize) as i32 == 0x20 && last > start {
+            while *last.offset(-1) == 0x20 && last > start {
                 last = last.offset(-1)
             }
         }
         while in_0 < end
-            && unsafe { *in_0 } as i32 != limit as i32
-            && (unsafe { *in_0 } as i32 == 0x20
-                || unsafe { *in_0 } as i32 == 0x9
-                || unsafe { *in_0 } as i32 == 0xa
-                || unsafe { *in_0 } as i32 == 0xd)
+            && safe_in_0 != limit
+            && (safe_in_0 == 0x20 || safe_in_0 == 0x9 || safe_in_0 == 0xa || safe_in_0 == 0xd)
         {
-            if unsafe { *in_0 } as i32 == 0xa {
+            if safe_in_0 == 0xa {
                 line += 1;
-                col = 1 as i32
+                col = 1
             } else {
                 col += 1
             }
             in_0 = unsafe { in_0.offset(1) };
+            safe_in_0 = unsafe { *in_0 };
             if in_0 >= end {
-                let mut oldbase_2: *const xmlChar = unsafe { (*(*ctxt).input).base };
+                let oldbase: *const xmlChar = safe_input.base;
                 if safe_ctxt.progressive == 0
-                    && unsafe {
-                        ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-                    }
+                    && unsafe { (safe_input.end.offset_from(safe_input.cur) as i64) < 250 }
                 {
                     xmlGROW(ctxt);
                 }
                 if safe_ctxt.instate == XML_PARSER_EOF {
                     return 0 as *mut xmlChar;
                 }
-                unsafe {
-                    if oldbase_2 != (*(*ctxt).input).base {
-                        let mut delta_2: ptrdiff_t =
-                            (*(*ctxt).input).base.offset_from(oldbase_2) as i64;
-                        start = start.offset(delta_2 as isize);
-                        in_0 = in_0.offset(delta_2 as isize);
-                        last = last.offset(delta_2 as isize)
-                    }
-                    end = (*(*ctxt).input).end;
-                    if in_0.offset_from(start) as i64 > 10000000 as i64
-                        && (*ctxt).options & XML_PARSE_HUGE as i32 == 0
-                    {
-                        xmlFatalErrMsg(
-                            ctxt,
-                            XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                            b"AttValue length too long\n\x00" as *const u8 as *const i8,
-                        );
-                        return 0 as *mut xmlChar;
+
+                if oldbase != safe_input.base {
+                    unsafe {
+                        let delta: ptrdiff_t = safe_input.base.offset_from(oldbase) as i64;
+                        start = start.offset(delta as isize);
+                        in_0 = in_0.offset(delta as isize);
+                        last = last.offset(delta as isize)
                     }
                 }
-            }
-        }
-        unsafe {
-            if in_0.offset_from(start) as i64 > 10000000 as i64
-                && (*ctxt).options & XML_PARSE_HUGE as i32 == 0
-            {
-                xmlFatalErrMsg(
-                    ctxt,
-                    XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                    b"AttValue length too long\n\x00" as *const u8 as *const i8,
-                );
-                return 0 as *mut xmlChar;
-            }
-        }
-        if unsafe { *in_0 } as i32 != limit as i32 {
-            current_block = 78912414019074375;
-        } else {
-            current_block = 17736998403848444560;
-        }
-    } else {
-        while in_0 < end
-            && unsafe { *in_0 } != limit
-            && unsafe { *in_0 } as i32 >= 0x20
-            && unsafe { *in_0 } as i32 <= 0x7f
-            && unsafe { *in_0 } != '&' as u8
-            && unsafe { *in_0 } != '<' as u8
-        {
-            in_0 = unsafe { in_0.offset(1) };
-            col += 1;
-            if in_0 >= end {
-                let mut oldbase_3: *const xmlChar = unsafe { (*(*ctxt).input).base };
-                if safe_ctxt.progressive == 0
-                    && unsafe {
-                        ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-                    }
+                end = safe_input.end;
+                if unsafe { in_0.offset_from(start) } as i64 > 10000000 as i64
+                    && safe_ctxt.options & XML_PARSE_HUGE as i32 == 0
                 {
-                    xmlGROW(ctxt);
-                }
-                if safe_ctxt.instate == XML_PARSER_EOF {
+                    xmlFatalErrMsg(
+                        ctxt,
+                        XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                        b"AttValue length too long\n\x00" as *const u8 as *const i8,
+                    );
                     return 0 as *mut xmlChar;
                 }
-                unsafe {
-                    if oldbase_3 != (*(*ctxt).input).base {
-                        let mut delta_3: ptrdiff_t =
-                            (*(*ctxt).input).base.offset_from(oldbase_3) as i64;
-                        start = start.offset(delta_3 as isize);
-                        in_0 = in_0.offset(delta_3 as isize)
-                    }
-                    end = (*(*ctxt).input).end;
-                    if in_0.offset_from(start) as i64 > 10000000 as i64
-                        && (*ctxt).options & XML_PARSE_HUGE as i32 == 0
-                    {
-                        xmlFatalErrMsg(
-                            ctxt,
-                            XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                            b"AttValue length too long\n\x00" as *const u8 as *const i8,
-                        );
-                        return 0 as *mut xmlChar;
-                    }
-                }
-            }
-        }
-        last = in_0;
-        unsafe {
-            if in_0.offset_from(start) as i64 > 10000000 as i64
-                && safe_ctxt.options & XML_PARSE_HUGE as i32 == 0
-            {
-                xmlFatalErrMsg(
-                    ctxt,
-                    XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                    b"AttValue length too long\n\x00" as *const u8 as *const i8,
-                );
-                return 0 as *mut xmlChar;
+                safe_in_0 = unsafe { *in_0 };
             }
         }
 
-        if unsafe { *in_0 } as i32 != limit as i32 {
-            current_block = 78912414019074375;
+        if unsafe { in_0.offset_from(start) } as i64 > 10000000 as i64
+            && safe_ctxt.options & XML_PARSE_HUGE as i32 == 0
+        {
+            xmlFatalErrMsg(
+                ctxt,
+                XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                b"AttValue length too long\n\x00" as *const u8 as *const i8,
+            );
+            return 0 as *mut xmlChar;
+        }
+        safe_in_0 = unsafe { *in_0 };
+        if safe_in_0 != limit {
+            current_block = 0;
         } else {
-            current_block = 17736998403848444560;
+            current_block = 1;
+        }
+    } else {
+        while in_0 < end
+            && safe_in_0 != limit
+            && safe_in_0 >= 0x20
+            && safe_in_0 <= 0x7f
+            && safe_in_0 != '&' as u8
+            && safe_in_0 != '<' as u8
+        {
+            in_0 = unsafe { in_0.offset(1) };
+            safe_in_0 = unsafe { *in_0 };
+            col += 1;
+            if in_0 >= end {
+                let oldbase: *const xmlChar = safe_input.base;
+                if safe_ctxt.progressive == 0
+                    && unsafe { (safe_input.end.offset_from(safe_input.cur) as i64) < 250 }
+                {
+                    xmlGROW(ctxt);
+                }
+                if safe_ctxt.instate == XML_PARSER_EOF {
+                    return 0 as *mut xmlChar;
+                }
+
+                if oldbase != safe_input.base {
+                    unsafe {
+                        let delta: ptrdiff_t = safe_input.base.offset_from(oldbase) as i64;
+                        start = start.offset(delta as isize);
+                        in_0 = in_0.offset(delta as isize)
+                    }
+                }
+                end = safe_input.end;
+                if unsafe { in_0.offset_from(start) } as i64 > 10000000 as i64
+                    && safe_ctxt.options & XML_PARSE_HUGE as i32 == 0
+                {
+                    xmlFatalErrMsg(
+                        ctxt,
+                        XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                        b"AttValue length too long\n\x00" as *const u8 as *const i8,
+                    );
+                    return 0 as *mut xmlChar;
+                }
+                safe_in_0 = unsafe { *in_0 };
+            }
+        }
+        last = in_0;
+
+        if unsafe { in_0.offset_from(start) } as i64 > 10000000 as i64
+            && safe_ctxt.options & XML_PARSE_HUGE as i32 == 0
+        {
+            xmlFatalErrMsg(
+                ctxt,
+                XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                b"AttValue length too long\n\x00" as *const u8 as *const i8,
+            );
+            return 0 as *mut xmlChar;
+        }
+
+        safe_in_0 = unsafe { *in_0 };
+        if safe_in_0 != limit {
+            current_block = 0;
+        } else {
+            current_block = 1;
         }
     }
     match current_block {
-        78912414019074375 => {
+        0 => {
             if !alloc.is_null() {
-                unsafe { *alloc = 1 as i32 }
+                unsafe { *alloc = 1 }
             }
             return xmlParseAttValueComplex(ctxt, len, normalize);
         }
@@ -10368,23 +10298,23 @@ unsafe fn xmlParseAttValueInternal(
             col += 1;
             if !len.is_null() {
                 unsafe {
-                    *len = last.offset_from(start) as i64 as i32;
+                    *len = last.offset_from(start) as i32;
                 }
                 ret = start as *mut xmlChar
             } else {
                 if !alloc.is_null() {
-                    unsafe { *alloc = 1 as i32 }
+                    unsafe { *alloc = 1 }
                 }
-                ret = unsafe { xmlStrndup_safe(start, last.offset_from(start) as i64 as i32) };
+                ret = unsafe { xmlStrndup_safe(start, last.offset_from(start) as i32) };
             }
-            unsafe {
-                (*(*ctxt).input).cur = in_0;
-                (*(*ctxt).input).line = line;
-                (*(*ctxt).input).col = col;
-                if !alloc.is_null() {
-                    *alloc = 0
-                }
+
+            safe_input.cur = in_0;
+            safe_input.line = line;
+            safe_input.col = col;
+            if !alloc.is_null() {
+                unsafe { *alloc = 0 }
             }
+
             return ret;
         }
     };
@@ -10403,55 +10333,53 @@ unsafe fn xmlParseAttValueInternal(
 *
 * Returns the attribute name, and the value in *value, .
 */
-unsafe fn xmlParseAttribute2(
+fn xmlParseAttribute2(
     mut ctxt: xmlParserCtxtPtr,
-    mut pref: *const xmlChar,
-    mut elem: *const xmlChar,
+    pref: *const xmlChar,
+    elem: *const xmlChar,
     mut prefix: *mut *const xmlChar,
     mut value: *mut *mut xmlChar,
-    mut len: *mut i32,
+    len: *mut i32,
     mut alloc: *mut i32,
 ) -> *const xmlChar {
-    let mut name: *const xmlChar = 0 as *const xmlChar;
+    let name: *const xmlChar;
     let mut val: *mut xmlChar = 0 as *mut xmlChar;
     let mut internal_val: *mut xmlChar = 0 as *mut xmlChar;
     let mut normalize: i32 = 0;
     let mut safe_ctxt = unsafe { &mut *ctxt };
     unsafe { *value = 0 as *mut xmlChar };
-    if unsafe {
-        (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-    } {
+    if safe_ctxt.progressive == 0
+        && unsafe { ((*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64) } < 250
+    {
         xmlGROW(ctxt);
     }
     name = xmlParseQName(ctxt, prefix);
     if name.is_null() {
-        unsafe {
-            xmlFatalErrMsg(
-                ctxt,
-                XML_ERR_NAME_REQUIRED,
-                b"error parsing attribute name\n\x00" as *const u8 as *const i8,
-            );
-        }
+        xmlFatalErrMsg(
+            ctxt,
+            XML_ERR_NAME_REQUIRED,
+            b"error parsing attribute name\n\x00" as *const u8 as *const i8,
+        );
+
         return 0 as *const xmlChar;
     }
     /*
      * get the type if needed
      */
     if !safe_ctxt.attsSpecial.is_null() {
-        let mut type_0: i32 = 0;
-        type_0 = xmlHashQLookup2_safe(safe_ctxt.attsSpecial, pref, elem, unsafe { *prefix }, name)
+        let type_0: i32;
+        type_0 = unsafe { xmlHashQLookup2_safe(safe_ctxt.attsSpecial, pref, elem, *prefix, name) }
             as ptrdiff_t as i32;
         if type_0 != 0 {
-            normalize = 1 as i32
+            normalize = 1
         }
     }
     /*
      * read the value
      */
     xmlSkipBlankChars(ctxt);
-    if unsafe { *(*(*ctxt).input).cur == '=' as u8 } {
-        xmlNextChar_safe(ctxt);
+    if unsafe { *(*safe_ctxt.input).cur == '=' as u8 } {
+        unsafe { xmlNextChar_safe(ctxt) };
         xmlSkipBlankChars(ctxt);
         val = xmlParseAttValueInternal(ctxt, len, alloc, normalize);
         if normalize != 0 {
@@ -10462,24 +10390,23 @@ unsafe fn xmlParseAttribute2(
              * value have been extracted in an allocated string already.
              */
             if unsafe { *alloc != 0 } {
-                let mut val2: *const xmlChar = 0 as *const xmlChar;
+                let val2: *const xmlChar;
                 val2 = xmlAttrNormalizeSpace2(ctxt, val, len);
                 if !val2.is_null() && val2 != val {
-                    xmlFree_safe(val as *mut ());
+                    unsafe { xmlFree_safe(val as *mut ()) };
                     val = val2 as *mut xmlChar
                 }
             }
         }
         safe_ctxt.instate = XML_PARSER_CONTENT
     } else {
-        unsafe {
-            xmlFatalErrMsgStr(
-                ctxt,
-                XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
-                b"Specification mandates value for attribute %s\n\x00" as *const u8 as *const i8,
-                name,
-            );
-        }
+        xmlFatalErrMsgStr(
+            ctxt,
+            XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
+            b"Specification mandates value for attribute %s\n\x00" as *const u8 as *const i8,
+            name,
+        );
+
         return 0 as *const xmlChar;
     }
     if unsafe { *prefix } == safe_ctxt.str_xml {
@@ -10489,49 +10416,53 @@ unsafe fn xmlParseAttribute2(
          * since this was deprecated in XML second edition
          */
         if safe_ctxt.pedantic != 0
-            && xmlStrEqual_safe(name, b"lang\x00" as *const u8 as *const i8 as *mut xmlChar) != 0
+            && unsafe {
+                xmlStrEqual_safe(name, b"lang\x00" as *const u8 as *const i8 as *mut xmlChar)
+            } != 0
         {
-            internal_val = xmlStrndup_safe(val, unsafe { *len });
+            internal_val = unsafe { xmlStrndup_safe(val, *len) };
             if xmlCheckLanguageID(internal_val) == 0 {
-                unsafe {
-                    xmlWarningMsg(
-                        ctxt,
-                        XML_WAR_LANG_VALUE,
-                        b"Malformed value for xml:lang : %s\n\x00" as *const u8 as *const i8,
-                        internal_val,
-                        0 as *const xmlChar,
-                    );
-                }
+                xmlWarningMsg(
+                    ctxt,
+                    XML_WAR_LANG_VALUE,
+                    b"Malformed value for xml:lang : %s\n\x00" as *const u8 as *const i8,
+                    internal_val,
+                    0 as *const xmlChar,
+                );
             }
         }
         /*
          * Check that xml:space conforms to the specification
          */
-        if xmlStrEqual_safe(name, b"space\x00" as *const u8 as *const i8 as *mut xmlChar) != 0 {
-            internal_val = xmlStrndup_safe(val, unsafe { *len });
-            if xmlStrEqual_safe(
-                internal_val,
-                b"default\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ) != 0
+        if unsafe { xmlStrEqual_safe(name, b"space\x00" as *const u8 as *const i8 as *mut xmlChar) }
+            != 0
+        {
+            internal_val = unsafe { xmlStrndup_safe(val, *len) };
+            if unsafe {
+                xmlStrEqual_safe(
+                    internal_val,
+                    b"default\x00" as *const u8 as *const i8 as *mut xmlChar,
+                )
+            } != 0
             {
-                unsafe { *(*ctxt).space = 0 }
-            } else if xmlStrEqual_safe(
-                internal_val,
-                b"preserve\x00" as *const u8 as *const i8 as *mut xmlChar,
-            ) != 0
+                unsafe { *safe_ctxt.space = 0 }
+            } else if unsafe {
+                xmlStrEqual_safe(
+                    internal_val,
+                    b"preserve\x00" as *const u8 as *const i8 as *mut xmlChar,
+                )
+            } != 0
             {
-                unsafe { *(*ctxt).space = 1 as i32 }
+                unsafe { *safe_ctxt.space = 1 }
             } else {
-                unsafe {
-                    xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
+                xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
               b"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n\x00"
                   as *const u8 as *const i8,
               internal_val, 0 as *const xmlChar);
-                }
             }
         }
         if !internal_val.is_null() {
-            xmlFree_safe(internal_val as *mut ());
+            unsafe { xmlFree_safe(internal_val as *mut ()) };
         }
     }
     unsafe {
@@ -10567,7 +10498,7 @@ unsafe fn xmlParseAttribute2(
 *
 * Returns the element name parsed
 */
-unsafe fn xmlParseStartTag2(
+fn xmlParseStartTag2(
     mut ctxt: xmlParserCtxtPtr,
     mut pref: *mut *const xmlChar,
     mut URI: *mut *const xmlChar,
@@ -10575,51 +10506,50 @@ unsafe fn xmlParseStartTag2(
 ) -> *const xmlChar {
     let mut safe_ctxt = unsafe { &mut *ctxt };
     let mut current_block: u64;
-    let mut localname: *const xmlChar = 0 as *const xmlChar;
+    let mut localname: *const xmlChar;
     let mut prefix: *const xmlChar = 0 as *const xmlChar;
-    let mut attname: *const xmlChar = 0 as *const xmlChar;
+    let mut attname: *const xmlChar;
     let mut aprefix: *const xmlChar = 0 as *const xmlChar;
-    let mut nsname: *const xmlChar = 0 as *const xmlChar;
+    let mut nsname: *const xmlChar;
     let mut attvalue: *mut xmlChar = 0 as *mut xmlChar;
     let mut atts: *mut *const xmlChar = safe_ctxt.atts;
     let mut maxatts: i32 = safe_ctxt.maxatts;
-    let mut nratts: i32 = 0;
-    let mut nbatts: i32 = 0;
-    let mut nbdef: i32 = 0;
-    let mut inputid: i32 = 0;
-    let mut i: i32 = 0;
-    let mut j: i32 = 0;
-    let mut nbNs: i32 = 0;
-    let mut attval: i32 = 0;
-    let mut cur: u64 = 0;
-    let mut nsNr: i32 = safe_ctxt.nsNr;
-    unsafe {
-        if *(*(*ctxt).input).cur != '<' as u8 {
-            return 0 as *const xmlChar;
-        }
-        (*(*ctxt).input).col += 1;
-        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(1);
-        if *(*(*ctxt).input).cur as i32 == 0 {
-            xmlParserInputGrow_safe((*ctxt).input, 250);
-        }
-        /*
-         * NOTE: it is crucial with the SAX2 API to never call SHRINK beyond that
-         *       point since the attribute values may be stored as pointers to
-         *       the buffer and calling SHRINK would destroy them !
-         *       The Shrinking is only possible once the full set of attribute
-         *       callbacks have been done.
-         */
-        if (*ctxt).progressive == 0
-            && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                > (2 as i32 * 250) as i64
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                < (2 as i32 * 250) as i64
-        {
-            xmlSHRINK(ctxt);
-        }
-        cur = (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 as u64;
-        inputid = (*(*ctxt).input).id;
+    let mut nratts: i32;
+    let mut nbatts: i32;
+    let mut nbdef: i32;
+    let mut inputid: i32;
+    let mut i: i32;
+    let mut j: i32;
+    let mut nbNs: i32;
+    let mut attval: i32;
+    let cur: u64;
+    let nsNr: i32 = safe_ctxt.nsNr;
+    let mut safe_input = unsafe { *safe_ctxt.input };
+    if unsafe { *safe_input.cur } != '<' as u8 {
+        return 0 as *const xmlChar;
     }
+    safe_input.col += 1;
+    unsafe {
+        (*safe_ctxt.input).cur = (*safe_ctxt.input).cur.offset(1);
+        if *safe_input.cur as i32 == 0 {
+            xmlParserInputGrow_safe(safe_ctxt.input, 250);
+        }
+    }
+    /*
+     * NOTE: it is crucial with the SAX2 API to never call SHRINK beyond that
+     *       point since the attribute values may be stored as pointers to
+     *       the buffer and calling SHRINK would destroy them !
+     *       The Shrinking is only possible once the full set of attribute
+     *       callbacks have been done.
+     */
+    if safe_ctxt.progressive == 0
+        && unsafe { (*safe_ctxt.input).cur.offset_from(safe_input.base) } as i64 > 2 * 250
+        && (unsafe { (*safe_ctxt.input).end.offset_from(safe_input.cur) } as i64) < 2 * 250
+    {
+        xmlSHRINK(ctxt);
+    }
+    cur = unsafe { (*safe_ctxt.input).cur.offset_from(safe_input.base) } as u64;
+    inputid = safe_input.id;
     nbatts = 0;
     nratts = 0;
     nbdef = 0;
@@ -10627,20 +10557,18 @@ unsafe fn xmlParseStartTag2(
     attval = 0;
     /* Forget any namespaces added during an earlier parse of this element. */
     safe_ctxt.nsNr = nsNr;
+
     localname = xmlParseQName(ctxt, &mut prefix);
     if localname.is_null() {
-        unsafe {
-            xmlFatalErrMsg(
-                ctxt,
-                XML_ERR_NAME_REQUIRED,
-                b"StartTag: invalid element name\n\x00" as *const u8 as *const i8,
-            );
-        }
+        xmlFatalErrMsg(
+            ctxt,
+            XML_ERR_NAME_REQUIRED,
+            b"StartTag: invalid element name\n\x00" as *const u8 as *const i8,
+        );
         return 0 as *const xmlChar;
     }
     unsafe {
-        *tlen = ((*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 as u64)
-            .wrapping_sub(cur) as i32;
+        *tlen = ((*safe_ctxt.input).cur.offset_from(safe_input.base) as u64 - cur) as i32;
     }
     /*
      * Now parse the attributes, it ends up with the ending
@@ -10648,28 +10576,27 @@ unsafe fn xmlParseStartTag2(
      * (S Attribute)* S?
      */
     xmlSkipBlankChars(ctxt);
-    if unsafe {
-        (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-    } {
+    if safe_ctxt.progressive == 0
+        && unsafe { (*safe_ctxt.input).end.offset_from(safe_input.cur) as i64 } < 250
+    {
         xmlGROW(ctxt);
     }
     loop {
         if unsafe {
-            !(*(*(*ctxt).input).cur != '>' as u8
-                && (*(*(*ctxt).input).cur != '/' as u8
-                    || *(*(*ctxt).input).cur.offset(1) != '>' as u8)
-                && (0x9 <= *(*(*ctxt).input).cur as i32 && *(*(*ctxt).input).cur as i32 <= 0xa
-                    || *(*(*ctxt).input).cur as i32 == 0xd
-                    || 0x20 <= *(*(*ctxt).input).cur as i32)
-                && (*ctxt).instate != XML_PARSER_EOF)
+            !(*(*safe_ctxt.input).cur != '>' as u8
+                && (*(*safe_ctxt.input).cur != '/' as u8
+                    || *(*safe_ctxt.input).cur.offset(1) != '>' as u8)
+                && (0x9 <= *(*safe_ctxt.input).cur as i32 && *(*safe_ctxt.input).cur as i32 <= 0xa
+                    || *(*safe_ctxt.input).cur as i32 == 0xd
+                    || 0x20 <= *(*safe_ctxt.input).cur as i32)
+                && safe_ctxt.instate != XML_PARSER_EOF)
         } {
-            current_block = 9587810615301548814;
+            current_block = 1;
             break;
         }
-        let mut q: *const xmlChar = unsafe { (*(*ctxt).input).cur };
-        let mut cons: u32 = unsafe { (*(*ctxt).input).consumed as u32 };
-        let mut len: i32 = -(1 as i32);
+        let q: *const xmlChar = safe_input.cur;
+        let cons: u64 = safe_input.consumed;
+        let mut len: i32 = -1;
         let mut alloc: i32 = 0;
         attname = xmlParseAttribute2(
             ctxt,
@@ -10682,27 +10609,27 @@ unsafe fn xmlParseStartTag2(
         );
         if !(attname.is_null() || attvalue.is_null()) {
             if len < 0 {
-                len = xmlStrlen_safe(attvalue)
+                len = unsafe { xmlStrlen_safe(attvalue) }
             }
             if attname == safe_ctxt.str_xmlns && aprefix.is_null() {
-                let mut URL: *const xmlChar = xmlDictLookup_safe(safe_ctxt.dict, attvalue, len);
+                let mut URL: *const xmlChar =
+                    unsafe { xmlDictLookup_safe(safe_ctxt.dict, attvalue, len) };
                 let mut uri: xmlURIPtr = 0 as *mut xmlURI;
                 if URL.is_null() {
-                    unsafe {
-                        xmlErrMemory(
-                            ctxt,
-                            b"dictionary allocation failure\x00" as *const u8 as *const i8,
-                        );
-                    }
+                    xmlErrMemory(
+                        ctxt,
+                        b"dictionary allocation failure\x00" as *const u8 as *const i8,
+                    );
+
                     if !attvalue.is_null() && alloc != 0 {
-                        xmlFree_safe(attvalue as *mut ());
+                        unsafe { xmlFree_safe(attvalue as *mut ()) };
                     }
                     localname = 0 as *const xmlChar;
-                    current_block = 5568905272147674894;
+                    current_block = 2;
                     break;
                 } else {
-                    if unsafe { *URL } as i32 != 0 {
-                        uri = xmlParseURI_safe(URL as *const i8);
+                    if unsafe { *URL } != 0 {
+                        uri = unsafe { xmlParseURI_safe(URL as *const i8) };
                         if uri.is_null() {
                             xmlNsErr(
                                 ctxt,
@@ -10724,7 +10651,7 @@ unsafe fn xmlParseStartTag2(
                                     0 as *const xmlChar,
                                 );
                             }
-                            xmlFreeURI_safe(uri);
+                            unsafe { xmlFreeURI_safe(uri) };
                         }
                         if URL == safe_ctxt.str_xml_ns {
                             if attname != safe_ctxt.str_xml {
@@ -10739,13 +10666,15 @@ unsafe fn xmlParseStartTag2(
                                     0 as *const xmlChar,
                                 );
                             }
-                            current_block = 1905178534984964470;
-                        } else if len == 29 as i32
-                            && xmlStrEqual_safe(
-                                URL,
-                                b"http://www.w3.org/2000/xmlns/\x00" as *const u8 as *const i8
-                                    as *mut xmlChar,
-                            ) != 0
+                            current_block = 0;
+                        } else if len == 29
+                            && unsafe {
+                                xmlStrEqual_safe(
+                                    URL,
+                                    b"http://www.w3.org/2000/xmlns/\x00" as *const u8 as *const i8
+                                        as *mut xmlChar,
+                                )
+                            } != 0
                         {
                             xmlNsErr(
                                 ctxt,
@@ -10756,23 +10685,23 @@ unsafe fn xmlParseStartTag2(
                                 0 as *const xmlChar,
                                 0 as *const xmlChar,
                             );
-                            current_block = 1905178534984964470;
+                            current_block = 0;
                         } else {
-                            current_block = 1623252117315916725;
+                            current_block = 3;
                         }
                     } else {
-                        current_block = 1623252117315916725;
+                        current_block = 3;
                     }
                     match current_block {
-                        1905178534984964470 => {}
+                        0 => {}
                         _ => {
                             /*
                              * check that it's not a defined namespace
                              */
-                            j = 1 as i32;
+                            j = 1;
                             while j <= nbNs {
                                 if unsafe {
-                                    (*(*ctxt).nsTab.offset(((*ctxt).nsNr - 2 as i32 * j) as isize))
+                                    (*safe_ctxt.nsTab.offset((safe_ctxt.nsNr - 2 * j) as isize))
                                         .is_null()
                                 } {
                                     break;
@@ -10788,10 +10717,11 @@ unsafe fn xmlParseStartTag2(
                     }
                 }
             } else if aprefix == safe_ctxt.str_xmlns {
-                let mut URL_0: *const xmlChar = xmlDictLookup_safe(safe_ctxt.dict, attvalue, len);
-                let mut uri_0: xmlURIPtr = 0 as *mut xmlURI;
+                let URL: *const xmlChar =
+                    unsafe { xmlDictLookup_safe(safe_ctxt.dict, attvalue, len) };
+                let mut uri: xmlURIPtr = 0 as *mut xmlURI;
                 if attname == safe_ctxt.str_xml {
-                    if URL_0 != safe_ctxt.str_xml_ns {
+                    if URL != safe_ctxt.str_xml_ns {
                         xmlNsErr(
                             ctxt,
                             XML_NS_ERR_XML_NAMESPACE,
@@ -10802,7 +10732,7 @@ unsafe fn xmlParseStartTag2(
                             0 as *const xmlChar,
                         );
                     }
-                } else if URL_0 == safe_ctxt.str_xml_ns {
+                } else if URL == safe_ctxt.str_xml_ns {
                     if attname != safe_ctxt.str_xml {
                         xmlNsErr(
                             ctxt,
@@ -10824,12 +10754,14 @@ unsafe fn xmlParseStartTag2(
                         0 as *const xmlChar,
                         0 as *const xmlChar,
                     );
-                } else if len == 29 as i32
-                    && xmlStrEqual_safe(
-                        URL_0,
-                        b"http://www.w3.org/2000/xmlns/\x00" as *const u8 as *const i8
-                            as *mut xmlChar,
-                    ) != 0
+                } else if len == 29
+                    && unsafe {
+                        xmlStrEqual_safe(
+                            URL,
+                            b"http://www.w3.org/2000/xmlns/\x00" as *const u8 as *const i8
+                                as *mut xmlChar,
+                        )
+                    } != 0
                 {
                     xmlNsErr(
                         ctxt,
@@ -10840,7 +10772,7 @@ unsafe fn xmlParseStartTag2(
                         0 as *const xmlChar,
                         0 as *const xmlChar,
                     );
-                } else if URL_0.is_null() || unsafe { *URL_0.offset(0 as isize) as i32 == 0 } {
+                } else if URL.is_null() || unsafe { *URL.offset(0 as isize) as i32 == 0 } {
                     xmlNsErr(
                         ctxt,
                         XML_NS_ERR_XML_NAMESPACE,
@@ -10851,36 +10783,36 @@ unsafe fn xmlParseStartTag2(
                         0 as *const xmlChar,
                     );
                 } else {
-                    uri_0 = xmlParseURI_safe(URL_0 as *const i8);
-                    if uri_0.is_null() {
+                    uri = unsafe { xmlParseURI_safe(URL as *const i8) };
+                    if uri.is_null() {
                         xmlNsErr(
                             ctxt,
                             XML_WAR_NS_URI,
                             b"xmlns:%s: \'%s\' is not a valid URI\n\x00" as *const u8 as *const i8,
                             attname,
-                            URL_0,
+                            URL,
                             0 as *const xmlChar,
                         );
                     } else {
-                        if safe_ctxt.pedantic != 0 && unsafe { (*uri_0).scheme.is_null() } {
+                        if safe_ctxt.pedantic != 0 && unsafe { (*uri).scheme.is_null() } {
                             xmlNsWarn(
                                 ctxt,
                                 XML_WAR_NS_URI_RELATIVE,
                                 b"xmlns:%s: URI %s is not absolute\n\x00" as *const u8 as *const i8,
                                 attname,
-                                URL_0,
+                                URL,
                                 0 as *const xmlChar,
                             );
                         }
-                        xmlFreeURI_safe(uri_0);
+                        unsafe { xmlFreeURI_safe(uri) };
                     }
                     /*
                      * check that it's not a defined namespace
                      */
-                    j = 1 as i32;
+                    j = 1;
                     while j <= nbNs {
                         if unsafe {
-                            *(*ctxt).nsTab.offset(((*ctxt).nsNr - 2 as i32 * j) as isize) == attname
+                            *safe_ctxt.nsTab.offset((safe_ctxt.nsNr - 2 * j) as isize) == attname
                         } {
                             break;
                         }
@@ -10888,7 +10820,7 @@ unsafe fn xmlParseStartTag2(
                     }
                     if j <= nbNs {
                         xmlErrAttributeDup(ctxt, aprefix, attname);
-                    } else if nsPush(ctxt, attname, URL_0) > 0 {
+                    } else if nsPush(ctxt, attname, URL) > 0 {
                         nbNs += 1
                     }
                 }
@@ -10896,32 +10828,27 @@ unsafe fn xmlParseStartTag2(
                 /*
                  * Add the pair to atts
                  */
-                if atts.is_null() || nbatts + 5 as i32 > maxatts {
-                    if xmlCtxtGrowAttrs(ctxt, nbatts + 5 as i32) < 0 {
-                        current_block = 1905178534984964470;
+                if atts.is_null() || nbatts + 5 > maxatts {
+                    if xmlCtxtGrowAttrs(ctxt, nbatts + 5) < 0 {
+                        current_block = 0;
                     } else {
                         maxatts = safe_ctxt.maxatts;
                         atts = safe_ctxt.atts;
-                        current_block = 2463987395154258233;
+                        current_block = 4;
                     }
                 } else {
-                    current_block = 2463987395154258233;
+                    current_block = 4;
                 }
                 match current_block {
-                    1905178534984964470 => {}
+                    0 => {}
                     _ => {
                         unsafe {
-                            let fresh97 = nratts;
+                            *safe_ctxt.attallocs.offset(nratts as isize) = alloc;
                             nratts = nratts + 1;
-                            *(*ctxt).attallocs.offset(fresh97 as isize) = alloc;
-                            let fresh98 = nbatts;
+                            *atts.offset(nbatts as isize) = attname;
                             nbatts = nbatts + 1;
-                            let ref mut fresh99 = *atts.offset(fresh98 as isize);
-                            *fresh99 = attname;
-                            let fresh100 = nbatts;
+                            *atts.offset(nbatts as isize) = aprefix;
                             nbatts = nbatts + 1;
-                            let ref mut fresh101 = *atts.offset(fresh100 as isize);
-                            *fresh101 = aprefix;
                             /*
                              * The namespace URI field is used temporarily to point at the
                              * base of the current input buffer for non-alloced attributes.
@@ -10929,31 +10856,23 @@ unsafe fn xmlParseStartTag2(
                              * invalid, but they can be reconstructed later.
                              */
                             if alloc != 0 {
-                                let fresh102 = nbatts;
+                                *atts.offset(nbatts as isize) = 0 as *const xmlChar;
                                 nbatts = nbatts + 1;
-                                let ref mut fresh103 = *atts.offset(fresh102 as isize);
-                                *fresh103 = 0 as *const xmlChar
                             } else {
-                                let fresh104 = nbatts;
+                                *atts.offset(nbatts as isize) = (*safe_ctxt.input).base;
                                 nbatts = nbatts + 1;
-                                let ref mut fresh105 = *atts.offset(fresh104 as isize);
-                                *fresh105 = (*(*ctxt).input).base
                             }
-                            let fresh106 = nbatts;
+                            *atts.offset(nbatts as isize) = attvalue;
                             nbatts = nbatts + 1;
-                            let ref mut fresh107 = *atts.offset(fresh106 as isize);
-                            *fresh107 = attvalue;
                             attvalue = attvalue.offset(len as isize);
-                            let fresh108 = nbatts;
+                            *atts.offset(nbatts as isize) = attvalue;
                             nbatts = nbatts + 1;
-                            let ref mut fresh109 = *atts.offset(fresh108 as isize);
-                            *fresh109 = attvalue;
                         }
                         /*
                          * tag if some deallocation is needed
                          */
                         if alloc != 0 {
-                            attval = 1 as i32
+                            attval = 1
                         }
                         attvalue = 0 as *mut xmlChar
                     }
@@ -10965,25 +10884,25 @@ unsafe fn xmlParseStartTag2(
          * Do not keep a namespace definition node
          */
         if !attvalue.is_null() && alloc != 0 {
-            xmlFree_safe(attvalue as *mut ());
+            unsafe { xmlFree_safe(attvalue as *mut ()) };
             attvalue = 0 as *mut xmlChar
         }
         if unsafe {
-            (*ctxt).progressive == 0
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
+            safe_ctxt.progressive == 0
+                && ((*safe_ctxt.input).end.offset_from(safe_input.cur) as i64) < 250
         } {
             xmlGROW(ctxt);
         }
         if safe_ctxt.instate == XML_PARSER_EOF {
-            current_block = 9587810615301548814;
+            current_block = 1;
             break;
         }
         if unsafe {
-            *(*(*ctxt).input).cur == '>' as u8
-                || *(*(*ctxt).input).cur == '/' as u8
-                    && *(*(*ctxt).input).cur.offset(1) == '>' as u8
+            *(*safe_ctxt.input).cur == '>' as u8
+                || *(*safe_ctxt.input).cur == '/' as u8
+                    && *(*safe_ctxt.input).cur.offset(1) == '>' as u8
         } {
-            current_block = 9587810615301548814;
+            current_block = 1;
             break;
         }
         if xmlSkipBlankChars(ctxt) == 0 {
@@ -10992,36 +10911,39 @@ unsafe fn xmlParseStartTag2(
                 XML_ERR_SPACE_REQUIRED,
                 b"attributes construct error\n\x00" as *const u8 as *const i8,
             );
-            current_block = 9587810615301548814;
+            current_block = 1;
+            break;
+        } else if cons == safe_input.consumed
+            && q == safe_input.cur
+            && attname.is_null()
+            && attvalue.is_null()
+        {
+            unsafe {
+                xmlFatalErr(
+                    ctxt,
+                    XML_ERR_INTERNAL_ERROR,
+                    b"xmlParseStartTag: problem parsing attributes\n\x00" as *const u8 as *const i8,
+                )
+            };
+            current_block = 1;
             break;
         } else if unsafe {
-            cons as u64 == (*(*ctxt).input).consumed
-                && q == (*(*ctxt).input).cur
-                && attname.is_null()
-                && attvalue.is_null()
-        } {
-            xmlFatalErr(
-                ctxt,
-                XML_ERR_INTERNAL_ERROR,
-                b"xmlParseStartTag: problem parsing attributes\n\x00" as *const u8 as *const i8,
-            );
-            current_block = 9587810615301548814;
-            break;
-        } else if unsafe {
-            (*ctxt).progressive == 0
-                && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
+            safe_ctxt.progressive == 0
+                && ((*safe_ctxt.input).end.offset_from(safe_input.cur) as i64) < 250
         } {
             xmlGROW(ctxt);
         }
     }
     match current_block {
-        9587810615301548814 => {
-            if unsafe { (*(*ctxt).input).id != inputid } {
-                xmlFatalErr(
-                    ctxt,
-                    XML_ERR_INTERNAL_ERROR,
-                    b"Unexpected change of input\n\x00" as *const u8 as *const i8,
-                );
+        1 => {
+            if safe_input.id != inputid {
+                unsafe {
+                    xmlFatalErr(
+                        ctxt,
+                        XML_ERR_INTERNAL_ERROR,
+                        b"Unexpected change of input\n\x00" as *const u8 as *const i8,
+                    )
+                };
                 localname = 0 as *const xmlChar
             } else {
                 /* Reconstruct attribute value pointers. */
@@ -11029,24 +10951,23 @@ unsafe fn xmlParseStartTag2(
                 j = 0;
                 while j < nratts {
                     unsafe {
-                        if !(*atts.offset((i + 2 as i32) as isize)).is_null() {
+                        if !(*atts.offset((i + 2) as isize)).is_null() {
                             /*
                              * Arithmetic on dangling pointers is technically undefined
                              * behavior, but well...
                              */
-                            let mut offset: ptrdiff_t = (*(*ctxt).input)
+                            let mut offset: ptrdiff_t = (*safe_ctxt.input)
                                 .base
-                                .offset_from(*atts.offset((i + 2 as i32) as isize))
+                                .offset_from(*atts.offset((i + 2) as isize))
                                 as i64; /* Reset repurposed namespace URI */
-                            let ref mut fresh110 = *atts.offset((i + 2 as i32) as isize); /* value */
-                            *fresh110 = 0 as *const xmlChar;
-                            let ref mut fresh111 = *atts.offset((i + 3 as i32) as isize);
-                            *fresh111 = (*fresh111).offset(offset as isize);
-                            let ref mut fresh112 = *atts.offset((i + 4 as i32) as isize);
-                            *fresh112 = (*fresh112).offset(offset as isize)
+                            *atts.offset((i + 2) as isize) = 0 as *const xmlChar; /* value */
+                            let ref mut atts_3 = *atts.offset((i + 3) as isize);
+                            *atts_3 = (*atts_3).offset(offset as isize);
+                            let ref mut atts_4 = *atts.offset((i + 4) as isize);
+                            *atts_4 = (*atts_4).offset(offset as isize)
                         }
                     }
-                    i += 5 as i32;
+                    i += 5;
                     j += 1
                 }
                 /*
@@ -11054,24 +10975,20 @@ unsafe fn xmlParseStartTag2(
                  */
                 if !safe_ctxt.attsDefault.is_null() {
                     let mut defaults: xmlDefAttrsPtr = 0 as *mut xmlDefAttrs;
-                    defaults = xmlHashLookup2_safe(safe_ctxt.attsDefault, localname, prefix)
-                        as xmlDefAttrsPtr;
+                    defaults =
+                        unsafe { xmlHashLookup2_safe(safe_ctxt.attsDefault, localname, prefix) }
+                            as xmlDefAttrsPtr;
                     if !defaults.is_null() {
                         i = 0;
                         loop {
                             unsafe {
                                 if !(i < (*defaults).nbAttrs) {
-                                    current_block = 981657943452992752;
+                                    current_block = 5;
                                     break;
                                 }
-                                attname = *(*defaults)
-                                    .values
-                                    .as_mut_ptr()
-                                    .offset((5 as i32 * i) as isize);
-                                aprefix = *(*defaults)
-                                    .values
-                                    .as_mut_ptr()
-                                    .offset((5 as i32 * i + 1 as i32) as isize);
+                                attname = *(*defaults).values.as_mut_ptr().offset((5 * i) as isize);
+                                aprefix =
+                                    *(*defaults).values.as_mut_ptr().offset((5 * i + 1) as isize);
                             }
 
                             /*
@@ -11081,13 +10998,11 @@ unsafe fn xmlParseStartTag2(
                                 /*
                                  * check that it's not a defined namespace
                                  */
-                                j = 1 as i32;
+                                j = 1;
                                 while j <= nbNs {
                                     if unsafe {
-                                        (*(*ctxt)
-                                            .nsTab
-                                            .offset(((*ctxt).nsNr - 2 as i32 * j) as isize))
-                                        .is_null()
+                                        (*safe_ctxt.nsTab.offset((safe_ctxt.nsNr - 2 * j) as isize))
+                                            .is_null()
                                     } {
                                         break;
                                     }
@@ -11100,7 +11015,7 @@ unsafe fn xmlParseStartTag2(
                                             != *(*defaults)
                                                 .values
                                                 .as_mut_ptr()
-                                                .offset((5 as i32 * i + 2 as i32) as isize)
+                                                .offset((5 * i + 2) as isize)
                                     } {
                                         if unsafe {
                                             nsPush(
@@ -11109,7 +11024,7 @@ unsafe fn xmlParseStartTag2(
                                                 *(*defaults)
                                                     .values
                                                     .as_mut_ptr()
-                                                    .offset((5 as i32 * i + 2 as i32) as isize),
+                                                    .offset((5 * i + 2) as isize),
                                             ) > 0
                                         } {
                                             nbNs += 1
@@ -11120,12 +11035,10 @@ unsafe fn xmlParseStartTag2(
                                 /*
                                  * check that it's not a defined namespace
                                  */
-                                j = 1 as i32;
+                                j = 1;
                                 while j <= nbNs {
                                     if unsafe {
-                                        *(*ctxt)
-                                            .nsTab
-                                            .offset(((*ctxt).nsNr - 2 as i32 * j) as isize)
+                                        *safe_ctxt.nsTab.offset((safe_ctxt.nsNr - 2 * j) as isize)
                                             == attname
                                     } {
                                         break;
@@ -11135,11 +11048,7 @@ unsafe fn xmlParseStartTag2(
                                 if !(j <= nbNs) {
                                     nsname = xmlGetNamespace(ctxt, attname);
                                     if unsafe {
-                                        nsname
-                                            != *(*defaults)
-                                                .values
-                                                .as_mut_ptr()
-                                                .offset(2 as i32 as isize)
+                                        nsname != *(*defaults).values.as_mut_ptr().offset(2)
                                     } {
                                         if unsafe {
                                             nsPush(
@@ -11148,7 +11057,7 @@ unsafe fn xmlParseStartTag2(
                                                 *(*defaults)
                                                     .values
                                                     .as_mut_ptr()
-                                                    .offset((5 as i32 * i + 2 as i32) as isize),
+                                                    .offset((5 * i + 2) as isize),
                                             ) > 0
                                         } {
                                             nbNs += 1
@@ -11163,18 +11072,18 @@ unsafe fn xmlParseStartTag2(
                                 while j < nbatts {
                                     unsafe {
                                         if attname == *atts.offset(j as isize)
-                                            && aprefix == *atts.offset((j + 1 as i32) as isize)
+                                            && aprefix == *atts.offset((j + 1) as isize)
                                         {
                                             break;
                                         }
                                     }
-                                    j += 5 as i32
+                                    j += 5
                                 }
                                 if !(j < nbatts) {
-                                    if atts.is_null() || nbatts + 5 as i32 > maxatts {
-                                        if xmlCtxtGrowAttrs(ctxt, nbatts + 5 as i32) < 0 {
+                                    if atts.is_null() || nbatts + 5 > maxatts {
+                                        if xmlCtxtGrowAttrs(ctxt, nbatts + 5) < 0 {
                                             localname = 0 as *const xmlChar;
-                                            current_block = 5568905272147674894;
+                                            current_block = 2;
                                             break;
                                         } else {
                                             maxatts = safe_ctxt.maxatts;
@@ -11182,46 +11091,35 @@ unsafe fn xmlParseStartTag2(
                                         }
                                     }
                                     unsafe {
-                                        let fresh113 = nbatts;
+                                        *atts.offset(nbatts as isize) = attname;
                                         nbatts = nbatts + 1;
-                                        let ref mut fresh114 = *atts.offset(fresh113 as isize);
-                                        *fresh114 = attname;
-                                        let fresh115 = nbatts;
+                                        *atts.offset(nbatts as isize) = aprefix;
                                         nbatts = nbatts + 1;
-                                        let ref mut fresh116 = *atts.offset(fresh115 as isize);
-                                        *fresh116 = aprefix;
                                         if aprefix.is_null() {
-                                            let fresh117 = nbatts;
+                                            *atts.offset(nbatts as isize) = 0 as *const xmlChar;
                                             nbatts = nbatts + 1;
-                                            let ref mut fresh118 = *atts.offset(fresh117 as isize);
-                                            *fresh118 = 0 as *const xmlChar
                                         } else {
-                                            let fresh119 = nbatts;
+                                            *atts.offset(nbatts as isize) =
+                                                xmlGetNamespace(ctxt, aprefix);
                                             nbatts = nbatts + 1;
-                                            let ref mut fresh120 = *atts.offset(fresh119 as isize);
-                                            *fresh120 = xmlGetNamespace(ctxt, aprefix)
                                         }
-                                        let fresh121 = nbatts;
-                                        nbatts = nbatts + 1;
-                                        let ref mut fresh122 = *atts.offset(fresh121 as isize);
-                                        *fresh122 = *(*defaults)
+                                        *atts.offset(nbatts as isize) = *(*defaults)
                                             .values
                                             .as_mut_ptr()
-                                            .offset((5 as i32 * i + 2 as i32) as isize);
-                                        let fresh123 = nbatts;
+                                            .offset((5 * i + 2) as isize);
                                         nbatts = nbatts + 1;
-                                        let ref mut fresh124 = *atts.offset(fresh123 as isize);
-                                        *fresh124 = *(*defaults)
+                                        *atts.offset(nbatts as isize) = *(*defaults)
                                             .values
                                             .as_mut_ptr()
-                                            .offset((5 as i32 * i + 3 as i32) as isize);
+                                            .offset((5 * i + 3) as isize);
+                                        nbatts = nbatts + 1;
                                     }
-                                    if safe_ctxt.standalone == 1 as i32
+                                    if safe_ctxt.standalone == 1
                                         && unsafe {
                                             !(*(*defaults)
                                                 .values
                                                 .as_mut_ptr()
-                                                .offset((5 as i32 * i + 4 as i32) as isize))
+                                                .offset((5 * i + 4) as isize))
                                             .is_null()
                                         }
                                     {
@@ -11238,13 +11136,13 @@ unsafe fn xmlParseStartTag2(
                             i += 1
                         }
                     } else {
-                        current_block = 981657943452992752;
+                        current_block = 5;
                     }
                 } else {
-                    current_block = 981657943452992752;
+                    current_block = 5;
                 }
                 match current_block {
-                    5568905272147674894 => {}
+                    2 => {}
                     _ => {
                         /*
                          * The attributes checkings
@@ -11254,12 +11152,9 @@ unsafe fn xmlParseStartTag2(
                             /*
                              * The default namespace does not apply to attribute names.
                              */
-                            if unsafe { !(*atts.offset((i + 1 as i32) as isize)).is_null() } {
+                            if unsafe { !(*atts.offset((i + 1) as isize)).is_null() } {
                                 unsafe {
-                                    nsname = xmlGetNamespace(
-                                        ctxt,
-                                        *atts.offset((i + 1 as i32) as isize),
-                                    );
+                                    nsname = xmlGetNamespace(ctxt, *atts.offset((i + 1) as isize));
                                     if nsname.is_null() {
                                         xmlNsErr(
                                             ctxt,
@@ -11267,13 +11162,12 @@ unsafe fn xmlParseStartTag2(
                                             b"Namespace prefix %s for %s on %s is not defined\n\x00"
                                                 as *const u8
                                                 as *const i8,
-                                            *atts.offset((i + 1 as i32) as isize),
+                                            *atts.offset((i + 1) as isize),
                                             *atts.offset(i as isize),
                                             localname,
                                         );
                                     }
-                                    let ref mut fresh125 = *atts.offset((i + 2 as i32) as isize);
-                                    *fresh125 = nsname
+                                    *atts.offset((i + 2) as isize) = nsname;
                                 }
                             } else {
                                 nsname = 0 as *const xmlChar
@@ -11288,17 +11182,17 @@ unsafe fn xmlParseStartTag2(
                             while j < i {
                                 unsafe {
                                     if *atts.offset(i as isize) == *atts.offset(j as isize) {
-                                        if *atts.offset((i + 1 as i32) as isize)
-                                            == *atts.offset((j + 1 as i32) as isize)
+                                        if *atts.offset((i + 1) as isize)
+                                            == *atts.offset((j + 1) as isize)
                                         {
                                             xmlErrAttributeDup(
                                                 ctxt,
-                                                *atts.offset((i + 1 as i32) as isize),
+                                                *atts.offset((i + 1) as isize),
                                                 *atts.offset(i as isize),
                                             );
                                             break;
                                         } else if !nsname.is_null()
-                                            && *atts.offset((j + 2 as i32) as isize) == nsname
+                                            && *atts.offset((j + 2) as isize) == nsname
                                         {
                                             xmlNsErr(
                                                 ctxt,
@@ -11314,9 +11208,9 @@ unsafe fn xmlParseStartTag2(
                                         }
                                     }
                                 }
-                                j += 5 as i32
+                                j += 5
                             }
-                            i += 5 as i32
+                            i += 5
                         }
                         nsname = xmlGetNamespace(ctxt, prefix);
                         if !prefix.is_null() && nsname.is_null() {
@@ -11336,37 +11230,37 @@ unsafe fn xmlParseStartTag2(
                             /*
                              * SAX: Start of Element !
                              */
-                            if !(*ctxt).sax.is_null()
-                                && (*(*ctxt).sax).startElementNs.is_some()
-                                && (*ctxt).disableSAX == 0
+                            if !safe_ctxt.sax.is_null()
+                                && (*safe_ctxt.sax).startElementNs.is_some()
+                                && safe_ctxt.disableSAX == 0
                             {
                                 if nbNs > 0 {
-                                    (*(*ctxt).sax)
+                                    (*safe_ctxt.sax)
                                         .startElementNs
                                         .expect("non-null function pointer")(
-                                        (*ctxt).userData,
+                                        safe_ctxt.userData,
                                         localname,
                                         prefix,
                                         nsname,
                                         nbNs,
-                                        &mut *(*ctxt)
+                                        &mut *safe_ctxt
                                             .nsTab
-                                            .offset(((*ctxt).nsNr - 2 as i32 * nbNs) as isize),
-                                        nbatts / 5 as i32,
+                                            .offset((safe_ctxt.nsNr - 2 * nbNs) as isize),
+                                        nbatts / 5,
                                         nbdef,
                                         atts,
                                     );
                                 } else {
-                                    (*(*ctxt).sax)
+                                    (*safe_ctxt.sax)
                                         .startElementNs
                                         .expect("non-null function pointer")(
-                                        (*ctxt).userData,
+                                        safe_ctxt.userData,
                                         localname,
                                         prefix,
                                         nsname,
                                         0,
                                         0 as *mut *const xmlChar,
-                                        nbatts / 5 as i32,
+                                        nbatts / 5,
                                         nbdef,
                                         atts,
                                     );
@@ -11383,17 +11277,17 @@ unsafe fn xmlParseStartTag2(
      * Free up attribute allocated strings if needed
      */
     if attval != 0 {
-        i = 3 as i32;
+        i = 3;
         j = 0;
         while j < nratts {
             unsafe {
-                if *(*ctxt).attallocs.offset(j as isize) != 0
+                if *safe_ctxt.attallocs.offset(j as isize) != 0
                     && !(*atts.offset(i as isize)).is_null()
                 {
                     xmlFree_safe(*atts.offset(i as isize) as *mut xmlChar as *mut ());
                 }
             }
-            i += 5 as i32;
+            i += 5;
             j += 1
         }
     }
@@ -11413,28 +11307,29 @@ unsafe fn xmlParseStartTag2(
 *
 * [NS 9] ETag ::= '</' QName S? '>'
 */
-unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTag) {
+fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTag) {
     let mut name: *const xmlChar = 0 as *const xmlChar;
-    if unsafe {
-        (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-    } {
+    let mut safe_ctxt = unsafe { &mut *ctxt };
+    let mut safe_tag = unsafe { *tag };
+    if safe_ctxt.progressive == 0
+        && unsafe { ((*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64) } < 250
+    {
         xmlGROW(ctxt);
     }
-    if unsafe { *(*(*ctxt).input).cur != '<' as u8 || *(*(*ctxt).input).cur.offset(1) != '/' as u8 }
-    {
-        xmlFatalErr(ctxt, XML_ERR_LTSLASH_REQUIRED, 0 as *const i8);
+    if unsafe {
+        *(*safe_ctxt.input).cur != '<' as u8 || *(*safe_ctxt.input).cur.offset(1) != '/' as u8
+    } {
+        unsafe { xmlFatalErr(ctxt, XML_ERR_LTSLASH_REQUIRED, 0 as *const i8) };
         return;
     }
     unsafe {
-        (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(2);
-        (*(*ctxt).input).col += 2 as i32;
-        if *(*(*ctxt).input).cur as i32 == 0 {
-            xmlParserInputGrow_safe((*ctxt).input, 250);
+        (*safe_ctxt.input).cur = (*safe_ctxt.input).cur.offset(2);
+        (*safe_ctxt.input).col += 2;
+        if *(*safe_ctxt.input).cur == 0 {
+            xmlParserInputGrow_safe(safe_ctxt.input, 250);
         }
     }
-    let mut safe_tag = unsafe { *tag };
-    let mut safe_ctxt = unsafe { &mut *ctxt };
+
     if safe_tag.prefix.is_null() {
         name = xmlParseNameAndCompare(ctxt, safe_ctxt.name)
     } else {
@@ -11443,10 +11338,9 @@ unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTa
     /*
      * We should definitely be at the ending "S? '>'" part
      */
-    if unsafe {
-        (*ctxt).progressive == 0
-            && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64) < 250
-    } {
+    if safe_ctxt.progressive == 0
+        && unsafe { (*safe_ctxt.input).end.offset_from((*safe_ctxt.input).cur) as i64 } < 250
+    {
         xmlGROW(ctxt);
     }
     if safe_ctxt.instate == XML_PARSER_EOF {
@@ -11454,18 +11348,18 @@ unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTa
     }
     xmlSkipBlankChars(ctxt);
     if unsafe {
-        !(0x9 <= *(*(*ctxt).input).cur as i32 && *(*(*ctxt).input).cur as i32 <= 0xa
-            || *(*(*ctxt).input).cur as i32 == 0xd
-            || 0x20 <= *(*(*ctxt).input).cur as i32)
-            || *(*(*ctxt).input).cur != '>' as u8
+        !(0x9 <= *(*safe_ctxt.input).cur as i32 && *(*safe_ctxt.input).cur as i32 <= 0xa
+            || *(*safe_ctxt.input).cur as i32 == 0xd
+            || 0x20 <= *(*safe_ctxt.input).cur as i32)
+            || *(*safe_ctxt.input).cur != '>' as u8
     } {
-        xmlFatalErr(ctxt, XML_ERR_GT_REQUIRED, 0 as *const i8);
+        unsafe { xmlFatalErr(ctxt, XML_ERR_GT_REQUIRED, 0 as *const i8) };
     } else {
         unsafe {
-            (*(*ctxt).input).col += 1;
-            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(1);
-            if *(*(*ctxt).input).cur as i32 == 0 {
-                xmlParserInputGrow_safe((*ctxt).input, 250);
+            (*safe_ctxt.input).col += 1;
+            (*safe_ctxt.input).cur = (*safe_ctxt.input).cur.offset(1);
+            if *(*safe_ctxt.input).cur == 0 {
+                xmlParserInputGrow_safe(safe_ctxt.input, 250);
             }
         }
     }
@@ -11475,7 +11369,7 @@ unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTa
      * start-tag.
      *
      */
-    if name != 1 as i32 as *mut xmlChar {
+    if name != 1 as *mut xmlChar {
         if name.is_null() {
             name = b"unparsable\x00" as *const u8 as *const i8 as *mut xmlChar
         }
@@ -11491,21 +11385,23 @@ unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTa
     /*
      * SAX: End of Tag
      */
-    unsafe {
-        if !safe_ctxt.sax.is_null()
-            && (*(*ctxt).sax).endElementNs.is_some()
-            && safe_ctxt.disableSAX == 0
-        {
-            (*(*ctxt).sax)
+
+    if !safe_ctxt.sax.is_null()
+        && unsafe { (*safe_ctxt.sax).endElementNs.is_some() }
+        && safe_ctxt.disableSAX == 0
+    {
+        unsafe {
+            (*safe_ctxt.sax)
                 .endElementNs
                 .expect("non-null function pointer")(
                 safe_ctxt.userData,
                 safe_ctxt.name,
                 safe_tag.prefix,
                 safe_tag.URI,
-            );
-        }
+            )
+        };
     }
+
     spacePop(ctxt);
     if safe_tag.nsNr != 0 {
         nsPop(ctxt, safe_tag.nsNr);
@@ -11526,17 +11422,18 @@ unsafe fn xmlParseEndTag2(mut ctxt: xmlParserCtxtPtr, mut tag: *const xmlStartTa
 * [21] CDEnd ::= ']]>'
 */
 
-pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
+pub fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
     let mut buf: *mut xmlChar = 0 as *mut xmlChar;
     let mut len: i32 = 0;
     let mut size: i32 = 100;
-    let mut r: i32 = 0;
+    let mut r: i32;
     let mut rl: i32 = 0;
-    let mut s: i32 = 0;
+    let mut s: i32;
     let mut sl: i32 = 0;
-    let mut cur: i32 = 0;
+    let mut cur: i32;
     let mut l: i32 = 0;
     let mut count: i32 = 0;
+
     /* Check 2.6.0 was NXT(0) not RAW */
     unsafe {
         if *((*(*ctxt).input).cur as *mut u8).offset(0) == '<' as u8
@@ -11550,7 +11447,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
             && *((*(*ctxt).input).cur as *mut u8).offset(8) == '[' as u8
         {
             (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(9);
-            (*(*ctxt).input).col += 9 as i32;
+            (*(*ctxt).input).col += 9;
             if *(*(*ctxt).input).cur as i32 == 0 {
                 xmlParserInputGrow_safe((*ctxt).input, 250);
             }
@@ -11560,9 +11457,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
     }
     let mut safe_ctxt = unsafe { &mut *ctxt };
     safe_ctxt.instate = XML_PARSER_CDATA_SECTION;
-    unsafe {
-        r = xmlCurrentChar(ctxt, &mut rl);
-    }
+    r = xmlCurrentChar(ctxt, &mut rl);
     if if r < 0x100 {
         (0x9 <= r && r <= 0xa || r == 0xd || 0x20 <= r) as i32
     } else {
@@ -11570,7 +11465,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
             as i32
     } == 0
     {
-        xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, 0 as *const i8);
+        unsafe { xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, 0 as *const i8) };
         safe_ctxt.instate = XML_PARSER_CONTENT;
         return;
     }
@@ -11591,7 +11486,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
             as i32
     } == 0
     {
-        xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, 0 as *const i8);
+        unsafe { xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, 0 as *const i8) };
         safe_ctxt.instate = XML_PARSER_CONTENT;
         return;
     }
@@ -11605,7 +11500,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
         (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(sl as isize);
         cur = xmlCurrentChar(ctxt, &mut l);
     }
-    buf = xmlMallocAtomic_safe((size as u64).wrapping_mul(size_of::<xmlChar>() as u64))
+    buf = unsafe { xmlMallocAtomic_safe((size as u64).wrapping_mul(size_of::<xmlChar>() as u64)) }
         as *mut xmlChar;
     if buf.is_null() {
         unsafe {
@@ -11622,7 +11517,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
     }) != 0
         && (r != ']' as i32 || s != ']' as i32 || cur != '>' as i32)
     {
-        if len + 5 as i32 >= size {
+        if len + 5 >= size {
             let mut tmp: *mut xmlChar = 0 as *mut xmlChar;
             if size > 10000000 && safe_ctxt.options & XML_PARSE_HUGE as i32 == 0 {
                 xmlFatalErrMsgStr(
@@ -11631,24 +11526,24 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
                     b"CData section too big found\x00" as *const u8 as *const i8,
                     0 as *const xmlChar,
                 );
-                xmlFree_safe(buf as *mut ());
+                unsafe { xmlFree_safe(buf as *mut ()) };
                 return;
             }
-            tmp = xmlRealloc_safe(
-                buf as *mut (),
-                ((size * 2 as i32) as u64).wrapping_mul(size_of::<xmlChar>() as u64),
-            ) as *mut xmlChar;
+            tmp = unsafe {
+                xmlRealloc_safe(
+                    buf as *mut (),
+                    ((size * 2) as u64).wrapping_mul(size_of::<xmlChar>() as u64),
+                )
+            } as *mut xmlChar;
             if tmp.is_null() {
-                xmlFree_safe(buf as *mut ());
-                unsafe {
-                    xmlErrMemory(ctxt, 0 as *const i8);
-                }
+                unsafe { xmlFree_safe(buf as *mut ()) };
+                xmlErrMemory(ctxt, 0 as *const i8);
                 return;
             }
             buf = tmp;
-            size *= 2 as i32
+            size *= 2
         }
-        if rl == 1 as i32 {
+        if rl == 1 {
             let fresh126 = len;
             len = len + 1;
             unsafe { *buf.offset(fresh126 as isize) = r as xmlChar }
@@ -11664,9 +11559,9 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
             if unsafe {
                 (*ctxt).progressive == 0
                     && (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64
-                        > (2 as i32 * 250) as i64
+                        > (2 * 250) as i64
                     && ((*(*ctxt).input).end.offset_from((*(*ctxt).input).cur) as i64)
-                        < (2 as i32 * 250) as i64
+                        < (2 * 250) as i64
             } {
                 xmlSHRINK(ctxt);
             }
@@ -11677,7 +11572,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
                 xmlGROW(ctxt);
             }
             if safe_ctxt.instate == XML_PARSER_EOF {
-                xmlFree_safe(buf as *mut ());
+                unsafe { xmlFree_safe(buf as *mut ()) };
                 return;
             }
             count = 0
@@ -11704,7 +11599,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
             b"CData section not finished\n%.50s\n\x00" as *const u8 as *const i8,
             buf,
         );
-        xmlFree_safe(buf as *mut ());
+        unsafe { xmlFree_safe(buf as *mut ()) };
         return;
     }
     unsafe {
@@ -11732,7 +11627,7 @@ pub unsafe fn xmlParseCDSect(mut ctxt: xmlParserCtxtPtr) {
             }
         }
     }
-    xmlFree_safe(buf as *mut ());
+    unsafe { xmlFree_safe(buf as *mut ()) };
 }
 /* *
 * xmlParseContentInternal:
