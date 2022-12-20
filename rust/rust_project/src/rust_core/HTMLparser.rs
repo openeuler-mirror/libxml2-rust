@@ -263,10 +263,7 @@ static mut htmlOmittedDefaultValue: i32 = 1;
  */
 fn htmlErrMemory(ctxt: xmlParserCtxtPtr, extra: *const i8) {
     unsafe {
-        if !ctxt.is_null()
-            && (*ctxt).disableSAX != 0
-            && (*ctxt).instate as i32 == XML_PARSER_EOF as i32
-        {
+        if !ctxt.is_null() && (*ctxt).disableSAX != 0 && (*ctxt).instate == XML_PARSER_EOF {
             return;
         }
     }
@@ -335,10 +332,7 @@ fn htmlParseErr(
     str2: *const xmlChar,
 ) {
     unsafe {
-        if !ctxt.is_null()
-            && (*ctxt).disableSAX != 0
-            && (*ctxt).instate as i32 == XML_PARSER_EOF as i32
-        {
+        if !ctxt.is_null() && (*ctxt).disableSAX != 0 && (*ctxt).instate == XML_PARSER_EOF {
             return;
         }
         if !ctxt.is_null() {
@@ -380,10 +374,7 @@ fn htmlParseErr(
  */
 fn htmlParseErrInt(ctxt: xmlParserCtxtPtr, error: xmlParserErrors, msg: *const i8, val: i32) {
     unsafe {
-        if !ctxt.is_null()
-            && (*ctxt).disableSAX != 0
-            && (*ctxt).instate as i32 == XML_PARSER_EOF as i32
-        {
+        if !ctxt.is_null() && (*ctxt).disableSAX != 0 && (*ctxt).instate == XML_PARSER_EOF {
             return;
         }
         if !ctxt.is_null() {
@@ -639,13 +630,13 @@ fn htmlFindEncoding(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
     let mut cur_safe = unsafe { *cur };
     while 1 < 2 {
         unsafe {
-            if (!((*cur) as i32 >= 'A' as i32 && (*cur) as i32 <= 'Z' as i32
-                || (*cur) as i32 >= 'a' as i32 && (*cur) as i32 <= 'z' as i32
-                || (*cur) as i32 >= '0' as i32 && (*cur) as i32 <= '9' as i32
-                || (*cur) as i32 == '-' as i32
-                || (*cur) as i32 == '_' as i32
-                || (*cur) as i32 == ':' as i32
-                || (*cur) as i32 == '/' as i32))
+            if (!((*cur) >= 'A' as u8 && (*cur) <= 'Z' as u8
+                || (*cur) >= 'a' as u8 && (*cur) <= 'z' as u8
+                || (*cur) >= '0' as u8 && (*cur) <= '9' as u8
+                || (*cur) == '-' as u8
+                || (*cur) == '_' as u8
+                || (*cur) == ':' as u8
+                || (*cur) == '/' as u8))
             {
                 break;
             }
@@ -679,7 +670,7 @@ fn htmlCurrentChar(ctxt: xmlParserCtxtPtr, len: *mut i32) -> i32 {
     let mut cur: *const u8 = 0 as *const u8;
     let mut c: u8 = 0;
     let mut val: u32 = 0;
-    if ctxtPtr.instate as i32 == XML_PARSER_EOF as i32 {
+    if ctxtPtr.instate == XML_PARSER_EOF {
         return 0;
     }
     if ctxtPtr.token != 0 {
@@ -9762,10 +9753,10 @@ fn htmlParseHTMLAttribute(ctxt: htmlParserCtxtPtr, stop: xmlChar) -> *mut xmlCha
      * Ok loop until we reach one of the ending chars
      */
     while CUR(ctxt) != 0 && CUR(ctxt) != stop as i32 {
-        if stop as i32 == 0 && CUR(ctxt) == '>' as i32 {
+        if stop == 0 && CUR(ctxt) == '>' as i32 {
             break;
         }
-        if stop as i32 == 0 && IS_BLANK_CH(CUR(ctxt)) {
+        if stop == 0 && IS_BLANK_CH(CUR(ctxt)) {
             break;
         }
         unsafe {
@@ -11439,7 +11430,7 @@ fn htmlParseStartTag(ctxt: htmlParserCtxtPtr) -> i32 {
         }
     }
     let mut ctxtPtr = unsafe { &mut *ctxt };
-    if ctxtPtr.instate as i32 == XML_PARSER_EOF as i32 {
+    if ctxtPtr.instate == XML_PARSER_EOF {
         return -1;
     }
     if CUR(ctxt) != '<' as i32 {
@@ -11997,7 +11988,7 @@ fn htmlParseContent(ctxt: htmlParserCtxtPtr) {
     depth = ctxtPtr.nameNr;
     loop {
         GROW(ctxt);
-        if ctxtPtr.instate as i32 == XML_PARSER_EOF as i32 {
+        if ctxtPtr.instate == XML_PARSER_EOF {
             break;
         }
         /*
@@ -12180,7 +12171,7 @@ pub fn htmlParseElement(ctxt: htmlParserCtxtPtr) {
         }
     }
     let mut ctxtPtr = unsafe { &mut *ctxt };
-    if ctxtPtr.instate as i32 == XML_PARSER_EOF as i32 {
+    if ctxtPtr.instate == XML_PARSER_EOF {
         return;
     }
     /* Capture start position */
@@ -13241,14 +13232,14 @@ pub fn htmlParseLookupSequence(
                 }
                 ctxtPtr.checkIndex = 0;
                 if DEBUG_PUSH != 0 {
-                    if next as i32 == 0 {
+                    if next == 0 {
                         __xmlGenericError_safe_macro!(
                             __xmlGenericErrorContext_safe(),
                             b"HPP: lookup '%c' found at %d" as *const u8 as *const i8,
                             first as u32,
                             base as u32
                         );
-                    } else if third as i32 == 0 {
+                    } else if third == 0 {
                         __xmlGenericError_safe_macro!(
                             __xmlGenericErrorContext_safe(),
                             b"HPP: lookup '%c%c' found at %d\n" as *const u8 as *const i8,
@@ -13285,7 +13276,7 @@ pub fn htmlParseLookupSequence(
                 b"HPP: lookup '%c' failed\n" as *const u8 as *const i8,
                 first as u32
             );
-        } else if third as i32 == 0 {
+        } else if third == 0 {
             __xmlGenericError_safe_macro!(
                 __xmlGenericErrorContext_safe(),
                 b"HPP: lookup '%c%c' failed\n" as *const u8 as *const i8,
@@ -13512,7 +13503,7 @@ pub fn htmlParseTryOrFinish(ctxt: htmlParserCtxtPtr, terminate: i32) -> i32 {
         unsafe {
             cur = *in_0Ptr.cur.offset(0);
         }
-        if cur as i32 == 0 {
+        if cur == 0 {
             SKIP(ctxt, 1);
             continue;
         }
@@ -13779,7 +13770,7 @@ pub fn htmlParseTryOrFinish(ctxt: htmlParserCtxtPtr, terminate: i32) -> i32 {
                         }
                         htmlParsePI(ctxt);
                         ctxtPtr.instate = XML_PARSER_PROLOG;
-                    } else if cur as i32 == '<' as i32 && next as i32 == '!' as i32 && avail < 4 {
+                    } else if cur == '<' as u8 && next == '!' as u8 && avail < 4 {
                         break;
                     } else {
                         ctxtPtr.instate = XML_PARSER_CONTENT;
@@ -14133,7 +14124,7 @@ pub fn htmlParseTryOrFinish(ctxt: htmlParserCtxtPtr, terminate: i32) -> i32 {
                         unsafe {
                             val = *in_0Ptr.cur.offset((idx + 2) as isize);
                         }
-                        if val as i32 == 0 {
+                        if val == 0 {
                             break;
                         }
                     }
@@ -14228,7 +14219,7 @@ pub fn htmlParseTryOrFinish(ctxt: htmlParserCtxtPtr, terminate: i32) -> i32 {
                         }
                         continue;
                     } else if cur == '<' as u8 {
-                        if terminate == 0 && next as i32 == 0 {
+                        if terminate == 0 && next == 0 {
                             break;
                         }
                         if IS_ASCII_LETTER(next as i32)
