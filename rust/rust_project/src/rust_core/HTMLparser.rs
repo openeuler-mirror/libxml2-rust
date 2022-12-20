@@ -6127,7 +6127,7 @@ pub fn htmlTagLookup(tag: *const xmlChar) -> *const htmlElemDesc {
  **/
 fn htmlGetEndPriority(name: *const xmlChar) -> i32 {
     let mut i: i32 = 0;
-    while !unsafe { getHtmlEndPriority(i as usize).name.is_null() }
+    while !getHtmlEndPriority(i as usize).name.is_null()
         && unsafe { xmlStrEqual_safe(getHtmlEndPriority(i as usize).name as *const xmlChar, name) }
             == 0
     {
@@ -6160,12 +6160,10 @@ extern "C" fn htmlCompareStartClose(vkey: *const (), member: *const ()) -> i32 {
  */
 fn htmlCheckAutoClose(newtag: *const xmlChar, oldtag: *const xmlChar) -> i32 {
     let mut key: htmlStartCloseEntry = htmlStartCloseEntry {
-        oldTag: 0 as *const i8,
-        newTag: 0 as *const i8,
+        oldTag: oldtag as *const i8,
+        newTag: newtag as *const i8,
     };
     let mut res: *mut () = 0 as *mut ();
-    key.oldTag = oldtag as *const i8;
-    key.newTag = newtag as *const i8;
     unsafe {
         res = bsearch(
             &mut key as *mut htmlStartCloseEntry as *const (),
@@ -6593,14 +6591,12 @@ fn htmlCheckParagraph(ctxt: htmlParserCtxtPtr) -> i32 {
         sax_condition = unsafe { !ctxtPtr.sax.is_null() && (*(*ctxt).sax).startElement.is_some() };
         if sax_condition {
             let saxPtr = unsafe { &mut *(*ctxt).sax };
-            unsafe {
-                xmlSAXHandler_startElement_safe(
-                    saxPtr.startElement,
-                    ctxtPtr.userData,
-                    b"p\x00" as *const u8 as *const i8 as *mut xmlChar,
-                    0 as *mut *const xmlChar,
-                )
-            };
+            xmlSAXHandler_startElement_safe(
+                saxPtr.startElement,
+                ctxtPtr.userData,
+                b"p\x00" as *const u8 as *const i8 as *mut xmlChar,
+                0 as *mut *const xmlChar,
+            );
         }
         return 1;
     }
