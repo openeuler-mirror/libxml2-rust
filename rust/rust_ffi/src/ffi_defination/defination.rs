@@ -107,8 +107,8 @@ pub struct _xmlDictEntry {
 
 pub type xmlDictEntry = _xmlDictEntry;
 
-static mut xmlDictInitialized: i32 = 0 as i32;
-static mut rand_seed: u32 = 0 as i32 as u32;
+static mut xmlDictInitialized: i32 = 0;
+static mut rand_seed: u32 = 0;
 
 /**
  * hash.rs
