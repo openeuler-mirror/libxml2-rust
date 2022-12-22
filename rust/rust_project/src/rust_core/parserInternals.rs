@@ -2,10 +2,16 @@ use rust_ffi::ffi_defination::defination::*;
 use rust_ffi::ffi_extern_method::extern_method::*;
 use rust_ffi::ffi_extern_method::extern_method_safe::*;
 
+const LIBXML_VERSION: i32 = 20912;
+const INPUT_CHUNK: i32 = 250;
+const LINE_LEN: i32 = 80;
+const XML_MAX_DICTIONARY_LIMIT: u64 = 10000000;
+const XML_CTXT_FINISH_DTD_0: u32 = 0xabcd1234;
+
 pub fn xmlCheckVersion(version: i32) {
     let safe__xmlGenericError = unsafe { &mut *__xmlGenericError() };
     let safe__xmlGenericErrorContext = unsafe { &mut **__xmlGenericErrorContext() };
-    let myversion: i32 = 20912;
+    let myversion: i32 = LIBXML_VERSION;
     unsafe { xmlInitParser_safe() };
     if myversion / 10000 != version / 10000 {
         unsafe {
@@ -56,10 +62,7 @@ pub fn xmlCheckVersion(version: i32) {
 
 pub fn xmlErrMemory(ctxt: xmlParserCtxtPtr, extra: *const i8) {
     let safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && safe_ctxt.disableSAX != 0
-        && safe_ctxt.instate as i32 == XML_PARSER_EOF as i32
-    {
+    if !ctxt.is_null() && safe_ctxt.disableSAX != 0 && safe_ctxt.instate == XML_PARSER_EOF {
         return;
     }
     if !ctxt.is_null() {
@@ -132,10 +135,7 @@ pub fn __xmlErrEncoding(
     str2: *const xmlChar,
 ) {
     let safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && safe_ctxt.disableSAX != 0
-        && safe_ctxt.instate as i32 == XML_PARSER_EOF as i32
-    {
+    if !ctxt.is_null() && safe_ctxt.disableSAX != 0 && safe_ctxt.instate == XML_PARSER_EOF {
         return;
     }
     if !ctxt.is_null() {
@@ -180,10 +180,7 @@ pub fn __xmlErrEncoding(
  */
 fn xmlErrInternal(ctxt: xmlParserCtxtPtr, msg: *const i8, str: *const xmlChar) {
     let safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && safe_ctxt.disableSAX != 0
-        && safe_ctxt.instate as i32 == XML_PARSER_EOF as i32
-    {
+    if !ctxt.is_null() && safe_ctxt.disableSAX != 0 && safe_ctxt.instate == XML_PARSER_EOF {
         return;
     }
     if !ctxt.is_null() {
@@ -233,10 +230,7 @@ fn xmlErrEncodingInt(
     mut val: i32,
 ) {
     let mut safe_ctxt = unsafe { &mut *ctxt };
-    if !ctxt.is_null()
-        && safe_ctxt.disableSAX != 0
-        && safe_ctxt.instate as i32 == XML_PARSER_EOF as i32
-    {
+    if !ctxt.is_null() && safe_ctxt.disableSAX != 0 && safe_ctxt.instate == XML_PARSER_EOF {
         return;
     }
     if !ctxt.is_null() {
@@ -406,7 +400,9 @@ pub fn xmlParserInputGrow_parserInternals(in_0: xmlParserInputPtr, len: i32) -> 
     check_buffer(in_0);
     unsafe {
         indx = safe_in_0.cur.offset_from(safe_in_0.base) as size_t;
-        if xmlBufUse((*safe_in_0.buf).buffer) > (indx as u32).wrapping_add(250) as u64 {
+        if xmlBufUse((*safe_in_0.buf).buffer)
+            > (indx as u32).wrapping_add(INPUT_CHUNK as u32) as u64
+        {
             check_buffer(in_0);
             return 0;
         }
@@ -426,7 +422,7 @@ pub fn xmlParserInputGrow_parserInternals(in_0: xmlParserInputPtr, len: i32) -> 
             /*
              * the buffer has been reallocated
              */
-            indx = safe_in_0.cur.offset_from(safe_in_0.base) as i64 as size_t;
+            indx = safe_in_0.cur.offset_from(safe_in_0.base) as size_t;
             safe_in_0.base = content;
             safe_in_0.cur = &*content.offset(indx as isize) as *const xmlChar
         }
@@ -492,8 +488,8 @@ pub fn xmlParserInputShrink_parserInternals(in_0: xmlParserInputPtr) {
          * Do not shrink on large buffers whose only a tiny fraction
          * was consumed
          */
-        if used > 250 {
-            ret = xmlBufShrink((*safe_in_0.buf).buffer, used.wrapping_sub(80));
+        if used > INPUT_CHUNK as u64 {
+            ret = xmlBufShrink((*safe_in_0.buf).buffer, used.wrapping_sub(LINE_LEN as u64));
             if ret > 0 {
                 safe_in_0.cur = safe_in_0.cur.offset(-(ret as isize));
                 safe_in_0.consumed = safe_in_0.consumed.wrapping_add(ret)
@@ -504,10 +500,10 @@ pub fn xmlParserInputShrink_parserInternals(in_0: xmlParserInputPtr) {
 
     check_buffer(in_0);
     unsafe {
-        if xmlBufUse((*safe_in_0.buf).buffer) > 250 {
+        if xmlBufUse((*safe_in_0.buf).buffer) > INPUT_CHUNK as u64 {
             return;
         }
-        xmlParserInputBufferRead(safe_in_0.buf, 2 * 250);
+        xmlParserInputBufferRead(safe_in_0.buf, 2 * INPUT_CHUNK);
         content = xmlBufContent((*safe_in_0.buf).buffer as *const xmlBuf);
         if safe_in_0.base != content {
             /*
@@ -537,10 +533,7 @@ pub fn xmlParserInputShrink_parserInternals(in_0: xmlParserInputPtr) {
 pub fn xmlNextChar_parserInternals(ctxt: xmlParserCtxtPtr) {
     let safe_ctxt = unsafe { &mut *ctxt };
     let mut current_block: u64;
-    if ctxt.is_null()
-        || safe_ctxt.instate as i32 == XML_PARSER_EOF as i32
-        || safe_ctxt.input.is_null()
-    {
+    if ctxt.is_null() || safe_ctxt.instate == XML_PARSER_EOF || safe_ctxt.input.is_null() {
         return;
     }
     unsafe {
@@ -554,7 +547,9 @@ pub fn xmlNextChar_parserInternals(ctxt: xmlParserCtxtPtr) {
             xmlStopParser(ctxt);
             return;
         }
-        if *(*safe_ctxt.input).cur as i32 == 0 && xmlParserInputGrow(safe_ctxt.input, 250) <= 0 {
+        if *(*safe_ctxt.input).cur as i32 == 0
+            && xmlParserInputGrow(safe_ctxt.input, INPUT_CHUNK) <= 0
+        {
             return;
         }
     }
@@ -568,7 +563,7 @@ pub fn xmlNextChar_parserInternals(ctxt: xmlParserCtxtPtr) {
          *   the single character #xA.
          */
         unsafe {
-            if *(*safe_ctxt.input).cur as i32 == '\n' as i32 {
+            if *(*safe_ctxt.input).cur == '\n' as u8 {
                 (*safe_ctxt.input).line += 1;
                 (*safe_ctxt.input).col = 1
             } else {
@@ -729,7 +724,7 @@ pub fn xmlNextChar_parserInternals(ctxt: xmlParserCtxtPtr) {
     }
     unsafe {
         if *(*safe_ctxt.input).cur as i32 == 0 {
-            xmlParserInputGrow(safe_ctxt.input, 250);
+            xmlParserInputGrow(safe_ctxt.input, INPUT_CHUNK);
         };
     }
 }
@@ -758,7 +753,7 @@ pub fn xmlCurrentChar(ctxt: xmlParserCtxtPtr, len: *mut i32) -> i32 {
     if ctxt.is_null() || len.is_null() || safe_ctxt.input.is_null() {
         return 0;
     }
-    if safe_ctxt.instate as i32 == XML_PARSER_EOF as i32 {
+    if safe_ctxt.instate == XML_PARSER_EOF {
         return 0;
     }
     unsafe {
@@ -787,20 +782,20 @@ pub fn xmlCurrentChar(ctxt: xmlParserCtxtPtr, len: *mut i32) -> i32 {
             if c as i32 & 0x80 != 0 {
                 if !(c as i32 & 0x40 == 0 || c as i32 == 0xc0) {
                     if *cur.offset(1) as i32 == 0 {
-                        xmlParserInputGrow(safe_ctxt.input, 250);
+                        xmlParserInputGrow(safe_ctxt.input, INPUT_CHUNK);
                         cur = (*safe_ctxt.input).cur
                     }
                     if !(*cur.offset(1) as i32 & 0xc0 != 0x80) {
                         if c as i32 & 0xe0 == 0xe0 {
                             if *cur.offset(2) as i32 == 0 {
-                                xmlParserInputGrow(safe_ctxt.input, 250);
+                                xmlParserInputGrow(safe_ctxt.input, INPUT_CHUNK);
                                 cur = (*safe_ctxt.input).cur
                             }
                             if *cur.offset(2) as i32 & 0xc0 != 0x80 {
                                 current_block = 14852328631030688201;
                             } else if c as i32 & 0xf0 == 0xf0 {
                                 if *cur.offset(3) as i32 == 0 {
-                                    xmlParserInputGrow(safe_ctxt.input, 250);
+                                    xmlParserInputGrow(safe_ctxt.input, INPUT_CHUNK);
                                     cur = (*safe_ctxt.input).cur
                                 }
                                 if c as i32 & 0xf8 != 0xf0 || *cur.offset(3) as i32 & 0xc0 != 0x80 {
@@ -812,7 +807,7 @@ pub fn xmlCurrentChar(ctxt: xmlParserCtxtPtr, len: *mut i32) -> i32 {
                                     val |= ((*cur.offset(1) as i32 & 0x3f) << 12) as u32;
                                     val |= ((*cur.offset(2) as i32 & 0x3f) << 6) as u32;
                                     val |= (*cur.offset(3) as i32 & 0x3f) as u32;
-                                    if val < 0x10000 as u32 {
+                                    if val < 0x10000 {
                                         current_block = 14852328631030688201;
                                     } else {
                                         current_block = 3938820862080741272;
@@ -821,10 +816,10 @@ pub fn xmlCurrentChar(ctxt: xmlParserCtxtPtr, len: *mut i32) -> i32 {
                             } else {
                                 /* 3-byte code */
                                 *len = 3;
-                                val = ((*cur.offset(0) as i32 & 0xf) << 12 as i32) as u32;
-                                val |= ((*cur.offset(1) as i32 & 0x3f) << 6 as i32) as u32;
-                                val |= (*cur.offset(2) as i32 & 0x3f as i32) as u32;
-                                if val < 0x800 as u32 {
+                                val = ((*cur.offset(0) as i32 & 0xf) << 12) as u32;
+                                val |= ((*cur.offset(1) as i32 & 0x3f) << 6) as u32;
+                                val |= (*cur.offset(2) as i32 & 0x3f) as u32;
+                                if val < 0x800 {
                                     current_block = 14852328631030688201;
                                 } else {
                                     current_block = 3938820862080741272;
@@ -907,7 +902,7 @@ pub fn xmlCurrentChar(ctxt: xmlParserCtxtPtr, len: *mut i32) -> i32 {
                 /* 1-byte code */
                 *len = 1;
                 if *(*safe_ctxt.input).cur as i32 == 0 {
-                    xmlParserInputGrow(safe_ctxt.input, 250);
+                    xmlParserInputGrow(safe_ctxt.input, INPUT_CHUNK);
                 }
                 if *(*safe_ctxt.input).cur as i32 == 0
                     && (*safe_ctxt.input).end > (*safe_ctxt.input).cur
@@ -1121,27 +1116,23 @@ pub fn xmlCopyCharMultiByte(mut out: *mut xmlChar, val: i32) -> i32 {
         let savedout: *mut xmlChar = out;
         let mut bits: i32;
         if val < 0x800 {
-            let fresh0 = out;
             unsafe {
+                *out = (val >> 6 | 0xc0) as xmlChar;
                 out = out.offset(1);
-                *fresh0 = (val >> 6 | 0xc0) as xmlChar;
             }
 
             bits = 0
         } else if val < 0x10000 {
-            let fresh1 = out;
             unsafe {
+                *out = (val >> 12 | 0xe0) as xmlChar;
                 out = out.offset(1);
-                *fresh1 = (val >> 12 | 0xe0) as xmlChar;
             }
 
             bits = 6
         } else if val < 0x110000 {
-            let fresh2 = out;
-
             unsafe {
+                *out = (val >> 18 | 0xf0) as xmlChar;
                 out = out.offset(1);
-                *fresh2 = (val >> 18 | 0xf0) as xmlChar;
             }
             bits = 12
         } else {
@@ -1155,13 +1146,12 @@ pub fn xmlCopyCharMultiByte(mut out: *mut xmlChar, val: i32) -> i32 {
             return 0;
         }
         while bits >= 0 {
-            let fresh3 = out;
             unsafe {
+                *out = (val >> bits & 0x3f | 0x80) as xmlChar;
                 out = out.offset(1);
-                *fresh3 = (val >> bits & 0x3f | 0x80) as xmlChar;
             }
 
-            bits -= 6 as i32
+            bits -= 6
         }
         unsafe {
             return out.offset_from(savedout) as i32;
@@ -1302,30 +1292,14 @@ pub fn xmlSwitchEncoding_parserInternals(ctxt: xmlParserCtxtPtr, enc: xmlCharEnc
          * Default handlers.
          */
         unsafe {
-            match enc as i32 {
+            match enc {
                 XML_CHAR_ENCODING_ASCII => {
                     /* default encoding, no conversion should be needed */
                     safe_ctxt.charset = XML_CHAR_ENCODING_UTF8 as i32;
                     return 0;
                 }
-                XML_CHAR_ENCODING_UTF16LE => {
-                    __xmlErrEncoding(
-                        ctxt,
-                        XML_ERR_UNSUPPORTED_ENCODING,
-                        b"encoding not supported %s\n\x00" as *const u8 as *const i8,
-                        b"USC4 little endian\x00" as *const u8 as *const i8 as *mut xmlChar,
-                        0 as *const xmlChar,
-                    );
-                }
-                XML_CHAR_ENCODING_UTF16BE => {
-                    __xmlErrEncoding(
-                        ctxt,
-                        XML_ERR_UNSUPPORTED_ENCODING,
-                        b"encoding not supported %s\n\x00" as *const u8 as *const i8,
-                        b"USC4 big endian\x00" as *const u8 as *const i8 as *mut xmlChar,
-                        0 as *const xmlChar,
-                    );
-                }
+                XML_CHAR_ENCODING_UTF16LE => {}
+                XML_CHAR_ENCODING_UTF16BE => {}
                 XML_CHAR_ENCODING_UCS4LE => {
                     __xmlErrEncoding(
                         ctxt,
@@ -1384,7 +1358,7 @@ pub fn xmlSwitchEncoding_parserInternals(ctxt: xmlParserCtxtPtr, enc: xmlCharEnc
                     {
                         safe_ctxt.encoding = xmlStrdup((*safe_ctxt.input).encoding)
                     }
-                    safe_ctxt.charset = enc as i32;
+                    safe_ctxt.charset = enc;
                     return 0;
                 }
                 XML_CHAR_ENCODING_2022_JP => {
@@ -1414,7 +1388,7 @@ pub fn xmlSwitchEncoding_parserInternals(ctxt: xmlParserCtxtPtr, enc: xmlCharEnc
                         0 as *const xmlChar,
                     );
                 }
-                XML_CHAR_ENCODING_UTF16LE | XML_CHAR_ENCODING_UTF16BE | _ => {}
+                _ => {}
             }
         }
     }
@@ -1741,7 +1715,7 @@ pub fn xmlNewInputStream_parserInternals(ctxt: xmlParserCtxtPtr) -> xmlParserInp
         );
         (*input).line = 1;
         (*input).col = 1;
-        (*input).standalone = -(1);
+        (*input).standalone = -1;
 
         /*
          * If the context is NULL the id cannot be initialized, but that
@@ -1749,9 +1723,9 @@ pub fn xmlNewInputStream_parserInternals(ctxt: xmlParserCtxtPtr) -> xmlParserInp
          * the id is actually needed.
          */
         if !ctxt.is_null() {
-            let fresh4 = safe_ctxt.input_id;
+            let input_id_old = safe_ctxt.input_id;
             safe_ctxt.input_id = safe_ctxt.input_id + 1;
-            (*input).id = fresh4
+            (*input).id = input_id_old
         }
     }
     return input;
@@ -2071,8 +2045,8 @@ pub fn xmlInitParserCtxt(ctxt: xmlParserCtxtPtr) -> i32 {
         );
         return -1;
     }
-    unsafe { xmlDefaultSAXHandlerInit_safe() };
     unsafe {
+        xmlDefaultSAXHandlerInit_safe();
         if safe_ctxt.dict.is_null() {
             safe_ctxt.dict = xmlDictCreate()
         }
@@ -2084,7 +2058,7 @@ pub fn xmlInitParserCtxt(ctxt: xmlParserCtxtPtr) -> i32 {
         );
         return -1;
     }
-    unsafe { xmlDictSetLimit_safe(safe_ctxt.dict, 10000000) };
+    unsafe { xmlDictSetLimit_safe(safe_ctxt.dict, XML_MAX_DICTIONARY_LIMIT) };
     unsafe {
         if safe_ctxt.sax.is_null() {
             safe_ctxt.sax = xmlMalloc.expect("non-null function pointer")(::std::mem::size_of::<
@@ -2257,7 +2231,7 @@ pub fn xmlInitParserCtxt(ctxt: xmlParserCtxtPtr) -> i32 {
             safe_ctxt.options |= XML_PARSE_NOBLANKS as i32
         }
     }
-    safe_ctxt.vctxt.finishDtd = 0xabcd1234;
+    safe_ctxt.vctxt.finishDtd = XML_CTXT_FINISH_DTD_0;
     safe_ctxt.vctxt.userData = ctxt as *mut ();
     safe_ctxt.vctxt.error = Some(
         xmlParserValidityError as unsafe extern "C" fn(_: *mut (), _: *const i8, _: ...) -> (),
