@@ -13699,9 +13699,7 @@ unsafe fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: i32) ->
     };
 
     if !safe_ctxt.input.is_null()
-        && unsafe {
-            (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > 4096 as i64
-        }
+        && unsafe { (*(*ctxt).input).cur.offset_from((*(*ctxt).input).base) as i64 > 4096 as i64 }
     {
         xmlSHRINK(ctxt);
         safe_ctxt.checkIndex = 0 as i64
@@ -14252,8 +14250,7 @@ unsafe fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: i32) ->
                             '>' as xmlChar,
                         );
                         unsafe {
-                            (*(*ctxt).input).cur =
-                                (*(*ctxt).input).cur.offset(-(4 as isize));
+                            (*(*ctxt).input).cur = (*(*ctxt).input).cur.offset(-(4 as isize));
                         }
                         if terminate == 0 && term < 0 {
                             safe_ctxt.progressive = XML_PARSER_COMMENT as i32;
@@ -15074,14 +15071,12 @@ unsafe fn xmlParseTryOrFinish(mut ctxt: xmlParserCtxtPtr, mut terminate: i32) ->
                                     && *buf.offset((base_1 + 2) as isize) == '-' as u8
                                     && *buf.offset((base_1 + 3) as isize) == '-' as u8
                             } {
-                                while ((base_1 as u32).wrapping_add(3 as u32) as u64) < use_0
-                                {
+                                while ((base_1 as u32).wrapping_add(3 as u32) as u64) < use_0 {
                                     if unsafe {
                                         *buf.offset(base_1 as isize) == '-' as u8
                                             && *buf.offset((base_1 + 1 as i32) as isize)
                                                 == '-' as u8
-                                            && *buf.offset((base_1 + 2) as isize)
-                                                == '>' as u8
+                                            && *buf.offset((base_1 + 2) as isize) == '>' as u8
                                     } {
                                         found = 1 as i32;
                                         base_1 += 2;
