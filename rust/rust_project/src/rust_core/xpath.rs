@@ -47,38 +47,41 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
     if node1 == node2 {
         return 0;
     }
-    let safe_node1 = unsafe { &mut *node1 };
-    let safe_node2 = unsafe { &mut *node2 };
+
     /*
      * a couple of optimizations which will avoid computations in most cases
      */
-    match safe_node1.type_0 {
+    match unsafe { (*node1) }.type_0 {
         XML_ELEMENT_NODE => {
-            if safe_node2.type_0 == XML_ELEMENT_NODE as u32 {
-                if 0 > safe_node1.content as ptrdiff_t
-                    && 0 > safe_node2.content as ptrdiff_t
-                    && safe_node1.doc == safe_node2.doc
-                {
-                    l1 = -(safe_node1.content as ptrdiff_t); /* element is owner */
-                    l2 = -(safe_node2.content as ptrdiff_t);
-                    if l1 < l2 {
-                        return 1;
+            unsafe {
+                if (*node2).type_0 == XML_ELEMENT_NODE as u32 {
+                    if 0 > (*node1).content as ptrdiff_t
+                        && 0 > (*node2).content as ptrdiff_t
+                        && (*node1).doc == (*node2).doc
+                    {
+                        l1 = -((*node1).content as ptrdiff_t); /* element is owner */
+                        l2 = -((*node2).content as ptrdiff_t);
+                        if l1 < l2 {
+                            return 1;
+                        }
+                        if l1 > l2 {
+                            return -1;
+                        }
+                        current_block = 721385680381463314;
+                    } else {
+                        current_block = 14549389285293717636;
                     }
-                    if l1 > l2 {
-                        return -1;
-                    }
-                    current_block = 721385680381463314;
                 } else {
-                    current_block = 14549389285293717636;
+                    current_block = 721385680381463314;
                 }
-            } else {
-                current_block = 721385680381463314;
             }
         }
         XML_ATTRIBUTE_NODE => {
             precedence1 = 1;
             miscNode1 = node1;
-            node1 = safe_node1.parent;
+            unsafe {
+                node1 = (*node1).parent;
+            }
             misc = 1 as i32;
             current_block = 721385680381463314;
         }
@@ -87,9 +90,11 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
             /*
              * Find nearest element node.
              */
-            if !safe_node1.prev.is_null() {
+            if !unsafe { (*node1) }.prev.is_null() {
                 loop {
-                    node1 = safe_node1.prev; /* element in prev-sibl axis */
+                    unsafe {
+                        node1 = (*node1).prev;
+                    } /* element in prev-sibl axis */
                     if unsafe { (*node1).type_0 == XML_ELEMENT_NODE as u32 } {
                         precedence1 = 3; /* element is parent */
                         break;
@@ -108,7 +113,7 @@ fn xmlXPathCmpNodesExt(mut node1: xmlNodePtr, mut node2: xmlNodePtr) -> i32 {
                 }
             } else {
                 precedence1 = 2;
-                node1 = safe_node1.parent
+                unsafe { node1 = (*node1).parent }
             }
             if node1.is_null()
                 || unsafe { (*node1).type_0 != XML_ELEMENT_NODE as u32 }
