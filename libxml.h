@@ -10,6 +10,7 @@
 #define __XML_LIBXML_H__
 
 #include <libxml/xmlstring.h>
+#include <libxml/tree.h>
 
 #ifndef NO_LARGEFILE_SOURCE
 #ifndef _LARGEFILE_SOURCE
@@ -116,6 +117,33 @@ int __xmlRandom(void);
 
 XMLPUBFUN xmlChar * XMLCALL xmlEscapeFormatString(xmlChar **msg);
 int xmlInputReadCallbackNop(void *context, char *buffer, int len);
+
+// HTMLparser.c新增测试函数
+void libxml2_test_htmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra);
+void libxml2_test_htmlParseContent(xmlParserCtxtPtr ctxt);
+int libxml2_test_htmlNodeInfoPush(xmlParserCtxtPtr ctxt);
+void * libxml2_test_htmlNodeInfoPop(xmlParserCtxtPtr ctxt, xmlParserNodeInfo *node_info);
+void libxml2_test_htmlParserFinishElementParsing(xmlParserCtxtPtr ctxt);
+void libxml2_test_htmlParseElementInternal(xmlParserCtxtPtr ctxt);
+void libxml2_test_htmlParseErr(xmlParserCtxtPtr ctxt);
+void libxml2_test_htmlParseErrInt(xmlParserCtxtPtr ctxt);
+int libxml2_test_htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len);
+void libxml2_test_htmlAutoClose(xmlParserCtxtPtr ctxt, const xmlChar * newtag);
+void libxml2_test_htmlCheckImplied(xmlParserCtxtPtr ctxt, const xmlChar *newtag);
+xmlChar * libxml2_test_htmlParseAttValue(xmlParserCtxtPtr ctxt);
+xmlChar * libxml2_test_htmlParseSystemLiteral(xmlParserCtxtPtr ctxt);
+xmlChar * libxml2_test_htmlParsePubidLiteral(xmlParserCtxtPtr ctxt);
+void libxml2_test_htmlParseCharDataInternal(xmlParserCtxtPtr ctxt, int readahead);
+xmlParserCtxtPtr libxml2_test_htmlCreateDocParserCtxt(const xmlChar *cur, const char *encoding);
+int libxml2_test_htmlParseLookupSequence(xmlParserCtxtPtr ctxt, xmlChar first, xmlChar next, xmlChar third, int ignoreattrval);
+int libxml2_test_htmlParseStartTag(xmlParserCtxtPtr ctxt);
+int libxml2_test_htmlParseEndTag(xmlParserCtxtPtr ctxt);
+void libxml2_test_htmlCheckEncodingDirect(xmlParserCtxtPtr ctxt, const xmlChar *encoding);
+void libxml2_test_htmlCheckEncoding(xmlParserCtxtPtr ctxt, const xmlChar *attvalue);
+void libxml2_test_htmlCheckMeta(xmlParserCtxtPtr ctxt, const xmlChar **atts);
+int libxml2_test_htmlCheckParagraph(xmlParserCtxtPtr ctxt);
+void libxml2_test_htmlParseScript(xmlParserCtxtPtr ctxt);
+xmlChar * libxml2_test_htmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID);
 
 #ifdef IN_LIBXML
 #ifdef __GNUC__
