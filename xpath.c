@@ -64,6 +64,7 @@
 
 #include "buf.h"
 
+unsigned int xmlParserMaxDepth = 256;
 #ifdef LIBXML_PATTERN_ENABLED
 #define XPATH_STREAMING
 #endif
