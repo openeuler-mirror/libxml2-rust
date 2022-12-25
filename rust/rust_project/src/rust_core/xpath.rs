@@ -4426,34 +4426,33 @@ pub fn xmlXPathOrderDocElems(doc: xmlDocPtr) -> i64 {
     let safe_doc = unsafe { &mut *doc };
     cur = safe_doc.children;
     while !cur.is_null() {
-        let safe_cur = unsafe { &mut *cur };
-        if safe_cur.type_0 == XML_ELEMENT_NODE {
-            count += 1;
-            safe_cur.content = -count as *mut () as *mut xmlChar;
-            if !safe_cur.children.is_null() {
-                cur = safe_cur.children;
-                continue;
+        unsafe {
+            if (*cur).type_0 == XML_ELEMENT_NODE {
+                count += 1;
+                (*cur).content = -count as *mut () as *mut xmlChar;
+                if !(*cur).children.is_null() {
+                    cur = (*cur).children;
+                    continue;
+                }
             }
-        }
-        if !safe_cur.next.is_null() {
-            cur = safe_cur.next;
-            continue;
-        }
-        loop {
-            cur = safe_cur.parent;
-            if cur.is_null() {
-                break;
-            }
-            if cur == doc as xmlNodePtr {
-                cur = 0 as xmlNodePtr;
-                break;
-            }
-            if !safe_cur.next.is_null() {
-                cur = safe_cur.next;
-                break;
-            }
-            if cur.is_null() {
-                break;
+            if !(*cur).next.is_null() {
+                cur = (*cur).next;
+            } else {
+                loop {
+                    cur = (*cur).parent;
+                    if cur.is_null() {
+                        break;
+                    }
+                    if cur == doc as xmlNodePtr {
+                        cur = 0 as xmlNodePtr;
+                        break;
+                    } else if !(*cur).next.is_null() {
+                        cur = (*cur).next;
+                        break;
+                    } else if cur.is_null() {
+                        break;
+                    }
+                }
             }
         }
     }
