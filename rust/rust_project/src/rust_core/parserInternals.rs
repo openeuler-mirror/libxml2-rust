@@ -2739,11 +2739,10 @@ pub fn xmlPedanticParserDefault(val: i32) -> i32 {
  *
  * Returns the last value for 0 for no substitution, 1 for substitution.
  */
-
 pub fn xmlLineNumbersDefault(val: i32) -> i32 {
     let mut safe__xmlLineNumbersDefaultValue = unsafe { *__xmlLineNumbersDefaultValue() };
     let old: i32 = safe__xmlLineNumbersDefaultValue;
-    safe__xmlLineNumbersDefaultValue = val;
+    unsafe { xmlLineNumbersDefaultValueSet(val) };
     return old;
 }
 /* *

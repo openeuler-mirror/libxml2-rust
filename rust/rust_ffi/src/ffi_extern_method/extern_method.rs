@@ -93,6 +93,8 @@ extern "C" {
 
     pub fn __xmlLineNumbersDefaultValue() -> *mut i32;
 
+    pub fn xmlLineNumbersDefaultValueSet(v: i32);
+
     pub static mut xmlFree: xmlFreeFunc;
 
     pub fn __xmlDefaultSAXHandler() -> *mut xmlSAXHandlerV1;

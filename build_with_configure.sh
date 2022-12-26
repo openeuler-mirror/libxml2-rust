@@ -21,12 +21,13 @@ cd ..
 
 mv libxml2_static.a ./.libs
 
+cp rust/target/release/librust_project.a /usr/lib
+
 # 开启COMPILE_WITH_RUST宏，并且链接librust_project.a
 # 在.libs下生成libxml2.a和libxml2.so
-./configure CPPFLAGS="-DCOMPILE_WITH_RUST" LDFLAGS="-lrust_project"
+./configure CPPFLAGS="-DCOMPILE_WITH_RUST" LDFLAGS="-L/usr/lib -lrust_project" with_xmllint="yes" with_xmlcatalog="yes"
 
 make clean
 make
-
 # 可以在.libs中看到生成的libxml2.a和libxml2.so
 ls .libs
