@@ -15,7 +15,13 @@ check_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                testReader testapi testModule runtest runsuite testchar \
 	       testdict runxmlconf testrecurse testlimits
 
-bin_PROGRAMS = xmllint xmlcatalog
+bin_PROGRAMS =
+if WITH_XMLLINT_SOURCES
+bin_PROGRAMS += xmllint
+endif
+if WITH_XMLCATALOG_SOURCES
+bin_PROGRAMS += xmlcatalog
+endif
 
 bin_SCRIPTS=xml2-config
 

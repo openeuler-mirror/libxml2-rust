@@ -817,6 +817,34 @@ case ${host} in
         ;;
 esac
 
+dnl
+dnl check for xmllint
+dnl
+WITH_XMLLINT=
+if test "$with_xmllint" != "no" ; then
+    echo "WITH_XMLLINT = 1"
+    WITH_XMLLINT=1
+else
+    echo "WITH_XMLLINT = 0"
+    WITH_XMLLINT=0
+fi
+AM_CONDITIONAL(WITH_XMLLINT_SOURCES, test "${with_xmllint}" = "yes")
+AC_SUBST(WITH_XMLLINT)
+
+dnl
+dnl check for xmlcatalog
+dnl
+WITH_XMLCATALOG=
+if test "$with_xmlcatalog" != "no" ; then
+    echo "WITH_XMLCATALOG = 1"
+    WITH_XMLCATALOG=1
+else
+    echo "WITH_XMLCATALOG = 0"
+    WITH_XMLCATALOG=0
+fi
+AM_CONDITIONAL(WITH_XMLCATALOG_SOURCES, test "${with_xmlcatalog}" = "yes")
+AC_SUBST(WITH_XMLCATALOG)
+
 
 dnl
 dnl check for python
