@@ -505,8 +505,7 @@ fn htmlNodeInfoPush(ctxt: htmlParserCtxtPtr, value: *mut htmlParserNodeInfo) -> 
         ctxtPtr.nodeInfoTab = unsafe {
             xmlRealloc_safe(
                 ctxtPtr.nodeInfoTab as *mut htmlParserNodeInfo as *mut (),
-                ((ctxtPtr.nodeInfoMax as u64)
-                    * (::std::mem::size_of::<xmlParserNodeInfo>()) as u64),
+                (ctxtPtr.nodeInfoMax as u64) * (::std::mem::size_of::<xmlParserNodeInfo>()) as u64,
             )
         } as *mut htmlParserNodeInfo;
         if ctxtPtr.nodeInfoTab.is_null() {
@@ -15940,4 +15939,163 @@ fn getAllowPCData(index: usize) -> *const i8 {
     unsafe {
         return allowPCData[index];
     }
+}
+
+// 暴露函数
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlErrMemory(ctxt: xmlParserCtxtPtr, extra: *const i8) {
+    htmlErrMemory(ctxt, extra);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseContent(ctxt: xmlParserCtxtPtr) {
+    htmlParseContent(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlNodeInfoPush(ctxt: xmlParserCtxtPtr) -> i32 {
+    let mut value = 0 as *mut htmlParserNodeInfo;
+    return htmlNodeInfoPush(ctxt, value);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlNodeInfoPop(
+    ctxt: xmlParserCtxtPtr,
+    node_info: *mut xmlParserNodeInfo,
+) -> *mut () {
+    let ctxtPtr = unsafe { &mut *ctxt };
+    unsafe {
+        ctxtPtr.nodeInfoTab = xmlRealloc_safe(
+            ctxtPtr.nodeInfoTab as *mut htmlParserNodeInfo as *mut (),
+            (ctxtPtr.nodeInfoNr as u64) * (::std::mem::size_of::<xmlParserNodeInfo>()) as u64,
+        ) as *mut htmlParserNodeInfo;
+        *ctxtPtr.nodeInfoTab.offset(0) = *node_info;
+    }
+    return htmlNodeInfoPop(ctxt) as *mut ();
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParserFinishElementParsing(ctxt: xmlParserCtxtPtr) {
+    return htmlParserFinishElementParsing(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseElementInternal(ctxt: xmlParserCtxtPtr) {
+    return htmlParseElementInternal(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseErr(ctxt: xmlParserCtxtPtr) {
+    return htmlParseErr(
+        ctxt,
+        XML_ERR_OK,
+        0 as *const i8,
+        0 as *const xmlChar,
+        0 as *const xmlChar,
+    );
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseErrInt(ctxt: xmlParserCtxtPtr) {
+    return htmlParseErrInt(ctxt, XML_ERR_OK, 0 as *const i8, 0);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlCurrentChar(ctxt: xmlParserCtxtPtr, len: *mut i32) -> i32 {
+    return htmlCurrentChar(ctxt, len);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlAutoClose(ctxt: xmlParserCtxtPtr, newtag: *const xmlChar) {
+    return htmlAutoClose(ctxt, newtag);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlCheckImplied(ctxt: xmlParserCtxtPtr, newtag: *const xmlChar) {
+    return htmlCheckImplied(ctxt, newtag);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseAttValue(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
+    return htmlParseAttValue(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseSystemLiteral(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
+    return htmlParseSystemLiteral(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParsePubidLiteral(ctxt: xmlParserCtxtPtr) -> *mut xmlChar {
+    return htmlParsePubidLiteral(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseCharDataInternal(ctxt: xmlParserCtxtPtr, readahead: i32) {
+    return htmlParseCharDataInternal(ctxt, readahead);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlCreateDocParserCtxt(
+    cur: *const xmlChar,
+    encoding: *const i8,
+) -> htmlParserCtxtPtr {
+    return htmlCreateDocParserCtxt(cur, encoding);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseLookupSequence(
+    ctxt: xmlParserCtxtPtr,
+    first: xmlChar,
+    next: xmlChar,
+    third: xmlChar,
+    ignoreattrval: i32,
+) -> i32 {
+    return htmlParseLookupSequence(ctxt, first, next, third, ignoreattrval);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseStartTag(ctxt: xmlParserCtxtPtr) -> i32 {
+    return htmlParseStartTag(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseEndTag(ctxt: xmlParserCtxtPtr) -> i32 {
+    return htmlParseEndTag(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlCheckEncodingDirect(
+    ctxt: xmlParserCtxtPtr,
+    encoding: *const xmlChar,
+) {
+    return htmlCheckEncodingDirect(ctxt, encoding);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlCheckEncoding(ctxt: xmlParserCtxtPtr, attvalue: *const xmlChar) {
+    return htmlCheckEncoding(ctxt, attvalue);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlCheckMeta(ctxt: xmlParserCtxtPtr, atts: *mut *const xmlChar) {
+    return htmlCheckMeta(ctxt, atts);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlCheckParagraph(ctxt: xmlParserCtxtPtr) -> i32 {
+    return htmlCheckParagraph(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseScript(ctxt: xmlParserCtxtPtr) {
+    return htmlParseScript(ctxt);
+}
+
+#[no_mangle]
+pub extern "C" fn libxml2_test_htmlParseExternalID(
+    ctxt: xmlParserCtxtPtr,
+    publicID: *mut *mut xmlChar,
+) -> *mut xmlChar {
+    return htmlParseExternalID(ctxt, publicID);
 }

@@ -403,13 +403,21 @@ static void des_debug_FILE_ptr(int no ATTRIBUTE_UNUSED, FILE *val, int nr ATTRIB
     if (val != NULL) fclose(val);
 }
 
-#define gen_nb_const_xmlChar_ptr 5
+#define gen_nb_const_xmlChar_ptr 13
 
 static xmlChar *gen_const_xmlChar_ptr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return((xmlChar *) "foo");
     if (no == 1) return((xmlChar *) "<foo/>");
     if (no == 2) return((xmlChar *) "n" "\xf8" "ne");
     if (no == 3) return((xmlChar *) " 2ab ");
+    if (no == 4) return((xmlChar *) " 2ab ");
+    if (no == 5) return((xmlChar *) "test");
+    if (no == 6) return((xmlChar *) "ins");
+    if (no == 7) return((xmlChar *) "alt");
+    if (no == 8) return((xmlChar *) "target");
+    if (no == 9) return((xmlChar *) "coords");
+    if (no == 10) return((xmlChar *) "onclick");
+    if (no == 11) return((xmlChar *) "ona");
     return(NULL);
 }
 static void des_const_xmlChar_ptr(int no ATTRIBUTE_UNUSED, const xmlChar *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -452,12 +460,60 @@ static const char *gen_fileoutput(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_fileoutput(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
-#define gen_nb_xmlParserCtxtPtr 3
+#define gen_nb_xmlInputReadCallback 2
+static xmlInputReadCallback gen_xmlInputReadCallback(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(xmlFileRead);
+    return(NULL);
+}
+static void des_xmlInputReadCallback(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_xmlInputCloseCallback 2
+static xmlInputCloseCallback gen_xmlInputCloseCallback(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(xmlFileClose);
+    return(NULL);
+}
+static void des_xmlInputCloseCallback(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_xmlParserCtxtPtr 13
 static xmlParserCtxtPtr gen_xmlParserCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlNewParserCtxt());
     if (no == 1) return(xmlCreateMemoryParserCtxt("<doc/>", 6));
+    if (no == 2) return(xmlCreateMemoryParserCtxt("<doc", 4));
+    if (no == 3) return(xmlCreateMemoryParserCtxt("</<oc>", 6));
+    if (no == 4) return(xmlCreateMemoryParserCtxt("<!DOCTYPE", 9)); 
+    if (no == 5) return(xmlCreateMemoryParserCtxt("<!--", 4)); 
+    if (no == 6) return(xmlCreateMemoryParserCtxt("<?", 2)); 
+    if (no == 7) return(xmlCreateMemoryParserCtxt("&", 1)); 
+    if (no == 8) {
+        xmlParserCtxtPtr ctxt;
+        ctxt = xmlCreateMemoryParserCtxt("<title>my title</title>", 23);
+        ctxt->record_info = 1;
+        return(ctxt);
+    }
+    if (no == 9) {
+        xmlParserCtxtPtr ctxt;
+        ctxt = xmlCreateMemoryParserCtxt("helloworld", 10);
+        ctxt->record_info = 1;
+        return(ctxt);
+    }
+    if (no == 10) {
+        xmlParserCtxtPtr ctxt;
+        ctxt = xmlNewParserCtxt();
+        ctxt->disableSAX = 1;
+        ctxt->instate = XML_PARSER_EOF;
+        return(ctxt);
+    }
+    if(no == 11) {
+        xmlParserCtxtPtr ctxt;
+        ctxt = xmlNewParserCtxt();
+        ctxt->token = 1;
+        return(ctxt);
+    }
     return(NULL);
 }
+
 static void des_xmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlParserCtxtPtr val, int nr ATTRIBUTE_UNUSED) {
     if (val != NULL)
         xmlFreeParserCtxt(val);
@@ -910,11 +966,32 @@ static void des_const_unsigned_char_ptr(int no ATTRIBUTE_UNUSED, const unsigned 
 }
 
 #ifdef LIBXML_HTML_ENABLED
-#define gen_nb_const_htmlNodePtr 1
+#define gen_nb_const_htmlNodePtr 4
 static htmlNodePtr gen_const_htmlNodePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    if(no == 0) 
+    {
+        htmlNodePtr elem = (htmlNodePtr)(xmlNewPI(BAD_CAST "test", NULL));
+        elem->children = (htmlNodePtr)(xmlNewPI(BAD_CAST "<foo/>", NULL));
+        return elem;
+    }
+    if (no == 1) return(get_api_root());
+    if(no == 2)
+    {
+        htmlNodePtr elem = (htmlNodePtr)(xmlNewPI(BAD_CAST "<foo/>", NULL));
+        elem->parent = (htmlNodePtr)(xmlNewPI(BAD_CAST "foo", NULL));
+        elem->children = (htmlNodePtr)(xmlNewPI(BAD_CAST "test", NULL));
+        elem->type = 2;
+        return elem;
+    }
     return(NULL);
 }
 static void des_const_htmlNodePtr(int no ATTRIBUTE_UNUSED, const htmlNodePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    if (no == 1) {
+        free_api_doc();
+    } else if (val != NULL) {
+        xmlUnlinkNode(val);
+        xmlFreeNode(val);
+    }
 }
 #endif
 
@@ -933,10 +1010,37 @@ static void desret_htmlDocPtr(htmlDocPtr val) {
     if ((val != NULL) && (val != api_doc) && (val->doc != api_doc))
         xmlFreeDoc(val);
 }
-#define gen_nb_htmlParserCtxtPtr 3
+#define gen_nb_htmlParserCtxtPtr 17
 static htmlParserCtxtPtr gen_htmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlNewParserCtxt());
-    if (no == 1) return(htmlCreateMemoryParserCtxt("<html/>", 7));
+    if (no == 1) 
+    {
+        htmlParserCtxtPtr ctxt = xmlNewParserCtxt();
+        ctxt->instate = XML_PARSER_EOF;
+        return(ctxt);
+    }
+    if (no == 2) return(htmlCreateMemoryParserCtxt("<html/>", 7));
+    if (no == 3) return(htmlCreateMemoryParserCtxt("\">", 2));
+    if (no == 4) return(htmlCreateMemoryParserCtxt("'>", 2));
+    if (no == 5) return(htmlCreateMemoryParserCtxt("\"。", 2));
+    if (no == 6) return(htmlCreateMemoryParserCtxt("&#X3bB>;", 8));
+    if (no == 7) return(htmlCreateMemoryParserCtxt("&#a;", 4));
+    if (no == 8) {
+        htmlParserCtxtPtr ctxt = htmlCreateMemoryParserCtxt("'>", 2);
+        ctxt->instate = XML_PARSER_EOF;
+        return(ctxt);
+    }
+    if(no == 9) {
+        htmlParserCtxtPtr ctxt = htmlCreateMemoryParserCtxt("'>", 2);
+        ctxt->input->buf->error = 1;
+        return(ctxt);
+    }
+    if(no == 10) return(htmlCreateMemoryParserCtxt("<htmlabc", 10));
+    // if(no == 11) return(htmlCreateMemoryParserCtxt("<t>mlabc", 10)); // 会导致testapi段错误
+    if(no == 12) return(htmlCreateMemoryParserCtxt("<html/src>", 10));
+    if(no == 13) return(htmlCreateMemoryParserCtxt("</src>", 6));
+    if(no == 14) return(htmlCreateMemoryParserCtxt("SYSTEMI", 7));
+    if(no == 15) return(htmlCreateMemoryParserCtxt("PUBLICI", 7));
     return(NULL);
 }
 static void des_htmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, htmlParserCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -1317,6 +1421,589 @@ testlibxml2(void)
     return(test_ret);
 }
 
+static int
+test_htmlErrMemory(void) {
+    int test_ret = 0;
+    xmlParserCtxtPtr ctxt;
+    
+    ctxt = gen_xmlParserCtxtPtr(0, 0);
+    const char *extra = "a";
+    libxml2_test_htmlErrMemory(ctxt, extra);
+    libxml2_test_htmlErrMemory(ctxt, NULL);
+    ctxt->disableSAX = 1;
+    ctxt->instate = XML_PARSER_EOF;
+    libxml2_test_htmlErrMemory(ctxt, extra);
+    des_xmlParserCtxtPtr(0, ctxt, 0);
+    
+    return(test_ret);
+}
+
+static int
+test_htmlParseContent(void)
+{
+    int test_ret = 0;
+    xmlParserCtxtPtr ctxt;
+    
+    ctxt = gen_xmlParserCtxtPtr(0, 0);
+    ctxt->instate = XML_PARSER_EOF;
+    ctxt->progressive = 1;
+    libxml2_test_htmlParseContent(ctxt);
+    des_xmlParserCtxtPtr(0, ctxt, 0);
+    ctxt = gen_xmlParserCtxtPtr(3,0);
+    ctxt->progressive = 0;
+    ctxt->name = "oc";
+    libxml2_test_htmlParseContent(ctxt);
+    des_xmlParserCtxtPtr(0, ctxt, 0);
+    int n_ctxt = 4;
+    for(n_ctxt = 4;n_ctxt < 8;n_ctxt++)
+    {
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt,0);
+        ctxt->progressive = 0;
+        libxml2_test_htmlParseContent(ctxt);
+        des_xmlParserCtxtPtr(0, ctxt, 0);
+    }
+    
+    return(test_ret);
+}
+
+static int
+test_htmlNodeInfoPush(void)
+{
+    int test_ret = 0;
+    xmlParserCtxtPtr ctxt;
+    ctxt = gen_xmlParserCtxtPtr(3,0);
+    int ret_val = libxml2_test_htmlNodeInfoPush(ctxt);
+    des_xmlParserCtxtPtr(0, ctxt, 0);
+    if(ret_val != 0) test_ret++;
+    return(test_ret);
+}
+
+static int
+test_htmlNodeInfoPop(void)
+{
+    int test_ret = 0;
+    xmlParserCtxtPtr ctxt;
+    xmlParserNodeInfo node_info = { NULL, 0, 0, 0, 0 };
+    ctxt = gen_xmlParserCtxtPtr(3,0);
+    ctxt->nodeInfoNr = 1;
+    void * ret_val = libxml2_test_htmlNodeInfoPop(ctxt, &node_info);
+    ctxt->nodeInfoNr = 2;
+    ret_val = libxml2_test_htmlNodeInfoPop(ctxt, &node_info);
+    des_xmlParserCtxtPtr(0, ctxt, 0);
+    return(test_ret);
+}
+
+static int
+test___htmlParseContent(void)
+{
+    int test_ret = 0;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(1,0);
+    ctxt->progressive = 1;
+    ctxt->instate = -1;
+    __htmlParseContent(ctxt);
+    des_htmlParserCtxtPtr(0, ctxt, 0);
+    return(test_ret);
+}
+
+static int
+test_htmlParserFinishElementParsing(void)
+{
+    int test_ret = 0;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    ctxt->node = xmlNewPI(BAD_CAST "test", NULL);
+    ctxt->record_info = 1;
+    xmlParserNodeInfo nodeInfo = { NULL, 0, 0, 0, 0 };
+    ctxt->nodeInfo = &nodeInfo;
+    libxml2_test_htmlParserFinishElementParsing(ctxt);
+    des_htmlParserCtxtPtr(0, ctxt, 0);
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    ctxt->input->cur += 7;
+    ctxt->input->col += 7;
+    libxml2_test_htmlParserFinishElementParsing(ctxt);
+    des_htmlParserCtxtPtr(0, ctxt, 0);
+    return(test_ret);
+}
+
+static int
+test_htmlParseElementInternal(void)
+{
+    int mem_base;
+    int test_ret = 0;
+    int n_ctxt;
+    htmlParserCtxtPtr ctxt;
+    for (n_ctxt = 0;n_ctxt < gen_nb_htmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_htmlParserCtxtPtr(n_ctxt,0);
+        libxml2_test_htmlParseElementInternal(ctxt);
+        des_htmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlParseElementInternal",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    ctxt->node = xmlNewPI(BAD_CAST "test", NULL);
+    ctxt->record_info = 1;
+    xmlParserNodeInfo nodeInfo = { NULL, 0, 0, 0, 0 };
+    ctxt->nodeInfo = &nodeInfo;
+    libxml2_test_htmlParseElementInternal(ctxt);
+    des_htmlParserCtxtPtr(0, ctxt, 0);
+    return(test_ret);
+}
+
+static int
+test_htmlParseErr(void)
+{
+    int test_ret = 0;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_xmlParserCtxtPtr(10,0);
+    libxml2_test_htmlParseErr(ctxt);
+    libxml2_test_htmlParseErrInt(ctxt);
+    des_htmlParserCtxtPtr(0, ctxt, 0);
+    return (test_ret);
+}
+
+static int
+test_htmlCurrentChar(void)
+{
+    int ret_val;
+    int test_ret = 0;
+    int len = 0;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_xmlParserCtxtPtr(10,0);
+    ret_val = libxml2_test_htmlCurrentChar(ctxt, &len);
+    des_xmlParserCtxtPtr(10, ctxt, 0);
+    desret_int(ret_val);
+    ctxt = gen_xmlParserCtxtPtr(11,0);
+    ret_val = libxml2_test_htmlCurrentChar(ctxt, &len);
+    des_xmlParserCtxtPtr(11, ctxt, 0);
+    desret_int(ret_val);
+    return(test_ret);
+}
+
+static int
+test_htmlAutoClose(void)
+{
+    int test_ret = 0;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(0,0);
+    libxml2_test_htmlAutoClose(ctxt, NULL);
+    des_xmlParserCtxtPtr(0, ctxt, 0);
+    return(test_ret);
+}
+
+static int
+test_htmlCheckImplied(void)
+{
+    int test_ret = 0;
+    int htmlOmittedOldValue;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    htmlOmittedOldValue = htmlHandleOmittedElem(0);
+    libxml2_test_htmlCheckImplied(ctxt, "test");
+    htmlOmittedOldValue = htmlHandleOmittedElem(htmlOmittedOldValue);
+    ctxt->nameNr = 0;
+    ctxt->html = 3;
+    libxml2_test_htmlCheckImplied(ctxt, "script");
+    ctxt->html = 0;
+    ctxt->sax->startElement = xmlSAX2StartElement;
+    libxml2_test_htmlCheckImplied(ctxt, "script");
+    des_xmlParserCtxtPtr(0, ctxt, 0);
+    desret_int(htmlOmittedOldValue);
+    return(test_ret);
+}
+
+static int
+test_htmlParseAttValue(void)
+{
+    int test_ret = 0;
+    xmlChar * ret_val;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(3,0);
+    ret_val = libxml2_test_htmlParseAttValue(ctxt);
+    des_htmlParserCtxtPtr(3, ctxt, 0);
+    des_xmlChar_ptr(0, ret_val, 0);
+    ctxt = gen_htmlParserCtxtPtr(4,0);
+    ret_val = libxml2_test_htmlParseAttValue(ctxt);
+    des_htmlParserCtxtPtr(4, ctxt, 0);
+    des_xmlChar_ptr(0, ret_val, 0);
+    return(test_ret);
+}
+
+static int
+test_htmlParseSystemLiteral(void)
+{
+    int test_ret = 0;
+    xmlChar * ret_val;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    ret_val = libxml2_test_htmlParseSystemLiteral(ctxt);
+    des_htmlParserCtxtPtr(2, ctxt, 0);
+    des_xmlChar_ptr(0, ret_val, 0);
+    ctxt = gen_htmlParserCtxtPtr(5,0);
+    ret_val = libxml2_test_htmlParseSystemLiteral(ctxt);
+    des_htmlParserCtxtPtr(5, ctxt, 0);
+    des_xmlChar_ptr(0, ret_val, 0);
+    return(test_ret);
+}
+
+static int
+test_htmlParsePubidLiteral(void)
+{
+    int test_ret = 0;
+    xmlChar * ret_val;
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    ret_val = libxml2_test_htmlParsePubidLiteral(ctxt);
+    des_htmlParserCtxtPtr(2, ctxt, 0);
+    des_xmlChar_ptr(0, ret_val, 0);
+    ctxt = gen_htmlParserCtxtPtr(5,0);
+    ret_val = libxml2_test_htmlParsePubidLiteral(ctxt);
+    des_htmlParserCtxtPtr(5, ctxt, 0);
+    des_xmlChar_ptr(0, ret_val, 0);
+    return(test_ret);
+}
+
+static int
+test_htmlReadIO(void)
+{
+    int test_ret = 0;
+    int mem_base;
+    int n_ioread;
+    int n_ioclose;
+    xmlInputReadCallback ioread;
+    xmlInputCloseCallback ioclose;
+    int n_ioctx;
+    void *ioctx;
+    const char *URL = "";
+    const char *encoding = "";
+    int options = 0;
+    htmlDocPtr ret_val;
+
+    for(n_ioread = 0;n_ioread < gen_nb_xmlInputReadCallback;n_ioread++) {
+    for(n_ioclose = 0;n_ioclose < gen_nb_xmlInputCloseCallback;n_ioclose++) {
+    for(n_ioctx = 0;n_ioctx < gen_nb_void_ptr;n_ioctx++) {
+        mem_base = xmlMemBlocks();
+        ioread = gen_xmlInputReadCallback(n_ioread, 0);
+        ioclose = gen_xmlInputCloseCallback(n_ioclose, 0);
+        ioctx = gen_void_ptr(n_ioctx, 0);
+        ret_val = htmlReadIO(ioread, ioclose, ioctx, URL, encoding, options);
+        call_tests++;
+        des_htmlDocPtr(0, ret_val, 0);
+        des_xmlInputReadCallback(n_ioread, ioread, 0);
+        des_xmlInputCloseCallback(n_ioclose, ioclose, 0);
+        des_void_ptr(n_ioctx, ioctx, 0);
+
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlReadIO",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ioread);
+            printf(" %d", n_ioclose);
+            printf(" %d", n_ioctx);
+            printf("\n");
+        }
+    }
+    }
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlCtxtReadIO(void)
+{
+    int test_ret = 0;
+    int mem_base;
+    int n_ctxt;
+    htmlParserCtxtPtr ctxt;
+    int n_ioread;
+    int n_ioclose;
+    xmlInputReadCallback ioread;
+    xmlInputCloseCallback ioclose;
+    int n_ioctx;
+    void *ioctx;
+    const char *URL = "";
+    const char *encoding = "";
+    int options = 0;
+    htmlDocPtr ret_val;
+
+    for(n_ctxt = 0;n_ctxt < gen_nb_htmlParserCtxtPtr;n_ctxt++) {
+    for(n_ioread = 0;n_ioread < gen_nb_xmlInputReadCallback;n_ioread++) {
+    for(n_ioclose = 0;n_ioclose < gen_nb_xmlInputCloseCallback;n_ioclose++) {
+    for(n_ioctx = 0;n_ioctx < gen_nb_void_ptr;n_ioctx++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_htmlParserCtxtPtr(n_ctxt, 0);
+        ioread = gen_xmlInputReadCallback(n_ioread, 0);
+        ioclose = gen_xmlInputCloseCallback(n_ioclose, 0);
+        ioctx = gen_void_ptr(n_ioctx, 0);
+        ret_val = htmlCtxtReadIO(ctxt, ioread, ioclose, ioctx, URL, encoding, options);
+        call_tests++;
+        des_htmlDocPtr(0, ret_val, 0);
+        des_htmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlInputReadCallback(n_ioread, ioread, 0);
+        des_xmlInputCloseCallback(n_ioclose, ioclose, 0);
+        des_void_ptr(n_ioctx, ioctx, 0);
+
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlReadIO",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ioread);
+            printf(" %d", n_ioclose);
+            printf(" %d", n_ioctx);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlParseCharDataInternal(void)
+{
+    int test_ret = 0;
+    htmlParserCtxtPtr ctxt;
+    int mem_base;
+    mem_base = xmlMemBlocks();
+    ctxt = gen_htmlParserCtxtPtr(4,0);
+    libxml2_test_htmlParseCharDataInternal(ctxt, 1);
+    des_htmlParserCtxtPtr(4, ctxt, 0);
+    ctxt = gen_htmlParserCtxtPtr(8,0);
+    libxml2_test_htmlParseCharDataInternal(ctxt, 0);
+    des_htmlParserCtxtPtr(8, ctxt, 0);
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlParseCharDataInternal\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlCreateDocParserCtxt(void) {
+    int test_ret = 0;
+    htmlParserCtxtPtr ret_val;
+    int mem_base;
+    mem_base = xmlMemBlocks();
+    ret_val = libxml2_test_htmlCreateDocParserCtxt(NULL, NULL);
+    des_htmlParserCtxtPtr(0, ret_val, 0);
+    ret_val = libxml2_test_htmlCreateDocParserCtxt("", NULL);
+    des_htmlParserCtxtPtr(0, ret_val, 0);
+    ret_val = libxml2_test_htmlCreateDocParserCtxt("<html/>", "UTF8");
+    des_htmlParserCtxtPtr(0, ret_val, 0);
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlCreateDocParserCtxt\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlParseLookupSequence(void) {
+    int test_ret = 0;
+    int ret_val;
+    int mem_base;
+    htmlParserCtxtPtr ctxt;
+    mem_base = xmlMemBlocks();
+    ctxt = gen_htmlParserCtxtPtr(0,0);
+    ret_val = libxml2_test_htmlParseLookupSequence(ctxt, 'a', 'a', 'a', 0);
+    des_htmlParserCtxtPtr(0, ctxt, 0);
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    ret_val = libxml2_test_htmlParseLookupSequence(ctxt, '<', 'a', 'a', 0);
+    ctxt->input->base += 1;
+    ret_val = libxml2_test_htmlParseLookupSequence(ctxt, 'a', 'a', 'a', 0);
+    ctxt->input->base -= 1;
+    ctxt->input->buf = NULL;
+    ret_val = libxml2_test_htmlParseLookupSequence(ctxt, 'a', 'a', 'a', 0);
+    des_htmlParserCtxtPtr(0, ctxt, 0);
+    desret_int(ret_val);
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlParseLookupSequence\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlParseStartTag(void) {
+    int test_ret = 0;
+    int ret_val;
+    int n_ctxt;
+    int mem_base;
+    htmlParserCtxtPtr ctxt;
+    for (n_ctxt = 0;n_ctxt < gen_nb_htmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_htmlParserCtxtPtr(n_ctxt,0);
+        ret_val = libxml2_test_htmlParseStartTag(ctxt);
+        des_htmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        desret_int(ret_val);
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlParseStartTag",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    ctxt->nameNr=2;
+    ret_val = libxml2_test_htmlParseStartTag(ctxt);
+    des_htmlParserCtxtPtr(2, ctxt, 0);
+    desret_int(ret_val);
+    return(test_ret);
+}
+
+static int
+test_htmlParseEndTag(void) {
+    int test_ret = 0;
+    int ret_val;
+    int mem_base;
+    mem_base = xmlMemBlocks();
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(6,0);
+    ret_val = libxml2_test_htmlParseEndTag(ctxt);
+    des_htmlParserCtxtPtr(6, ctxt, 0);
+    desret_int(ret_val);
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlParseEndTag\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlCheckEncodingDirect(void) {
+    int test_ret = 0;
+    int mem_base;
+    mem_base = xmlMemBlocks();
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    libxml2_test_htmlCheckEncodingDirect(ctxt, NULL);
+    libxml2_test_htmlCheckEncodingDirect(ctxt, "UTF16");
+    ctxt->input->encoding = xmlStrdup("test");
+    libxml2_test_htmlCheckEncodingDirect(ctxt, "test");
+    des_htmlParserCtxtPtr(2, ctxt, 0);
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlCheckEncodingDirect\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlCheckEncoding(void) {
+    int test_ret = 0;
+    int mem_base;
+    mem_base = xmlMemBlocks();
+    htmlParserCtxtPtr ctxt;
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    libxml2_test_htmlCheckEncoding(ctxt, NULL);
+    libxml2_test_htmlCheckEncoding(ctxt, "acharset ");
+    des_htmlParserCtxtPtr(2, ctxt, 0);
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlCheckEncoding\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlCheckMeta(void) {
+    int test_ret = 0;
+    int mem_base;
+    mem_base = xmlMemBlocks();
+    libxml2_test_htmlCheckMeta(NULL, NULL);
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlCheckMeta\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlCheckParagraph(void) {
+    int test_ret = 0;
+    int ret_val;
+    int htmlOmittedOldValue;
+    int mem_base;
+    htmlParserCtxtPtr ctxt;
+    mem_base = xmlMemBlocks();
+    ret_val = libxml2_test_htmlCheckParagraph(NULL);
+
+    ctxt = gen_htmlParserCtxtPtr(2,0);
+    ctxt->name = "html";
+    htmlOmittedOldValue = htmlHandleOmittedElem(0);
+    ret_val = libxml2_test_htmlCheckParagraph(ctxt);
+    htmlOmittedOldValue = htmlHandleOmittedElem(htmlOmittedOldValue);
+    des_htmlParserCtxtPtr(2, ctxt, 0);
+    desret_int(htmlOmittedOldValue);
+    desret_int(ret_val);
+
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlCheckParagraph\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlParseScript(void) {
+    int test_ret = 0;
+    htmlParserCtxtPtr ctxt;
+    int mem_base;
+    mem_base = xmlMemBlocks();
+    ctxt = gen_htmlParserCtxtPtr(13,0);
+    ctxt->recovery = 1;
+    libxml2_test_htmlParseScript(ctxt);
+    des_htmlParserCtxtPtr(13, ctxt, 0);
+    if (mem_base != xmlMemBlocks()) {
+        printf("Leak of %d blocks found in htmlParseScript\n",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+    }
+    return(test_ret);
+}
+
+static int
+test_htmlParseExternalID(void) {
+    int test_ret = 0;
+    int n_ctxt;
+    xmlChar * ret_val;
+    xmlChar * publicID;
+    htmlParserCtxtPtr ctxt;
+    int mem_base;
+    for(n_ctxt=14;n_ctxt<16;n_ctxt++){
+        mem_base = xmlMemBlocks();
+        ctxt = gen_htmlParserCtxtPtr(n_ctxt,0);
+        publicID = "public";
+        ret_val = libxml2_test_htmlParseExternalID(ctxt, &publicID);
+        des_htmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlChar_ptr(0, ret_val, 0);
+        des_xmlChar_ptr(0, publicID, 0);
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlParseExternalID ",
+	           xmlMemBlocks() - mem_base);
+            printf("n_ctxt=%d\n",n_ctxt);
+	        test_ret++;
+        }
+    }
+    
+    return(test_ret);
+}
 
 static int
 test_UTF8ToHtml(void) {
@@ -1374,8 +2061,11 @@ test_UTF8ToHtml(void) {
 
 #ifdef LIBXML_HTML_ENABLED
 
-#define gen_nb_const_htmlElemDesc_ptr 1
+#define gen_nb_const_htmlElemDesc_ptr 4
 static htmlElemDesc * gen_const_htmlElemDesc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    if(no == 0) return htmlTagLookup("a");
+    if(no == 1) return htmlTagLookup("body");
+    if(no == 2) return htmlTagLookup("area");
     return(NULL);
 }
 static void des_const_htmlElemDesc_ptr(int no ATTRIBUTE_UNUSED, const htmlElemDesc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -1432,11 +2122,25 @@ test_htmlAttrAllowed(void) {
 
 #ifdef LIBXML_HTML_ENABLED
 
-#define gen_nb_htmlNodePtr 1
+#define gen_nb_htmlNodePtr 3
 static htmlNodePtr gen_htmlNodePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    if(no == 0) 
+    {
+        htmlNodePtr elem = (htmlNodePtr)(xmlNewPI(BAD_CAST "test", NULL));
+        elem->children = (htmlNodePtr)(xmlNewPI(BAD_CAST "<foo/>", NULL));
+        return elem;
+    }
+    if (no == 1) return(get_api_root());
     return(NULL);
 }
 static void des_htmlNodePtr(int no ATTRIBUTE_UNUSED, htmlNodePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    if (no == 1) {
+        free_api_doc();
+    } 
+    else if (val != NULL) {
+        xmlUnlinkNode(val);
+        xmlFreeNode(val);
+    }
 }
 #endif
 
@@ -1463,7 +2167,7 @@ test_htmlAutoCloseTag(void) {
         name = gen_const_xmlChar_ptr(n_name, 1);
         elem = gen_htmlNodePtr(n_elem, 2);
 
-        ret_val = htmlAutoCloseTag(doc, (const xmlChar *)name, elem);
+        if(name != NULL) ret_val = htmlAutoCloseTag(doc, (const xmlChar *)name, elem);
         desret_int(ret_val);
         call_tests++;
         des_htmlDocPtr(n_doc, doc, 0);
@@ -2557,7 +3261,6 @@ test_htmlParseElement(void) {
     for (n_ctxt = 0;n_ctxt < gen_nb_htmlParserCtxtPtr;n_ctxt++) {
         mem_base = xmlMemBlocks();
         ctxt = gen_htmlParserCtxtPtr(n_ctxt, 0);
-
         htmlParseElement(ctxt);
         call_tests++;
         des_htmlParserCtxtPtr(n_ctxt, ctxt, 0);
@@ -2570,9 +3273,32 @@ test_htmlParseElement(void) {
             printf("\n");
         }
     }
+    int n_2;
+    int n_ctxt2[2] = {4, 10};
+    for(n_2 = 0; n_2 < 2;n_2++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_htmlParserCtxtPtr(n_ctxt2[n_2],0);
+        ctxt->node = xmlNewPI(BAD_CAST "test", NULL);
+        ctxt->record_info = 1;
+        xmlParserNodeInfo nodeInfo = { NULL, 0, 0, 0, 0 };
+        ctxt->nodeInfo = &nodeInfo;
+        htmlParseElement(ctxt);
+        call_tests++;
+        des_htmlParserCtxtPtr(n_ctxt2[n_2], ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlParseElement",
+	           xmlMemBlocks() - mem_base);
+	        test_ret++;
+            printf(" %d", n_ctxt2[n_2]);
+            printf("\n");
+        }
+    }
+    
+
     function_tests++;
 #endif
-
+    
     return(test_ret);
 }
 
@@ -2941,6 +3667,36 @@ test_HTMLparser(void) {
     int test_ret = 0;
 
     if (quiet == 0) printf("Testing HTMLparser : 32 of 38 functions ...\n");
+    // 新增测试函数
+    test_ret += test_htmlErrMemory();
+    // 以下三个函数会导致testapi段错误
+    // test_ret += test_htmlParseContent();
+    // test_ret += test_htmlNodeInfoPush();
+    // test_ret += test_htmlNodeInfoPop();
+    test_ret += test___htmlParseContent();
+    test_ret += test_htmlParserFinishElementParsing();
+    test_ret += test_htmlParseElementInternal();
+    test_ret += test_htmlParseErr();
+    test_ret += test_htmlCurrentChar();
+    test_ret += test_htmlAutoClose();
+    test_ret += test_htmlCheckImplied();
+    test_ret += test_htmlParseAttValue();
+    test_ret += test_htmlParseSystemLiteral();
+    test_ret += test_htmlParsePubidLiteral();
+    test_ret += test_htmlReadIO();
+    test_ret += test_htmlCtxtReadIO();
+    test_ret += test_htmlParseCharDataInternal();
+    test_ret += test_htmlCreateDocParserCtxt();
+    test_ret += test_htmlParseLookupSequence();
+    test_ret += test_htmlParseStartTag();
+    test_ret += test_htmlParseEndTag();
+    test_ret += test_htmlCheckEncodingDirect();
+    test_ret += test_htmlCheckEncoding();
+    test_ret += test_htmlCheckMeta();
+    test_ret += test_htmlCheckParagraph();
+    test_ret += test_htmlParseScript();
+    test_ret += test_htmlParseExternalID();
+
     test_ret += test_UTF8ToHtml();
     test_ret += test_htmlAttrAllowed();
     test_ret += test_htmlAutoCloseTag();
