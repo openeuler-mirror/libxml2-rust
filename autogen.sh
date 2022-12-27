@@ -84,7 +84,7 @@ if test x$OBJ_DIR != x; then
 fi
 
 if test -z "$NOCONFIGURE"; then
-    $srcdir/configure $EXTRA_ARGS "$@"  --disable-shared with_xmllint="no" with_xmlcatalog="no"
+    CPPFLAGS="-fPIC" $srcdir/configure $EXTRA_ARGS "$@"  --disable-shared with_xmllint="no" with_xmlcatalog="no"
     if test "$?" -ne 0; then
         echo
         echo "Configure script failed, check config.log for more info."
