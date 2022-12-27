@@ -983,6 +983,14 @@ __xmlLineNumbersDefaultValue(void) {
     else
 	return (&xmlGetGlobalState()->xmlLineNumbersDefaultValue);
 }
+
+void xmlLineNumbersDefaultValueSet(int v) {
+    xmlMutexLock(xmlThrDefMutex);
+    xmlLineNumbersDefaultValue = v;
+    xmlMutexUnlock(xmlThrDefMutex);
+}
+
+
 int xmlThrDefLineNumbersDefaultValue(int v) {
     int ret;
     xmlMutexLock(xmlThrDefMutex);

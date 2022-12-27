@@ -407,6 +407,7 @@ XMLPUBVAR int xmlKeepBlanksDefaultValue;
 XMLPUBFUN int XMLCALL xmlThrDefKeepBlanksDefaultValue(int v);
 
 XMLPUBFUN int * XMLCALL __xmlLineNumbersDefaultValue(void);
+XMLPUBFUN void XMLCALL xmlLineNumbersDefaultValueSet(int v);
 #ifdef LIBXML_THREAD_ENABLED
 #define xmlLineNumbersDefaultValue \
 (*(__xmlLineNumbersDefaultValue()))
