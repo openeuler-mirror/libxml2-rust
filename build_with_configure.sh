@@ -62,3 +62,5 @@ if [ $? -ne 0 ];then
 fi
 # 可以在.libs中看到生成的libxml2.a和libxml2.so
 ls .libs
+
+echo "Build SUCCESSFUL. target in .libs"
