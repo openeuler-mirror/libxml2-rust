@@ -829,7 +829,7 @@ htmlAttrAllowed(const htmlElemDesc *elt, const xmlChar *attr, int legacy) {
  */
 htmlStatus
 htmlNodeStatus(const htmlNodePtr node, int legacy) {
-    htmlNodeStatus_rust(node, legacy);
+    return htmlNodeStatus_rust(node, legacy);
 }
 /************************************************************************
  *									*

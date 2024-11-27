@@ -1189,7 +1189,7 @@ xmlChar * xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int stri
  * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
  */
 void xmlParseComment(xmlParserCtxtPtr ctxt) {
-    return xmlParseComment_rust(ctxt);
+    xmlParseComment_rust(ctxt);
 }
 
 /**
@@ -1413,7 +1413,7 @@ int xmlParseAttributeType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
  *
  */
 void xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
-    return xmlParseAttributeListDecl_rust(ctxt);
+    xmlParseAttributeListDecl_rust(ctxt);
 }
 
 /**
